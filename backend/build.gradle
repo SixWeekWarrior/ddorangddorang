@@ -35,6 +35,10 @@ dependencies {
 	// mysql
 	// https://mvnrepository.com/artifact/com.mysql/mysql-connector-j
 	implementation 'com.mysql:mysql-connector-j:8.0.33'
+
+	// OAuth2
+	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+
 }
 
 tasks.named('test') {

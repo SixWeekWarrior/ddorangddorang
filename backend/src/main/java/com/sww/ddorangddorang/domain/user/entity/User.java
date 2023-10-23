@@ -18,6 +18,8 @@ public class User {
 
     private String name;                // VARCHAR(255)
     private String email;               // VARCHAR(255)
+    private String provider;            // VARCHAR(255) - for OAuth2
+    private String providerId;          // VARCHAR(255) - for OAuth2
     private String password;            // VARCHAR(255) - for security
     private String role;                // VARCHAR(255) - for security
     private Integer generation;         // INT
