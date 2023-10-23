@@ -45,6 +45,10 @@ export default StyleSheet.create({
     fontFamily: 'NotoSansKR-Bold',
     fontSize: 19,
   },
+  content: {
+    fontFamily: 'NotoSansKR',
+    fontSize: 14,
+  },
   btn: {
     fontFamily: 'NotoSansKR-Bold',
     fontSize: 16,

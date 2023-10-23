@@ -9,9 +9,11 @@
     "test": "jest"
   },
   "dependencies": {
+    "@expo/vector-icons": "^13.0.0",
     "@react-navigation/bottom-tabs": "^6.5.9",
     "@react-navigation/native": "^6.1.8",
     "axios": "^1.5.1",
+    "expo-font": "^11.6.0",
     "react": "18.2.0",
     "react-native": "0.72.6",
     "recoil": "^0.7.7",
