@@ -37,4 +37,16 @@ export default StyleSheet.create({
   orange: {
     color: '#FE802A',
   },
+  sub_title: {
+    fontFamily: 'NotoSansKR-Light',
+    fontSize: 15,
+  },
+  section_title: {
+    fontFamily: 'NotoSansKR-Bold',
+    fontSize: 19,
+  },
+  btn: {
+    fontFamily: 'NotoSansKR-Bold',
+    fontSize: 16,
+  },
 });
