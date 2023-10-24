@@ -2,12 +2,12 @@ import {View, StyleSheet} from 'react-native';
 // import GlobalStyles from '../../../styles/GlobalStyles';
 import MenuTop from '../../atoms/menuTop';
 
-export const MakeRoom = (): JSX.Element => {
+export const MyPage = (): JSX.Element => {
   return (
     <View style={styles.Container}>
       <MenuTop
-        menu="방 만들기"
-        text="마니또를 함께 할 그룹을 만들고   친구들을 초대하세요!"
+        menu="마이페이지"
+        text="오늘의 기분과 옷 색깔을 설정하고, 추가정보를 입력해보세요!"
       />
     </View>
   );
@@ -19,4 +19,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default MakeRoom;
+export default MyPage;

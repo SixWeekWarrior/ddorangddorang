@@ -2,7 +2,7 @@ import {Text, View, Image, StyleSheet} from 'react-native';
 import GlobalStyles from '../../../styles/GlobalStyles';
 import BlockImg from '../../../assets/blockImg.png';
 
-export const BeforeStart = (): JSX.Element => {
+export const EnterWait = (): JSX.Element => {
   return (
     <View style={styles.container}>
       <Image source={BlockImg} style={styles.BlockImg} />
@@ -15,13 +15,13 @@ export const BeforeStart = (): JSX.Element => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    justifyContent: 'center',
   },
   BlockImg: {
-    width: 260,
-    height: 213,
-    marginTop: 153,
+    height: 130,
     marginBottom: 30,
     alignSelf: 'center',
+    objectFit: 'scale-down',
   },
   Content: {
     color: GlobalStyles.black.color,
@@ -31,4 +31,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default BeforeStart;
+export default EnterWait;

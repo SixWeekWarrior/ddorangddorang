@@ -16,19 +16,18 @@ export default function BtnSm({onPress, text}: BtnSmProps) {
 }
 const styles = StyleSheet.create({
   btnContainer: {
-    width: '23%',
+    width: '25%',
     height: 40,
     justifyContent: 'center',
     alignSelf: 'center',
     backgroundColor: GlobalStyles.green.color,
     borderRadius: 10,
-    marginTop: 25,
   },
   btn: {
     fontFamily: GlobalStyles.btn.fontFamily,
     fontSize: GlobalStyles.btn.fontSize,
     color: GlobalStyles.white_1.color,
-    paddingLeft: 20,
     lineHeight: 25,
+    textAlign: 'center',
   },
 });

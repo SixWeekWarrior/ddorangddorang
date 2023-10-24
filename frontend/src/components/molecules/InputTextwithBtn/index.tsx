@@ -14,9 +14,9 @@ export default function InputTextwithBtn() {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    alignItems: 'baseline',
     justifyContent: 'center',
-    width: 300,
-    alignSelf: 'center',
+    width: 260,
+    height: 40,
+    marginTop: 13,
   },
 });
