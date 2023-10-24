@@ -57,13 +57,6 @@ public class Room {
     @NotNull
     private Integer maxMember = Integer.MAX_VALUE;  //INT
 
-    @Column
-    @NotNull
-    private String name;    //VARCHAR(255)
-
-    @Column
-    private String description; //TEXT
-
     /**
      * DB에서 DEFAULT_VALUE = CURRENT_TIMESTAMP로 설정
      */
@@ -82,4 +75,6 @@ public class Room {
 
     @Column(name = "delete_at")
     private LocalDateTime deletedAt;    //DATETIME
+
+
 }
