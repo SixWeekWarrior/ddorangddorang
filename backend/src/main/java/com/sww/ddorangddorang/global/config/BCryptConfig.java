@@ -7,7 +7,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @Configuration
 public class BCryptConfig {
     /*
-    Spring Security에 있는 BCryptPasswordEncoder를 이용해서 비밀번홀흘 암호화
+    Spring Security에 있는 BCryptPasswordEncoder를 이용해서 비밀번호를 암호화
      */
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
