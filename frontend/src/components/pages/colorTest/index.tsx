@@ -1,10 +1,14 @@
 import React from 'react';
-import {StyleSheet, View} from 'react-native';
+import {Button, StyleSheet, View} from 'react-native';
 import GlobalStyles from '../../../styles/GlobalStyles';
 
-export const ColorTest = (): JSX.Element => {
+export const ColorTest = ({navigation}: {navigation: any}): JSX.Element => {
   return (
     <View style={style.container}>
+      <Button
+        title="go to mypage"
+        onPress={() => navigation.navigate('MyPage')}
+      />
       <View style={style.containerTop}>
         <View style={style.topLeft}>
           <View style={style.topTop}></View>
