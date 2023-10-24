@@ -23,7 +23,7 @@ export const MakeComplete = (): JSX.Element => {
       <View style={styles.NoticeCode}>
         <Text style={styles.TextSm}>아래의 초대코드를 복사해서</Text>
         <Text style={styles.TextSm}>친구들에게 공유해보세요!</Text>
-        <CodeForm text="초대코드"/>
+        <CodeForm code="초대코드"/>
         <Text style={styles.TextXs}>초대코드는 홈> 방입장 탭에서도 확인가능합니다.</Text>
       </View></View>
     </View>

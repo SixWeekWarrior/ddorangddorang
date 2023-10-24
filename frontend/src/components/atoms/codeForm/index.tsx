@@ -1,16 +1,27 @@
-import {StyleSheet, Text, Image, View} from 'react-native';
+import {StyleSheet, Text, Image, View, Pressable, Alert} from 'react-native';
+import Clipboard from '@react-native-clipboard/clipboard';
 import GlobalStyles from '../../../styles/GlobalStyles';
 import Copy from '../../../assets/copy.png';
 
 interface CodeFormProps {
-  text: string;
+  code: string;
 }
 
-export default function CodeForm({text}: CodeFormProps) {
+export default function CodeForm({code}: CodeFormProps) {
+  const onCopyCode = async (code: string) => {
+    try {
+      await Clipboard.setString(code);
+      Alert.alert('복사 완료', '코드가 복사되었습니다.');
+    } catch (e) {
+      Alert.alert('복사 실패', '코드 복사에 실패하였습니다.');
+    }
+  };
   return (
     <View style={styles.Container}>
-      <Text style={styles.InputText}>{text}</Text>
-      <Image source={Copy} style={styles.Img}></Image>
+      <Text style={styles.InputText}>{code}</Text>
+      <Pressable onPress={() => onCopyCode(code)}>
+        <Image source={Copy} style={styles.Img}></Image>
+      </Pressable>
     </View>
   );
 }
@@ -37,3 +48,6 @@ const styles = StyleSheet.create({
     marginRight: '4%',
   },
 });
+function alert(arg0: string) {
+  throw new Error('Function not implemented.');
+}
