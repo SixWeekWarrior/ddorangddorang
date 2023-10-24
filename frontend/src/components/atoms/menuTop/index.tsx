@@ -22,7 +22,6 @@ export default function MenuTop({menu, text}: MenuTopProps) {
 const styles = StyleSheet.create({
   Container: {
     flexDirection: 'row',
-    height: '35%',
     backgroundColor: GlobalStyles.blue.color,
   },
   innerContainer: {
@@ -30,17 +29,18 @@ const styles = StyleSheet.create({
   },
   Menu: {
     marginLeft: 20,
-    marginTop: 160,
+    marginTop: 150,
+    marginBottom: -20,
     fontFamily: GlobalStyles.section_title.fontFamily,
     fontSize: GlobalStyles.section_title.fontSize,
     color: GlobalStyles.white_1.color,
   },
   Text: {
     marginLeft: 20,
-    marginTop: -20,
     marginRight: -10,
+    marginBottom: 20,
     fontFamily: GlobalStyles.sub_title.fontFamily,
-    fontSize: 13,
+    fontSize: 11,
     color: GlobalStyles.white_1.color,
   },
   BlockImg: {

@@ -43,7 +43,7 @@ export default StyleSheet.create({
   },
   section_title: {
     fontFamily: 'NotoSansKR-Bold',
-    fontSize: 19,
+    fontSize: 18,
   },
   content: {
     fontFamily: 'NotoSansKR',

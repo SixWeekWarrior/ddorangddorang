@@ -7,7 +7,7 @@ export const MakeRoom = (): JSX.Element => {
     <View style={styles.Container}>
       <MenuTop
         menu="방 만들기"
-        text="마니또를 함께 할 그룹을 만들고   친구들을 초대하세요!"
+        text={`마니또를 함께 할 그룹을 만들고\n친구들을 초대하세요!`}
       />
     </View>
   );
