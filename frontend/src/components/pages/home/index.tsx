@@ -4,7 +4,7 @@ import GlobalStyles from '../../../styles/GlobalStyles';
 import yellowEyeImg from '../../../assets/yellowEyeImg.png';
 import greenEyeImg from '../../../assets/greenEyeImg.png';
 
-export const Home = (): JSX.Element => {
+export const Home = ({navigation}: {navigation: any}): JSX.Element => {
   return (
     <View style={style.container}>
       {/* <Button
@@ -18,7 +18,7 @@ export const Home = (): JSX.Element => {
         <View style={style.topLeft}>
           <Pressable
             onPress={() => {
-              navigation.navigate('MyPage');
+              navigation.navigate('정보');
             }}
             style={style.topTop}>
             <Text
