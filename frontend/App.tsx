@@ -6,7 +6,6 @@ import NavBar from './src/components/atoms/navbar';
 
 function App(): JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
-
   return (
     <RecoilRoot>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
