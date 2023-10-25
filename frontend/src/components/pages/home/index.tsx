@@ -2,16 +2,16 @@ import React from 'react';
 import {Button, StyleSheet, View} from 'react-native';
 import GlobalStyles from '../../../styles/GlobalStyles';
 
-export const ColorTest = ({navigation}: {navigation: any}): JSX.Element => {
+export const Home = ({navigation}: {navigation: any}): JSX.Element => {
   return (
     <View style={style.container}>
-      <Button
-        title="Ggg"
+      {/* <Button
+        title="go to mypage"
         onPress={() => {
           console.log('go to mypage');
           navigation.navigate('MyPage');
         }}
-      />
+      /> */}
 
       <View style={style.containerTop}>
         <View style={style.topLeft}>
@@ -134,4 +134,4 @@ const style = StyleSheet.create({
   },
 });
 
-export default ColorTest;
+export default Home;

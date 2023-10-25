@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {Onboarding} from '../../pages/onboarding';
-import {ColorTest} from '../../pages/colorTest';
+import {ColorTest} from '../../pages/home';
 
 const Tab = createBottomTabNavigator();
 
