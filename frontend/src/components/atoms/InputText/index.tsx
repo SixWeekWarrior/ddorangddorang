@@ -7,7 +7,7 @@ export default function InputText() {
 
   return (
     <TextInput
-      style={styles.InputText}
+      style={styles.inputText}
       onChangeText={onChangeText}
       value={text}
       placeholder="초대코드를 입력하세요."
@@ -16,7 +16,7 @@ export default function InputText() {
 }
 
 const styles = StyleSheet.create({
-  InputText: {
+  inputText: {
     width: '70%',
     height: 40,
     marginRight: 12,

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {View, StyleSheet} from 'react-native';
-import InputText from '../../atoms/InputText';
+import InputText from '../../atoms/inputText';
 import BtnSm from '../../atoms/btnSm';
 
 export default function InputTextwithBtn() {

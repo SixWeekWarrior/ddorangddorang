@@ -1,11 +1,11 @@
 import {StyleSheet, Text, Image, View, Pressable, Alert} from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
 import GlobalStyles from '../../../styles/GlobalStyles';
-import Copy from '../../../assets/copy.png';
+import copyImg from '../../../assets/copy.png';
 
-interface CodeFormProps {
+type CodeFormProps = {
   code: string;
-}
+};
 
 export default function CodeForm({code}: CodeFormProps) {
   const onCopyCode = async (code: string) => {
@@ -17,17 +17,17 @@ export default function CodeForm({code}: CodeFormProps) {
     }
   };
   return (
-    <View style={styles.Container}>
-      <Text style={styles.InputText}>{code}</Text>
+    <View style={styles.container}>
+      <Text style={styles.inputText}>{code}</Text>
       <Pressable onPress={() => onCopyCode(code)}>
-        <Image source={Copy} style={styles.Img}></Image>
+        <Image source={copyImg} style={styles.copyImg}></Image>
       </Pressable>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  Container: {
+  container: {
     width: 290,
     height: 35,
     borderWidth: 1,
@@ -38,16 +38,13 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
-  InputText: {
+  inputText: {
     borderColor: GlobalStyles.grey_4.color,
     color: GlobalStyles.grey_3.color,
     marginLeft: '6%',
     bottom: 2,
   },
-  Img: {
+  copyImg: {
     marginRight: '4%',
   },
 });
-function alert(arg0: string) {
-  throw new Error('Function not implemented.');
-}

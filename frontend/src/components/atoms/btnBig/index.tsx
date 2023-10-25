@@ -16,12 +16,12 @@ export default function BtnBig({onPress, text}: BtnBigProps) {
 }
 const styles = StyleSheet.create({
   btnContainer: {
-    width: 330,
+    width: 380,
     height: 48,
     justifyContent: 'center',
     alignSelf: 'center',
     backgroundColor: GlobalStyles.green.color,
-    borderRadius: 25,
+    borderRadius: 20,
     position: 'absolute',
     bottom: '5%',
   },
