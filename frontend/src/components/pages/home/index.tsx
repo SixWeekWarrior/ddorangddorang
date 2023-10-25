@@ -1,24 +1,15 @@
 import React from 'react';
-import {Button, StyleSheet, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import GlobalStyles from '../../../styles/GlobalStyles';
 
-export const Home = ({navigation}: {navigation: any}): JSX.Element => {
+export const Home = (): JSX.Element => {
   return (
     <View style={style.container}>
-      {/* <Button
-        title="go to mypage"
-        onPress={() => {
-          console.log('go to mypage');
-          navigation.navigate('MyPage');
-        }}
-      /> */}
-
       <View style={style.containerTop}>
         <View style={style.topLeft}>
           <View style={style.topTop}></View>
           <View style={style.topBottom}></View>
         </View>
-
         <View style={style.topRight} />
       </View>
 
@@ -38,6 +29,7 @@ export const Home = ({navigation}: {navigation: any}): JSX.Element => {
 const style = StyleSheet.create({
   container: {
     flex: 1,
+    color: GlobalStyles.white_1.color,
   },
 
   containerTop: {

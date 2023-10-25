@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {StyleSheet, Text, View, Image} from 'react-native';
 import GlobalStyles from '../../../styles/GlobalStyles';
-import {BlockImg} from '../../../assets';
+import blockImg from '../../../assets/blockImg.png';
 
 interface MenuTopProps {
   menu: string;
@@ -10,24 +10,24 @@ interface MenuTopProps {
 
 export default function MenuTop({menu, text}: MenuTopProps) {
   return (
-    <View style={styles.Container}>
+    <View style={styles.container}>
       <View style={styles.innerContainer}>
-        <Text style={styles.Menu}>{menu}</Text>
-        <Text style={styles.Text}>{text}</Text>
+        <Text style={styles.menu}>{menu}</Text>
+        <Text style={styles.text}>{text}</Text>
       </View>
-      <Image source={BlockImg} style={styles.BlockImg}></Image>
+      <Image source={blockImg} style={styles.blockImg}></Image>
     </View>
   );
 }
 const styles = StyleSheet.create({
-  Container: {
+  container: {
     flexDirection: 'row',
     backgroundColor: GlobalStyles.blue.color,
   },
   innerContainer: {
     flex: 1,
   },
-  Menu: {
+  menu: {
     marginLeft: 20,
     marginTop: 150,
     marginBottom: -20,
@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
     fontSize: GlobalStyles.section_title.fontSize,
     color: GlobalStyles.white_1.color,
   },
-  Text: {
+  text: {
     marginLeft: 20,
     marginRight: -10,
     marginBottom: 20,
@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
     fontSize: 11,
     color: GlobalStyles.white_1.color,
   },
-  BlockImg: {
+  blockImg: {
     flex: 1,
     height: 130,
     objectFit: 'scale-down',

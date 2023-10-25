@@ -1,15 +1,15 @@
 import {Text, View, Image, StyleSheet} from 'react-native';
 import GlobalStyles from '../../../styles/GlobalStyles';
-import BlockImg from '../../../assets/blockImg.png';
+import blockImg from '../../../assets/blockImg.png';
 import BtnMid from '../../atoms/btnMid';
-import InputTextwithBtn from '../../molecules/InputTextwithBtn';
+import InputTextwithBtn from '../../molecules/inputTextwithBtn';
 
 export const Enter = (): JSX.Element => {
   return (
     <View style={styles.container}>
-      <Image source={BlockImg} style={styles.BlockImg} />
-      <Text style={styles.Content}>진행 중인 마니또가 없어요.</Text>
-      <Text style={styles.Content}>
+      <Image source={blockImg} style={styles.blockImg} />
+      <Text style={styles.content}>진행 중인 마니또가 없어요.</Text>
+      <Text style={styles.content}>
         방 생성이나 초대 코드로 입장할 수 있어요.
       </Text>
       <View style={styles.innerContainer}>
@@ -24,14 +24,15 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
+    backgroundColor: GlobalStyles.white_2.color,
   },
-  BlockImg: {
+  blockImg: {
     height: 130,
     marginBottom: 30,
     alignSelf: 'center',
     objectFit: 'scale-down',
   },
-  Content: {
+  content: {
     color: GlobalStyles.black.color,
     fontFamily: GlobalStyles.content.fontFamily,
     fontSize: GlobalStyles.content.fontSize,

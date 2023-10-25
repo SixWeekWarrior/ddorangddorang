@@ -39,7 +39,7 @@ export default StyleSheet.create({
   },
   sub_title: {
     fontFamily: 'NotoSansKR-Light',
-    fontSize: 15,
+    fontSize: 12,
   },
   section_title: {
     fontFamily: 'NotoSansKR-Bold',
