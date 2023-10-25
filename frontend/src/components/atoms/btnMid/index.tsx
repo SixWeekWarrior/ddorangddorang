@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {StyleSheet, Pressable, Text, Image, View} from 'react-native';
+import {StyleSheet, Pressable, Text, Image} from 'react-native';
 import GlobalStyles from '../../../styles/GlobalStyles';
 import ArrowRight from '../../../assets/ArrowRight.png';
 
@@ -11,8 +11,8 @@ interface BtnMidProps {
 export default function BtnMid({onPress, text}: BtnMidProps) {
   return (
     <Pressable onPress={onPress} style={styles.btnContainer}>
-      <Text style={styles.BtnText}>{text}</Text>
-      <Image source={ArrowRight} style={styles.Arrow} />
+      <Text style={styles.btnText}>{text}</Text>
+      <Image source={ArrowRight} style={styles.arrow} />
     </Pressable>
   );
 }
@@ -29,15 +29,15 @@ const styles = StyleSheet.create({
     paddingRight: '4%',
     justifyContent: 'space-between',
   },
-  BtnText: {
+  btnText: {
     fontFamily: GlobalStyles.btn.fontFamily,
-    fontSize: GlobalStyles.btn.fontSize,
+    fontSize: 14,
     color: GlobalStyles.white_1.color,
     textAlign: 'left',
     verticalAlign: 'middle',
     lineHeight: 43,
   },
-  Arrow: {
+  arrow: {
     width: 15,
     height: 13,
     objectFit: 'scale-down',

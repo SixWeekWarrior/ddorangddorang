@@ -4,7 +4,7 @@ import GlobalStyles from '../../../styles/GlobalStyles';
 import yellowEyeImg from '../../../assets/yellowEyeImg.png';
 import greenEyeImg from '../../../assets/greenEyeImg.png';
 
-export const Home = ({navigation}: {navigation: any}): JSX.Element => {
+export const Home = (): JSX.Element => {
   return (
     <View style={style.container}>
       {/* <Button
@@ -86,6 +86,7 @@ const style = StyleSheet.create({
   container: {
     backgroundColor: GlobalStyles.white_2.color,
     flex: 1,
+    color: GlobalStyles.white_1.color,
   },
 
   containerTop: {
