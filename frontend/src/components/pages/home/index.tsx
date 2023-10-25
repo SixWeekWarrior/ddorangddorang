@@ -1,26 +1,82 @@
 import React from 'react';
-import {StyleSheet, View} from 'react-native';
+import {Image, Pressable, StyleSheet, Text, View} from 'react-native';
 import GlobalStyles from '../../../styles/GlobalStyles';
+import yellowEyeImg from '../../../assets/yellowEyeImg.png';
+import greenEyeImg from '../../../assets/greenEyeImg.png';
 
 export const Home = (): JSX.Element => {
   return (
     <View style={style.container}>
+      {/* <Button
+        title="go to mypage"
+        onPress={() => {
+          console.log('go to mypage');
+          navigation.navigate('MyPage');
+        }}
+      /> */}
       <View style={style.containerTop}>
         <View style={style.topLeft}>
-          <View style={style.topTop}></View>
-          <View style={style.topBottom}></View>
+          <Pressable
+            onPress={() => {
+              navigation.navigate('MyPage');
+            }}
+            style={style.topTop}>
+            <Text
+              style={{
+                ...style.titleFont,
+                color: GlobalStyles.yellow.color,
+                marginLeft: 15,
+              }}>{`오늘 나의 \n마니또는?`}</Text>
+            <Text style={style.miniFont}>입은 옷 색깔</Text>
+            <Text style={style.bigFont}>빨간색</Text>
+          </Pressable>
+          <Image source={yellowEyeImg} style={style.topBottom}></Image>
         </View>
-        <View style={style.topRight} />
+        <View style={style.topMiddle}></View>
+        <View style={style.topRight}>
+          <View style={style.innerTop}>
+            <Text
+              style={{
+                ...style.titleFont,
+                color: GlobalStyles.white_1.color,
+                textAlign: 'center',
+                marginTop: 16,
+              }}>
+              종료까지
+            </Text>
+            <Text style={style.tiniFont}>종료일까지 많은 미션을 해봐요!</Text>
+          </View>
+          <View style={style.innerBottom}>
+            <Text style={{...style.numberFont}}>D-</Text>
+            <Text style={{...style.numberFont, color: GlobalStyles.blue.color}}>
+              7
+            </Text>
+          </View>
+        </View>
       </View>
 
-      <View style={style.containerMid}></View>
+      <View style={style.containerMid}>
+        <Text
+          style={{
+            ...style.titleFont,
+            color: GlobalStyles.green.color,
+            marginLeft: 15,
+            marginTop: 20,
+          }}>
+          오늘의 미션
+        </Text>
+        <Text style={style.midFont}>좋아하는 음식 알아내기</Text>
+      </View>
 
       <View style={style.containerBottom}>
         <View style={style.bottomLeft}>
-          <View style={style.bottomTop}></View>
+          <View style={style.bottomTop}>
+            <Text>bottomTop</Text>
+          </View>
           <View style={style.bottomBottom}></View>
         </View>
-        <View style={style.buttomRight} />
+        {/* <View style={style.buttomRight} /> */}
+        <Image source={greenEyeImg} style={style.bottomRight}></Image>
       </View>
     </View>
   );
@@ -28,6 +84,7 @@ export const Home = (): JSX.Element => {
 
 const style = StyleSheet.create({
   container: {
+    backgroundColor: GlobalStyles.white_2.color,
     flex: 1,
     color: GlobalStyles.white_1.color,
   },
@@ -56,50 +113,64 @@ const style = StyleSheet.create({
   },
 
   topLeft: {
-    flex: 1,
+    flex: 1.1,
   },
-
+  topMiddle: {
+    flex: 0.3,
+  },
   topRight: {
-    backgroundColor: GlobalStyles.blue.color,
     flex: 1,
-    borderRadius: 20,
     marginTop: 60,
     marginLeft: 20,
     marginRight: 24,
     marginBottom: 50,
   },
-
-  buttomRight: {
-    backgroundColor: GlobalStyles.green.color,
+  innerTop: {
+    flex: 1,
+    backgroundColor: GlobalStyles.blue.color,
+    borderTopStartRadius: 20,
+    borderTopEndRadius: 20,
+  },
+  innerBottom: {
+    flex: 1.2,
+    backgroundColor: GlobalStyles.white_1.color,
+    borderBottomEndRadius: 20,
+    borderBottomStartRadius: 20,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  bottomLeft: {
+    backgroundColor: GlobalStyles.white_2.color,
+    flex: 1.1,
+  },
+  bottomMid: {
+    flex: 0.3,
+  },
+  bottomRight: {
     flex: 1,
     borderRadius: 20,
+    height: 250,
+    objectFit: 'scale-down',
     marginTop: 24,
     marginLeft: 20,
     marginRight: 24,
     marginBottom: 24,
   },
-
-  bottomLeft: {
-    backgroundColor: GlobalStyles.white_2.color,
-    flex: 1,
-  },
-
   topTop: {
     backgroundColor: GlobalStyles.pink.color,
-    flexDirection: 'row',
     borderRadius: 20,
-    flex: 3,
     marginTop: 24,
     marginLeft: 24,
-    marginRight: 24,
   },
 
   topBottom: {
-    backgroundColor: GlobalStyles.yellow.color,
-    flexDirection: 'row',
+    width: 134,
     flex: 1,
     borderRadius: 20,
-    margin: 24,
+    marginTop: 24,
+    marginBottom: 24,
+    marginLeft: 20,
   },
 
   bottomTop: {
@@ -123,6 +194,44 @@ const style = StyleSheet.create({
     marginLeft: 24,
     marginRight: 24,
     marginBottom: 60,
+  },
+  titleFont: {
+    fontFamily: GlobalStyles.home_title.fontFamily,
+    fontSize: GlobalStyles.home_title.fontSize,
+    letterSpacing: -1,
+  },
+  miniFont: {
+    fontFamily: 'NotoSansKR-Black',
+    fontSize: 10,
+    color: GlobalStyles.grey_4.color,
+    marginLeft: 15,
+    marginTop: 10,
+  },
+  tiniFont: {
+    fontFamily: 'NotoSansKR-Light',
+    fontSize: 9,
+    color: GlobalStyles.white_2.color,
+    marginTop: -17,
+    textAlign: 'center',
+  },
+  midFont: {
+    fontFamily: 'NotoSansKR-Medium',
+    letterSpacing: -1,
+    marginLeft: 15,
+    marginTop: -20,
+  },
+  bigFont: {
+    fontFamily: 'NotoSansKR-Bold',
+    fontSize: 23,
+    color: GlobalStyles.white_2.color,
+    marginTop: -25,
+    marginLeft: 15,
+  },
+  numberFont: {
+    fontFamily: 'NotoSansKR-Black',
+    color: GlobalStyles.black.color,
+    fontSize: 30,
+    letterSpacing: 5,
   },
 });
 
