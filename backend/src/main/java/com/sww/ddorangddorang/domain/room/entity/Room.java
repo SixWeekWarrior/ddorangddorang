@@ -13,8 +13,10 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
 
 @DynamicInsert
@@ -33,13 +35,11 @@ public class Room {
     @NotNull
     private User admin; //BIGINT
 
-    @Column(name = "is_open")
     @NotNull
-    private Boolean isOpen = true;  //TINYINT(1)
+    private Boolean isOpen;  //TINYINT(1)
 
-    @Column(name = "access_code")
     @NotNull
-    private String accessCode;  //VARCHAR(255)
+    private Integer accessCode;  //INT
 
     @Column(name = "min_member")
     @NotNull
@@ -51,7 +51,7 @@ public class Room {
      */
     @Column(name = "head_count")
     @NotNull
-    private Integer headCount = 1;  //INT
+    private Integer headCount;  //INT
 
     @Column(name = "max_member")
     @NotNull
@@ -62,19 +62,50 @@ public class Room {
      */
     @Column(name = "create_at")
     @NotNull
-    private LocalDateTime createdAt = LocalDateTime.now();  //DATETIME
+    @CreationTimestamp
+    private LocalDateTime createdAt;    //DATETIME
 
     @Column(name = "start_at")
     private LocalDateTime startedAt;    //DATETIME
 
-    @Column(name = "end_at")
-    private LocalDateTime endAt;    //DATETIME
+    @Column
+    @NotNull
+    private Integer duration;    //INT
 
     @Column(name = "profile_image")
     private String profileImage;    //TEXT
 
-    @Column(name = "delete_at")
+    @Column(name = "deleted_at")
     private LocalDateTime deletedAt;    //DATETIME
 
+    public void startGame() {
+        this.startedAt = LocalDateTime.now();
+    }
 
+    public void joinMember() {
+        ++this.headCount;
+    }
+
+    public void removeMember() {
+        --this.headCount;
+    }
+
+    public Boolean isEnded() {
+        return LocalDateTime.now().isAfter(this.startedAt.plusDays(this.duration));
+    }
+
+    @Builder
+    public Room(User admin, Integer accessCode, Integer minMember, Integer maxMember,
+        Integer duration,
+        String profileImage) {
+        this.admin = admin;
+        this.isOpen = true;
+        this.accessCode = accessCode;
+        this.minMember = minMember;
+        this.headCount = 1;
+        this.maxMember = maxMember;
+        this.createdAt = LocalDateTime.now();
+        this.duration = duration;
+        this.profileImage = profileImage;
+    }
 }
