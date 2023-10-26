@@ -50,6 +50,7 @@ public class Participant {
 
     private Boolean isWithdrawal;
 
+    @Column(name = "`change`")
     private Short change;
 
     private LocalDateTime deletedAt;

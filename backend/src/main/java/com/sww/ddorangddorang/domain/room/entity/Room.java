@@ -41,7 +41,10 @@ public class Room {
     @NotNull
     private Integer accessCode;  //INT
 
-    @Column(name = "min_member")
+    @NotNull
+    private Integer campus; //INT
+
+//    @Column(name = "min_member")
     @NotNull
     private Integer minMember = 1;  //INT
 
@@ -49,11 +52,11 @@ public class Room {
      * 현재 참여 인원
      * 방 생성 시 참여 인원은 방 생성자 혼자이므로 기본값 = 1
      */
-    @Column(name = "head_count")
+//    @Column(name = "head_count")
     @NotNull
     private Integer headCount;  //INT
 
-    @Column(name = "max_member")
+//    @Column(name = "max_member")
     @NotNull
     private Integer maxMember = Integer.MAX_VALUE;  //INT
 
@@ -72,10 +75,10 @@ public class Room {
     @NotNull
     private Integer duration;    //INT
 
-    @Column(name = "profile_image")
+//    @Column(name = "profile_image")
     private String profileImage;    //TEXT
 
-    @Column(name = "deleted_at")
+//    @Column(name = "deleted_at")
     private LocalDateTime deletedAt;    //DATETIME
 
     public void startGame() {
@@ -101,6 +104,7 @@ public class Room {
         this.admin = admin;
         this.isOpen = true;
         this.accessCode = accessCode;
+        this.campus = admin.getCampus();
         this.minMember = minMember;
         this.headCount = 1;
         this.maxMember = maxMember;
