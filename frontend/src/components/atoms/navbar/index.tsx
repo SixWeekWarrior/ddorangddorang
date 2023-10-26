@@ -27,8 +27,8 @@ export default function NavBar() {
     <Tab.Navigator>
       <Tab.Screen
         options={{headerShown: false}}
-        name="Onboarding"
-        component={Onboarding}
+        name="그룹"
+        component={MakeRoom}
       />
       <Tab.Screen
         options={{
