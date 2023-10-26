@@ -16,7 +16,7 @@ export default function BtnBig({onPress, text}: BtnBigProps) {
 }
 const styles = StyleSheet.create({
   btnContainer: {
-    width: 380,
+    width: '90%',
     height: 48,
     justifyContent: 'center',
     alignSelf: 'center',

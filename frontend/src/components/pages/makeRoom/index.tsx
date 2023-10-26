@@ -1,14 +1,16 @@
 import {View, StyleSheet} from 'react-native';
 import GlobalStyles from '../../../styles/GlobalStyles';
 import MenuTop from '../../atoms/menuTop';
+import RangeSlider from '../../atoms/rangeSlider';
 
 export const MakeRoom = (): JSX.Element => {
   return (
     <View style={styles.container}>
       <MenuTop
-        menu="방 만들기"
+        menu="그룹 만들기"
         text={`마니또를 함께 할 그룹을 만들고\n친구들을 초대하세요!`}
       />
+      <RangeSlider />
     </View>
   );
 };

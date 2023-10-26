@@ -47,6 +47,6 @@ const styles = StyleSheet.create({
     flex: 1,
     height: 130,
     objectFit: 'scale-down',
-    marginTop: 120,
+    marginTop: 105,
   },
 });
