@@ -1,19 +1,14 @@
 package com.sww.ddorangddorang.domain.user.entity;
 
-import com.sww.ddorangddorang.global.config.BCryptConfig;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
 import java.time.LocalDateTime;
-import java.util.Set;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -23,7 +18,7 @@ public class User {
     @GeneratedValue
     private Long id;                    // BIGINT
 
-    private String name;                // VARCHAR(255) "유저 이름"
+    private String userName;                // VARCHAR(255) "유저 이름"
     private String email;               // VARCHAR(255) "유저 이메일"
     private String providerType;        // VARCHAR(255) "소셜 로그인 타입 -GOOGLE, KAKAO" - for OAuth2
     private String providerId;          // VARCHAR(255) "소셜 로그인 식별자 값"            - for OAuth2
@@ -37,7 +32,7 @@ public class User {
     private Integer classes;            // INT
     private Integer floor;              // INT
     private String profileImage;        // TEXT "프로필 이미지"
-    private String like;                // VARCHAR(255)
+    private String likes;                // VARCHAR(255)
     private String hate;                // VARCHAR(255)
     private String mbti;                // VARCHAR(255)
     private String worry;               // TEXT
@@ -47,24 +42,26 @@ public class User {
     private LocalDateTime deletedAt;    // TIMESTAMP
 
     @Builder
-     public User(String name, String email, String paassword, String role) {
-        this.name = name;
+    public User(String userName, String email, String password, String providerType, String providerId, String role) {
+        this.userName = userName;
         this.email = email;
         this.password = password;
+        this.providerType = providerType;
+        this.providerId = providerId;
         this.role = role;
-     }
-     
+    }
+
     // 유저 권한 설정 메소드
     public void authorizeUser() {
         this.role = "ROLE_USER";
     }
 
     // 비밀번호 암호화 메소드
-    public void passwordEncode(BCryptPasswordEncoder bCrypt) {
-        this.password = bCrypt.encode(this.password);
+    public void passwordEncode(PasswordEncoder passwordEncoder) {
+        this.password = passwordEncoder.encode(this.password);
     }
 
-    public void updateRefreshToken(String updateRefreshToken) {
-        this.refreshToken = updateRefreshToken;
+    public void updateRefreshToken(String updatedRefreshToken) {
+        this.refreshToken = updatedRefreshToken;
     }
 }
