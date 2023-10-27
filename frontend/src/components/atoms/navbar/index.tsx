@@ -7,7 +7,7 @@ import MakeRoom from '../../pages/makeRoom';
 import MakeComplete from '../../pages/makeComplete';
 import EnterWait from '../../pages/enterWait';
 import MyPage from '../../pages/myPage';
-import {Image} from 'react-native';
+import {Image, View} from 'react-native';
 import myPageIcon from '../../../assets/icons/default/mypage.png';
 import myPageSelectedIcon from '../../../assets/icons/selected/mypage.png';
 import chatIcon from '../../../assets/icons/default/chat.png';
@@ -23,13 +23,9 @@ const Tab = createBottomTabNavigator();
 
 export default function NavBar() {
   return (
-    <Tab.Navigator>
-      {/* <Tab.Screen
-        options={{headerShown: false}}
-        name="그룹"
-        component={MakeRoom}
-      /> */}
-      <Tab.Screen
+    <View style={{position: 'absolute', flex: 1}}>
+      <Tab.Navigator>
+        {/* <Tab.Screen
         options={{
           headerShown: false,
           tabBarIcon: ({focused}) => (
@@ -41,47 +37,47 @@ export default function NavBar() {
         }}
         name="홈"
         component={Home}
-      />
-      <Tab.Screen
-        options={{
-          headerShown: false,
-          tabBarIcon: ({focused}) => (
-            <Image
-              source={focused ? chatSelectedIcon : chatIcon}
-              style={{width: 24, height: 24}}
-            />
-          ),
-        }}
-        name="채팅"
-        component={Chatting}
-      />
-      <Tab.Screen
-        options={{
-          headerShown: false,
-          tabBarIcon: ({focused}) => (
-            <Image
-              source={focused ? missonSelectedIcon : misssonIcon}
-              style={{width: 24, height: 24}}
-            />
-          ),
-        }}
-        name="미션"
-        component={Misson}
-      />
-      <Tab.Screen
-        options={{
-          headerShown: false,
-          tabBarIcon: ({focused}) => (
-            <Image
-              source={focused ? myPageSelectedIcon : myPageIcon}
-              style={{width: 24, height: 24}}
-            />
-          ),
-        }}
-        name="정보"
-        component={MyPage}
-      />
-      {/* <Tab.Screen
+      /> */}
+        <Tab.Screen
+          options={{
+            headerShown: false,
+            tabBarIcon: ({focused}) => (
+              <Image
+                source={focused ? chatSelectedIcon : chatIcon}
+                style={{width: 24, height: 24}}
+              />
+            ),
+          }}
+          name="채팅"
+          component={Chatting}
+        />
+        <Tab.Screen
+          options={{
+            headerShown: false,
+            tabBarIcon: ({focused}) => (
+              <Image
+                source={focused ? missonSelectedIcon : misssonIcon}
+                style={{width: 24, height: 24}}
+              />
+            ),
+          }}
+          name="미션"
+          component={Misson}
+        />
+        <Tab.Screen
+          options={{
+            headerShown: false,
+            tabBarIcon: ({focused}) => (
+              <Image
+                source={focused ? myPageSelectedIcon : myPageIcon}
+                style={{width: 24, height: 24}}
+              />
+            ),
+          }}
+          name="정보"
+          component={MyPage}
+        />
+        {/* <Tab.Screen
         options={{headerShown: false}}
         name="Enter"
         component={Enter}
@@ -106,6 +102,7 @@ export default function NavBar() {
         name="EnterWait"
         component={EnterWait}
       /> */}
-    </Tab.Navigator>
+      </Tab.Navigator>
+    </View>
   );
 }

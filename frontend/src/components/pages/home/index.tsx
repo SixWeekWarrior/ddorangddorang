@@ -3,7 +3,7 @@ import GlobalStyles from '../../../styles/GlobalStyles';
 import yellowEyeImg from '../../../assets/yellowEyeImg.png';
 import greenEyeImg from '../../../assets/greenEyeImg.png';
 import arrowRightImg from '../../../assets/arrowRightImg.png';
-// import NavBar from '../../atoms/navbar';
+import NavBar from '../../atoms/navbar';
 
 export const Home = ({navigation}: {navigation: any}): JSX.Element => {
   return (
@@ -123,7 +123,7 @@ export const Home = ({navigation}: {navigation: any}): JSX.Element => {
         <View style={style.bottomMiddle}></View>
         <Image source={greenEyeImg} style={style.bottomRight}></Image>
       </View>
-      {/* <NavBar /> */}
+      <NavBar />
     </View>
   );
 };
