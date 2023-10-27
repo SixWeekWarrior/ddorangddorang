@@ -113,7 +113,7 @@ export const WaitList = ({navigation, route}): JSX.Element => {
       <View style={styles.btnContainer}>
         <Text style={styles.selectedText}>선택 인원 : {selectedCount}명</Text>
       </View>
-      <BtnBig onPress={onApprove} text="승인" />
+      <BtnBig onPress={onApprove} text="승인하기" />
     </View>
   );
 };
