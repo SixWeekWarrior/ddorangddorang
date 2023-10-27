@@ -6,25 +6,38 @@ import MultiSlider from '@ptomasroos/react-native-multi-slider';
 import CustomLabel from './customLabel';
 import GlobalStyles from '../../../styles/GlobalStyles';
 
-export default function RangeSlider() {
-  const [sliderOneChanging, setSliderOneChanging] = useState(false);
-  const [multiSliderChanging, setMultiSliderChanging] = useState(false);
-  const [sliderOneValue, setSliderOneValue] = useState([15]);
-  const [nonCollidingMultiSliderValue, setNonCollidingMultiSliderValue] =
-    useState([30, 70]);
+type RangeSliderProps = {
+  multiSliderValueProp: number[];
+  sliderValueProp: number;
+  onMultiSliderChange: (values: number[]) => void;
+  onSliderChange: (value: number) => void;
+};
 
-  const sliderOneValuesChangeStart = () => setSliderOneChanging(true);
-  const sliderOneValuesChange = (values: number[]) => setSliderOneValue(values);
-  const sliderOneValuesChangeFinish = () => {
-    setSliderOneChanging(false);
+export default function RangeSlider({
+  multiSliderValueProp,
+  sliderValueProp,
+  onMultiSliderChange,
+  onSliderChange,
+}: RangeSliderProps) {
+  const [sliderChanging, setSliderChanging] = useState(false);
+  const [multiSliderChanging, setMultiSliderChanging] = useState(false);
+  const [sliderValue, setSliderValue] = useState([15]);
+  const [multiSliderValue, setMultiSliderValue] = useState([30, 70]);
+
+  const sliderValuesChangeStart = () => setSliderChanging(true);
+  const sliderValuesChange = (values: number[]) => {
+    setSliderValue(values[0]); // Update the sliderValue state
+    onSliderChange(values[0]); // Notify parent component about the change
   };
-  const nonCollidingMultiSliderValuesChangeStart = () =>
-    setMultiSliderChanging(true);
-  const nonCollidingMultiSliderValuesChange = (values: number[]) => {
-    setNonCollidingMultiSliderValue(values);
+  const sliderValuesChangeFinish = () => {
+    setSliderChanging(false);
   };
-  const nonCollidingMultiSliderValuesChangeFinish = () =>
-    setMultiSliderChanging(false);
+  const MultiSliderValuesChangeStart = () => setMultiSliderChanging(true);
+  const MultiSliderValuesChange = (values: number[]) => {
+    setMultiSliderValue(values); // Update the multiSliderValue state
+    onMultiSliderChange(values); // Notify parent component about the change
+  };
+  const MultiSliderValuesChangeFinish = () => setMultiSliderChanging(false);
 
   return (
     <View style={styles.container}>
@@ -41,7 +54,7 @@ export default function RangeSlider() {
               color: GlobalStyles.blue.color,
             },
           ]}>
-          {nonCollidingMultiSliderValue[0]}
+          {multiSliderValue[0]}
         </Text>
         <Text style={styles.content}>명</Text>
         <Text style={styles.content}> ~ </Text>
@@ -53,20 +66,17 @@ export default function RangeSlider() {
               color: GlobalStyles.blue.color,
             },
           ]}>
-          {nonCollidingMultiSliderValue[1]}
+          {multiSliderValue[1]}
         </Text>
         <Text style={styles.content}>명</Text>
       </View>
       <View style={styles.slider}>
         <MultiSlider
-          values={[
-            nonCollidingMultiSliderValue[0],
-            nonCollidingMultiSliderValue[1],
-          ]}
+          values={[multiSliderValue[0], multiSliderValue[1]]}
           sliderLength={250}
-          onValuesChangeStart={nonCollidingMultiSliderValuesChangeStart}
-          onValuesChange={nonCollidingMultiSliderValuesChange}
-          onValuesChangeFinish={nonCollidingMultiSliderValuesChangeFinish}
+          onValuesChangeStart={MultiSliderValuesChangeStart}
+          onValuesChange={MultiSliderValuesChange}
+          onValuesChangeFinish={MultiSliderValuesChangeFinish}
           min={6}
           max={100}
           step={1}
@@ -85,23 +95,23 @@ export default function RangeSlider() {
         <Text
           style={[
             styles.contentBig,
-            sliderOneChanging && {color: GlobalStyles.blue.color},
+            sliderChanging && {color: GlobalStyles.blue.color},
           ]}>
-          {sliderOneValue}
+          {sliderValue}
         </Text>
         <Text style={styles.content}>일</Text>
       </View>
       <View style={styles.slider}>
         <MultiSlider
-          values={sliderOneValue}
+          values={sliderValue}
           min={7}
           max={30}
           step={1}
           snapped
           sliderLength={250}
-          onValuesChangeStart={sliderOneValuesChangeStart}
-          onValuesChange={sliderOneValuesChange}
-          onValuesChangeFinish={sliderOneValuesChangeFinish}
+          onValuesChangeStart={sliderValuesChangeStart}
+          onValuesChange={sliderValuesChange}
+          onValuesChangeFinish={sliderValuesChangeFinish}
         />
       </View>
     </View>

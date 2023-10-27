@@ -4,7 +4,7 @@ import blockImg from '../../../assets/blockImg.png';
 import BtnMid from '../../atoms/btnMid';
 import InputTextwithBtn from '../../molecules/inputTextwithBtn';
 
-export const Enter = (): JSX.Element => {
+export const Enter = ({navigation}: {navigation: any}): JSX.Element => {
   return (
     <View style={styles.container}>
       <Image source={blockImg} style={styles.blockImg} />
@@ -13,8 +13,13 @@ export const Enter = (): JSX.Element => {
         방 생성이나 초대 코드로 입장할 수 있어요.
       </Text>
       <View style={styles.innerContainer}>
-        <BtnMid text="방 생성하기" onPress={() => console.log('make room')} />
-        <InputTextwithBtn />
+        <BtnMid
+          text="그룹 만들기"
+          onPress={() => {
+            navigation.navigate('MakeRoom');
+          }}
+        />
+        <InputTextwithBtn navigation={navigation} />
       </View>
     </View>
   );

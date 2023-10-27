@@ -1,13 +1,21 @@
-import * as React from 'react';
 import {View, StyleSheet} from 'react-native';
 import InputText from '../../atoms/inputText';
 import BtnSm from '../../atoms/btnSm';
 
-export default function InputTextwithBtn() {
+export default function InputTextwithBtn({
+  navigation,
+}: {
+  navigation: any;
+}): JSX.Element {
   return (
     <View style={styles.container}>
       <InputText />
-      <BtnSm text="입력" onPress={() => console.log('초대코드로 방 입장')} />
+      <BtnSm
+        text="입장"
+        onPress={() => {
+          navigation.navigate('EnterWait');
+        }}
+      />
     </View>
   );
 }

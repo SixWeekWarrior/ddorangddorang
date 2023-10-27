@@ -1,9 +1,9 @@
-import React from 'react';
 import {Image, Pressable, StyleSheet, Text, View} from 'react-native';
 import GlobalStyles from '../../../styles/GlobalStyles';
 import yellowEyeImg from '../../../assets/yellowEyeImg.png';
 import greenEyeImg from '../../../assets/greenEyeImg.png';
 import arrowRightImg from '../../../assets/arrowRightImg.png';
+import NavBar from '../../atoms/navbar';
 
 export const Home = ({navigation}: {navigation: any}): JSX.Element => {
   return (
@@ -20,6 +20,7 @@ export const Home = ({navigation}: {navigation: any}): JSX.Element => {
                 ...style.titleFont,
                 color: GlobalStyles.yellow.color,
                 marginLeft: 15,
+                marginTop: 20,
               }}>{`오늘 나의 \n마니또는?`}</Text>
             <Text style={style.miniFont}>입은 옷 색깔</Text>
             <Text style={style.bigFont}>빨간색</Text>
@@ -34,7 +35,7 @@ export const Home = ({navigation}: {navigation: any}): JSX.Element => {
                 ...style.titleFont,
                 color: GlobalStyles.white_1.color,
                 textAlign: 'center',
-                marginTop: 16,
+                marginTop: '25%',
               }}>
               종료까지
             </Text>
@@ -113,16 +114,16 @@ export const Home = ({navigation}: {navigation: any}): JSX.Element => {
               style={{
                 ...style.midBoldFont,
                 marginLeft: 15,
-                marginTop: -2,
               }}>
               내 그룹 보기
             </Text>
-            <Image source={arrowRightImg} style={{marginTop: 12}} />
+            <Image source={arrowRightImg} style={{marginTop: 21}} />
           </Pressable>
         </View>
         <View style={style.bottomMiddle}></View>
         <Image source={greenEyeImg} style={style.bottomRight}></Image>
       </View>
+      <NavBar />
     </View>
   );
 };
@@ -161,14 +162,17 @@ const style = StyleSheet.create({
     flex: 1.1,
   },
   topTop: {
+    flex: 3,
     backgroundColor: GlobalStyles.pink.color,
     borderRadius: 20,
-    marginTop: 24,
+    marginTop: 50,
     marginLeft: 24,
   },
 
   topBottom: {
     flex: 1,
+    resizeMode: 'contain',
+    // height: 20,
     borderRadius: 20,
     marginTop: 24,
     marginBottom: 24,
@@ -271,6 +275,8 @@ const style = StyleSheet.create({
   midBoldFont: {
     fontFamily: 'NotoSansKR-Bold',
     color: GlobalStyles.white_2.color,
+    verticalAlign: 'middle',
+    fontSize: 16,
   },
   bigFont: {
     fontFamily: 'NotoSansKR-Bold',

@@ -19,7 +19,12 @@ export const Onboarding = ({navigation}: {navigation: any}): JSX.Element => {
       <Text style={styles.content}>
         싸피에서의 잊지 못할 추억을 만들어봐요 :)
       </Text>
-      <BtnBig text="시작하기" onPress={() => navigation.navigate('홈')} />
+      <BtnBig
+        text="시작하기"
+        onPress={() => {
+          navigation.navigate('Enter');
+        }}
+      />
     </View>
   );
 };
