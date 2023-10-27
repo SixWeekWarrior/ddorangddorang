@@ -18,7 +18,7 @@ public class RoomApi {
     private final RoomService roomService;
 
     @PostMapping("/")
-    public Integer createRoom(@RequestHeader Integer userId, @RequestBody RoomInfoReq roomInfoReq) {
+    public Integer createRoom(@RequestHeader Long userId, @RequestBody RoomInfoReq roomInfoReq) {
         log.info("RoomApi_createRoom start");
         Integer accessCode = roomService.createRoom(userId, roomInfoReq);
         log.info("RoomApi_createRoom end: " + accessCode);

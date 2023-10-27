@@ -10,7 +10,9 @@ import com.sww.ddorangddorang.domain.user.repository.UserRepository;
 import com.sww.ddorangddorang.global.util.RedisUtil;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -26,7 +28,7 @@ public class RoomServiceImpl implements RoomService {
     private final ParticipantRepository participantRepository;
     private final RedisUtil redisUtil;
 
-    public Integer createRoom(Integer userId, RoomInfoReq roomInfoReq) {
+    public Integer createRoom(Long userId, RoomInfoReq roomInfoReq) {
         //사용자가 현재 참여중인 방이 있는지
         //선택하지 않은 옵션
         //정상
@@ -40,6 +42,11 @@ public class RoomServiceImpl implements RoomService {
         }
 
         if (user.getStatus() != 1L) {
+            return -1;
+        }
+
+        if (roomInfoReq.getMinMember() < 1
+            || roomInfoReq.getMinMember() > roomInfoReq.getMaxMember()) {
             return -1;
         }
 
@@ -69,15 +76,14 @@ public class RoomServiceImpl implements RoomService {
         return room.getAccessCode();
     }
 
-    //TODO: Redis에 접근해야 함, 우선 1111로 반환
     private Integer generateAccessCode() {
         Integer accessCode = redisUtil.getAccessCode();
 
-        if(accessCode == -1) {
+        if (accessCode == -1) {
             Boolean[] accessCodeStatusList = new Boolean[10000];
             List<Room> roomList = roomRepository.findAllByStartedAtAndDeletedAt(null, null);
 
-            for(Room room : roomList) {
+            for (Room room : roomList) {
                 accessCodeStatusList[room.getAccessCode()] = true;
             }
 
@@ -87,35 +93,39 @@ public class RoomServiceImpl implements RoomService {
         return accessCode;
     }
 
-    public void joinRoom(Integer userId, Integer accessCode) {
+    public Boolean joinRoom(Long userId, Integer accessCode) {
         log.info("RoomServiceImpl_joinRoom start: " + userId + " " + accessCode);
 
         User user = null;
 
         try {
             user = userRepository.getReferenceById(1L);
-        } catch (Exception e) {
+        } catch (EntityNotFoundException e) {
             e.printStackTrace();
         }
 
         //TODO: 참여 중인 방이 이미 있는데 새로운 방에 참가하는 건 안 됨 -> 거절 신호 필요
         if (user.getStatus() != 1L) {
-            return;
+            return false;
         }
 
         Room room = null;
 
         try {
-            room = roomRepository.findRoomByAccessCodeAndStartedAtAndDeletedAt(accessCode, null,
+            room = roomRepository.findByAccessCodeAndStartedAtAndDeletedAt(accessCode, null,
                 null);
         } catch (EntityNotFoundException e) {
             e.printStackTrace();
         }
 
+        if (room.getHeadCount() >= room.getMaxMember()) {
+            return false;
+        }
+
         room.joinMember();
 
 //        TODO: User에서 상태를 변경하는 함수 필요
-//        user.updateStatus(2L);
+//        user.updateStatus(3L);
         Participant participant = Participant.builder()
             .room(room)
             .user(user)
@@ -123,6 +133,59 @@ public class RoomServiceImpl implements RoomService {
 
         participantRepository.save(participant);
 
+        if (room.getHeadCount() == room.getMaxMember()) {
+            startGame(room);
+        }
+
         log.info("RoomServiceImpl_joinRoom done");
+        return true;
+    }
+
+    public void startGame(Room room) {
+        List<Participant> participantList = participantRepository.findAllByRoomAndIsWithdrawalAndDeletedAt(
+            room, false, null);
+
+        Map<Integer, Participant> indexToParticipant = new HashMap<>();
+        Map<Participant, Integer> participantToIndex = new HashMap<>();
+        Integer count = 0;
+        Integer matched = 0;
+
+        for(Participant participant: participantList) {
+//            participant.getUser().updateStatus(4L);
+        }
+        //참여자 섞는 로직?
+        room.startGame();
+    }
+
+    public Boolean deleteGame(Long userId) {
+        User admin = null;
+
+        try {
+            admin = userRepository.getReferenceById(1L);
+        } catch (EntityNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        if (admin.getStatus() != 2L) {
+            return false;
+        }
+
+        Room room = null;
+        try {
+            room = roomRepository.findByAdminAndStartedAtAndDeletedAt(admin, null, null);
+        } catch (EntityNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        List<User> userList = userRepository.findAllByRoom(room);
+
+        for (User user : userList) {
+//            user.updateStatus(1L);
+//            user.updateRoom(null);
+        }
+
+        room.deleteRoom();
+
+        return true;
     }
 }

@@ -44,19 +44,18 @@ public class Room {
     @NotNull
     private Integer campus; //INT
 
-//    @Column(name = "min_member")
+    //    @Column(name = "min_member")
     @NotNull
     private Integer minMember = 1;  //INT
 
     /**
-     * 현재 참여 인원
-     * 방 생성 시 참여 인원은 방 생성자 혼자이므로 기본값 = 1
+     * 현재 참여 인원 방 생성 시 참여 인원은 방 생성자 혼자이므로 기본값 = 1
      */
 //    @Column(name = "head_count")
     @NotNull
     private Integer headCount;  //INT
 
-//    @Column(name = "max_member")
+    //    @Column(name = "max_member")
     @NotNull
     private Integer maxMember = Integer.MAX_VALUE;  //INT
 
@@ -75,14 +74,18 @@ public class Room {
     @NotNull
     private Integer duration;    //INT
 
-//    @Column(name = "profile_image")
+    //    @Column(name = "profile_image")
     private String profileImage;    //TEXT
 
-//    @Column(name = "deleted_at")
+    //    @Column(name = "deleted_at")
     private LocalDateTime deletedAt;    //DATETIME
 
     public void startGame() {
         this.startedAt = LocalDateTime.now();
+    }
+
+    public void deleteRoom() {
+        this.deletedAt = LocalDateTime.now();
     }
 
     public void joinMember() {

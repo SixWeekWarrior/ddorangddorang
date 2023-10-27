@@ -1,6 +1,7 @@
 package com.sww.ddorangddorang.global.util;
 
 import com.sww.ddorangddorang.global.config.RedisConfig;
+import jakarta.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
