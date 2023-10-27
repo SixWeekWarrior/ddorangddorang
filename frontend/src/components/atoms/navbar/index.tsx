@@ -1,6 +1,5 @@
-import * as React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {Onboarding} from '../../pages/onboarding';
+// import Onboarding from '../../pages/onboarding';
 import Home from '../../pages/home';
 import Enter from '../../pages/enter';
 import WaitList from '../../pages/waitList';
@@ -25,11 +24,11 @@ const Tab = createBottomTabNavigator();
 export default function NavBar() {
   return (
     <Tab.Navigator>
-      <Tab.Screen
+      {/* <Tab.Screen
         options={{headerShown: false}}
         name="그룹"
         component={MakeRoom}
-      />
+      /> */}
       <Tab.Screen
         options={{
           headerShown: false,

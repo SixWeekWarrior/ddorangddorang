@@ -1,12 +1,12 @@
 import * as React from 'react';
 import {StyleSheet, Pressable, Text, Image} from 'react-native';
 import GlobalStyles from '../../../styles/GlobalStyles';
-import ArrowRight from '../../../assets/ArrowRight.png';
+import ArrowRight from '../../../assets/arrowRightImg.png';
 
-interface BtnMidProps {
+type BtnMidProps = {
   onPress: () => void;
   text: string;
-}
+};
 
 export default function BtnMid({onPress, text}: BtnMidProps) {
   return (
