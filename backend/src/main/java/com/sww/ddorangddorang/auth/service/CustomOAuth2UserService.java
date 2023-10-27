@@ -42,7 +42,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
          * userNameAttributeName은 이후에 nameAttributeKey로 설정된다.
          */
         String registrationId = userRequest.getClientRegistration().getRegistrationId();
-        String providerType = getSocialType(registrationId);
+        String providerType = getProviderType(registrationId);
         String userNameAttributeName = userRequest.getClientRegistration()
                 .getProviderDetails().getUserInfoEndpoint().getUserNameAttributeName(); // OAuth2 로그인 시 키(PK)가 되는 값
         Map<String, Object> attributes = oAuth2User.getAttributes(); // 소셜 로그인에서 API가 제공하는 userInfo의 Json 값(유저 정보들)
@@ -62,7 +62,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         );
     }
 
-    private String getSocialType(String registrationId) {
+    private String getProviderType(String registrationId) {
         return "GOOGLE";
     }
 

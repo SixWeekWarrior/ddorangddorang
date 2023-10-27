@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserApi {
     private final UserService userService;
 
-    @PostMapping("/sign-up")
+    @PostMapping("/signup")
     public String signUp(@RequestBody UsersSignupPostReq usersSignupPostReq) throws Exception {
         userService.signUp(usersSignupPostReq);
         return "회원가입 성공";
