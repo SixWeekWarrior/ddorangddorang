@@ -33,11 +33,22 @@ dependencies {
 	testImplementation 'org.springframework.security:spring-security-test'
 
 	// mysql
-	// https://mvnrepository.com/artifact/com.mysql/mysql-connector-j
 	implementation 'com.mysql:mysql-connector-j:8.0.33'
 
+	// jwt
+	implementation 'io.jsonwebtoken:jjwt-api:0.12.3'
+	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.12.3'
+	runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.12.3'
+
+	implementation 'com.auth0:java-jwt:4.4.0'
+
+	// OAuth2
+	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+
+	// Redis
+	implementation 'org.springframework.boot:spring-boot-starter-data-redis:3.1.5'
+
 	//swagger
-	// https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-starter-webmvc-ui
 	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0'
 
 	// QueryDSL 추가
