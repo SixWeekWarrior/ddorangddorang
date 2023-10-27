@@ -57,10 +57,8 @@ public class OAuthAttributes {
      * role은 GUEST로 설정
      */
     public User toEntity(String providerType, OAuth2UserInfo oauth2UserInfo) {
-        return User.builder()
-            .userName(oauth2UserInfo.getNickname())
+        return User.auth()
             .email(UUID.randomUUID() + "@socialUser.com")
-            .role("ROLE_GUEST")
             .providerType(providerType)
             .providerId(oauth2UserInfo.getId())
             .build();

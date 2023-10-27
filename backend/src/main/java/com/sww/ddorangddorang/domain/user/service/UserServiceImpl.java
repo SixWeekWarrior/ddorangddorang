@@ -26,10 +26,10 @@ public class UserServiceImpl implements UserService {
         }
 
         // TODO: properties 추가
-        User user = User.builder()
+        User user = User.signup()
             .email(usersPostReq.getEmail())
             .password(usersPostReq.getPassword())
-            .userName(usersPostReq.getUserName())
+            .name(usersPostReq.getName())
             .role("ROLE_USER")
             .build();
 

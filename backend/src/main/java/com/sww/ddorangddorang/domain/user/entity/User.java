@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import java.time.LocalDateTime;
+import java.util.UUID;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,7 +19,7 @@ public class User {
     @GeneratedValue
     private Long id;                    // BIGINT
 
-    private String userName;                // VARCHAR(255) "유저 이름"
+    private String name;                // VARCHAR(255) "유저 이름"
     private String email;               // VARCHAR(255) "유저 이메일"
     private String providerType;        // VARCHAR(255) "소셜 로그인 타입 -GOOGLE, KAKAO" - for OAuth2
     private String providerId;          // VARCHAR(255) "소셜 로그인 식별자 값"            - for OAuth2
@@ -41,14 +42,20 @@ public class User {
     private Long status;                // BIGINT - FK(MASTER_CODE)
     private LocalDateTime deletedAt;    // TIMESTAMP
 
-    @Builder
-    public User(String userName, String email, String password, String providerType, String providerId, String role) {
-        this.userName = userName;
+    @Builder(builderMethodName = "signup", builderClassName = "Signup")
+    public User(String name, String email, String password, String role) {
+        this.name = name;
         this.email = email;
         this.password = password;
+        this.role = role;
+    }
+
+    @Builder(builderMethodName = "auth", builderClassName = "Auth")
+    public User(String email, String providerType, String providerId) {
+        this.email = email;
         this.providerType = providerType;
         this.providerId = providerId;
-        this.role = role;
+        this.role = "ROLE_GUEST";
     }
 
     // 유저 권한 설정 메소드
