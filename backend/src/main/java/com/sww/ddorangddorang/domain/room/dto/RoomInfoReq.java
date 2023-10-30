@@ -6,9 +6,9 @@ import lombok.ToString;
 @ToString
 @Getter
 public class RoomInfoReq {
-    Boolean isOpen;
-    Integer minMember;
-    Integer maxMember;
-    Integer duration;
+    private Boolean isOpen;
+    private Integer minMember;
+    private Integer maxMember;
+    private Integer duration;
 
 }

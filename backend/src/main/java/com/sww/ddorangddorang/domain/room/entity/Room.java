@@ -1,5 +1,6 @@
 package com.sww.ddorangddorang.domain.room.entity;
 
+import com.sww.ddorangddorang.domain.room.dto.RoomInfoReq;
 import com.sww.ddorangddorang.domain.user.entity.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -94,6 +95,17 @@ public class Room {
 
     public void removeMember() {
         --this.headCount;
+    }
+
+    public void updateHeadCount(Integer headCount) {
+        this.headCount = headCount;
+    }
+
+    public void updateRoomInfo(RoomInfoReq roomInfoReq) {
+        this.maxMember = roomInfoReq.getMaxMember();
+        this.minMember = roomInfoReq.getMinMember();
+        this.isOpen = roomInfoReq.getIsOpen();
+        this.duration = roomInfoReq.getDuration();
     }
 
     public Boolean isEnded() {

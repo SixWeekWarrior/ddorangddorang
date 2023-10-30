@@ -55,6 +55,24 @@ public class Participant {
 
     private LocalDateTime deletedAt;
 
+    public void matchManito(Participant participant) {
+        this.manito = participant.getUser();
+    }
+
+    public void matchManiti(Participant participant) {
+        this.maniti = participant.getUser();
+    }
+
+    public void deleteParticipant() {
+        this.deletedAt = LocalDateTime.now();
+//        Participant를 null로, 상태를 1L로 설정
+//        this.getUser().removeRoom();
+    }
+
+    public void allocateNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
     @Builder
     public Participant(User user, Room room) {
         this.user = user;
