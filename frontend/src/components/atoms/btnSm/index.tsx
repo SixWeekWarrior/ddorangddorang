@@ -7,13 +7,13 @@ interface BtnSmProps {
   text: string;
 }
 
-export default function BtnSm({onPress, text}: BtnSmProps) {
+export const BtnSm = ({onPress, text}: BtnSmProps) => {
   return (
     <Pressable onPress={onPress} style={styles.btnContainer}>
       <Text style={styles.btn}>{text}</Text>
     </Pressable>
   );
-}
+};
 const styles = StyleSheet.create({
   btnContainer: {
     width: '25%',
@@ -31,3 +31,5 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 });
+
+export default BtnSm;

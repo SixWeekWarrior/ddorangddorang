@@ -1,11 +1,4 @@
-import {
-  Dimensions,
-  Image,
-  Pressable,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
+import {Image, Pressable, StyleSheet, Text, View} from 'react-native';
 import GlobalStyles from '../../../styles/GlobalStyles';
 import yellowEyeImg from '../../../assets/yellowEyeImg.png';
 import greenEyeImg from '../../../assets/greenEyeImg.png';

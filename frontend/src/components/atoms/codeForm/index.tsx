@@ -7,7 +7,7 @@ type CodeFormProps = {
   code: string;
 };
 
-export default function CodeForm({code}: CodeFormProps) {
+export const CodeForm = ({code}: CodeFormProps) => {
   const onCopyCode = async (code: string) => {
     try {
       await Clipboard.setString(code);
@@ -24,7 +24,7 @@ export default function CodeForm({code}: CodeFormProps) {
       </Pressable>
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -48,3 +48,5 @@ const styles = StyleSheet.create({
     marginRight: '4%',
   },
 });
+
+export default CodeForm;

@@ -9,7 +9,7 @@ type BtnMidProps = {
   disabled: boolean;
 };
 
-export default function BtnReg({onPress, text, color, disabled}: BtnMidProps) {
+export const BtnReg = ({onPress, text, color, disabled}: BtnMidProps) => {
   const btnStyle = {
     backgroundColor: color,
     opacity: disabled ? 0.5 : 1,
@@ -26,7 +26,7 @@ export default function BtnReg({onPress, text, color, disabled}: BtnMidProps) {
       <Text style={styles.btnText}>{text}</Text>
     </Pressable>
   );
-}
+};
 const styles = StyleSheet.create({
   btnContainer: {
     width: 145,
@@ -52,3 +52,5 @@ const styles = StyleSheet.create({
     marginTop: 13,
   },
 });
+
+export default BtnReg;

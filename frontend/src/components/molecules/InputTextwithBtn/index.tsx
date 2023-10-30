@@ -2,11 +2,11 @@ import {View, StyleSheet} from 'react-native';
 import InputText from '../../atoms/inputText';
 import BtnSm from '../../atoms/btnSm';
 
-export default function InputTextwithBtn({
+export const InputTextwithBtn = ({
   navigation,
 }: {
   navigation: any;
-}): JSX.Element {
+}): JSX.Element => {
   return (
     <View style={styles.container}>
       <InputText />
@@ -18,7 +18,7 @@ export default function InputTextwithBtn({
       />
     </View>
   );
-}
+};
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
@@ -28,3 +28,5 @@ const styles = StyleSheet.create({
     marginTop: 13,
   },
 });
+
+export default InputTextwithBtn;

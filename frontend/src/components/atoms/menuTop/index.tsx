@@ -8,7 +8,7 @@ interface MenuTopProps {
   text: string;
 }
 
-export default function MenuTop({menu, text}: MenuTopProps) {
+export const MenuTop = ({menu, text}: MenuTopProps) => {
   return (
     <View style={styles.container}>
       <View style={styles.innerContainer}>
@@ -18,7 +18,8 @@ export default function MenuTop({menu, text}: MenuTopProps) {
       <Image source={blockImg} style={styles.blockImg}></Image>
     </View>
   );
-}
+};
+
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
@@ -50,3 +51,5 @@ const styles = StyleSheet.create({
     marginTop: 105,
   },
 });
+
+export default MenuTop;

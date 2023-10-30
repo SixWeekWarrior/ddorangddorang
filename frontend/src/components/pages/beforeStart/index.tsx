@@ -4,7 +4,11 @@ import MenuTop from '../../atoms/menuTop';
 import GroupSummary from '../../atoms/groupSummary';
 import BtnReg from '../../atoms/btnReg';
 import CodeForm from '../../atoms/codeForm';
+import {LogBox} from 'react-native';
 
+LogBox.ignoreLogs([
+  'Non-serializable values were found in the navigation state',
+]);
 type BeforeStartRouteProp = {
   params: {
     sliderValue: number;
@@ -14,7 +18,7 @@ type BeforeStartRouteProp = {
 };
 
 type BeforeStartNavigationProp = {
-  navigate: (screen: string, params: object) => void;
+  navigate: (screen: string, params?: object) => void;
 };
 
 type BeforeStartProps = {
@@ -30,10 +34,12 @@ export const BeforeStart = ({navigation, route}: BeforeStartProps) => {
 
   return (
     <View style={styles.container}>
-      <MenuTop
-        menu="그룹 만들기"
-        text={`마니또를 함께 할 그룹을 만들고\n친구들을 초대하세요!`}
-      />
+      <View style={styles.MenuContainer}>
+        <MenuTop
+          menu="그룹 만들기"
+          text={`마니또를 함께 할 그룹을 만들고\n친구들을 초대하세요!`}
+        />
+      </View>
       <View style={styles.sumContainer}>
         <GroupSummary
           period={sliderValue}
@@ -60,7 +66,7 @@ export const BeforeStart = ({navigation, route}: BeforeStartProps) => {
         />
         <BtnReg
           onPress={() => {
-            navigation.navigate('NavBar', {sliderValue: sliderValue});
+            navigation.navigate('NavBar');
           }}
           text="시작"
           color={GlobalStyles.green.color}
@@ -83,11 +89,14 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
     marginLeft: '15%',
   },
+  MenuContainer: {
+    flex: 2,
+  },
   sumContainer: {
     flex: 4,
   },
   codeContainer: {
-    flex: 2,
+    flex: 1,
     alignItems: 'center',
   },
   btnContainer: {
