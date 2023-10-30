@@ -1,9 +1,15 @@
-import {Image, Pressable, StyleSheet, Text, View} from 'react-native';
+import {
+  Dimensions,
+  Image,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import GlobalStyles from '../../../styles/GlobalStyles';
 import yellowEyeImg from '../../../assets/yellowEyeImg.png';
 import greenEyeImg from '../../../assets/greenEyeImg.png';
 import arrowRightImg from '../../../assets/arrowRightImg.png';
-import NavBar from '../../atoms/navbar';
 
 export const Home = ({navigation}: {navigation: any}): JSX.Element => {
   return (
@@ -123,7 +129,6 @@ export const Home = ({navigation}: {navigation: any}): JSX.Element => {
         <View style={style.bottomMiddle}></View>
         <Image source={greenEyeImg} style={style.bottomRight}></Image>
       </View>
-      <NavBar />
     </View>
   );
 };
@@ -131,10 +136,9 @@ export const Home = ({navigation}: {navigation: any}): JSX.Element => {
 const style = StyleSheet.create({
   container: {
     backgroundColor: GlobalStyles.white_2.color,
-    flex: 1,
     color: GlobalStyles.white_1.color,
+    flex: 1,
   },
-
   containerTop: {
     backgroundColor: GlobalStyles.white_2.color,
     flexDirection: 'row',

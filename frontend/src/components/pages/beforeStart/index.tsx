@@ -5,7 +5,24 @@ import GroupSummary from '../../atoms/groupSummary';
 import BtnReg from '../../atoms/btnReg';
 import CodeForm from '../../atoms/codeForm';
 
-export const BeforeStart = ({navigation, route}): JSX.Element => {
+type BeforeStartRouteProp = {
+  params: {
+    sliderValue: number;
+    multiSliderValue: number[];
+    selectedCount: number;
+  };
+};
+
+type BeforeStartNavigationProp = {
+  navigate: (screen: string, params: object) => void;
+};
+
+type BeforeStartProps = {
+  route: BeforeStartRouteProp;
+  navigation: BeforeStartNavigationProp;
+};
+
+export const BeforeStart = ({navigation, route}: BeforeStartProps) => {
   const {sliderValue, multiSliderValue, selectedCount} = route.params;
   const isStartButtonDisabled = !(
     selectedCount >= multiSliderValue[0] && selectedCount <= multiSliderValue[1]
@@ -43,7 +60,7 @@ export const BeforeStart = ({navigation, route}): JSX.Element => {
         />
         <BtnReg
           onPress={() => {
-            navigation.navigate('Home');
+            navigation.navigate('NavBar', {sliderValue: sliderValue});
           }}
           text="시작"
           color={GlobalStyles.green.color}

@@ -6,8 +6,8 @@ import Enter from '../../../components/pages/enter';
 import EnterWait from '../enterWait';
 import BeforeStart from '../beforeStart';
 import MakeRoom from '../makeRoom';
-import Home from '../home';
 import WaitList from '../waitList';
+import Home from '../home';
 
 const StackNavigation = () => {
   const Stack = createStackNavigator();
@@ -40,8 +40,8 @@ const StackNavigation = () => {
           options={{headerShown: false}}
         />
         <Stack.Screen
-          name="Home"
-          component={Home}
+          name="NavBar"
+          component={NavBar}
           options={{headerShown: false}}
         />
         <Stack.Screen
@@ -49,6 +49,11 @@ const StackNavigation = () => {
           component={WaitList}
           options={{headerShown: false}}
         />
+        {/* <Stack.Screen
+          name="Home"
+          component={Home}
+          options={{headerShown: false}}
+        /> */}
       </Stack.Navigator>
     </NavigationContainer>
   );
