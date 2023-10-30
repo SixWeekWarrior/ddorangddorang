@@ -34,12 +34,10 @@ export const BeforeStart = ({navigation, route}: BeforeStartProps) => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.MenuContainer}>
-        <MenuTop
-          menu="그룹 만들기"
-          text={`마니또를 함께 할 그룹을 만들고\n친구들을 초대하세요!`}
-        />
-      </View>
+      <MenuTop
+        menu="그룹 만들기"
+        text={`마니또를 함께 할 그룹을 만들고\n친구들을 초대하세요!`}
+      />
       <View style={styles.sumContainer}>
         <GroupSummary
           period={sliderValue}
@@ -47,8 +45,6 @@ export const BeforeStart = ({navigation, route}: BeforeStartProps) => {
           max={multiSliderValue[1]}
           selectedCount={selectedCount}
         />
-      </View>
-      <View style={styles.codeContainer}>
         <Text style={styles.code}>초대코드</Text>
         <CodeForm code="WUJtQT09" />
       </View>
@@ -83,21 +79,15 @@ const styles = StyleSheet.create({
     backgroundColor: GlobalStyles.white_2.color,
   },
   code: {
-    fontFamily: GlobalStyles.sub_title.fontFamily,
-    fontSize: GlobalStyles.sub_title.fontSize,
-    color: GlobalStyles.grey_2.color,
+    fontFamily: GlobalStyles.section_title.fontFamily,
+    fontSize: GlobalStyles.section_title.fontSize,
+    color: GlobalStyles.black.color,
     alignSelf: 'flex-start',
-    marginLeft: '15%',
-  },
-  MenuContainer: {
-    flex: 2,
+    marginLeft: 50,
   },
   sumContainer: {
     flex: 4,
-  },
-  codeContainer: {
-    flex: 1,
-    alignItems: 'center',
+    marginBottom: 50,
   },
   btnContainer: {
     flex: 1,

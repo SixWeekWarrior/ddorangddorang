@@ -1,21 +1,25 @@
 import {StyleSheet, Text, View} from 'react-native';
 import GlobalStyles from '../../../styles/GlobalStyles';
+import {LogBox} from 'react-native';
 
+LogBox.ignoreLogs([
+  'Non-serializable values were found in the navigation state',
+]);
 type rangeFormProps = {
   min: number;
   max: number;
-  cur: number;
+  cur: any;
 };
 
-export const rangeForm = ({min, max, cur}: rangeFormProps) => {
-  const isCurLessThanMin = cur < min;
-  const curNumStyle = {
-    fontFamily: GlobalStyles.section_title.fontFamily,
-    color: isCurLessThanMin
-      ? GlobalStyles.grey_2.color
-      : GlobalStyles.green.color,
-    fontSize: 35,
-  };
+const HorizonLine = () => {
+  return <View style={style.horizonLine}></View>;
+};
+
+const RangeForm = ({min, max, cur}: rangeFormProps) => {
+  const curNumColor =
+    parseInt(cur, 10) < Number(min)
+      ? GlobalStyles.grey_3.color
+      : GlobalStyles.green.color;
 
   return (
     <View style={style.container}>
@@ -23,9 +27,9 @@ export const rangeForm = ({min, max, cur}: rangeFormProps) => {
         <Text style={style.endText}>최소</Text>
         <Text style={style.endNum}>{min}</Text>
       </View>
-      <View style={style.horizonLine} />
-      <Text style={curNumStyle}>{cur}</Text>
-      <View style={style.horizonLine} />
+      <HorizonLine />
+      <Text style={[style.curNum, {color: curNumColor}]}>{cur}</Text>
+      <HorizonLine />
       <View style={style.end}>
         <Text style={style.endText}>최대</Text>
         <Text style={style.endNum}>{max}</Text>
@@ -72,4 +76,4 @@ const style = StyleSheet.create({
   },
 });
 
-export default rangeForm;
+export default RangeForm;

@@ -7,13 +7,14 @@ import EnterWait from '../enterWait';
 import BeforeStart from '../beforeStart';
 import MakeRoom from '../makeRoom';
 import WaitList from '../waitList';
-import Home from '../home';
+import MyGroup from '../myGroup';
+import MissionToday from '../missionToday';
 
 const StackNavigation = () => {
   const Stack = createStackNavigator();
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Onboarding">
+      <Stack.Navigator initialRouteName="NavBar">
         <Stack.Screen
           name="Onboarding"
           component={Onboarding}
@@ -49,11 +50,16 @@ const StackNavigation = () => {
           component={WaitList}
           options={{headerShown: false}}
         />
-        {/* <Stack.Screen
-          name="Home"
-          component={Home}
+        <Stack.Screen
+          name="MyGroup"
+          component={MyGroup}
           options={{headerShown: false}}
-        /> */}
+        />
+        <Stack.Screen
+          name="MissionToday"
+          component={MissionToday}
+          options={{headerShown: false}}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

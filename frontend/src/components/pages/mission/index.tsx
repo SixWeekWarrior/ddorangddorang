@@ -1,15 +1,43 @@
 import {View, StyleSheet} from 'react-native';
 import GlobalStyles from '../../../styles/GlobalStyles';
+import MenuTop from '../../atoms/menuTop';
+import InfoBox from '../../organisms/infoBox';
+import MissionList from '../../molecules/missionList';
 
-export const Misson = (): JSX.Element => {
-  return <View style={styles.container}></View>;
+export const Misson = ({navigation}: {navigation: any}): JSX.Element => {
+  return (
+    <View style={styles.container}>
+      <MenuTop
+        menu="미션"
+        text={`오늘의 미션을 완수하고\n미션 도장을 찍어봐요!`}
+      />
+      <View style={styles.topContainer}>
+        <InfoBox navigation={navigation} destination="MissionToday" />
+      </View>
+      <View style={styles.midContainer}>
+        <InfoBox navigation={navigation} destination="BasicInfo" />
+      </View>
+      <View style={styles.bottomContainer}>
+        <MissionList />
+      </View>
+    </View>
+  );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
     backgroundColor: GlobalStyles.white_2.color,
+  },
+  topContainer: {
+    flex: 0.5,
+    marginVertical: 20,
+  },
+  midContainer: {
+    flex: 1,
+  },
+  bottomContainer: {
+    flex: 1,
   },
 });
 

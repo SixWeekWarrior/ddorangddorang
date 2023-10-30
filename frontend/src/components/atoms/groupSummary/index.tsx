@@ -6,7 +6,7 @@ type GroupSummaryProps = {
   period: number;
   min: number;
   max: number;
-  selectedCount: number;
+  selectedCount: any;
 };
 export const GroupSummary = ({
   period,
@@ -20,6 +20,14 @@ export const GroupSummary = ({
         <Text style={styles.titleBig}>현재 인원</Text>
         <Text style={styles.titleSmall}>(명)</Text>
       </View>
+      {parseInt(selectedCount, 10) < Number(min) ? (
+        <View style={styles.warning}>
+          <Text style={styles.warningText}>최소 인원을 확인해주세요!</Text>
+        </View>
+      ) : (
+        <></>
+      )}
+
       <View style={styles.textCenter}>
         <RangeForm min={min} max={max} cur={selectedCount} />
       </View>
@@ -40,29 +48,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  // textContainer: {
-  //   flexDirection: 'row',
-  //   width: '35%',
-  //   justifyContent: 'space-between',
-  // },
-  // title: {
-  //   fontFamily: GlobalStyles.section_title.fontFamily,
-  //   fontSize: GlobalStyles.section_title.fontSize,
-  //   color: GlobalStyles.black.color,
-  // },
-  // content: {
-  //   fontFamily: GlobalStyles.section_title.fontFamily,
-  //   fontSize: GlobalStyles.section_title.fontSize,
-  //   color: GlobalStyles.black.color,
-  // },
   textLeft: {
-    marginLeft: 50,
     marginTop: 30,
     flexDirection: 'row',
     alignSelf: 'flex-start',
+    marginLeft: 50,
   },
   textCenter: {
-    // alignSelf: 'center',
+    alignSelf: 'center',
   },
   titleBig: {
     fontFamily: GlobalStyles.section_title.fontFamily,
@@ -93,7 +86,7 @@ const styles = StyleSheet.create({
   },
   warningText: {
     fontFamily: GlobalStyles.section_title.fontFamily,
-    fontSize: GlobalStyles.sub_title.fontSize,
+    fontSize: 15,
     color: GlobalStyles.orange.color,
   },
 });
