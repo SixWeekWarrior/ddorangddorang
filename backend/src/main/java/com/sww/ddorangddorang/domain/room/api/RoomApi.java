@@ -38,9 +38,7 @@ public class RoomApi {
     public Boolean joinRoom(@RequestHeader Long userId, @RequestBody Integer accessCode) {
         log.info("RoomApi_joinRoom start");
         Boolean joinRoomResponse = roomService.joinRoom(userId, accessCode);
-
         log.info("RoomApi_joinRoom end: " + joinRoomResponse);
-
         return joinRoomResponse;
     }
 
@@ -62,11 +60,8 @@ public class RoomApi {
     @DeleteMapping("/admin")
     public Boolean deleteRoom(@RequestHeader Long userId) {
         log.info("RoomApi_deleteRoom start");
-
         Boolean deleteRoomResponse = roomService.deleteGame(userId);
-
         log.info("RoomApi_deleteRoom end: " + deleteRoomResponse);
-
         return deleteRoomResponse;
     }
 
@@ -76,22 +71,24 @@ public class RoomApi {
     @DeleteMapping
     public Boolean withdrawalRoom(@RequestHeader Long userId) {
         log.info("RoomApi_withdrawalRoom start");
-
         Boolean withdrawalRoomResponse = roomService.withdrawalRoom(userId);
-
         log.info("RoomApi_withdrawalRoom end: " + withdrawalRoomResponse);
-
         return withdrawalRoomResponse;
+    }
+
+    @PostMapping("/start")
+    public Boolean startGame(@RequestHeader Long userId) {
+        log.info("RoomApi_startGame start");
+        Boolean isGameStarted = roomService.checkAndStartGame(userId);
+        log.info("RoomApi_startGame end: " + isGameStarted);
+        return isGameStarted;
     }
 
     @GetMapping("/{roomId}")
     public List<ShowUsersRes> showUsers(@RequestHeader Long userId, @PathVariable Long roomId) {
         log.info("RoomApi_showUsers start");
-
         List<ShowUsersRes> showUsersResList = roomService.showUsers(userId);
-
         log.info("RoomApi_showUsers end");
-
         return showUsersResList;
     }
 
@@ -99,11 +96,13 @@ public class RoomApi {
     public Boolean responseJoinRoom(@RequestHeader Long userId,
         @RequestBody JoinRoomReq joinRoomReq) {
         log.info("RoomApi_responseJoinRoom start");
-
         Boolean joined = roomService.responseJoinRoom(userId, joinRoomReq);
 
-        log.info("RoomApi_responseJoinRoom end: " + joined);
+        if(joined) {
+            roomService.checkAndRunIfRoomShouldStart(userId);
+        }
 
+        log.info("RoomApi_responseJoinRoom end: " + joined);
         return joined;
     }
 

@@ -12,17 +12,17 @@ public interface RoomService {
 
     public Boolean joinRoom(Long userId, Integer accessCode);
 
-    public void startGame(Room room);
-
     public Boolean updateRoom(Long userId, RoomInfoReq roomInfoReq);
 
     public Boolean deleteGame(Long userId);
-
-    public void checkAndRunIfRoomShouldStart(Long userId);
 
     public Boolean withdrawalRoom(Long userId);
 
     public List<ShowUsersRes> showUsers(Long userId);
 
     public Boolean responseJoinRoom(Long userId, JoinRoomReq joinRoomReq);
+
+    public Boolean checkAndRunIfRoomShouldStart(Long userId);
+
+    public Boolean checkAndStartGame(Long userId);
 }
