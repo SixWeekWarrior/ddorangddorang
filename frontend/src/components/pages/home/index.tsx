@@ -2,7 +2,7 @@ import {Image, Pressable, StyleSheet, Text, View} from 'react-native';
 import GlobalStyles from '../../../styles/GlobalStyles';
 import yellowEyeImg from '../../../assets/yellowEyeImg.png';
 import greenEyeImg from '../../../assets/greenEyeImg.png';
-import arrowRightImg from '../../../assets/arrowRightImg.png';
+import arrowRightImg from '../../../assets/whiteArrowRightImg.png';
 import InfoBox from '../../organisms/infoBox';
 
 export const Home = ({navigation}: {navigation: any}): JSX.Element => {
@@ -104,7 +104,10 @@ export const Home = ({navigation}: {navigation: any}): JSX.Element => {
               }}>
               내 그룹 보기
             </Text>
-            <Image source={arrowRightImg} style={{marginTop: 21}} />
+            <Image
+              source={arrowRightImg}
+              style={{marginTop: 20, width: 6, height: 11}}
+            />
           </Pressable>
         </View>
         <View style={style.bottomMiddle}></View>

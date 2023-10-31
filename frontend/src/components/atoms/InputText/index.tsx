@@ -1,15 +1,17 @@
-import React, {useState} from 'react';
 import {StyleSheet, TextInput} from 'react-native';
 import GlobalStyles from '../../../styles/GlobalStyles';
 
-export const InputText = () => {
-  const [text, onChangeText] = useState('');
+interface InputTextProps {
+  onChangeText: (text: string) => void;
+  value: string;
+}
 
+export const InputText = ({onChangeText, value}: InputTextProps) => {
   return (
     <TextInput
       style={styles.inputText}
       onChangeText={onChangeText}
-      value={text}
+      value={value}
       placeholder="초대코드를 입력하세요."
     />
   );

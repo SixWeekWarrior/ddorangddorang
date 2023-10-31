@@ -16,13 +16,13 @@ import homeIcon from '../../../assets/icons/default/home.png';
 import homeSelectedIcon from '../../../assets/icons/selected/home.png';
 import misssonIcon from '../../../assets/icons/default/mission.png';
 import missonSelectedIcon from '../../../assets/icons/selected/mission.png';
-import Chatting from '../../pages/chatting';
 import Misson from '../../pages/mission';
 import GlobalStyles from '../../../styles/GlobalStyles';
 
 import yellowEyeImg from '../../../assets/yellowEyeImg.png';
 import greenEyeImg from '../../../assets/greenEyeImg.png';
-import arrowRightImg from '../../../assets/arrowRightImg.png';
+import arrowRightImg from '../../../assets/whiteArrowRightImg.png';
+import BeforeLaunch from '../../pages/beforelaunch';
 
 const Tab = createBottomTabNavigator();
 
@@ -144,7 +144,10 @@ export const NavBar = ({navigation}: {navigation: any}): JSX.Element => {
                 }}>
                 내 그룹 보기
               </Text>
-              <Image source={arrowRightImg} style={{marginTop: 21}} />
+              <Image
+                source={arrowRightImg}
+                style={{marginTop: 21, width: 6, height: 11}}
+              />
             </Pressable>
           </View>
           <View style={style.bottomMiddle}></View>
@@ -178,7 +181,7 @@ export const NavBar = ({navigation}: {navigation: any}): JSX.Element => {
               ),
             }}
             name="채팅"
-            component={Chatting}
+            component={BeforeLaunch}
           />
           <Tab.Screen
             options={{

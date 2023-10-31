@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {StyleSheet, Pressable, Text, Image} from 'react-native';
 import GlobalStyles from '../../../styles/GlobalStyles';
-import ArrowRight from '../../../assets/arrowRightImg.png';
+import ArrowRight from '../../../assets/whiteArrowRightImg.png';
 
 type BtnMidProps = {
   onPress: () => void;
