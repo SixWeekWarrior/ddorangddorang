@@ -3,7 +3,6 @@ package com.sww.ddorangddorang.domain.room.service;
 import com.sww.ddorangddorang.domain.room.dto.JoinRoomReq;
 import com.sww.ddorangddorang.domain.room.dto.RoomInfoReq;
 import com.sww.ddorangddorang.domain.room.dto.ShowUsersRes;
-import com.sww.ddorangddorang.domain.room.entity.Room;
 import java.util.List;
 
 public interface RoomService {
