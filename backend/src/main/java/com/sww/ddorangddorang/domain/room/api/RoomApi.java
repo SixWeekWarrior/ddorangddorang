@@ -7,6 +7,7 @@ import com.sww.ddorangddorang.domain.room.service.RoomService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -95,12 +96,13 @@ public class RoomApi {
     }
 
     @PostMapping("/response")
-    public Boolean responseJoinRoom(@RequestHeader Long userId, @RequestBody JoinRoomReq joinRoomReq) {
-        log.info("RoomApi_responseJoinToom start");
+    public Boolean responseJoinRoom(@RequestHeader Long userId,
+        @RequestBody JoinRoomReq joinRoomReq) {
+        log.info("RoomApi_responseJoinRoom start");
 
         Boolean joined = roomService.responseJoinRoom(userId, joinRoomReq);
 
-        log.info("RoomApi_responseJoinToom end: " + joined);
+        log.info("RoomApi_responseJoinRoom end: " + joined);
 
         return joined;
     }

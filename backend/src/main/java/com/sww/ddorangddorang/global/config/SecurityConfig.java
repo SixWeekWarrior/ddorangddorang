@@ -61,6 +61,7 @@ public class SecurityConfig {
                 .requestMatchers("/","/css/**","/images/**","/js/**","/favicon.ico","/h2-console/**").permitAll()
                 .requestMatchers("/sign-up").permitAll()
                 .requestMatchers("/login/oauth2/code/google").permitAll()
+                .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
                 .anyRequest().authenticated())
             //== 소셜 로그인 설정 ==//
             .oauth2Login(c -> c
