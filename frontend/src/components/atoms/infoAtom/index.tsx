@@ -1,17 +1,44 @@
-import {Text, View} from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
+import GlobalStyles from '../../../styles/GlobalStyles';
 
-type infoAtomProps = {
+type InfoAtomProps = {
   title: string;
   content: string;
+  dark: boolean;
 };
-export const infoAtom = ({title, content}: infoAtomProps) => {
+export const InfoAtom = ({title, content, dark}: InfoAtomProps) => {
+  const textColor = dark
+    ? GlobalStyles.grey_2.color
+    : GlobalStyles.white_2.color;
+
+  const style = StyleSheet.create({
+    container: {
+      flexDirection: 'row',
+      marginVertical: -7,
+    },
+    titleText: {
+      color: textColor,
+      fontFamily: GlobalStyles.home_title.fontFamily,
+      fontSize: 15,
+    },
+    contentText: {
+      color: textColor,
+      fontFamily: GlobalStyles.section_title.fontFamily,
+      fontSize: 15,
+    },
+    border: {
+      color: GlobalStyles.yellow.color,
+      fontFamily: GlobalStyles.section_title.fontFamily,
+      marginHorizontal: 10,
+    },
+  });
   return (
-    <View style={{flexDirection: 'row'}}>
-      <Text>{title}</Text>
-      <Text style={{color: #FFD31A}}>|</Text>
-      <Text>{content}</Text>
+    <View style={style.container}>
+      <Text style={style.titleText}>{title}</Text>
+      <Text style={style.border}>|</Text>
+      <Text style={style.contentText}>{content}</Text>
     </View>
   );
 };
 
-export default infoAtom;
+export default InfoAtom;

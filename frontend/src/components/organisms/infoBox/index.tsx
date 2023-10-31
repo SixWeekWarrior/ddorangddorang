@@ -1,7 +1,10 @@
 import {Image, Pressable, StyleSheet, Text, View} from 'react-native';
-import coloredArrowRightImg from '../../../assets/coloredArrowRightImg.png';
+import greenArrowRightImg from '../../../assets/greenArrowRightImg.png';
+import yellowArrowRightImg from '../../../assets/yellowArrowRightImg.png';
+import whiteArrowRightImg from '../../../assets/whiteArrowRightImg.png';
 import arrowRightImg from '../../../assets/arrowRightImg.png';
 import GlobalStyles from '../../../styles/GlobalStyles';
+import InfoAtom from '../../atoms/infoAtom';
 
 type InfoBoxProps = {
   navigation: any;
@@ -21,12 +24,13 @@ const InnerInfo = ({navigation}: {navigation: any}): JSX.Element => {
       <Pressable
         onPress={() => navigation.navigate('MyGroup')}
         style={style.bottom}>
-        <Text style={[style.smFont, style.right]}>내 그룹 보러가기</Text>
+        <Text style={[style.smFont]}>내 그룹 보러가기</Text>
         <Image source={arrowRightImg} style={style.arrowImg} />
       </Pressable>
     </View>
   );
 };
+
 const InfoBox = ({navigation, destination}: InfoBoxProps): JSX.Element => {
   const handlePress = () => {
     switch (destination) {
@@ -47,41 +51,69 @@ const InfoBox = ({navigation, destination}: InfoBoxProps): JSX.Element => {
     }
   };
 
-  const renderTitleOnDestination = () => {
+  const renderTitle = () => {
     switch (destination) {
       case 'MissionToday':
         return '오늘의 미션';
       case 'BasicInfo':
-        return '진행 정보'; // 다른 내용으로 변경해주세요.
-      case 'myPage':
-        return '다른 내용1'; // 다른 내용으로 변경해주세요.
-      case 'ssafy':
-        return '다른 내용2'; // 다른 내용으로 변경해주세요.
-      case 'addInfo':
-        return '다른 내용3'; // 다른 내용으로 변경해주세요.
+        return '진행 정보';
+      case 'InfoToday':
+        return '오늘의 정보';
+      case 'InfoSsafy':
+        return 'SSAFY 정보';
+      case 'InfoEtc':
+        return '추가 정보';
       default:
-        return '다른 주제';
+        return '';
     }
   };
 
-  const renderContentOnDestination = () => {
+  const renderContent = () => {
     switch (destination) {
       case 'MissionToday':
         return <Text style={style.midFont}>좋아하는 음식 알아내기</Text>;
       case 'BasicInfo':
         return <InnerInfo navigation={navigation} />;
-      case 'myPage':
-        return <Text>다른 내용1</Text>; // Text component wraps the string
-      case 'ssafy':
-        return <Text>다른 내용2</Text>; // Text component wraps the string
-      case 'addInfo':
-        return <Text>다른 내용3</Text>; // Text component wraps the string
+      case 'InfoToday':
+        return (
+          <View style={[style.flexColumn, {height: '50%'}]}>
+            <InfoAtom title="기분" content="약간 흐림" dark={true}></InfoAtom>
+            <InfoAtom title="입은 옷" content="빨간색" dark={true}></InfoAtom>
+          </View>
+        );
+      case 'InfoSsafy':
+        return (
+          <View style={[style.flexColumn, {height: '50%'}]}>
+            <InfoAtom title="지역" content="서울" dark={false}></InfoAtom>
+            <InfoAtom title="전공" content="비전공" dark={false}></InfoAtom>
+            <InfoAtom title="반" content="2" dark={false}></InfoAtom>
+            <InfoAtom title="층" content="8" dark={false}></InfoAtom>
+          </View>
+        );
+      case 'InfoEtc':
+        return (
+          <View style={style.flexColumn}>
+            <InfoAtom title="MBTI" content="INFJ" dark={false}></InfoAtom>
+            <InfoAtom
+              title="요즘 고민"
+              content="면접을 앞두고 긴장되는 것"
+              dark={false}></InfoAtom>
+            <InfoAtom
+              title="좋아하는 것"
+              content="하리보 젤리"
+              dark={false}></InfoAtom>
+            <InfoAtom
+              title="싫어하는 것"
+              content="차가운 음료"
+              dark={false}></InfoAtom>
+          </View>
+        );
       default:
-        return <Text>좋아하는 음식 알아내기</Text>; // Text component wraps the string
+        return <Text>좋아하는 음식 알아내기</Text>;
     }
   };
 
-  const renderBackgroundColorOnDestination = () => {
+  const renderBackgroundColor = () => {
     switch (destination) {
       case 'MissionToday':
         return GlobalStyles.white_2.color;
@@ -96,18 +128,50 @@ const InfoBox = ({navigation, destination}: InfoBoxProps): JSX.Element => {
     }
   };
 
-  const renderTitleColorOnDestination = () => {
+  const renderBorderStyle = () => {
+    switch (destination) {
+      case 'MissionToday':
+        return 0.5;
+      case 'BasicInfo':
+        return 0;
+      case 'InfoToday':
+        return 0.5;
+      case 'InfoSsafy':
+        return 0;
+      case 'InfoEtc':
+        return 0;
+      default:
+        return 0.5;
+    }
+  };
+
+  const renderTitleColor = () => {
     switch (destination) {
       case 'MissionToday':
         return GlobalStyles.green.color;
       case 'InfoToday':
-        return GlobalStyles.white_2.color;
-      case 'InfoSsafy':
-        return GlobalStyles.pink.color;
-      case 'InfoEtc':
         return GlobalStyles.green.color;
+      case 'InfoSsafy':
+        return GlobalStyles.yellow.color;
+      case 'InfoEtc':
+        return GlobalStyles.white_2.color;
       default:
         return GlobalStyles.white_2.color;
+    }
+  };
+
+  const renderArrowColor = () => {
+    switch (destination) {
+      case 'MissionToday':
+        return greenArrowRightImg;
+      case 'InfoToday':
+        return greenArrowRightImg;
+      case 'InfoSsafy':
+        return yellowArrowRightImg;
+      case 'InfoEtc':
+        return whiteArrowRightImg;
+      default:
+        return null;
     }
   };
 
@@ -115,14 +179,15 @@ const InfoBox = ({navigation, destination}: InfoBoxProps): JSX.Element => {
     <Pressable
       style={[
         style.container,
-        {backgroundColor: renderBackgroundColorOnDestination()},
+        {backgroundColor: renderBackgroundColor()},
+        {borderWidth: renderBorderStyle()},
       ]}
       onPress={handlePress}>
-      <Text style={[style.titleFont, {color: renderTitleColorOnDestination()}]}>
-        {renderTitleOnDestination()}
+      <Text style={[style.titleFont, {color: renderTitleColor()}]}>
+        {renderTitle()}
       </Text>
-      {renderContentOnDestination()}
-      <Image source={coloredArrowRightImg} style={style.coloredArrowImg} />
+      {renderContent()}
+      <Image source={renderArrowColor()} style={style.coloredArrowImg} />
     </Pressable>
   );
 };
@@ -138,12 +203,19 @@ const style = StyleSheet.create({
     borderRadius: 20,
     borderColor: GlobalStyles.grey_3.color,
   },
+  flexColumn: {
+    flexDirection: 'column',
+    flexWrap: 'wrap',
+    marginLeft: 24,
+    marginTop: -10,
+    columnGap: 70,
+  },
   titleFont: {
     fontFamily: GlobalStyles.home_title.fontFamily,
     fontSize: GlobalStyles.home_title.fontSize,
     letterSpacing: -1,
     marginLeft: 15,
-    marginTop: 10,
+    marginTop: 5,
     marginBottom: 5,
   },
   midFont: {
@@ -162,6 +234,8 @@ const style = StyleSheet.create({
     position: 'absolute',
     right: 20,
     top: 20,
+    width: 10,
+    height: 15,
   },
   innerInfoContainer: {
     flex: 1,
