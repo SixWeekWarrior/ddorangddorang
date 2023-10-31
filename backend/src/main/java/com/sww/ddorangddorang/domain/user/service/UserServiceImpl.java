@@ -1,10 +1,13 @@
 package com.sww.ddorangddorang.domain.user.service;
 
 import com.sww.ddorangddorang.domain.user.dto.UsersSignupPostReq;
+import com.sww.ddorangddorang.domain.user.dto.UsersSsafyinfoPostReq;
 import com.sww.ddorangddorang.domain.user.entity.User;
 import com.sww.ddorangddorang.domain.user.repository.UserRepository;
 import jakarta.transaction.Transactional;
+
 import java.util.Optional;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -19,19 +22,19 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public void signUp(UsersSignupPostReq usersPostReq) throws Exception {
+    public void signUp(UsersSignupPostReq usersSignupPostReq) throws Exception {
 
-        if (userRepository.findByEmail(usersPostReq.getEmail()).isPresent()) {
+        if (userRepository.findByEmail(usersSignupPostReq.getEmail()).isPresent()) {
             throw new Exception("이미 존재하는 이메일입니다.");
         }
 
         // TODO: properties 추가
         User user = User.signup()
-            .email(usersPostReq.getEmail())
-            .password(usersPostReq.getPassword())
-            .name(usersPostReq.getName())
-            .role("ROLE_USER")
-            .build();
+                .email(usersSignupPostReq.getEmail())
+                .password(usersSignupPostReq.getPassword())
+                .name(usersSignupPostReq.getName())
+                .role("ROLE_USER")
+                .build();
 
         user.passwordEncode(passwordEncoder);
         userRepository.save(user);
@@ -42,5 +45,7 @@ public class UserServiceImpl implements UserService {
         return userRepository.findByEmail(email);
     }
 
-
-}
+    public void ssafyInfo(Long userId, UsersSsafyinfoPostReq usersSsafyinfoPostReq) {
+        User user = userRepository.getReferenceById(userId);
+    }
+    }
