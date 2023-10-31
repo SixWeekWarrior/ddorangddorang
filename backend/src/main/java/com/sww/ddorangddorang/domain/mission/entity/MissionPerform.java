@@ -41,12 +41,9 @@ public class MissionPerform {
     private LocalDateTime deletedAt;    // TIMESTAMP "삭제 시간"
 
     @Builder
-    public MissionPerform(User player, Mission mission, LocalDateTime performedAt, Long reaction, String proof) {
+    public MissionPerform(User player, Mission mission) {
         this.player = player;
         this.mission = mission;
-        this.performedAt = performedAt;
-        this.reaction = reaction;
-        this.proof = proof;
     }
 
 }
