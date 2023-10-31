@@ -1,5 +1,6 @@
 package com.sww.ddorangddorang.domain.participant.entity;
 
+import com.sww.ddorangddorang.domain.mission.entity.Mission;
 import com.sww.ddorangddorang.domain.room.entity.Room;
 import com.sww.ddorangddorang.domain.user.entity.User;
 import jakarta.persistence.Column;
@@ -46,7 +47,9 @@ public class Participant {
     @JoinColumn
     private User maniti;
 
-    private Integer mission;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn
+    private Mission mission;
 
     private Boolean isWithdrawal = false;
 
@@ -67,6 +70,10 @@ public class Participant {
         this.deletedAt = LocalDateTime.now();
         this.getUser().updateStatus(1L);
         this.getUser().updateRoom(null);
+    }
+
+    public void applyWithdrawal() {
+        this.isWithdrawal = true;
     }
 
     public void allocateNickname(String nickname) {
