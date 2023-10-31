@@ -207,7 +207,7 @@ const style = StyleSheet.create({
     flexDirection: 'column',
     flexWrap: 'wrap',
     marginLeft: 24,
-    marginTop: -10,
+    marginTop: -5,
     columnGap: 70,
   },
   titleFont: {
