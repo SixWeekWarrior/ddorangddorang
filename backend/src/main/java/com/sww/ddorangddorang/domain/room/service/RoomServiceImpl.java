@@ -6,6 +6,7 @@ import com.sww.ddorangddorang.domain.participant.entity.Suffix;
 import com.sww.ddorangddorang.domain.participant.repository.ParticipantRepository;
 import com.sww.ddorangddorang.domain.participant.repository.PrefixRepository;
 import com.sww.ddorangddorang.domain.participant.repository.SuffixRepository;
+import com.sww.ddorangddorang.domain.room.dto.JoinRoomReq;
 import com.sww.ddorangddorang.domain.room.dto.RoomInfoReq;
 import com.sww.ddorangddorang.domain.room.dto.ShowUsersRes;
 import com.sww.ddorangddorang.domain.room.entity.Room;
@@ -442,5 +443,33 @@ public class RoomServiceImpl implements RoomService {
 
         log.info("RoomServiceImpl_showUsers end");
         return showUsersResList;
+    }
+
+    public Boolean responseJoinRoom(Long userId, JoinRoomReq joinRoomReq) {
+        User admin = userRepository.getReferenceById(userId);
+        User requestUser = userRepository.getReferenceById(joinRoomReq.getUserId());
+
+        if (requestUser.getStatus() != 5L) {
+            return false;
+        }
+        Room room = requestUser.getRoom();
+
+        if (!room.getAdmin().equals(admin)) {
+            return false;
+        }
+
+        if (!joinRoomReq.getAccepted()) {
+            requestUser.updateRoom(null);
+            requestUser.updateStatus(1L);
+            return false;
+        } else if (room.getMaxMember() <= room.getHeadCount()) {
+            requestUser.updateRoom(null);
+            requestUser.updateStatus(1L);
+        }
+
+        requestUser.updateStatus(3L);
+        room.joinMember();
+
+        return true;
     }
 }

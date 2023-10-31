@@ -1,5 +1,6 @@
 package com.sww.ddorangddorang.domain.room.api;
 
+import com.sww.ddorangddorang.domain.room.dto.JoinRoomReq;
 import com.sww.ddorangddorang.domain.room.dto.RoomInfoReq;
 import com.sww.ddorangddorang.domain.room.dto.ShowUsersRes;
 import com.sww.ddorangddorang.domain.room.service.RoomService;
@@ -38,10 +39,6 @@ public class RoomApi {
         Boolean joinRoomResponse = roomService.joinRoom(userId, accessCode);
 
         log.info("RoomApi_joinRoom end: " + joinRoomResponse);
-
-        if (joinRoomResponse) {
-            roomService.checkAndRunIfRoomShouldStart(userId);
-        }
 
         return joinRoomResponse;
     }
@@ -95,6 +92,17 @@ public class RoomApi {
         log.info("RoomApi_showUsers end");
 
         return showUsersResList;
+    }
+
+    @PostMapping("/response")
+    public Boolean responseJoinRoom(@RequestHeader Long userId, @RequestBody JoinRoomReq joinRoomReq) {
+        log.info("RoomApi_responseJoinToom start");
+
+        Boolean joined = roomService.responseJoinRoom(userId, joinRoomReq);
+
+        log.info("RoomApi_responseJoinToom end: " + joined);
+
+        return joined;
     }
 
 }

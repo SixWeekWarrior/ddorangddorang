@@ -1,5 +1,6 @@
 package com.sww.ddorangddorang.domain.room.service;
 
+import com.sww.ddorangddorang.domain.room.dto.JoinRoomReq;
 import com.sww.ddorangddorang.domain.room.dto.RoomInfoReq;
 import com.sww.ddorangddorang.domain.room.dto.ShowUsersRes;
 import com.sww.ddorangddorang.domain.room.entity.Room;
@@ -22,4 +23,6 @@ public interface RoomService {
     public Boolean withdrawalRoom(Long userId);
 
     public List<ShowUsersRes> showUsers(Long userId);
+
+    public Boolean responseJoinRoom(Long userId, JoinRoomReq joinRoomReq);
 }

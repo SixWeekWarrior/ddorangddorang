@@ -63,12 +63,12 @@ public class Room {
     /**
      * DB에서 DEFAULT_VALUE = CURRENT_TIMESTAMP로 설정
      */
-    @Column(name = "create_at")
+//    @Column(name = "created_at")
     @NotNull
     @CreationTimestamp
     private LocalDateTime createdAt;    //DATETIME
 
-    @Column(name = "start_at")
+//    @Column(name = "started_at")
     private LocalDateTime startedAt;    //DATETIME
 
     @Column
