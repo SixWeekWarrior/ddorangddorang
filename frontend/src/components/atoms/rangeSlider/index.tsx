@@ -13,12 +13,12 @@ type RangeSliderProps = {
   onSliderChange: (value: number) => void;
 };
 
-export default function RangeSlider({
+export const RangeSlider = ({
   multiSliderValueProp,
   sliderValueProp,
   onMultiSliderChange,
   onSliderChange,
-}: RangeSliderProps) {
+}: RangeSliderProps) => {
   const [sliderChanging, setSliderChanging] = useState(false);
   const [multiSliderChanging, setMultiSliderChanging] = useState(false);
   const [sliderValue, setSliderValue] = useState([15]);
@@ -116,7 +116,7 @@ export default function RangeSlider({
       </View>
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -164,3 +164,5 @@ const styles = StyleSheet.create({
     color: GlobalStyles.black.color,
   },
 });
+
+export default RangeSlider;

@@ -4,8 +4,29 @@ import MenuTop from '../../atoms/menuTop';
 import GroupSummary from '../../atoms/groupSummary';
 import BtnReg from '../../atoms/btnReg';
 import CodeForm from '../../atoms/codeForm';
+import {LogBox} from 'react-native';
 
-export const BeforeStart = ({navigation, route}): JSX.Element => {
+LogBox.ignoreLogs([
+  'Non-serializable values were found in the navigation state',
+]);
+type BeforeStartRouteProp = {
+  params: {
+    sliderValue: number;
+    multiSliderValue: number[];
+    selectedCount: number;
+  };
+};
+
+type BeforeStartNavigationProp = {
+  navigate: (screen: string, params?: object) => void;
+};
+
+type BeforeStartProps = {
+  route: BeforeStartRouteProp;
+  navigation: BeforeStartNavigationProp;
+};
+
+export const BeforeStart = ({navigation, route}: BeforeStartProps) => {
   const {sliderValue, multiSliderValue, selectedCount} = route.params;
   const isStartButtonDisabled = !(
     selectedCount >= multiSliderValue[0] && selectedCount <= multiSliderValue[1]
@@ -24,8 +45,6 @@ export const BeforeStart = ({navigation, route}): JSX.Element => {
           max={multiSliderValue[1]}
           selectedCount={selectedCount}
         />
-      </View>
-      <View style={styles.codeContainer}>
         <Text style={styles.code}>초대코드</Text>
         <CodeForm code="WUJtQT09" />
       </View>
@@ -43,7 +62,7 @@ export const BeforeStart = ({navigation, route}): JSX.Element => {
         />
         <BtnReg
           onPress={() => {
-            navigation.navigate('Home');
+            navigation.navigate('NavBar');
           }}
           text="시작"
           color={GlobalStyles.green.color}
@@ -60,18 +79,15 @@ const styles = StyleSheet.create({
     backgroundColor: GlobalStyles.white_2.color,
   },
   code: {
-    fontFamily: GlobalStyles.sub_title.fontFamily,
-    fontSize: GlobalStyles.sub_title.fontSize,
-    color: GlobalStyles.grey_2.color,
+    fontFamily: GlobalStyles.section_title.fontFamily,
+    fontSize: GlobalStyles.section_title.fontSize,
+    color: GlobalStyles.black.color,
     alignSelf: 'flex-start',
-    marginLeft: '15%',
+    marginLeft: 50,
   },
   sumContainer: {
     flex: 4,
-  },
-  codeContainer: {
-    flex: 2,
-    alignItems: 'center',
+    marginBottom: 50,
   },
   btnContainer: {
     flex: 1,

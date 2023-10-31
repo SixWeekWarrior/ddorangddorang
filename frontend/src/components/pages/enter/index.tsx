@@ -19,7 +19,11 @@ export const Enter = ({navigation}: {navigation: any}): JSX.Element => {
             navigation.navigate('MakeRoom');
           }}
         />
-        <InputTextwithBtn navigation={navigation} />
+        <InputTextwithBtn
+          navigation={navigation}
+          btnText="입장"
+          destination="EnterWait"
+        />
       </View>
     </View>
   );

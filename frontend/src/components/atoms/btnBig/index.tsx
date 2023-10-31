@@ -7,13 +7,13 @@ interface BtnBigProps {
   text: string;
 }
 
-export default function BtnBig({onPress, text}: BtnBigProps) {
+export const BtnBig = ({onPress, text}: BtnBigProps) => {
   return (
     <Pressable onPress={onPress} style={styles.btnContainer}>
       <Text style={styles.btn}>{text}</Text>
     </Pressable>
   );
-}
+};
 const styles = StyleSheet.create({
   btnContainer: {
     width: '90%',
@@ -32,3 +32,5 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 });
+
+export default BtnBig;

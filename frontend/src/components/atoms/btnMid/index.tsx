@@ -8,14 +8,14 @@ type BtnMidProps = {
   text: string;
 };
 
-export default function BtnMid({onPress, text}: BtnMidProps) {
+export const BtnMid = ({onPress, text}: BtnMidProps) => {
   return (
     <Pressable onPress={onPress} style={styles.btnContainer}>
       <Text style={styles.btnText}>{text}</Text>
       <Image source={ArrowRight} style={styles.arrow} />
     </Pressable>
   );
-}
+};
 const styles = StyleSheet.create({
   btnContainer: {
     width: 260,
@@ -44,3 +44,5 @@ const styles = StyleSheet.create({
     marginTop: 13,
   },
 });
+
+export default BtnMid;

@@ -67,7 +67,7 @@ export const WaitList = ({navigation, route}): JSX.Element => {
     setData(newData);
   };
 
-  const renderItem = ({item}) => (
+  const renderItem = ({item}: any) => (
     <View style={styles.profileContainer}>
       <Pressable
         style={[styles.profilepic, item.selected && styles.selectedProfile]}

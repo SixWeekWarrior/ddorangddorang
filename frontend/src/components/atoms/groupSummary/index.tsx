@@ -1,11 +1,12 @@
 import {View, Text, StyleSheet} from 'react-native';
 import GlobalStyles from '../../../styles/GlobalStyles';
+import RangeForm from '../rangeForm';
 
 type GroupSummaryProps = {
   period: number;
   min: number;
   max: number;
-  selectedCount: number;
+  selectedCount: any;
 };
 export const GroupSummary = ({
   period,
@@ -15,21 +16,27 @@ export const GroupSummary = ({
 }: GroupSummaryProps) => {
   return (
     <View style={styles.container}>
-      <View style={styles.textContainer}>
-        <Text style={styles.title}>최소인원</Text>
-        <Text style={styles.content}>{min}명</Text>
+      <View style={styles.textLeft}>
+        <Text style={styles.titleBig}>현재 인원</Text>
+        <Text style={styles.titleSmall}>(명)</Text>
       </View>
-      <View style={styles.textContainer}>
-        <Text style={styles.title}>최대인원</Text>
-        <Text style={styles.content}>{max}명</Text>
+      {parseInt(selectedCount, 10) < Number(min) ? (
+        <View style={styles.warning}>
+          <Text style={styles.warningText}>최소 인원을 확인해주세요!</Text>
+        </View>
+      ) : (
+        <></>
+      )}
+
+      <View style={styles.textCenter}>
+        <RangeForm min={min} max={max} cur={selectedCount} />
       </View>
-      <View style={styles.textContainer}>
-        <Text style={styles.title}>현재인원</Text>
-        <Text style={styles.content}>{selectedCount}명</Text>
+      <View style={styles.textLeft}>
+        <Text style={styles.titleBig}>미션 기간</Text>
+        <Text style={styles.titleSmall}>(일)</Text>
       </View>
-      <View style={styles.textContainer}>
-        <Text style={styles.title}>기간</Text>
-        <Text style={styles.content}>{period}일</Text>
+      <View style={styles.textCenter}>
+        <RangeForm min={7} max={30} cur={period} />
       </View>
     </View>
   );
@@ -41,20 +48,46 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  textContainer: {
+  textLeft: {
+    marginTop: 30,
     flexDirection: 'row',
-    width: '35%',
-    justifyContent: 'space-between',
+    alignSelf: 'flex-start',
+    marginLeft: 50,
   },
-  title: {
+  textCenter: {
+    alignSelf: 'center',
+  },
+  titleBig: {
     fontFamily: GlobalStyles.section_title.fontFamily,
     fontSize: GlobalStyles.section_title.fontSize,
+    color: GlobalStyles.black.color,
+    marginRight: 2,
+  },
+  titleSmall: {
+    fontFamily: GlobalStyles.sub_title.fontFamily,
+    fontSize: GlobalStyles.sub_title.fontSize,
+    color: GlobalStyles.black.color,
+    marginTop: 10,
+  },
+  contentBig: {
+    fontFamily: GlobalStyles.section_title.fontFamily,
+    fontSize: 25,
     color: GlobalStyles.black.color,
   },
   content: {
     fontFamily: GlobalStyles.section_title.fontFamily,
-    fontSize: GlobalStyles.section_title.fontSize,
+    alignSelf: 'center',
+    fontSize: 18,
     color: GlobalStyles.black.color,
+  },
+  warning: {
+    position: 'absolute',
+    marginTop: 30,
+  },
+  warningText: {
+    fontFamily: GlobalStyles.section_title.fontFamily,
+    fontSize: 15,
+    color: GlobalStyles.orange.color,
   },
 });
 

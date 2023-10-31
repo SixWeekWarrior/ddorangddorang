@@ -2,23 +2,28 @@ import {View, StyleSheet} from 'react-native';
 import InputText from '../../atoms/inputText';
 import BtnSm from '../../atoms/btnSm';
 
-export default function InputTextwithBtn({
-  navigation,
-}: {
+type InputTextwithBtnProps = {
   navigation: any;
-}): JSX.Element {
+  btnText: string;
+  destination: string;
+};
+export const InputTextwithBtn = ({
+  navigation,
+  btnText,
+  destination,
+}: InputTextwithBtnProps): JSX.Element => {
   return (
     <View style={styles.container}>
       <InputText />
       <BtnSm
-        text="입장"
+        text={btnText}
         onPress={() => {
-          navigation.navigate('EnterWait');
+          navigation.navigate(destination);
         }}
       />
     </View>
   );
-}
+};
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
@@ -28,3 +33,5 @@ const styles = StyleSheet.create({
     marginTop: 13,
   },
 });
+
+export default InputTextwithBtn;

@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {StyleSheet, TextInput} from 'react-native';
 import GlobalStyles from '../../../styles/GlobalStyles';
 
-export default function InputText() {
+export const InputText = () => {
   const [text, onChangeText] = useState('');
 
   return (
@@ -13,7 +13,7 @@ export default function InputText() {
       placeholder="초대코드를 입력하세요."
     />
   );
-}
+};
 
 const styles = StyleSheet.create({
   inputText: {
@@ -27,3 +27,5 @@ const styles = StyleSheet.create({
     color: GlobalStyles.grey_3.color,
   },
 });
+
+export default InputText;

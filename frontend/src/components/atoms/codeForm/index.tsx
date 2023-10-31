@@ -7,7 +7,7 @@ type CodeFormProps = {
   code: string;
 };
 
-export default function CodeForm({code}: CodeFormProps) {
+export const CodeForm = ({code}: CodeFormProps) => {
   const onCopyCode = async (code: string) => {
     try {
       await Clipboard.setString(code);
@@ -24,7 +24,7 @@ export default function CodeForm({code}: CodeFormProps) {
       </Pressable>
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -37,6 +37,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    alignSelf: 'center',
   },
   inputText: {
     borderColor: GlobalStyles.grey_4.color,
@@ -48,3 +49,5 @@ const styles = StyleSheet.create({
     marginRight: '4%',
   },
 });
+
+export default CodeForm;

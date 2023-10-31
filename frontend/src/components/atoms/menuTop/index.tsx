@@ -8,7 +8,7 @@ interface MenuTopProps {
   text: string;
 }
 
-export default function MenuTop({menu, text}: MenuTopProps) {
+export const MenuTop = ({menu, text}: MenuTopProps) => {
   return (
     <View style={styles.container}>
       <View style={styles.innerContainer}>
@@ -18,9 +18,11 @@ export default function MenuTop({menu, text}: MenuTopProps) {
       <Image source={blockImg} style={styles.blockImg}></Image>
     </View>
   );
-}
+};
+
 const styles = StyleSheet.create({
   container: {
+    height: 235,
     flexDirection: 'row',
     backgroundColor: GlobalStyles.blue.color,
   },
@@ -29,24 +31,26 @@ const styles = StyleSheet.create({
   },
   menu: {
     marginLeft: 20,
-    marginTop: 150,
-    marginBottom: -20,
+    bottom: -120,
     fontFamily: GlobalStyles.section_title.fontFamily,
-    fontSize: GlobalStyles.section_title.fontSize,
+    fontSize: 22,
     color: GlobalStyles.white_1.color,
   },
   text: {
     marginLeft: 20,
     marginRight: -10,
-    marginBottom: 20,
-    fontFamily: GlobalStyles.sub_title.fontFamily,
-    fontSize: 11,
+    bottom: -115,
+    fontFamily: GlobalStyles.content.fontFamily,
+    fontSize: 14,
+    lineHeight: 20,
     color: GlobalStyles.white_1.color,
   },
   blockImg: {
     flex: 1,
-    height: 130,
+    height: 120,
     objectFit: 'scale-down',
-    marginTop: 105,
+    bottom: -90,
   },
 });
+
+export default MenuTop;

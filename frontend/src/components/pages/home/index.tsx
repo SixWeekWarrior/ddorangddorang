@@ -3,7 +3,7 @@ import GlobalStyles from '../../../styles/GlobalStyles';
 import yellowEyeImg from '../../../assets/yellowEyeImg.png';
 import greenEyeImg from '../../../assets/greenEyeImg.png';
 import arrowRightImg from '../../../assets/arrowRightImg.png';
-import NavBar from '../../atoms/navbar';
+import InfoBox from '../../organisms/infoBox';
 
 export const Home = ({navigation}: {navigation: any}): JSX.Element => {
   return (
@@ -53,23 +53,9 @@ export const Home = ({navigation}: {navigation: any}): JSX.Element => {
         </View>
       </View>
 
-      <Pressable
-        style={style.containerMid}
-        onPress={() => {
-          navigation.navigate('미션');
-        }}>
-        <Text
-          style={{
-            ...style.titleFont,
-            color: GlobalStyles.green.color,
-            marginLeft: 15,
-            marginTop: 10,
-            marginBottom: 5,
-          }}>
-          오늘의 미션
-        </Text>
-        <Text style={style.midFont}>좋아하는 음식 알아내기</Text>
-      </Pressable>
+      <View style={style.containerMid}>
+        <InfoBox navigation={navigation} destination="MissionToday" />
+      </View>
 
       <View style={style.containerBottom}>
         <View style={style.bottomLeft}>
@@ -105,10 +91,11 @@ export const Home = ({navigation}: {navigation: any}): JSX.Element => {
               <Text style={style.midBoldFont}>완료</Text>
             </Pressable>
           </Pressable>
+
           <Pressable
             style={style.bottomBottom}
             onPress={() => {
-              console.log('내 그룹 보기 페이지 이동');
+              navigation.navigate('MyGroup');
             }}>
             <Text
               style={{
@@ -123,7 +110,6 @@ export const Home = ({navigation}: {navigation: any}): JSX.Element => {
         <View style={style.bottomMiddle}></View>
         <Image source={greenEyeImg} style={style.bottomRight}></Image>
       </View>
-      <NavBar />
     </View>
   );
 };
@@ -131,10 +117,9 @@ export const Home = ({navigation}: {navigation: any}): JSX.Element => {
 const style = StyleSheet.create({
   container: {
     backgroundColor: GlobalStyles.white_2.color,
-    flex: 1,
     color: GlobalStyles.white_1.color,
+    flex: 1,
   },
-
   containerTop: {
     backgroundColor: GlobalStyles.white_2.color,
     flexDirection: 'row',
@@ -148,14 +133,7 @@ const style = StyleSheet.create({
   },
 
   containerMid: {
-    backgroundColor: GlobalStyles.white_2.color,
-    borderWidth: 0.5,
-    borderStyle: 'solid',
-    borderRadius: 20,
-    borderColor: GlobalStyles.grey_3.color,
     flex: 0.4,
-    marginLeft: 24,
-    marginRight: 24,
   },
 
   topLeft: {
@@ -248,6 +226,7 @@ const style = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginLeft: 35,
+    marginTop: 25,
   },
   titleFont: {
     fontFamily: GlobalStyles.home_title.fontFamily,
@@ -256,7 +235,7 @@ const style = StyleSheet.create({
   },
   miniFont: {
     fontFamily: 'NotoSansKR-Black',
-    fontSize: 10,
+    fontSize: 15,
     color: GlobalStyles.grey_4.color,
     marginLeft: 15,
     marginTop: 10,
@@ -267,10 +246,12 @@ const style = StyleSheet.create({
     color: GlobalStyles.white_2.color,
   },
   midFont: {
+    color: GlobalStyles.black.color,
     fontFamily: 'NotoSansKR-Medium',
+    fontSize: GlobalStyles.home_title.fontSize,
     letterSpacing: -1,
     marginLeft: 15,
-    marginTop: -20,
+    marginTop: -10,
   },
   midBoldFont: {
     fontFamily: 'NotoSansKR-Bold',
