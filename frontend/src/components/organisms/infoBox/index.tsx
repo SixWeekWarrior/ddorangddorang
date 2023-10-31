@@ -2,7 +2,6 @@ import {Image, Pressable, StyleSheet, Text, View} from 'react-native';
 import greenArrowRightImg from '../../../assets/greenArrowRightImg.png';
 import yellowArrowRightImg from '../../../assets/yellowArrowRightImg.png';
 import whiteArrowRightImg from '../../../assets/whiteArrowRightImg.png';
-import arrowRightImg from '../../../assets/arrowRightImg.png';
 import GlobalStyles from '../../../styles/GlobalStyles';
 import InfoAtom from '../../atoms/infoAtom';
 
@@ -25,7 +24,7 @@ const InnerInfo = ({navigation}: {navigation: any}): JSX.Element => {
         onPress={() => navigation.navigate('MyGroup')}
         style={style.bottom}>
         <Text style={[style.smFont]}>내 그룹 보러가기</Text>
-        <Image source={arrowRightImg} style={style.arrowImg} />
+        <Image source={whiteArrowRightImg} style={style.arrowImg} />
       </Pressable>
     </View>
   );
@@ -77,35 +76,30 @@ const InfoBox = ({navigation, destination}: InfoBoxProps): JSX.Element => {
       case 'InfoToday':
         return (
           <View style={[style.flexColumn, {height: '50%'}]}>
-            <InfoAtom title="기분" content="약간 흐림" dark={true}></InfoAtom>
-            <InfoAtom title="입은 옷" content="빨간색" dark={true}></InfoAtom>
+            <InfoAtom title="기분" content="약간 흐림" dark={true} />
+            <InfoAtom title="입은 옷" content="빨간색" dark={true} />
           </View>
         );
       case 'InfoSsafy':
         return (
           <View style={[style.flexColumn, {height: '50%'}]}>
-            <InfoAtom title="지역" content="서울" dark={false}></InfoAtom>
-            <InfoAtom title="전공" content="비전공" dark={false}></InfoAtom>
-            <InfoAtom title="반" content="2" dark={false}></InfoAtom>
-            <InfoAtom title="층" content="8" dark={false}></InfoAtom>
+            <InfoAtom title="지역" content="서울" dark={false} />
+            <InfoAtom title="전공" content="비전공" dark={false} />
+            <InfoAtom title="반" content="2" dark={false} />
+            <InfoAtom title="층" content="8" dark={false} />
           </View>
         );
       case 'InfoEtc':
         return (
           <View style={style.flexColumn}>
-            <InfoAtom title="MBTI" content="INFJ" dark={false}></InfoAtom>
+            <InfoAtom title="MBTI" content="INFJ" dark={false} />
             <InfoAtom
               title="요즘 고민"
-              content="면접을 앞두고 긴장되는 것"
-              dark={false}></InfoAtom>
-            <InfoAtom
-              title="좋아하는 것"
-              content="하리보 젤리"
-              dark={false}></InfoAtom>
-            <InfoAtom
-              title="싫어하는 것"
-              content="차가운 음료"
-              dark={false}></InfoAtom>
+              content="체력을 기르고 싶다!"
+              dark={false}
+            />
+            <InfoAtom title="좋아하는 것" content="하리보 젤리" dark={false} />
+            <InfoAtom title="싫어하는 것" content="차가운 음료" dark={false} />
           </View>
         );
       default:
@@ -163,15 +157,23 @@ const InfoBox = ({navigation, destination}: InfoBoxProps): JSX.Element => {
   const renderArrowColor = () => {
     switch (destination) {
       case 'MissionToday':
-        return greenArrowRightImg;
+        return (
+          <Image source={greenArrowRightImg} style={style.coloredArrowImg} />
+        );
       case 'InfoToday':
-        return greenArrowRightImg;
+        return (
+          <Image source={greenArrowRightImg} style={style.coloredArrowImg} />
+        );
       case 'InfoSsafy':
-        return yellowArrowRightImg;
+        return (
+          <Image source={yellowArrowRightImg} style={style.coloredArrowImg} />
+        );
       case 'InfoEtc':
-        return whiteArrowRightImg;
+        return (
+          <Image source={whiteArrowRightImg} style={style.coloredArrowImg} />
+        );
       default:
-        return null;
+        return;
     }
   };
 
@@ -187,7 +189,7 @@ const InfoBox = ({navigation, destination}: InfoBoxProps): JSX.Element => {
         {renderTitle()}
       </Text>
       {renderContent()}
-      <Image source={renderArrowColor()} style={style.coloredArrowImg} />
+      {renderArrowColor()}
     </Pressable>
   );
 };
@@ -229,6 +231,8 @@ const style = StyleSheet.create({
   arrowImg: {
     marginLeft: 10,
     marginRight: 30,
+    width: 6,
+    height: 11,
   },
   coloredArrowImg: {
     position: 'absolute',

@@ -21,9 +21,7 @@ export const MissionToday = ({navigation: {navigate}}): JSX.Element => {
         </Text>
       </View>
       <Image source={yellowEyeImg} style={style.yellowEyeImg} />
-      <BtnBig
-        text="미션 수행하기"
-        onPress={() => navigate('GoMission')}></BtnBig>
+      <BtnBig text="미션 수행하기" onPress={() => navigate('GoMission')} />
     </View>
   );
 };

@@ -19,7 +19,7 @@ export const MyPage = ({navigation}: {navigation: any}): JSX.Element => {
       <View style={styles.bottomContainer}>
         <InfoBox navigation={navigation} destination="InfoEtc" />
       </View>
-      <View style={styles.emptyContainer}></View>
+      <View style={styles.emptyContainer} />
     </View>
   );
 };
