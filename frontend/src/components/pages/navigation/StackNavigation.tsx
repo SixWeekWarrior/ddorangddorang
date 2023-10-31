@@ -9,6 +9,7 @@ import MakeRoom from '../makeRoom';
 import WaitList from '../waitList';
 import MyGroup from '../myGroup';
 import MissionToday from '../missionToday';
+import {GoMission} from '../goMission';
 
 const StackNavigation = () => {
   const Stack = createStackNavigator();
@@ -58,6 +59,11 @@ const StackNavigation = () => {
         <Stack.Screen
           name="MissionToday"
           component={MissionToday}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="GoMission"
+          component={GoMission}
           options={{headerShown: false}}
         />
       </Stack.Navigator>

@@ -3,9 +3,9 @@ import MenuTop from '../../atoms/menuTop';
 import pinkEyeImg from '../../../assets/pinkEyeImg.png';
 import yellowEyeImg from '../../../assets/yellowEyeImg.png';
 import GlobalStyles from '../../../styles/GlobalStyles';
-import BtnBig from '../../atoms/btnBig';
+import InputTextwithBtn from '../../molecules/inputTextwithBtn';
 
-export const MissionToday = ({navigation: {navigate}}): JSX.Element => {
+export const GoMission = ({navigation}: {navigation: any}): JSX.Element => {
   return (
     <View style={style.container}>
       <MenuTop
@@ -17,13 +17,14 @@ export const MissionToday = ({navigation: {navigate}}): JSX.Element => {
         <Text style={style.titleText}>미션 소개</Text>
         <Text style={style.missionText}>좋아하는 음식 알아내기</Text>
         <Text style={style.contentText}>
-          {`좋아하는 음식을 알아내는 것은\n빠르게 친해질 수 있는 방법 중 하나이죠!\n오늘도 미션 도장을 찍어봐요!`}
+          {`좋아하는 음식을 알아냈군요!\n정답을 입력해서 확인 받아볼까요?`}
         </Text>
+        <InputTextwithBtn
+          navigation={navigation}
+          btnText="입력"
+          destination="MissionToday"></InputTextwithBtn>
       </View>
       <Image source={yellowEyeImg} style={style.yellowEyeImg} />
-      <BtnBig
-        text="미션 수행하기"
-        onPress={() => navigate('GoMission')}></BtnBig>
     </View>
   );
 };
@@ -72,4 +73,4 @@ const style = StyleSheet.create({
     marginTop: 10,
   },
 });
-export default MissionToday;
+export default GoMission;
