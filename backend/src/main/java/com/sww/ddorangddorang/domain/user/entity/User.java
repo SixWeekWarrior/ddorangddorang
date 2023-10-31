@@ -1,8 +1,13 @@
 package com.sww.ddorangddorang.domain.user.entity;
 
+import com.sww.ddorangddorang.domain.room.entity.Room;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -11,8 +16,10 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicInsert;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+@DynamicInsert
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
@@ -29,9 +36,10 @@ public class User {
     private String role;                // VARCHAR(255)                                 - for security
     private String refreshToken;        // VARCHAR(255) "리프레시 토큰"                   - for jwt
     private Integer generation;         // INT
-    private Byte isMajor;               // TINYINT
+    private Boolean isMajor;               // TINYINT
     private Byte gender;                // TINYINT
     private Integer campus;             // INT
+    @Column(name = "class")
     private Integer classes;            // INT
     private Integer floor;              // INT
     private String profileImage;        // TEXT "프로필 이미지"
@@ -40,7 +48,9 @@ public class User {
     private String mbti;                // VARCHAR(255)
     private String worry;               // TEXT
     private Integer reportCount;        // INT
-    private Long participate;           // BIGINT - FK(ROOM)
+    @JoinColumn(name = "participate")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Room room;           // BIGINT - FK(ROOM)
     private Long status;                // BIGINT - FK(MASTER_CODE)
     private LocalDateTime deletedAt;    // TIMESTAMP
 
@@ -72,5 +82,13 @@ public class User {
 
     public void updateRefreshToken(String updatedRefreshToken) {
         this.refreshToken = updatedRefreshToken;
+    }
+
+    public void updateRoom(Room room) {
+        this.room = room;
+    }
+
+    public void updateStatus(Long status) {
+        this.status = status;
     }
 }
