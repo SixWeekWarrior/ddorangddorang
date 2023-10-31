@@ -9,11 +9,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface RoomRepository extends JpaRepository<Room, Long> {
 
-    Room findByAccessCodeAndStartedAtAndDeletedAt(Integer accessCode, LocalDateTime startedAt,
-        LocalDateTime deletedAt) throws EntityNotFoundException;
+    Room findByAccessCodeAndStartedAtNullAndDeletedAtNull(Integer accessCode)
+        throws EntityNotFoundException;
 
-    List<Room> findAllByStartedAtAndDeletedAt(LocalDateTime startedAt, LocalDateTime deletedAt);
+    List<Room> findAllByStartedAtNullAndDeletedAtNull();
 
-    Room findByAdminAndStartedAtAndDeletedAt(User admin, LocalDateTime startedAt,
-        LocalDateTime deletedAt) throws EntityNotFoundException;
+    Room findByAdminAndStartedAtNullAndDeletedAtNull(User admin)
+        throws EntityNotFoundException;
 }

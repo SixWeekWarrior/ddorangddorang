@@ -21,7 +21,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
 
 @DynamicInsert
-@Table(name = "room")
+@Table
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
@@ -37,7 +37,7 @@ public class Room {
     private User admin; //BIGINT
 
     @NotNull
-    private Boolean isOpen;  //TINYINT(1)
+    private Boolean isOpen = true;  //TINYINT(1)
 
     @NotNull
     private Integer accessCode;  //INT
@@ -54,7 +54,7 @@ public class Room {
      */
 //    @Column(name = "head_count")
     @NotNull
-    private Integer headCount;  //INT
+    private Integer headCount = 1;  //INT
 
     //    @Column(name = "max_member")
     @NotNull
@@ -66,12 +66,11 @@ public class Room {
 //    @Column(name = "created_at")
     @NotNull
     @CreationTimestamp
-    private LocalDateTime createdAt;    //DATETIME
+    private LocalDateTime createdAt = LocalDateTime.now();    //DATETIME
 
 //    @Column(name = "started_at")
     private LocalDateTime startedAt;    //DATETIME
 
-    @Column
     @NotNull
     private Integer duration;    //INT
 
@@ -117,13 +116,10 @@ public class Room {
         Integer duration,
         String profileImage) {
         this.admin = admin;
-        this.isOpen = true;
         this.accessCode = accessCode;
         this.campus = admin.getCampus();
         this.minMember = minMember;
-        this.headCount = 1;
         this.maxMember = maxMember;
-        this.createdAt = LocalDateTime.now();
         this.duration = duration;
         this.profileImage = profileImage;
     }

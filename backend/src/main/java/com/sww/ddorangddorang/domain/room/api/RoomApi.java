@@ -26,7 +26,7 @@ public class RoomApi {
 
     private final RoomService roomService;
 
-    @PostMapping("/")
+    @PostMapping
     public Integer createRoom(@RequestHeader Long userId, @RequestBody RoomInfoReq roomInfoReq) {
         log.info("RoomApi_createRoom start");
         Integer accessCode = roomService.createRoom(userId, roomInfoReq);
@@ -44,7 +44,7 @@ public class RoomApi {
         return joinRoomResponse;
     }
 
-    @PutMapping("/")
+    @PutMapping
     public Boolean updateRoom(@RequestHeader Long userId, @RequestBody RoomInfoReq roomInfoReq) {
         log.info("RoomApi_updateRoom start");
         Boolean updateRoomResponse = roomService.updateRoom(userId, roomInfoReq);
@@ -59,7 +59,7 @@ public class RoomApi {
 
     //방장이 방을 삭제하는 API
     //방장을 포함한 전원이 탈퇴
-    @DeleteMapping("/admin/")
+    @DeleteMapping("/admin")
     public Boolean deleteRoom(@RequestHeader Long userId) {
         log.info("RoomApi_deleteRoom start");
 
@@ -73,7 +73,7 @@ public class RoomApi {
     //방 참여 인원이 방을 나가는 API
     //회원 혼자만이 탈퇴
     //방장은 방 탈퇴가 불가능
-    @DeleteMapping("/")
+    @DeleteMapping
     public Boolean withdrawalRoom(@RequestHeader Long userId) {
         log.info("RoomApi_withdrawalRoom start");
 
@@ -85,7 +85,7 @@ public class RoomApi {
     }
 
     @GetMapping("/{roomId}")
-    public List<ShowUsersRes> showUsers(@RequestHeader Long userId) {
+    public List<ShowUsersRes> showUsers(@RequestHeader Long userId, @PathVariable Long roomId) {
         log.info("RoomApi_showUsers start");
 
         List<ShowUsersRes> showUsersResList = roomService.showUsers(userId);

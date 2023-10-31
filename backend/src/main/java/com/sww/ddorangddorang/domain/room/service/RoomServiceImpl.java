@@ -28,7 +28,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-@Transactional
 @RequiredArgsConstructor
 @Slf4j
 @Service
@@ -41,6 +40,7 @@ public class RoomServiceImpl implements RoomService {
     private final SuffixRepository suffixRepository;
     private final RedisUtil redisUtil;
 
+    @Transactional
     public Integer createRoom(Long userId, RoomInfoReq roomInfoReq) {
         //사용자가 현재 참여중인 방이 있는지
         //선택하지 않은 옵션
@@ -88,12 +88,13 @@ public class RoomServiceImpl implements RoomService {
         return room.getAccessCode();
     }
 
-    private Integer generateAccessCode() {
+    @Transactional
+    public Integer generateAccessCode() {
         Integer accessCode = redisUtil.getAccessCode();
 
         if (accessCode == -1) {
             Boolean[] accessCodeStatusList = new Boolean[10000];
-            List<Room> roomList = roomRepository.findAllByStartedAtAndDeletedAt(null, null);
+            List<Room> roomList = roomRepository.findAllByStartedAtNullAndDeletedAtNull();
 
             for (Room room : roomList) {
                 accessCodeStatusList[room.getAccessCode()] = true;
@@ -105,6 +106,7 @@ public class RoomServiceImpl implements RoomService {
         return accessCode;
     }
 
+    @Transactional
     public Boolean joinRoom(Long userId, Integer accessCode) {
         log.info("RoomServiceImpl_joinRoom start: " + userId + " " + accessCode);
 
@@ -124,8 +126,7 @@ public class RoomServiceImpl implements RoomService {
         Room room = null;
 
         try {
-            room = roomRepository.findByAccessCodeAndStartedAtAndDeletedAt(accessCode, null,
-                null);
+            room = roomRepository.findByAccessCodeAndStartedAtNullAndDeletedAtNull(accessCode);
         } catch (EntityNotFoundException e) {
             e.printStackTrace();
         }
@@ -136,7 +137,6 @@ public class RoomServiceImpl implements RoomService {
 
         room.joinMember();
 
-//        TODO: User에서 상태를 변경하는 함수 필요
         user.updateStatus(3L);
         Participant participant = Participant.builder()
             .room(room)
@@ -150,9 +150,10 @@ public class RoomServiceImpl implements RoomService {
     }
 
     //TODO: 미션 부여는 아직 안 됨
+    @Transactional
     public void startGame(Room room) {
-        List<Participant> participantList = participantRepository.findAllByRoomAndIsWithdrawalAndDeletedAt(
-            room, false, null);
+        List<Participant> participantList = participantRepository.findAllByRoomAndIsWithdrawalFalseAndDeletedAtIsNull(
+            room);
 
         Map<Integer, Participant> indexToParticipant = new HashMap<>();
         Map<Participant, Integer> participantToIndex = new HashMap<>();
@@ -281,7 +282,7 @@ public class RoomServiceImpl implements RoomService {
         room.startGame();
     }
 
-    Boolean matchManito(Integer current, Boolean[] searched, Integer[] matchedManito,
+    private Boolean matchManito(Integer current, Boolean[] searched, Integer[] matchedManito,
         List<Participant> wishManitoList, Map<Participant, Integer> participantToIndex) {
         for (Participant participant : wishManitoList) {
             Integer next = participantToIndex.get(participant);
@@ -304,6 +305,7 @@ public class RoomServiceImpl implements RoomService {
         return false;
     }
 
+    @Transactional
     public Boolean deleteGame(Long userId) {
         User admin = null;
 
@@ -319,7 +321,7 @@ public class RoomServiceImpl implements RoomService {
 
         Room room = null;
         try {
-            room = roomRepository.findByAdminAndStartedAtAndDeletedAt(admin, null, null);
+            room = roomRepository.findByAdminAndStartedAtNullAndDeletedAtNull(admin);
         } catch (EntityNotFoundException e) {
             e.printStackTrace();
         }
@@ -336,6 +338,7 @@ public class RoomServiceImpl implements RoomService {
         return true;
     }
 
+    @Transactional
     public Boolean withdrawalRoom(Long userId) {
         log.info("RoomServiceImpl_withdrawalRoom start");
 
@@ -362,6 +365,7 @@ public class RoomServiceImpl implements RoomService {
         return true;
     }
 
+    @Transactional
     public Boolean updateRoom(Long userId, RoomInfoReq roomInfoReq) {
         log.info("RoomServiceImpl_updateRoom start");
         User user = null;
@@ -384,7 +388,7 @@ public class RoomServiceImpl implements RoomService {
         Room room = null;
 
         try {
-            room = roomRepository.findByAdminAndStartedAtAndDeletedAt(user, null, null);
+            room = roomRepository.findByAdminAndStartedAtNullAndDeletedAtNull(user);
         } catch (EntityNotFoundException e) {
             e.printStackTrace();
         }
@@ -403,6 +407,7 @@ public class RoomServiceImpl implements RoomService {
 
     }
 
+    @Transactional
     public void checkAndRunIfRoomShouldStart(Long userId) {
         User user = userRepository.getReferenceById(userId);
 
@@ -445,6 +450,7 @@ public class RoomServiceImpl implements RoomService {
         return showUsersResList;
     }
 
+    @Transactional
     public Boolean responseJoinRoom(Long userId, JoinRoomReq joinRoomReq) {
         User admin = userRepository.getReferenceById(userId);
         User requestUser = userRepository.getReferenceById(joinRoomReq.getUserId());

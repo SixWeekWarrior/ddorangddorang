@@ -48,10 +48,10 @@ public class Participant {
 
     private Integer mission;
 
-    private Boolean isWithdrawal;
+    private Boolean isWithdrawal = false;
 
-    @Column(name = "`change`")
-    private Short change;
+    @Column(name = "changes")
+    private Short change = 0;
 
     private LocalDateTime deletedAt;
 
@@ -65,8 +65,8 @@ public class Participant {
 
     public void deleteParticipant() {
         this.deletedAt = LocalDateTime.now();
-//        Participant를 null로, 상태를 1L로 설정
-//        this.getUser().removeRoom();
+        this.getUser().updateStatus(1L);
+        this.getUser().updateRoom(null);
     }
 
     public void allocateNickname(String nickname) {
@@ -77,7 +77,5 @@ public class Participant {
     public Participant(User user, Room room) {
         this.user = user;
         this.room = room;
-        this.isWithdrawal = false;
-        this.change = 0;
     }
 }

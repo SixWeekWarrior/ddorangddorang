@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
 
 @DynamicInsert
-@Table(name = "report")
+@Table
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
