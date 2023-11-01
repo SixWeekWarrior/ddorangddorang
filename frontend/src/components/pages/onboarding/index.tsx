@@ -1,10 +1,33 @@
-import {Text, View, Image, StyleSheet} from 'react-native';
+import {View, Image, StyleSheet, TouchableOpacity, Text} from 'react-native';
 import GlobalStyles from '../../../styles/GlobalStyles';
 import blockImg from '../../../assets/blockImg.png';
 import logoImg from '../../../assets/logoImg.png';
 import BtnBig from '../../atoms/btnBig';
+import googleLoginImg from '../../../assets/googleLoginImg.png';
+import {useMemo, useRef} from 'react';
+import BottomSheet from '@gorhom/bottom-sheet';
 
 export const Onboarding = ({navigation}: {navigation: any}): JSX.Element => {
+  const bottomSheetRef = useRef<BottomSheet>(null);
+  const snapPoints = useMemo(() => ['25%'], []);
+
+  const goLogin = () => (
+    <View style={styles.contentContainer}>
+      <TouchableOpacity
+        onPress={() => {
+          navigation.navigate('Enter');
+        }}>
+        <Image source={googleLoginImg} style={styles.googleLoginImg} />
+      </TouchableOpacity>
+    </View>
+  );
+
+  const handleExpand = () => {
+    if (bottomSheetRef.current) {
+      bottomSheetRef.current.expand();
+    }
+  };
+
   return (
     <View style={styles.container}>
       <Image source={blockImg} style={styles.blockImg} />
@@ -19,12 +42,17 @@ export const Onboarding = ({navigation}: {navigation: any}): JSX.Element => {
       <Text style={styles.content}>
         싸피에서의 잊지 못할 추억을 만들어봐요 :)
       </Text>
-      <BtnBig
-        text="시작하기"
-        onPress={() => {
-          navigation.navigate('Enter');
-        }}
-      />
+      <BtnBig text="시작하기" onPress={handleExpand} />
+      <BottomSheet
+        ref={bottomSheetRef}
+        snapPoints={snapPoints}
+        bottomInset={46}
+        detached={true}
+        index={-1}
+        enablePanDownToClose={true}
+        style={styles.sheetContainer}>
+        {goLogin()}
+      </BottomSheet>
     </View>
   );
 };
@@ -38,6 +66,20 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: GlobalStyles.white_2.color,
   },
+  sheetContainer: {
+    paddingBottom: 20,
+  },
+  contentContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    bord: GlobalStyles.grey_2.color,
+  },
+  googleLoginImg: {
+    width: 220,
+    height: 50,
+    objectFit: 'scale-down',
+  },
   blockImg: {
     width: 260,
     height: 213,
@@ -50,6 +92,12 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     marginTop: 30,
     marginBottom: 7,
+  },
+  notice: {
+    color: GlobalStyles.black.color,
+    fontFamily: GlobalStyles.content.fontFamily,
+    fontSize: 25,
+    marginBottom: 50,
   },
   title: {
     color: GlobalStyles.black.color,
