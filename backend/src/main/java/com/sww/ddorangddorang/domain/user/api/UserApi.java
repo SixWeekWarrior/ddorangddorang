@@ -1,8 +1,10 @@
 package com.sww.ddorangddorang.domain.user.api;
 
+import com.sww.ddorangddorang.domain.user.dto.UsersMoreinfoPostReq;
 import com.sww.ddorangddorang.domain.user.dto.UsersSignupPostReq;
 import com.sww.ddorangddorang.domain.user.dto.UsersSsafyinfoPostReq;
 import com.sww.ddorangddorang.domain.user.service.UserService;
+import com.sww.ddorangddorang.global.common.CommonResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1/users")
 public class UserApi {
     private final UserService userService;
+    private final static String SUCCESS = "Success";
 
     @PostMapping("/signup")
     public String signUp(@RequestBody UsersSignupPostReq usersSignupPostReq) throws Exception {
@@ -26,9 +29,18 @@ public class UserApi {
     }
 
     @PostMapping("/ssafyinfo")
-    public String ssafyInfo(@RequestHeader Long userId, @RequestBody UsersSsafyinfoPostReq usersSsafyinfoPostReq) throws Exception {
+    public CommonResponse<String> ssafyInfo(@RequestHeader Long userId, @RequestBody UsersSsafyinfoPostReq usersSsafyinfoPostReq) {
+        log.info("UserApi_ssafyInfo starts");
         userService.ssafyInfo(userId, usersSsafyinfoPostReq);
-        return "수정완료";
+        log.info("UserApi_ssafyInfo ends");
+        return CommonResponse.success(SUCCESS);
     }
 
+    @PostMapping("/moreinfo")
+    public CommonResponse<String> moreInfo(@RequestHeader Long userId, @RequestBody UsersMoreinfoPostReq usersMoreinfoPostReq) {
+        log.info("UserApi_moreInfo starts");
+        userService.moreInfo(userId, usersMoreinfoPostReq);
+        log.info("UserApi_moreInfo ends");
+        return CommonResponse.success(SUCCESS);
+    }
 }
