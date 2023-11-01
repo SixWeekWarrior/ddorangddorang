@@ -1,5 +1,6 @@
 package com.sww.ddorangddorang.domain.user.service;
 
+import com.sww.ddorangddorang.domain.user.dto.UsersMoreinfoPostReq;
 import com.sww.ddorangddorang.domain.user.dto.UsersSignupPostReq;
 import com.sww.ddorangddorang.domain.user.dto.UsersSsafyinfoPostReq;
 import com.sww.ddorangddorang.domain.user.entity.User;
@@ -48,4 +49,9 @@ public class UserServiceImpl implements UserService {
     public void ssafyInfo(Long userId, UsersSsafyinfoPostReq usersSsafyinfoPostReq) {
         User user = userRepository.getReferenceById(userId);
     }
+
+    public void moreInfo(Long userId, UsersMoreinfoPostReq usersMoreinfoPostReq) {
+        User user = userRepository.getReferenceById(userId);
     }
+
+}

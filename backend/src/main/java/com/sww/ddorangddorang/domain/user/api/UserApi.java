@@ -1,5 +1,6 @@
 package com.sww.ddorangddorang.domain.user.api;
 
+import com.sww.ddorangddorang.domain.user.dto.UsersMoreinfoPostReq;
 import com.sww.ddorangddorang.domain.user.dto.UsersSignupPostReq;
 import com.sww.ddorangddorang.domain.user.dto.UsersSsafyinfoPostReq;
 import com.sww.ddorangddorang.domain.user.entity.User;
@@ -30,9 +31,16 @@ public class UserApi {
     }
 
     @PostMapping("/ssafyinfo")
-    public String ssafyInfo(@RequestHeader Long userId, @RequestBody UsersSsafyinfoPostReq usersSsafyinfoPostReq) throws Exception {
+    public String ssafyInfo(@RequestHeader Long userId, @RequestBody UsersSsafyinfoPostReq usersSsafyinfoPostReq) {
         userService.ssafyInfo(userId, usersSsafyinfoPostReq);
         return "수정완료";
     }
+
+    @PostMapping("/moreinfo")
+    public String moreInfo(@RequestHeader Long userId, @RequestBody UsersMoreinfoPostReq usersMoreinfoPostReq) {
+        userService.moreInfo(userId, usersMoreinfoPostReq);
+        return "수정완료";
+    }
+
 
 }
