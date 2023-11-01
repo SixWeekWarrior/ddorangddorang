@@ -15,7 +15,6 @@ import com.sww.ddorangddorang.domain.user.entity.User;
 import com.sww.ddorangddorang.domain.user.repository.UserRepository;
 import com.sww.ddorangddorang.global.util.RedisUtil;
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.persistence.criteria.CriteriaBuilder.In;
 import jakarta.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,7 +22,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -55,11 +53,13 @@ public class RoomServiceImpl implements RoomService {
         }
 
         if (user.getStatus() != 1L) {
+            log.info("RoomServiceImpl_createRoom end: user's status = " + user.getStatus());
             return -1;
         }
 
         if (roomInfoReq.getMinMember() < 1
             || roomInfoReq.getMinMember() > roomInfoReq.getMaxMember()) {
+            log.info("RoomServiceImpl_createRoom end: wrong minMember value or maxMember value");
             return -1;
         }
 
@@ -74,14 +74,12 @@ public class RoomServiceImpl implements RoomService {
             .maxMember(roomInfoReq.getMaxMember())
             .duration(roomInfoReq.getDuration())
             .build();
-
         roomRepository.save(room);
 
         Participant participant = Participant.builder()
             .room(room)
             .user(user)
             .build();
-
         participantRepository.save(participant);
 
         log.info("RoomServiceImpl_createRoom end: " + room.getAccessCode());
@@ -90,6 +88,7 @@ public class RoomServiceImpl implements RoomService {
 
     @Transactional
     public Integer generateAccessCode() {
+        log.info("RoomServiceImpl_generateAccessCode start");
         Integer accessCode = redisUtil.getAccessCode();
 
         if (accessCode == -1) {
@@ -103,6 +102,7 @@ public class RoomServiceImpl implements RoomService {
             accessCode = redisUtil.initAccessCode(accessCodeStatusList);
         }
 
+        log.info("RoomServiceImpl_generateAccessCode end: " + accessCode);
         return accessCode;
     }
 
@@ -120,6 +120,7 @@ public class RoomServiceImpl implements RoomService {
 
         //TODO: 참여 중인 방이 이미 있는데 새로운 방에 참가하는 건 안 됨 -> 거절 신호 필요
         if (user.getStatus() != 1L) {
+            log.info("RoomServiceImpl_joinRoom end: user's status = " + user.getStatus());
             return false;
         }
 
@@ -132,26 +133,135 @@ public class RoomServiceImpl implements RoomService {
         }
 
         if (room.getHeadCount() >= room.getMaxMember()) {
+            log.info("RoomServiceImpl_joinRoom end: room is already full");
             return false;
         }
 
-        room.joinMember();
-
-        user.updateStatus(3L);
-        Participant participant = Participant.builder()
-            .room(room)
-            .user(user)
-            .build();
-
-        participantRepository.save(participant);
+        user.updateRoom(room);
+        user.updateStatus(5L);
 
         log.info("RoomServiceImpl_joinRoom done");
         return true;
     }
 
+    @Transactional
+    public Boolean updateRoom(Long userId, RoomInfoReq roomInfoReq) {
+        log.info("RoomServiceImpl_updateRoom start");
+        User user = null;
+
+        try {
+            user = userRepository.getReferenceById(userId);
+        } catch (EntityNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        if (user.getStatus() != 2L) {
+            log.info("RoomServiceImpl_updateRoom end: user's status = " + user.getStatus());
+            return false;
+        }
+
+        if (roomInfoReq.getMinMember() < 1
+            || roomInfoReq.getMinMember() > roomInfoReq.getMaxMember()) {
+            log.info("RoomServiceImpl_updateRoom end: invalid minMember value or maxMember value");
+            return false;
+        }
+
+        Room room = null;
+
+        try {
+            room = roomRepository.findByAdminAndStartedAtNullAndDeletedAtNull(user);
+        } catch (EntityNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        Integer currentCount = room.getHeadCount();
+        //현재 인원보다 최소 인원이 많거나, 현재 인원보다 최대 인원이 적은 경우: false 반환
+        if (roomInfoReq.getMinMember() < currentCount
+            || currentCount > roomInfoReq.getMaxMember()) {
+            log.info(
+                "RoomService_updateRoom end: current participants cannot be bigger than maxMember");
+            return false;
+        }
+
+        room.updateRoomInfo(roomInfoReq);
+
+        log.info("RoomServiceImpl_updateRoom end: " + true);
+        return true;
+    }
+
+    @Transactional
+    public Boolean deleteGame(Long userId) {
+        log.info("RoomServiceImpl_deleteGame start");
+        User admin = null;
+
+        try {
+            admin = userRepository.getReferenceById(userId);
+        } catch (EntityNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        if (admin.getStatus() != 2L) {
+            return false;
+        }
+
+        Room room = null;
+        try {
+            room = roomRepository.findByAdminAndStartedAtNullAndDeletedAtNull(admin);
+        } catch (EntityNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        List<User> userList = userRepository.findAllByRoom(room);
+
+        for (User user : userList) {
+            user.updateStatus(1L);
+            user.updateRoom(null);
+        }
+
+        room.deleteRoom();
+        redisUtil.putAccessCode(room.getAccessCode());
+
+        log.info("RoomServiceImpl_deleteGame done");
+        return true;
+    }
+
+    @Transactional
+    public Boolean withdrawalRoom(Long userId) {
+        log.info("RoomServiceImpl_withdrawalRoom start");
+
+        User user = null;
+
+        try {
+            user = userRepository.getReferenceById(userId);
+        } catch (EntityNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        if (user.getStatus() != 3L && user.getStatus() != 5L) {
+            log.info("RoomServiceImpl_withdrawalRoom end: user's status = " + user.getStatus());
+            return false;
+        }
+
+        Room room = user.getRoom();
+
+        if (user.getStatus() == 3L) {
+            room.removeMember();
+        }
+
+        Participant participant = participantRepository.findByUserAndRoomAndIsWithdrawalFalse(user,
+            room);
+        participant.deleteParticipant();
+        participant.applyWithdrawal();
+
+        log.info("RoomServiceImpl_withdrawalRoom end: " + true);
+        return true;
+    }
+
+
     //TODO: 미션 부여는 아직 안 됨
     @Transactional
     public void startGame(Room room) {
+        log.info("RoomServiceImpl_startGame start");
         List<Participant> participantList = participantRepository.findAllByRoomAndIsWithdrawalFalseAndDeletedAtIsNull(
             room);
 
@@ -266,7 +376,7 @@ public class RoomServiceImpl implements RoomService {
                     Integer randomNumber = (int) (Math.random() * prefixListSize * suffixListSize);
                     prefixSelected = randomNumber / suffixListSize;
                     suffixSelected = randomNumber % suffixListSize;
-                } while (nicknameUsage[prefixSelected][suffixSelected] != true);
+                } while (!nicknameUsage[prefixSelected][suffixSelected]);
 
                 participant.allocateNickname(
                     prefixList.get(prefixSelected) + " " + suffixList.get(suffixSelected));
@@ -280,6 +390,8 @@ public class RoomServiceImpl implements RoomService {
 
         room.updateHeadCount(count);
         room.startGame();
+        redisUtil.putAccessCode(room.getAccessCode());
+        log.info("RoomServiceImpl_startGame end: " + count + " participants started a gane");
     }
 
     private Boolean matchManito(Integer current, Boolean[] searched, Integer[] matchedManito,
@@ -303,119 +415,6 @@ public class RoomServiceImpl implements RoomService {
         }
 
         return false;
-    }
-
-    @Transactional
-    public Boolean deleteGame(Long userId) {
-        User admin = null;
-
-        try {
-            admin = userRepository.getReferenceById(userId);
-        } catch (EntityNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        if (admin.getStatus() != 2L) {
-            return false;
-        }
-
-        Room room = null;
-        try {
-            room = roomRepository.findByAdminAndStartedAtNullAndDeletedAtNull(admin);
-        } catch (EntityNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        List<User> userList = userRepository.findAllByRoom(room);
-
-        for (User user : userList) {
-            user.updateStatus(1L);
-            user.updateRoom(null);
-        }
-
-        room.deleteRoom();
-
-        return true;
-    }
-
-    @Transactional
-    public Boolean withdrawalRoom(Long userId) {
-        log.info("RoomServiceImpl_withdrawalRoom start");
-
-        User user = null;
-
-        try {
-            user = userRepository.getReferenceById(userId);
-        } catch (EntityNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        if (user.getStatus() != 3L) {
-            log.info("RoomServiceImpl_withdrawalRoom end: " + false);
-            return false;
-        }
-
-        Room room = user.getRoom();
-
-        user.updateStatus(1L);
-        user.updateRoom(null);
-        room.removeMember();
-
-        log.info("RoomServiceImpl_withdrawalRoom end: " + true);
-        return true;
-    }
-
-    @Transactional
-    public Boolean updateRoom(Long userId, RoomInfoReq roomInfoReq) {
-        log.info("RoomServiceImpl_updateRoom start");
-        User user = null;
-
-        try {
-            user = userRepository.getReferenceById(userId);
-        } catch (EntityNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        if (user.getStatus() != 2L) {
-            return false;
-        }
-
-        if (roomInfoReq.getMinMember() < 1
-            || roomInfoReq.getMinMember() > roomInfoReq.getMaxMember()) {
-            return false;
-        }
-
-        Room room = null;
-
-        try {
-            room = roomRepository.findByAdminAndStartedAtNullAndDeletedAtNull(user);
-        } catch (EntityNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        Integer currentCount = room.getHeadCount();
-        //현재 인원보다 최소 인원이 많거나, 현재 인원보다 최대 인원이 적은 경우: false 반환
-        if (roomInfoReq.getMinMember() < currentCount
-            || currentCount > roomInfoReq.getMaxMember()) {
-            return false;
-        }
-
-        room.updateRoomInfo(roomInfoReq);
-
-        log.info("RoomServiceImpl_updateRoom end: " + true);
-        return true;
-
-    }
-
-    @Transactional
-    public void checkAndRunIfRoomShouldStart(Long userId) {
-        User user = userRepository.getReferenceById(userId);
-
-        Room room = user.getRoom();
-
-        if (room.getHeadCount() == room.getMaxMember()) {
-            startGame(room);
-        }
     }
 
     public List<ShowUsersRes> showUsers(Long userId) {
@@ -452,30 +451,78 @@ public class RoomServiceImpl implements RoomService {
 
     @Transactional
     public Boolean responseJoinRoom(Long userId, JoinRoomReq joinRoomReq) {
+        log.info("RoomServiceImpl_responseToJoinRoom start");
         User admin = userRepository.getReferenceById(userId);
         User requestUser = userRepository.getReferenceById(joinRoomReq.getUserId());
 
         if (requestUser.getStatus() != 5L) {
+            log.info("RoomServiceImpl_responseToJoinRoom end: user's status = "
+                + requestUser.getStatus());
             return false;
         }
         Room room = requestUser.getRoom();
 
         if (!room.getAdmin().equals(admin)) {
+            log.info("RoomServiceImpl_responseToJoinRoom end: API called user is not admin");
             return false;
         }
 
         if (!joinRoomReq.getAccepted()) {
             requestUser.updateRoom(null);
             requestUser.updateStatus(1L);
+            log.info("RoomServiceImpl_responseToJoinRoom end: " + false);
             return false;
         } else if (room.getMaxMember() <= room.getHeadCount()) {
             requestUser.updateRoom(null);
             requestUser.updateStatus(1L);
+            log.info("RoomServiceImpl_responseToJoinRoom end: not enough allowed participants");
+            return false;
         }
 
         requestUser.updateStatus(3L);
         room.joinMember();
 
+        log.info("RoomServiceImpl_responseToJoinRoom end");
         return true;
+    }
+
+    @Transactional
+    public Boolean checkAndRunIfRoomShouldStart(Long userId) {
+        log.info("RoomServiceImpl_checkAndRunIfRoomShouldStart start");
+        User user = userRepository.getReferenceById(userId);
+
+        Room room = user.getRoom();
+
+        if (room.getHeadCount() == room.getMaxMember()) {
+            startGame(room);
+            log.info("RoomServiceImpl_checkAndRunIfRoomShouldStart end");
+            return true;
+        }
+
+        log.info("RoomServiceImpl_checkAndRunIfRoomShouldStart end");
+        return false;
+    }
+
+    @Transactional
+    public Boolean checkAndStartGame(Long userId) {
+        log.info("RoomServiceImpl_checkAndStartGame start");
+        User user = userRepository.getReferenceById(userId);
+
+        Room room = user.getRoom();
+
+        if (!user.equals(room.getAdmin())) {
+            log.info("RoomServiceImpl_checkAndStartGame end: requested user is not admin");
+            return false;
+        }
+
+        if (room.getMinMember() <= room.getHeadCount()
+            && room.getHeadCount() <= room.getMinMember()) {
+            startGame(room);
+            log.info("RoomServiceImpl_checkAndStartGame end");
+            return true;
+        }
+
+        log.info("RoomServiceImpl_checkAndStartGame end: invalid play condition");
+        return false;
     }
 }
