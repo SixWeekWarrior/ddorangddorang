@@ -4,6 +4,7 @@ import com.sww.ddorangddorang.domain.user.dto.UsersMoreinfoPostReq;
 import com.sww.ddorangddorang.domain.user.dto.UsersSignupPostReq;
 import com.sww.ddorangddorang.domain.user.dto.UsersSsafyinfoPostReq;
 import com.sww.ddorangddorang.domain.user.service.UserService;
+import com.sww.ddorangddorang.global.common.CommonResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -27,15 +28,15 @@ public class UserApi {
     }
 
     @PostMapping("/ssafyinfo")
-    public String ssafyInfo(@RequestHeader Long userId, @RequestBody UsersSsafyinfoPostReq usersSsafyinfoPostReq) {
+    public CommonResponse<Boolean> ssafyInfo(@RequestHeader Long userId, @RequestBody UsersSsafyinfoPostReq usersSsafyinfoPostReq) {
         userService.ssafyInfo(userId, usersSsafyinfoPostReq);
-        return "수정완료";
+        return CommonResponse.success(true);
     }
 
     @PostMapping("/moreinfo")
-    public String moreInfo(@RequestHeader Long userId, @RequestBody UsersMoreinfoPostReq usersMoreinfoPostReq) {
+    public CommonResponse<Boolean> moreInfo(@RequestHeader Long userId, @RequestBody UsersMoreinfoPostReq usersMoreinfoPostReq) {
         userService.moreInfo(userId, usersMoreinfoPostReq);
-        return "수정완료";
+        return CommonResponse.success(true);
     }
 
 

@@ -1,6 +1,8 @@
 package com.sww.ddorangddorang.domain.user.entity;
 
 import com.sww.ddorangddorang.domain.room.entity.Room;
+import com.sww.ddorangddorang.domain.user.dto.UsersMoreinfoPostReq;
+import com.sww.ddorangddorang.domain.user.dto.UsersSsafyinfoPostReq;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -34,7 +36,7 @@ public class User {
     private String role;                // VARCHAR(255)                                 - for security
     private String refreshToken;        // VARCHAR(255) "리프레시 토큰"                   - for jwt
     private Integer generation;         // INT
-    private Boolean isMajor;               // TINYINT
+    private Byte isMajor;               // TINYINT
     private Byte gender;                // TINYINT
     private Integer campus;             // INT
     @Column(name = "class")
@@ -80,6 +82,21 @@ public class User {
 
     public void updateRefreshToken(String updatedRefreshToken) {
         this.refreshToken = updatedRefreshToken;
+    }
+
+    public void updateSsafyInfo(UsersSsafyinfoPostReq usersSsafyinfoPostReq) {
+        this.profileImage = usersSsafyinfoPostReq.getProfileImage();
+        this.campus = usersSsafyinfoPostReq.getCampus();
+        this.classes = usersSsafyinfoPostReq.getClasses();
+        this.isMajor = usersSsafyinfoPostReq.getIsMajor();
+        this.floor = usersSsafyinfoPostReq.getFloor();
+    }
+
+    public void updateMoreInfo(UsersMoreinfoPostReq usersMoreinfoPostReq) {
+        this.likes = usersMoreinfoPostReq.getLikes();
+        this.hate = usersMoreinfoPostReq.getHate();
+        this.mbti = usersMoreinfoPostReq.getMbti();
+        this.worry = usersMoreinfoPostReq.getWorry();
     }
 
     public void updateRoom(Room room) {

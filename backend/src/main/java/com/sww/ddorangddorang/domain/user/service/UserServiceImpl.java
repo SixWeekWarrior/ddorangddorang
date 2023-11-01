@@ -48,10 +48,12 @@ public class UserServiceImpl implements UserService {
 
     public void ssafyInfo(Long userId, UsersSsafyinfoPostReq usersSsafyinfoPostReq) {
         User user = userRepository.getReferenceById(userId);
+        user.updateSsafyInfo(usersSsafyinfoPostReq);
     }
 
     public void moreInfo(Long userId, UsersMoreinfoPostReq usersMoreinfoPostReq) {
         User user = userRepository.getReferenceById(userId);
+        user.updateMoreInfo(usersMoreinfoPostReq);
     }
 
 }

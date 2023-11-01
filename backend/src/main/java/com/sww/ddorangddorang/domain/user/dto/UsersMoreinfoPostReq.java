@@ -9,13 +9,13 @@ import lombok.NoArgsConstructor;
 public class UsersMoreinfoPostReq {
 
     private String mbti;
-    private String like;
+    private String likes;
     private String hate;
     private String worry;
     @Builder
-    public UsersMoreinfoPostReq(String mbti, String like, String hate, String worry) {
+    public UsersMoreinfoPostReq(String mbti, String likes, String hate, String worry) {
         this.mbti = mbti;
-        this.like = like;
+        this.likes = likes;
         this.hate = hate;
         this.worry = worry;
     }
