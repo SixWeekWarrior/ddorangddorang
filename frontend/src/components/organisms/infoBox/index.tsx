@@ -37,13 +37,14 @@ const InfoBox = ({navigation, destination}: InfoBoxProps): JSX.Element => {
         navigation.navigate('MissionToday');
         break;
       case 'InfoToday':
-        navigation.navigate('InfoToday');
+        navigation.navigate('ReviseInfo', {destination: 'InfoToday'});
+
         break;
       case 'InfoSsafy':
-        navigation.navigate('InfoSsafy');
+        navigation.navigate('ReviseInfo', {destination: 'InfoSsafy'});
         break;
       case 'InfoEtc':
-        navigation.navigate('InfoEtc');
+        navigation.navigate('ReviseInfo', {destination: 'InfoEtc'});
         break;
       default:
         break;
@@ -76,30 +77,38 @@ const InfoBox = ({navigation, destination}: InfoBoxProps): JSX.Element => {
       case 'InfoToday':
         return (
           <View style={[style.flexColumn, {height: '50%'}]}>
-            <InfoAtom title="기분" content="약간 흐림" dark={true} />
-            <InfoAtom title="입은 옷" content="빨간색" dark={true} />
+            <InfoAtom title="기분" content="약간 흐림" />
+            <InfoAtom title="입은 옷" content="빨간색" />
           </View>
         );
       case 'InfoSsafy':
         return (
           <View style={[style.flexColumn, {height: '50%'}]}>
-            <InfoAtom title="지역" content="서울" dark={false} />
-            <InfoAtom title="전공" content="비전공" dark={false} />
-            <InfoAtom title="반" content="2" dark={false} />
-            <InfoAtom title="층" content="8" dark={false} />
+            <InfoAtom title="지역" content="서울" isWhite={true} />
+            <InfoAtom title="전공" content="비전공" isWhite={true} />
+            <InfoAtom title="반" content="2" isWhite={true} />
+            <InfoAtom title="층" content="8" isWhite={true} />
           </View>
         );
       case 'InfoEtc':
         return (
           <View style={style.flexColumn}>
-            <InfoAtom title="MBTI" content="INFJ" dark={false} />
+            <InfoAtom title="MBTI" content="INFJ" isWhite={true} />
             <InfoAtom
               title="요즘 고민"
               content="체력을 기르고 싶다!"
-              dark={false}
+              isWhite={true}
             />
-            <InfoAtom title="좋아하는 것" content="하리보 젤리" dark={false} />
-            <InfoAtom title="싫어하는 것" content="차가운 음료" dark={false} />
+            <InfoAtom
+              title="좋아하는 것"
+              content="하리보 젤리"
+              isWhite={true}
+            />
+            <InfoAtom
+              title="싫어하는 것"
+              content="차가운 음료"
+              isWhite={true}
+            />
           </View>
         );
       default:

@@ -2,10 +2,10 @@ import * as React from 'react';
 import {StyleSheet, Pressable, Text} from 'react-native';
 import GlobalStyles from '../../../styles/GlobalStyles';
 
-interface BtnSmProps {
+type BtnSmProps = {
   onPress: () => void;
   text: string;
-}
+};
 
 export const BtnSm = ({onPress, text}: BtnSmProps) => {
   return (

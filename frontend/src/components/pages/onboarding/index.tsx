@@ -4,12 +4,23 @@ import blockImg from '../../../assets/blockImg.png';
 import logoImg from '../../../assets/logoImg.png';
 import BtnBig from '../../atoms/btnBig';
 import googleLoginImg from '../../../assets/googleLoginImg.png';
-import {useMemo, useRef} from 'react';
-import BottomSheet from '@gorhom/bottom-sheet';
+import {useMemo, useRef, useCallback} from 'react';
+import BottomSheet, {BottomSheetBackdrop} from '@gorhom/bottom-sheet';
+import {JSX} from 'react/jsx-runtime';
 
 export const Onboarding = ({navigation}: {navigation: any}): JSX.Element => {
   const bottomSheetRef = useRef<BottomSheet>(null);
-  const snapPoints = useMemo(() => ['25%'], []);
+  const snapPoints = useMemo(() => ['25%', '20%', '30%'], []);
+  const renderBackdrop = useCallback(
+    (props: any) => (
+      <BottomSheetBackdrop
+        {...props}
+        disappearsOnIndex={1}
+        appearsOnIndex={2}
+      />
+    ),
+    [],
+  );
 
   const goLogin = () => (
     <View style={styles.contentContainer}>
@@ -49,6 +60,7 @@ export const Onboarding = ({navigation}: {navigation: any}): JSX.Element => {
         bottomInset={46}
         detached={true}
         index={-1}
+        backdropComponent={renderBackdrop}
         enablePanDownToClose={true}
         style={styles.sheetContainer}>
         {goLogin()}
@@ -67,13 +79,12 @@ const styles = StyleSheet.create({
     backgroundColor: GlobalStyles.white_2.color,
   },
   sheetContainer: {
-    paddingBottom: 20,
+    // paddingBottom: 1,
   },
   contentContainer: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    bord: GlobalStyles.grey_2.color,
   },
   googleLoginImg: {
     width: 220,
@@ -92,12 +103,6 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     marginTop: 30,
     marginBottom: 7,
-  },
-  notice: {
-    color: GlobalStyles.black.color,
-    fontFamily: GlobalStyles.content.fontFamily,
-    fontSize: 25,
-    marginBottom: 50,
   },
   title: {
     color: GlobalStyles.black.color,

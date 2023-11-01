@@ -10,6 +10,7 @@ import WaitList from '../waitList';
 import MyGroup from '../myGroup';
 import MissionToday from '../missionToday';
 import {GoMission} from '../goMission';
+import ReviseInfo from '../reviseInfo';
 
 const StackNavigation = () => {
   const Stack = createStackNavigator();
@@ -64,6 +65,11 @@ const StackNavigation = () => {
         <Stack.Screen
           name="GoMission"
           component={GoMission}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="ReviseInfo"
+          component={ReviseInfo}
           options={{headerShown: false}}
         />
       </Stack.Navigator>

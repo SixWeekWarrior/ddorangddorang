@@ -4,12 +4,12 @@ import GlobalStyles from '../../../styles/GlobalStyles';
 type InfoAtomProps = {
   title: string;
   content: string;
-  dark: boolean;
+  isWhite?: boolean;
 };
-export const InfoAtom = ({title, content, dark}: InfoAtomProps) => {
-  const textColor = dark
-    ? GlobalStyles.grey_2.color
-    : GlobalStyles.white_2.color;
+export const InfoAtom = ({title, content, isWhite}: InfoAtomProps) => {
+  const textColor = isWhite
+    ? GlobalStyles.white_2.color
+    : GlobalStyles.grey_2.color;
 
   const style = StyleSheet.create({
     container: {
