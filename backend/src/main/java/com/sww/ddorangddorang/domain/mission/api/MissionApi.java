@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class MissionApi {
 
     private final MissionPerformService missionPerformService;
-    private static String SUCCESS = "SUCCESS";
+    private static final String SUCCESS = "SUCCESS";
 
     @GetMapping
     CommonResponse<List<MissionPerformsInfoRes>> findMissionByUser(@AuthenticationPrincipal CustomOAuth2User customOAuth2User) {
