@@ -3,6 +3,7 @@ package com.sww.ddorangddorang.domain.room.service;
 import com.sww.ddorangddorang.domain.participant.entity.Participant;
 import com.sww.ddorangddorang.domain.participant.entity.Prefix;
 import com.sww.ddorangddorang.domain.participant.entity.Suffix;
+import com.sww.ddorangddorang.domain.participant.exception.ParticipantNotFoundException;
 import com.sww.ddorangddorang.domain.participant.repository.ParticipantRepository;
 import com.sww.ddorangddorang.domain.participant.repository.PrefixRepository;
 import com.sww.ddorangddorang.domain.participant.repository.SuffixRepository;
@@ -23,8 +24,6 @@ import com.sww.ddorangddorang.domain.room.exception.RoomNotFoundException;
 import com.sww.ddorangddorang.domain.room.repository.RoomRepository;
 import com.sww.ddorangddorang.domain.user.entity.User;
 import com.sww.ddorangddorang.domain.user.repository.UserRepository;
-import com.sww.ddorangddorang.global.common.CommonResponse;
-import com.sww.ddorangddorang.global.common.ErrorCode;
 import com.sww.ddorangddorang.global.util.RedisUtil;
 import jakarta.transaction.Transactional;
 import java.util.ArrayList;
@@ -33,6 +32,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -121,7 +121,8 @@ public class RoomServiceImpl implements RoomService {
             throw new AlreadyParticipatingRoomException();
         }
 
-        Room room = roomRepository.findByAccessCodeAndStartedAtNullAndDeletedAtNull(accessCode);
+        Room room = roomRepository.findByAccessCodeAndStartedAtNullAndDeletedAtNull(accessCode)
+            .orElseThrow(RoomNotFoundException::new);
 
         if (room.getHeadCount() >= room.getMaxMember()) {
             log.info("RoomServiceImpl_joinRoom end");
@@ -150,12 +151,8 @@ public class RoomServiceImpl implements RoomService {
             throw new InvalidParameterValueException();
         }
 
-        Room room = roomRepository.findByAdminAndStartedAtNullAndDeletedAtNull(user);
-
-        if(room == null) {
-            log.info("RoomServiceImpl_updateRoom end");
-            throw new RoomNotFoundException();
-        }
+        Room room = roomRepository.findByAdminAndStartedAtNullAndDeletedAtNull(user)
+            .orElseThrow(RoomNotFoundException::new);
 
         Integer currentCount = room.getHeadCount();
         //현재 인원보다 최소 인원이 많거나, 현재 인원보다 최대 인원이 적은 경우: false 반환
@@ -180,12 +177,8 @@ public class RoomServiceImpl implements RoomService {
             throw new OnlyAdminAllowedException();
         }
 
-        Room room = roomRepository.findByAdminAndStartedAtNullAndDeletedAtNull(admin);
-
-        if(room == null) {
-            log.info("RoomServiceImpl_updateRoom end");
-            throw new RoomNotFoundException();
-        }
+        Room room = roomRepository.findByAdminAndStartedAtNullAndDeletedAtNull(admin)
+            .orElseThrow(RoomNotFoundException::new);
 
         List<User> userList = userRepository.findAllByRoom(room);
 
@@ -215,12 +208,11 @@ public class RoomServiceImpl implements RoomService {
 
         if (user.getStatus() == 3L) {
             room.removeMember();
+            Participant participant = participantRepository.findByUserAndRoomAndIsWithdrawalFalse(
+                user, room).orElseThrow(ParticipantNotFoundException::new);
+            participant.deleteParticipant();
+            participant.applyWithdrawal();
         }
-
-        Participant participant = participantRepository.findByUserAndRoomAndIsWithdrawalFalse(user,
-            room);
-        participant.deleteParticipant();
-        participant.applyWithdrawal();
 
         log.info("RoomServiceImpl_withdrawalRoom end");
     }
@@ -397,7 +389,7 @@ public class RoomServiceImpl implements RoomService {
         }
         Room room = user.getRoom();
 
-        if(room == null) {
+        if (room == null) {
             log.info("RoomServiceImpl_showUsers end");
             throw new RoomNotFoundException();
         }
@@ -431,11 +423,10 @@ public class RoomServiceImpl implements RoomService {
         }
         Room room = requestUser.getRoom();
 
-        if(room == null) {
+        if (room == null) {
             log.info("RoomServiceImpl_responseJoinRoom end");
             throw new RoomNotFoundException();
         }
-
 
         if (!room.getAdmin().equals(admin)) {
             log.info("RoomServiceImpl_responseToJoinRoom end");
