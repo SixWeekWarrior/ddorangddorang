@@ -1,0 +1,71 @@
+package com.sww.ddorangddorang.domain.mission.service;
+
+import com.sww.ddorangddorang.auth.dto.CustomOAuth2User;
+import com.sww.ddorangddorang.domain.mission.dto.MissionCompleteReq;
+import com.sww.ddorangddorang.domain.mission.dto.MissionPerformsInfoRes;
+import com.sww.ddorangddorang.domain.mission.entity.Mission;
+import com.sww.ddorangddorang.domain.mission.entity.MissionPerform;
+import com.sww.ddorangddorang.domain.mission.exception.MissionNotFoundException;
+import com.sww.ddorangddorang.domain.mission.exception.UserNotFoundException;
+import com.sww.ddorangddorang.domain.mission.repository.MissionPerformRepository;
+import com.sww.ddorangddorang.domain.user.entity.User;
+import com.sww.ddorangddorang.domain.user.repository.UserRepository;
+import jakarta.transaction.Transactional;
+import java.util.List;
+import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+
+@Slf4j
+@Transactional
+@Service
+@RequiredArgsConstructor
+public class MissionPerformServiceImpl implements MissionPerformService {
+
+    private final MissionPerformRepository missionPerformRepository;
+    private final UserRepository userRepository;
+
+    public List<MissionPerformsInfoRes> findMissionByUser(CustomOAuth2User customOAuth2User) {
+        String email = customOAuth2User.getEmail();
+        log.info("email: {}", email);
+        User user = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
+        log.info("user: {}", user);
+        List<MissionPerform> missionPerforms = missionPerformRepository.findAllByPlayer(user);
+        log.info("missionPerforms: {}", missionPerforms);
+
+        return missionPerforms.stream()
+            .map(missionPerform -> {
+                Mission mission = missionPerform.getMission();
+                Boolean isCompleted = missionPerform.getPerformedAt() != null;
+
+                return MissionPerformsInfoRes.builder()
+                    .missionId(missionPerform.getId())
+                    .title(mission.getTitle())
+                    .content(mission.getContent())
+                    .isComplete(isCompleted)
+                    .missionType(mission.getMissionType())
+                    .build();
+            })
+            .collect(Collectors.toList());
+    }
+
+    public void missionComplete(MissionCompleteReq missionCompleteReq, CustomOAuth2User customOAuth2User) {
+        String email = customOAuth2User.getEmail();
+        User user = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
+
+        MissionPerform missionPerform = missionPerformRepository.findById(
+            missionCompleteReq.getMissionId()).orElseThrow(
+            MissionNotFoundException::new);
+
+        if (missionPerform.getPlayer().equals(user)) {
+            missionPerform.missionComplete();
+        } else {
+            throw new MissionNotFoundException();
+        }
+    }
+
+    // 내가 수행중인 특정 미션의 상세 정보를 조회하는 메서드, 필요 없지 않나?
+    // 내가 수행중인 특정 미션에 대한 수행 결과를 계산하는 메서드, 미션 합의가 되어야 하지 않나?
+
+}
