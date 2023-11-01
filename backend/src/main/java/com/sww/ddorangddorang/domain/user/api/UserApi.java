@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1/users")
 public class UserApi {
     private final UserService userService;
+    private final static String SUCCESS = "Success";
 
     @PostMapping("/signup")
     public String signUp(@RequestBody UsersSignupPostReq usersSignupPostReq) throws Exception {
@@ -28,16 +29,18 @@ public class UserApi {
     }
 
     @PostMapping("/ssafyinfo")
-    public CommonResponse<Boolean> ssafyInfo(@RequestHeader Long userId, @RequestBody UsersSsafyinfoPostReq usersSsafyinfoPostReq) {
+    public CommonResponse<String> ssafyInfo(@RequestHeader Long userId, @RequestBody UsersSsafyinfoPostReq usersSsafyinfoPostReq) {
+        log.info("UserApi_ssafyInfo starts");
         userService.ssafyInfo(userId, usersSsafyinfoPostReq);
-        return CommonResponse.success(true);
+        log.info("UserApi_ssafyInfo ends");
+        return CommonResponse.success(SUCCESS);
     }
 
     @PostMapping("/moreinfo")
-    public CommonResponse<Boolean> moreInfo(@RequestHeader Long userId, @RequestBody UsersMoreinfoPostReq usersMoreinfoPostReq) {
+    public CommonResponse<String> moreInfo(@RequestHeader Long userId, @RequestBody UsersMoreinfoPostReq usersMoreinfoPostReq) {
+        log.info("UserApi_moreInfo starts");
         userService.moreInfo(userId, usersMoreinfoPostReq);
-        return CommonResponse.success(true);
+        log.info("UserApi_moreInfo ends");
+        return CommonResponse.success(SUCCESS);
     }
-
-
 }
