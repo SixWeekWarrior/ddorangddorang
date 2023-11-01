@@ -2,17 +2,15 @@ package com.sww.ddorangddorang.domain.room.repository;
 
 import com.sww.ddorangddorang.domain.room.entity.Room;
 import com.sww.ddorangddorang.domain.user.entity.User;
-import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface RoomRepository extends JpaRepository<Room, Long> {
 
-    Room findByAccessCodeAndStartedAtNullAndDeletedAtNull(Integer accessCode)
-        throws EntityNotFoundException;
+    Optional<Room> findByAccessCodeAndStartedAtNullAndDeletedAtNull(Integer accessCode);
 
     List<Room> findAllByStartedAtNullAndDeletedAtNull();
 
-    Room findByAdminAndStartedAtNullAndDeletedAtNull(User admin)
-        throws EntityNotFoundException;
+    Optional<Room> findByAdminAndStartedAtNullAndDeletedAtNull(User admin);
 }

@@ -4,11 +4,16 @@ import com.sww.ddorangddorang.domain.room.dto.JoinRoomReq;
 import com.sww.ddorangddorang.domain.room.dto.RoomInfoReq;
 import com.sww.ddorangddorang.domain.room.dto.ShowUsersRes;
 import com.sww.ddorangddorang.domain.room.service.RoomService;
+import com.sww.ddorangddorang.global.common.CommonResponse;
+import jakarta.persistence.criteria.CriteriaBuilder.In;
 import java.util.List;
 
 import com.sww.ddorangddorang.global.common.CommonResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,85 +31,86 @@ import org.springframework.web.bind.annotation.RestController;
 public class RoomApi {
 
     private final RoomService roomService;
+    private final static String SUCCESS = "Success";
 
     @PostMapping
-    public Integer createRoom(@RequestHeader Long userId, @RequestBody RoomInfoReq roomInfoReq) {
+    public CommonResponse<Integer> createRoom(@RequestHeader Long userId,
+        @RequestBody RoomInfoReq roomInfoReq) {
         log.info("RoomApi_createRoom start");
         Integer accessCode = roomService.createRoom(userId, roomInfoReq);
         log.info("RoomApi_createRoom end: " + accessCode);
-        return accessCode;
+        return CommonResponse.success(accessCode);
     }
 
     @PostMapping("/join")
-    public Boolean joinRoom(@RequestHeader Long userId, @RequestBody Integer accessCode) {
+    public CommonResponse<String> joinRoom(@RequestHeader Long userId,
+        @RequestBody Integer accessCode) {
         log.info("RoomApi_joinRoom start");
-        Boolean joinRoomResponse = roomService.joinRoom(userId, accessCode);
-        log.info("RoomApi_joinRoom end: " + joinRoomResponse);
-        return joinRoomResponse;
+        roomService.joinRoom(userId, accessCode);
+        log.info("RoomApi_joinRoom end");
+        return CommonResponse.success(SUCCESS);
     }
 
     @PutMapping
-    public Boolean updateRoom(@RequestHeader Long userId, @RequestBody RoomInfoReq roomInfoReq) {
+    public CommonResponse<String> updateRoom(@RequestHeader Long userId,
+        @RequestBody RoomInfoReq roomInfoReq) {
         log.info("RoomApi_updateRoom start");
-        Boolean updateRoomResponse = roomService.updateRoom(userId, roomInfoReq);
-        log.info("RoomApi_updateRoom end: " + updateRoomResponse);
-
-        if (updateRoomResponse) {
-            roomService.checkAndRunIfRoomShouldStart(userId);
-        }
-
-        return updateRoomResponse;
+        roomService.updateRoom(userId, roomInfoReq);
+        roomService.checkAndRunIfRoomShouldStart(userId);
+        log.info("RoomApi_updateRoom end");
+        return CommonResponse.success(SUCCESS);
     }
 
     //방장이 방을 삭제하는 API
     //방장을 포함한 전원이 탈퇴
     @DeleteMapping("/admin")
-    public Boolean deleteRoom(@RequestHeader Long userId) {
+    public CommonResponse<String> deleteRoom(@RequestHeader Long userId) {
         log.info("RoomApi_deleteRoom start");
-        Boolean deleteRoomResponse = roomService.deleteGame(userId);
-        log.info("RoomApi_deleteRoom end: " + deleteRoomResponse);
-        return deleteRoomResponse;
+        roomService.deleteGame(userId);
+        log.info("RoomApi_deleteRoom end");
+        return CommonResponse.success(SUCCESS);
     }
 
     //방 참여 인원이 방을 나가는 API
     //회원 혼자만이 탈퇴
     //방장은 방 탈퇴가 불가능
     @DeleteMapping
-    public Boolean withdrawalRoom(@RequestHeader Long userId) {
+    public CommonResponse<String> withdrawalRoom(@RequestHeader Long userId) {
         log.info("RoomApi_withdrawalRoom start");
-        Boolean withdrawalRoomResponse = roomService.withdrawalRoom(userId);
-        log.info("RoomApi_withdrawalRoom end: " + withdrawalRoomResponse);
-        return withdrawalRoomResponse;
+        roomService.withdrawalRoom(userId);
+        log.info("RoomApi_withdrawalRoom end");
+        return CommonResponse.success(SUCCESS);
     }
 
     @PostMapping("/start")
-    public Boolean startGame(@RequestHeader Long userId) {
+    public CommonResponse<String> startGame(@RequestHeader Long userId) {
         log.info("RoomApi_startGame start");
-        Boolean isGameStarted = roomService.checkAndStartGame(userId);
-        log.info("RoomApi_startGame end: " + isGameStarted);
-        return isGameStarted;
+        roomService.checkAndStartGame(userId);
+        log.info("RoomApi_startGame end");
+        return CommonResponse.success(SUCCESS);
     }
 
     @GetMapping("/{roomId}")
-    public List<ShowUsersRes> showUsers(@RequestHeader Long userId, @PathVariable Long roomId) {
+    public CommonResponse<List<ShowUsersRes>> showUsers(@RequestHeader Long userId,
+        @PathVariable Long roomId) {
         log.info("RoomApi_showUsers start");
         List<ShowUsersRes> showUsersResList = roomService.showUsers(userId);
         log.info("RoomApi_showUsers end");
-        return showUsersResList;
+        return CommonResponse.success(showUsersResList);
     }
 
     @PostMapping("/response")
-    public Boolean responseJoinRoom(@RequestHeader Long userId,
+    public CommonResponse<Boolean> responseJoinRoom(@RequestHeader Long userId,
         @RequestBody JoinRoomReq joinRoomReq) {
         log.info("RoomApi_responseJoinRoom start");
         Boolean joined = roomService.responseJoinRoom(userId, joinRoomReq);
 
-        if(joined) {
+        if (joined) {
             roomService.checkAndRunIfRoomShouldStart(userId);
         }
 
-        log.info("RoomApi_responseJoinRoom end: " + joined);
-        return joined;
+        log.info("RoomApi_responseJoinRoom end");
+        return CommonResponse.success(joined);
     }
 
 }

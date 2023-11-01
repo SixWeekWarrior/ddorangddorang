@@ -3,6 +3,7 @@ package com.sww.ddorangddorang.domain.room.service;
 import com.sww.ddorangddorang.domain.participant.entity.Participant;
 import com.sww.ddorangddorang.domain.participant.entity.Prefix;
 import com.sww.ddorangddorang.domain.participant.entity.Suffix;
+import com.sww.ddorangddorang.domain.participant.exception.ParticipantNotFoundException;
 import com.sww.ddorangddorang.domain.participant.repository.ParticipantRepository;
 import com.sww.ddorangddorang.domain.participant.repository.PrefixRepository;
 import com.sww.ddorangddorang.domain.participant.repository.SuffixRepository;
@@ -10,11 +11,20 @@ import com.sww.ddorangddorang.domain.room.dto.JoinRoomReq;
 import com.sww.ddorangddorang.domain.room.dto.RoomInfoReq;
 import com.sww.ddorangddorang.domain.room.dto.ShowUsersRes;
 import com.sww.ddorangddorang.domain.room.entity.Room;
+import com.sww.ddorangddorang.domain.room.exception.AlreadyParticipatingRoomException;
+import com.sww.ddorangddorang.domain.room.exception.DataNotInRangeException;
+import com.sww.ddorangddorang.domain.room.exception.InvalidParameterValueException;
+import com.sww.ddorangddorang.domain.room.exception.NoParticipatingRoomException;
+import com.sww.ddorangddorang.domain.room.exception.OnlyAdminAllowedException;
+import com.sww.ddorangddorang.domain.room.exception.OnlyUserAllowedException;
+import com.sww.ddorangddorang.domain.room.exception.OnlyWaitingStateAllowedException;
+import com.sww.ddorangddorang.domain.room.exception.PlayersNotEnoughException;
+import com.sww.ddorangddorang.domain.room.exception.RoomAlreadyFullException;
+import com.sww.ddorangddorang.domain.room.exception.RoomNotFoundException;
 import com.sww.ddorangddorang.domain.room.repository.RoomRepository;
 import com.sww.ddorangddorang.domain.user.entity.User;
 import com.sww.ddorangddorang.domain.user.repository.UserRepository;
 import com.sww.ddorangddorang.global.util.RedisUtil;
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -44,23 +54,17 @@ public class RoomServiceImpl implements RoomService {
         //선택하지 않은 옵션
         //정상
         log.info("RoomServiceImpl_createRoom start");
-        User user = null;
-
-        try {
-            user = userRepository.getReferenceById(userId);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        User user = userRepository.getReferenceById(userId);
 
         if (user.getStatus() != 1L) {
-            log.info("RoomServiceImpl_createRoom end: user's status = " + user.getStatus());
-            return -1;
+            log.info("RoomServiceImpl_createRoom end");
+            throw new AlreadyParticipatingRoomException();
         }
 
         if (roomInfoReq.getMinMember() < 1
             || roomInfoReq.getMinMember() > roomInfoReq.getMaxMember()) {
-            log.info("RoomServiceImpl_createRoom end: wrong minMember value or maxMember value");
-            return -1;
+            log.info("RoomServiceImpl_createRoom end");
+            throw new InvalidParameterValueException();
         }
 
         Integer accessCode = generateAccessCode();
@@ -107,109 +111,73 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Transactional
-    public Boolean joinRoom(Long userId, Integer accessCode) {
-        log.info("RoomServiceImpl_joinRoom start: " + userId + " " + accessCode);
+    public void joinRoom(Long userId, Integer accessCode) {
+        log.info("RoomServiceImpl_joinRoom start");
+        User user = userRepository.getReferenceById(userId);
 
-        User user = null;
-
-        try {
-            user = userRepository.getReferenceById(userId);
-        } catch (EntityNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        //TODO: 참여 중인 방이 이미 있는데 새로운 방에 참가하는 건 안 됨 -> 거절 신호 필요
         if (user.getStatus() != 1L) {
-            log.info("RoomServiceImpl_joinRoom end: user's status = " + user.getStatus());
-            return false;
+            log.info("RoomServiceImpl_joinRoom end");
+            throw new AlreadyParticipatingRoomException();
         }
 
-        Room room = null;
-
-        try {
-            room = roomRepository.findByAccessCodeAndStartedAtNullAndDeletedAtNull(accessCode);
-        } catch (EntityNotFoundException e) {
-            e.printStackTrace();
-        }
+        Room room = roomRepository.findByAccessCodeAndStartedAtNullAndDeletedAtNull(accessCode)
+            .orElseThrow(RoomNotFoundException::new);
 
         if (room.getHeadCount() >= room.getMaxMember()) {
-            log.info("RoomServiceImpl_joinRoom end: room is already full");
-            return false;
+            log.info("RoomServiceImpl_joinRoom end");
+            throw new RoomAlreadyFullException();
         }
 
         user.updateRoom(room);
         user.updateStatus(5L);
 
-        log.info("RoomServiceImpl_joinRoom done");
-        return true;
+        log.info("RoomServiceImpl_joinRoom end");
     }
 
     @Transactional
-    public Boolean updateRoom(Long userId, RoomInfoReq roomInfoReq) {
+    public void updateRoom(Long userId, RoomInfoReq roomInfoReq) {
         log.info("RoomServiceImpl_updateRoom start");
-        User user = null;
-
-        try {
-            user = userRepository.getReferenceById(userId);
-        } catch (EntityNotFoundException e) {
-            e.printStackTrace();
-        }
+        User user = userRepository.getReferenceById(userId);
 
         if (user.getStatus() != 2L) {
-            log.info("RoomServiceImpl_updateRoom end: user's status = " + user.getStatus());
-            return false;
+            log.info("RoomServiceImpl_updateRoom end");
+            throw new OnlyAdminAllowedException();
         }
 
         if (roomInfoReq.getMinMember() < 1
             || roomInfoReq.getMinMember() > roomInfoReq.getMaxMember()) {
-            log.info("RoomServiceImpl_updateRoom end: invalid minMember value or maxMember value");
-            return false;
+            log.info("RoomServiceImpl_updateRoom end");
+            throw new InvalidParameterValueException();
         }
 
-        Room room = null;
-
-        try {
-            room = roomRepository.findByAdminAndStartedAtNullAndDeletedAtNull(user);
-        } catch (EntityNotFoundException e) {
-            e.printStackTrace();
-        }
+        Room room = roomRepository.findByAdminAndStartedAtNullAndDeletedAtNull(user)
+            .orElseThrow(RoomNotFoundException::new);
 
         Integer currentCount = room.getHeadCount();
         //현재 인원보다 최소 인원이 많거나, 현재 인원보다 최대 인원이 적은 경우: false 반환
         if (roomInfoReq.getMinMember() < currentCount
             || currentCount > roomInfoReq.getMaxMember()) {
-            log.info(
-                "RoomService_updateRoom end: current participants cannot be bigger than maxMember");
-            return false;
+            log.info("RoomServiceImpl_updateRoom end");
+            throw new DataNotInRangeException();
         }
 
         room.updateRoomInfo(roomInfoReq);
 
-        log.info("RoomServiceImpl_updateRoom end: " + true);
-        return true;
+        log.info("RoomServiceImpl_updateRoom end");
     }
 
     @Transactional
-    public Boolean deleteGame(Long userId) {
+    public void deleteGame(Long userId) {
         log.info("RoomServiceImpl_deleteGame start");
-        User admin = null;
-
-        try {
-            admin = userRepository.getReferenceById(userId);
-        } catch (EntityNotFoundException e) {
-            e.printStackTrace();
-        }
+        User admin = userRepository.getReferenceById(userId);
 
         if (admin.getStatus() != 2L) {
-            return false;
+            log.info("RoomServiceImpl_deleteGame end");
+            throw new OnlyAdminAllowedException();
         }
 
-        Room room = null;
-        try {
-            room = roomRepository.findByAdminAndStartedAtNullAndDeletedAtNull(admin);
-        } catch (EntityNotFoundException e) {
-            e.printStackTrace();
-        }
+        Room room = roomRepository.findByAdminAndStartedAtNullAndDeletedAtNull(admin)
+            .orElseThrow(RoomNotFoundException::new);
 
         List<User> userList = userRepository.findAllByRoom(room);
 
@@ -221,40 +189,31 @@ public class RoomServiceImpl implements RoomService {
         room.deleteRoom();
         redisUtil.putAccessCode(room.getAccessCode());
 
-        log.info("RoomServiceImpl_deleteGame done");
-        return true;
+        log.info("RoomServiceImpl_deleteGame end");
     }
 
     @Transactional
-    public Boolean withdrawalRoom(Long userId) {
+    public void withdrawalRoom(Long userId) {
         log.info("RoomServiceImpl_withdrawalRoom start");
 
-        User user = null;
-
-        try {
-            user = userRepository.getReferenceById(userId);
-        } catch (EntityNotFoundException e) {
-            e.printStackTrace();
-        }
+        User user = userRepository.getReferenceById(userId);
 
         if (user.getStatus() != 3L && user.getStatus() != 5L) {
-            log.info("RoomServiceImpl_withdrawalRoom end: user's status = " + user.getStatus());
-            return false;
+            log.info("RoomServiceImpl_withdrawalRoom end");
+            throw new OnlyUserAllowedException();
         }
 
         Room room = user.getRoom();
 
         if (user.getStatus() == 3L) {
             room.removeMember();
+            Participant participant = participantRepository.findByUserAndRoomAndIsWithdrawalFalse(
+                user, room).orElseThrow(ParticipantNotFoundException::new);
+            participant.deleteParticipant();
+            participant.applyWithdrawal();
         }
 
-        Participant participant = participantRepository.findByUserAndRoomAndIsWithdrawalFalse(user,
-            room);
-        participant.deleteParticipant();
-        participant.applyWithdrawal();
-
-        log.info("RoomServiceImpl_withdrawalRoom end: " + true);
-        return true;
+        log.info("RoomServiceImpl_withdrawalRoom end");
     }
 
 
@@ -391,7 +350,7 @@ public class RoomServiceImpl implements RoomService {
         room.updateHeadCount(count);
         room.startGame();
         redisUtil.putAccessCode(room.getAccessCode());
-        log.info("RoomServiceImpl_startGame end: " + count + " participants started a gane");
+        log.info("RoomServiceImpl_startGame end: " + count + " participants started a game");
     }
 
     private Boolean matchManito(Integer current, Boolean[] searched, Integer[] matchedManito,
@@ -420,29 +379,31 @@ public class RoomServiceImpl implements RoomService {
     public List<ShowUsersRes> showUsers(Long userId) {
         log.info("RoomServiceImpl_showUsers start");
 
-        User user = null;
+        User user = userRepository.getReferenceById(userId);
         List<ShowUsersRes> showUsersResList = new ArrayList<>();
 
-        try {
-            user = userRepository.getReferenceById(userId);
-        } catch (EntityNotFoundException e) {
-            e.printStackTrace();
+        if (user.getStatus() == 1L) {
+            log.info("RoomServiceImpl_showUsers end");
+            throw new NoParticipatingRoomException();
+        }
+        Room room = user.getRoom();
+
+        if (room == null) {
+            log.info("RoomServiceImpl_showUsers end");
+            throw new RoomNotFoundException();
         }
 
-        if (user.getStatus() != 1L) {
-            Room room = user.getRoom();
-            List<User> userList = userRepository.findAllByRoom(room);
+        List<User> userList = userRepository.findAllByRoom(room);
 
-            for (User registedUser : userList) {
-                ShowUsersRes showUsersRes = ShowUsersRes.builder()
-                    .name(registedUser.getName())
-                    .generation(registedUser.getGeneration())
-                    .classes(registedUser.getGeneration())
-                    .profileImage(registedUser.getProfileImage())
-                    .build();
+        for (User registedUser : userList) {
+            ShowUsersRes showUsersRes = ShowUsersRes.builder()
+                .name(registedUser.getName())
+                .generation(registedUser.getGeneration())
+                .classes(registedUser.getGeneration())
+                .profileImage(registedUser.getProfileImage())
+                .build();
 
-                showUsersResList.add(showUsersRes);
-            }
+            showUsersResList.add(showUsersRes);
         }
 
         log.info("RoomServiceImpl_showUsers end");
@@ -456,31 +417,41 @@ public class RoomServiceImpl implements RoomService {
         User requestUser = userRepository.getReferenceById(joinRoomReq.getUserId());
 
         if (requestUser.getStatus() != 5L) {
-            log.info("RoomServiceImpl_responseToJoinRoom end: user's status = "
-                + requestUser.getStatus());
-            return false;
+            log.info("RoomServiceImpl_responseToJoinRoom end");
+            throw new OnlyWaitingStateAllowedException();
         }
         Room room = requestUser.getRoom();
 
+        if (room == null) {
+            log.info("RoomServiceImpl_responseJoinRoom end");
+            throw new RoomNotFoundException();
+        }
+
         if (!room.getAdmin().equals(admin)) {
-            log.info("RoomServiceImpl_responseToJoinRoom end: API called user is not admin");
-            return false;
+            log.info("RoomServiceImpl_responseToJoinRoom end");
+            throw new OnlyAdminAllowedException();
         }
 
         if (!joinRoomReq.getAccepted()) {
             requestUser.updateRoom(null);
             requestUser.updateStatus(1L);
-            log.info("RoomServiceImpl_responseToJoinRoom end: " + false);
+            log.info("RoomServiceImpl_responseToJoinRoom end");
             return false;
         } else if (room.getMaxMember() <= room.getHeadCount()) {
             requestUser.updateRoom(null);
             requestUser.updateStatus(1L);
-            log.info("RoomServiceImpl_responseToJoinRoom end: not enough allowed participants");
-            return false;
+            log.info("RoomServiceImpl_responseToJoinRoom end");
+            throw new RoomAlreadyFullException();
         }
 
         requestUser.updateStatus(3L);
         room.joinMember();
+
+        Participant participant = Participant.builder()
+            .user(requestUser)
+            .room(room)
+            .build();
+        participantRepository.save(participant);
 
         log.info("RoomServiceImpl_responseToJoinRoom end");
         return true;
@@ -511,8 +482,8 @@ public class RoomServiceImpl implements RoomService {
         Room room = user.getRoom();
 
         if (!user.equals(room.getAdmin())) {
-            log.info("RoomServiceImpl_checkAndStartGame end: requested user is not admin");
-            return false;
+            log.info("RoomServiceImpl_checkAndStartGame end");
+            throw new OnlyAdminAllowedException();
         }
 
         if (room.getMinMember() <= room.getHeadCount()
@@ -523,6 +494,6 @@ public class RoomServiceImpl implements RoomService {
         }
 
         log.info("RoomServiceImpl_checkAndStartGame end: invalid play condition");
-        return false;
+        throw new PlayersNotEnoughException();
     }
 }

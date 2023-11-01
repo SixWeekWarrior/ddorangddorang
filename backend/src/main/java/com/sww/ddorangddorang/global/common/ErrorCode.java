@@ -39,6 +39,28 @@ public enum ErrorCode {
 
     IMAGE_UPLOAD_FAIL(HttpStatus.BAD_REQUEST, "이미지 업로드를 실패했습니다."),
 
+    ALREADY_PARTICIPATING_ROOM(HttpStatus.CONFLICT, "이미 참여하고 있는 방이 있습니다."),
+
+    INVALID_PARAMETER_VALUE(HttpStatus.BAD_REQUEST, "입력한 데이터가 올바르지 않습니다."),
+
+    ROOM_ALREADY_FULL(HttpStatus.CONFLICT, "해당 방은 이미 허용하는 최대 인원에 도달하였습니다."),
+
+    ONLY_ADMIN_ALLOWED(HttpStatus.FORBIDDEN, "해당 요청은 게임을 시작하지 않은 관리자만 수행할 수 있습니다."),
+
+    ONLY_USER_ALLOWED(HttpStatus.FORBIDDEN, "해당 요청은 게임이 시작되지 않은 일반 사용자만 수행할 수 있습니다."),
+
+    ONLY_WAITING_STATE_ALLOWED(HttpStatus.FORBIDDEN, "해당 사용자가 방 입장을 대기하는 상태가 아닙니다."),
+
+    DATA_NOT_IN_RANGE(HttpStatus.CONFLICT, "입력한 데이터가 적절한 범위 안에 있지 않습니다."),
+
+    PLAYERS_NOT_ENOUGH(HttpStatus.CONFLICT, "현재 참여 인원 수가 설정한 최소 인원 수와 최대 인원 수의 범위에 없습니다."),
+
+    NO_PARTICIPATING_ROOM(HttpStatus.FORBIDDEN, "참여 중인 방이 없습니다"),
+
+    ROOM_NOT_FOUND(HttpStatus.NOT_FOUND, "방을 찾을 수 없습니다."),
+
+    PARTICIPANT_NOT_FOUND(HttpStatus.NOT_FOUND, "사용자의 참여 정보를 찾을 수 없습니다."),
+
     /**
      * 서버 에러 (서버 장애 상황)
      */
