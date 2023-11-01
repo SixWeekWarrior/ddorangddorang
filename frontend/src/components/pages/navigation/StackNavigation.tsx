@@ -11,6 +11,7 @@ import MyGroup from '../myGroup';
 import MissionToday from '../missionToday';
 import {GoMission} from '../goMission';
 import ReviseInfo from '../reviseInfo';
+import AddInfo from '../addInfo';
 
 const StackNavigation = () => {
   const Stack = createStackNavigator();
@@ -70,6 +71,11 @@ const StackNavigation = () => {
         <Stack.Screen
           name="ReviseInfo"
           component={ReviseInfo}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="AddInfo"
+          component={AddInfo}
           options={{headerShown: false}}
         />
       </Stack.Navigator>
