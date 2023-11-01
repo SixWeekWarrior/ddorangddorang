@@ -8,21 +8,21 @@ import java.util.List;
 
 public interface RoomService {
 
-    public CommonResponse<Integer> createRoom(Long userId, RoomInfoReq roomInfoReq);
+    public Integer createRoom(Long userId, RoomInfoReq roomInfoReq);
 
-    public CommonResponse<Boolean> joinRoom(Long userId, Integer accessCode);
+    public void joinRoom(Long userId, Integer accessCode);
 
-    public CommonResponse<Boolean> updateRoom(Long userId, RoomInfoReq roomInfoReq);
+    public void updateRoom(Long userId, RoomInfoReq roomInfoReq);
 
-    public CommonResponse<Boolean> deleteGame(Long userId);
+    public void deleteGame(Long userId);
 
-    public CommonResponse<Boolean> withdrawalRoom(Long userId);
+    public void withdrawalRoom(Long userId);
 
-    public CommonResponse<List<ShowUsersRes>> showUsers(Long userId);
+    public List<ShowUsersRes> showUsers(Long userId);
 
-    public CommonResponse<Boolean> responseJoinRoom(Long userId, JoinRoomReq joinRoomReq);
+    public Boolean responseJoinRoom(Long userId, JoinRoomReq joinRoomReq);
 
     public Boolean checkAndRunIfRoomShouldStart(Long userId);
 
-    public CommonResponse<Boolean> checkAndStartGame(Long userId);
+    public Boolean checkAndStartGame(Long userId);
 }

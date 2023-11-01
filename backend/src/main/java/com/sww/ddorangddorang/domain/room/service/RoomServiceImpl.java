@@ -10,6 +10,16 @@ import com.sww.ddorangddorang.domain.room.dto.JoinRoomReq;
 import com.sww.ddorangddorang.domain.room.dto.RoomInfoReq;
 import com.sww.ddorangddorang.domain.room.dto.ShowUsersRes;
 import com.sww.ddorangddorang.domain.room.entity.Room;
+import com.sww.ddorangddorang.domain.room.exception.AlreadyParticipatingRoomException;
+import com.sww.ddorangddorang.domain.room.exception.DataNotInRangeException;
+import com.sww.ddorangddorang.domain.room.exception.InvalidParameterValueException;
+import com.sww.ddorangddorang.domain.room.exception.NoParticipatingRoomException;
+import com.sww.ddorangddorang.domain.room.exception.OnlyAdminAllowedException;
+import com.sww.ddorangddorang.domain.room.exception.OnlyUserAllowedException;
+import com.sww.ddorangddorang.domain.room.exception.OnlyWaitingStateAllowedException;
+import com.sww.ddorangddorang.domain.room.exception.PlayersNotEnoughException;
+import com.sww.ddorangddorang.domain.room.exception.RoomAlreadyFullException;
+import com.sww.ddorangddorang.domain.room.exception.RoomNotFoundException;
 import com.sww.ddorangddorang.domain.room.repository.RoomRepository;
 import com.sww.ddorangddorang.domain.user.entity.User;
 import com.sww.ddorangddorang.domain.user.repository.UserRepository;
@@ -40,7 +50,7 @@ public class RoomServiceImpl implements RoomService {
     private final RedisUtil redisUtil;
 
     @Transactional
-    public CommonResponse<Integer> createRoom(Long userId, RoomInfoReq roomInfoReq) {
+    public Integer createRoom(Long userId, RoomInfoReq roomInfoReq) {
         //사용자가 현재 참여중인 방이 있는지
         //선택하지 않은 옵션
         //정상
@@ -49,13 +59,13 @@ public class RoomServiceImpl implements RoomService {
 
         if (user.getStatus() != 1L) {
             log.info("RoomServiceImpl_createRoom end");
-            return CommonResponse.fail(ErrorCode.ALREADY_PARTICIPATING_ROOM);
+            throw new AlreadyParticipatingRoomException();
         }
 
         if (roomInfoReq.getMinMember() < 1
             || roomInfoReq.getMinMember() > roomInfoReq.getMaxMember()) {
             log.info("RoomServiceImpl_createRoom end");
-            return CommonResponse.fail(ErrorCode.INVALID_PARAMETER_VALUE);
+            throw new InvalidParameterValueException();
         }
 
         Integer accessCode = generateAccessCode();
@@ -78,7 +88,7 @@ public class RoomServiceImpl implements RoomService {
         participantRepository.save(participant);
 
         log.info("RoomServiceImpl_createRoom end: " + room.getAccessCode());
-        return CommonResponse.success(room.getAccessCode());
+        return room.getAccessCode();
     }
 
     @Transactional
@@ -102,50 +112,49 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Transactional
-    public CommonResponse<Boolean> joinRoom(Long userId, Integer accessCode) {
+    public void joinRoom(Long userId, Integer accessCode) {
         log.info("RoomServiceImpl_joinRoom start");
         User user = userRepository.getReferenceById(userId);
 
         if (user.getStatus() != 1L) {
             log.info("RoomServiceImpl_joinRoom end");
-            return CommonResponse.fail(ErrorCode.ALREADY_PARTICIPATING_ROOM);
+            throw new AlreadyParticipatingRoomException();
         }
 
         Room room = roomRepository.findByAccessCodeAndStartedAtNullAndDeletedAtNull(accessCode);
 
         if (room.getHeadCount() >= room.getMaxMember()) {
             log.info("RoomServiceImpl_joinRoom end");
-            return CommonResponse.fail(ErrorCode.ROOM_ALREADY_FULL);
+            throw new RoomAlreadyFullException();
         }
 
         user.updateRoom(room);
         user.updateStatus(5L);
 
         log.info("RoomServiceImpl_joinRoom end");
-        return CommonResponse.success(true);
     }
 
     @Transactional
-    public CommonResponse<Boolean> updateRoom(Long userId, RoomInfoReq roomInfoReq) {
+    public void updateRoom(Long userId, RoomInfoReq roomInfoReq) {
         log.info("RoomServiceImpl_updateRoom start");
         User user = userRepository.getReferenceById(userId);
 
         if (user.getStatus() != 2L) {
             log.info("RoomServiceImpl_updateRoom end");
-            return CommonResponse.fail(ErrorCode.ONLY_ADMIN_ALLOWED);
+            throw new OnlyAdminAllowedException();
         }
 
         if (roomInfoReq.getMinMember() < 1
             || roomInfoReq.getMinMember() > roomInfoReq.getMaxMember()) {
             log.info("RoomServiceImpl_updateRoom end");
-            return CommonResponse.fail(ErrorCode.INVALID_PARAMETER_VALUE);
+            throw new InvalidParameterValueException();
         }
 
         Room room = roomRepository.findByAdminAndStartedAtNullAndDeletedAtNull(user);
 
         if(room == null) {
             log.info("RoomServiceImpl_updateRoom end");
-            return CommonResponse.fail(ErrorCode.ROOM_NOT_FOUND);
+            throw new RoomNotFoundException();
         }
 
         Integer currentCount = room.getHeadCount();
@@ -153,30 +162,29 @@ public class RoomServiceImpl implements RoomService {
         if (roomInfoReq.getMinMember() < currentCount
             || currentCount > roomInfoReq.getMaxMember()) {
             log.info("RoomServiceImpl_updateRoom end");
-            return CommonResponse.fail(ErrorCode.DATA_NOT_IN_RANGE);
+            throw new DataNotInRangeException();
         }
 
         room.updateRoomInfo(roomInfoReq);
 
         log.info("RoomServiceImpl_updateRoom end");
-        return CommonResponse.success(true);
     }
 
     @Transactional
-    public CommonResponse<Boolean> deleteGame(Long userId) {
+    public void deleteGame(Long userId) {
         log.info("RoomServiceImpl_deleteGame start");
         User admin = userRepository.getReferenceById(userId);
 
         if (admin.getStatus() != 2L) {
             log.info("RoomServiceImpl_deleteGame end");
-            return CommonResponse.fail(ErrorCode.ONLY_ADMIN_ALLOWED);
+            throw new OnlyAdminAllowedException();
         }
 
         Room room = roomRepository.findByAdminAndStartedAtNullAndDeletedAtNull(admin);
 
         if(room == null) {
             log.info("RoomServiceImpl_updateRoom end");
-            return CommonResponse.fail(ErrorCode.ROOM_NOT_FOUND);
+            throw new RoomNotFoundException();
         }
 
         List<User> userList = userRepository.findAllByRoom(room);
@@ -190,18 +198,17 @@ public class RoomServiceImpl implements RoomService {
         redisUtil.putAccessCode(room.getAccessCode());
 
         log.info("RoomServiceImpl_deleteGame end");
-        return CommonResponse.success(true);
     }
 
     @Transactional
-    public CommonResponse<Boolean> withdrawalRoom(Long userId) {
+    public void withdrawalRoom(Long userId) {
         log.info("RoomServiceImpl_withdrawalRoom start");
 
         User user = userRepository.getReferenceById(userId);
 
         if (user.getStatus() != 3L && user.getStatus() != 5L) {
             log.info("RoomServiceImpl_withdrawalRoom end");
-            return CommonResponse.fail(ErrorCode.ONLY_USER_ALLOWED);
+            throw new OnlyUserAllowedException();
         }
 
         Room room = user.getRoom();
@@ -216,7 +223,6 @@ public class RoomServiceImpl implements RoomService {
         participant.applyWithdrawal();
 
         log.info("RoomServiceImpl_withdrawalRoom end");
-        return CommonResponse.success(true);
     }
 
 
@@ -379,7 +385,7 @@ public class RoomServiceImpl implements RoomService {
         return false;
     }
 
-    public CommonResponse<List<ShowUsersRes>> showUsers(Long userId) {
+    public List<ShowUsersRes> showUsers(Long userId) {
         log.info("RoomServiceImpl_showUsers start");
 
         User user = userRepository.getReferenceById(userId);
@@ -387,13 +393,13 @@ public class RoomServiceImpl implements RoomService {
 
         if (user.getStatus() == 1L) {
             log.info("RoomServiceImpl_showUsers end");
-            return CommonResponse.fail(ErrorCode.NO_PARTICIPATING_ROOM);
+            throw new NoParticipatingRoomException();
         }
         Room room = user.getRoom();
 
         if(room == null) {
             log.info("RoomServiceImpl_showUsers end");
-            return CommonResponse.fail(ErrorCode.ROOM_NOT_FOUND);
+            throw new RoomNotFoundException();
         }
 
         List<User> userList = userRepository.findAllByRoom(room);
@@ -410,42 +416,42 @@ public class RoomServiceImpl implements RoomService {
         }
 
         log.info("RoomServiceImpl_showUsers end");
-        return CommonResponse.success(showUsersResList);
+        return showUsersResList;
     }
 
     @Transactional
-    public CommonResponse<Boolean> responseJoinRoom(Long userId, JoinRoomReq joinRoomReq) {
+    public Boolean responseJoinRoom(Long userId, JoinRoomReq joinRoomReq) {
         log.info("RoomServiceImpl_responseToJoinRoom start");
         User admin = userRepository.getReferenceById(userId);
         User requestUser = userRepository.getReferenceById(joinRoomReq.getUserId());
 
         if (requestUser.getStatus() != 5L) {
             log.info("RoomServiceImpl_responseToJoinRoom end");
-            return CommonResponse.fail(ErrorCode.ONLY_WAITING_STATE_ALLOWED);
+            throw new OnlyWaitingStateAllowedException();
         }
         Room room = requestUser.getRoom();
 
         if(room == null) {
             log.info("RoomServiceImpl_responseJoinRoom end");
-            return CommonResponse.fail(ErrorCode.ROOM_NOT_FOUND);
+            throw new RoomNotFoundException();
         }
 
 
         if (!room.getAdmin().equals(admin)) {
             log.info("RoomServiceImpl_responseToJoinRoom end");
-            return CommonResponse.fail(ErrorCode.ONLY_ADMIN_ALLOWED);
+            throw new OnlyAdminAllowedException();
         }
 
         if (!joinRoomReq.getAccepted()) {
             requestUser.updateRoom(null);
             requestUser.updateStatus(1L);
             log.info("RoomServiceImpl_responseToJoinRoom end");
-            return CommonResponse.success(false);
+            return false;
         } else if (room.getMaxMember() <= room.getHeadCount()) {
             requestUser.updateRoom(null);
             requestUser.updateStatus(1L);
             log.info("RoomServiceImpl_responseToJoinRoom end");
-            return CommonResponse.fail(ErrorCode.ROOM_ALREADY_FULL);
+            throw new RoomAlreadyFullException();
         }
 
         requestUser.updateStatus(3L);
@@ -458,7 +464,7 @@ public class RoomServiceImpl implements RoomService {
         participantRepository.save(participant);
 
         log.info("RoomServiceImpl_responseToJoinRoom end");
-        return CommonResponse.success(true);
+        return true;
     }
 
     @Transactional
@@ -479,7 +485,7 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Transactional
-    public CommonResponse<Boolean> checkAndStartGame(Long userId) {
+    public Boolean checkAndStartGame(Long userId) {
         log.info("RoomServiceImpl_checkAndStartGame start");
         User user = userRepository.getReferenceById(userId);
 
@@ -487,17 +493,17 @@ public class RoomServiceImpl implements RoomService {
 
         if (!user.equals(room.getAdmin())) {
             log.info("RoomServiceImpl_checkAndStartGame end");
-            return CommonResponse.fail(ErrorCode.ONLY_ADMIN_ALLOWED);
+            throw new OnlyAdminAllowedException();
         }
 
         if (room.getMinMember() <= room.getHeadCount()
             && room.getHeadCount() <= room.getMinMember()) {
             startGame(room);
             log.info("RoomServiceImpl_checkAndStartGame end");
-            return CommonResponse.success(true);
+            return true;
         }
 
         log.info("RoomServiceImpl_checkAndStartGame end: invalid play condition");
-        return CommonResponse.fail(ErrorCode.PLAYERS_NOT_ENOUGH);
+        throw new PlayersNotEnoughException();
     }
 }
