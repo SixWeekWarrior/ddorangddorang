@@ -1,11 +1,6 @@
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 // import Onboarding from '../../pages/onboarding';
 import Home from '../../pages/home';
-// import Enter from '../../pages/enter';
-// import WaitList from '../../pages/waitList';
-// import MakeRoom from '../../pages/makeRoom';
-// import MakeComplete from '../../pages/makeComplete';
-// import EnterWait from '../../pages/enterWait';
 import MyPage from '../../pages/myPage';
 import {Image, View, Text, Pressable, StyleSheet} from 'react-native';
 import myPageIcon from '../../../assets/icons/default/mypage.png';

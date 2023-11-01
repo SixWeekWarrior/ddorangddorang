@@ -20,10 +20,12 @@ export const Home = ({navigation}: {navigation: any}): JSX.Element => {
                 ...style.titleFont,
                 color: GlobalStyles.yellow.color,
                 marginLeft: 15,
-                marginTop: 20,
+                marginTop: 15,
               }}>{`오늘 나의 \n마니또는?`}</Text>
-            <Text style={style.miniFont}>입은 옷 색깔</Text>
+            <Text style={style.miniFont}>입은 옷</Text>
             <Text style={style.bigFont}>빨간색</Text>
+            <Text style={style.miniFont}>기분</Text>
+            <Text style={style.bigFont}>약간 흐림</Text>
           </Pressable>
           <Image source={yellowEyeImg} style={style.topBottom}></Image>
         </View>
@@ -81,7 +83,7 @@ export const Home = ({navigation}: {navigation: any}): JSX.Element => {
                 marginTop: -15,
                 marginLeft: 15,
               }}>
-              1일차
+              5일차
             </Text>
             <Pressable
               style={style.circle}
@@ -233,24 +235,24 @@ const style = StyleSheet.create({
   },
   titleFont: {
     fontFamily: GlobalStyles.home_title.fontFamily,
-    fontSize: GlobalStyles.home_title.fontSize,
+    fontSize: 20,
     letterSpacing: -1,
   },
   miniFont: {
-    fontFamily: 'NotoSansKR-Black',
-    fontSize: 15,
-    color: GlobalStyles.grey_4.color,
+    fontFamily: GlobalStyles.section_title.fontFamily,
+    fontSize: 13,
+    color: GlobalStyles.grey_2.color,
     marginLeft: 15,
-    marginTop: 10,
+    marginTop: -15,
   },
   tiniFont: {
-    fontFamily: 'NotoSansKR-Light',
+    fontFamily: GlobalStyles.sub_title.fontFamily,
     fontSize: 9,
     color: GlobalStyles.white_2.color,
   },
   midFont: {
     color: GlobalStyles.black.color,
-    fontFamily: 'NotoSansKR-Medium',
+    fontFamily: GlobalStyles.content.fontFamily,
     fontSize: GlobalStyles.home_title.fontSize,
     letterSpacing: -1,
     marginLeft: 15,
@@ -264,7 +266,7 @@ const style = StyleSheet.create({
   },
   bigFont: {
     fontFamily: 'NotoSansKR-Bold',
-    fontSize: 23,
+    fontSize: 18,
     color: GlobalStyles.white_2.color,
     marginTop: -25,
     marginLeft: 15,

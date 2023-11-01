@@ -1,10 +1,44 @@
-import {Text, View, Image, StyleSheet} from 'react-native';
+import {View, Image, StyleSheet, TouchableOpacity, Text} from 'react-native';
 import GlobalStyles from '../../../styles/GlobalStyles';
 import blockImg from '../../../assets/blockImg.png';
 import logoImg from '../../../assets/logoImg.png';
 import BtnBig from '../../atoms/btnBig';
+import googleLoginImg from '../../../assets/googleLoginImg.png';
+import {useMemo, useRef, useCallback} from 'react';
+import BottomSheet, {BottomSheetBackdrop} from '@gorhom/bottom-sheet';
+import {JSX} from 'react/jsx-runtime';
 
 export const Onboarding = ({navigation}: {navigation: any}): JSX.Element => {
+  const bottomSheetRef = useRef<BottomSheet>(null);
+  const snapPoints = useMemo(() => ['25%', '20%', '30%'], []);
+  const renderBackdrop = useCallback(
+    (props: any) => (
+      <BottomSheetBackdrop
+        {...props}
+        disappearsOnIndex={1}
+        appearsOnIndex={2}
+      />
+    ),
+    [],
+  );
+
+  const goLogin = () => (
+    <View style={styles.contentContainer}>
+      <TouchableOpacity
+        onPress={() => {
+          navigation.navigate('Enter');
+        }}>
+        <Image source={googleLoginImg} style={styles.googleLoginImg} />
+      </TouchableOpacity>
+    </View>
+  );
+
+  const handleExpand = () => {
+    if (bottomSheetRef.current) {
+      bottomSheetRef.current.expand();
+    }
+  };
+
   return (
     <View style={styles.container}>
       <Image source={blockImg} style={styles.blockImg} />
@@ -19,12 +53,18 @@ export const Onboarding = ({navigation}: {navigation: any}): JSX.Element => {
       <Text style={styles.content}>
         싸피에서의 잊지 못할 추억을 만들어봐요 :)
       </Text>
-      <BtnBig
-        text="시작하기"
-        onPress={() => {
-          navigation.navigate('Enter');
-        }}
-      />
+      <BtnBig text="시작하기" onPress={handleExpand} />
+      <BottomSheet
+        ref={bottomSheetRef}
+        snapPoints={snapPoints}
+        bottomInset={46}
+        detached={true}
+        index={-1}
+        backdropComponent={renderBackdrop}
+        enablePanDownToClose={true}
+        style={styles.sheetContainer}>
+        {goLogin()}
+      </BottomSheet>
     </View>
   );
 };
@@ -37,6 +77,19 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: GlobalStyles.white_2.color,
+  },
+  sheetContainer: {
+    // paddingBottom: 1,
+  },
+  contentContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  googleLoginImg: {
+    width: 220,
+    height: 50,
+    objectFit: 'scale-down',
   },
   blockImg: {
     width: 260,

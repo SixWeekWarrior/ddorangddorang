@@ -5,14 +5,25 @@ import yellowEyeImg from '../../../assets/yellowEyeImg.png';
 import GlobalStyles from '../../../styles/GlobalStyles';
 import InputTextwithBtn from '../../molecules/inputTextwithBtn';
 import BtnBig from '../../atoms/btnBig';
-import BottomSheet from '@gorhom/bottom-sheet';
-import {useRef, useMemo, useState} from 'react';
+import BottomSheet, {BottomSheetBackdrop} from '@gorhom/bottom-sheet';
+import {useRef, useMemo, useState, useCallback} from 'react';
 import rightImg from '../../../assets/missionRightImg.png';
 import wrongImg from '../../../assets/missionWrongImg.png';
 
 export const GoMission = ({navigation}: {navigation: any}): JSX.Element => {
   const bottomSheetRef = useRef<BottomSheet>(null);
-  const snapPoints = useMemo(() => ['70%'], []);
+  const snapPoints = useMemo(() => ['70%', '20%', '70%'], []);
+  const renderBackdrop = useCallback(
+    (props: any) => (
+      <BottomSheetBackdrop
+        {...props}
+        disappearsOnIndex={1}
+        appearsOnIndex={2}
+      />
+    ),
+    [],
+  );
+
   const [enteredText, setEnteredText] = useState('');
   const handleTextChange = (text: string) => {
     setEnteredText(text); // Set the entered text in GoMission
@@ -85,7 +96,9 @@ export const GoMission = ({navigation}: {navigation: any}): JSX.Element => {
         bottomInset={46}
         detached={true}
         index={-1}
-        style={style.sheetContainer}>
+        style={style.sheetContainer}
+        backdropComponent={renderBackdrop}
+        enablePanDownToClose={true}>
         {renderContent()}
       </BottomSheet>
     </View>
@@ -97,7 +110,7 @@ const style = StyleSheet.create({
     flex: 1,
   },
   sheetContainer: {
-    marginHorizontal: 24,
+    marginHorizontal: 20,
   },
   contentContainer: {
     flex: 1,

@@ -10,12 +10,14 @@ import WaitList from '../waitList';
 import MyGroup from '../myGroup';
 import MissionToday from '../missionToday';
 import {GoMission} from '../goMission';
+import ReviseInfo from '../reviseInfo';
+import AddInfo from '../addInfo';
 
 const StackNavigation = () => {
   const Stack = createStackNavigator();
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="NavBar">
+      <Stack.Navigator initialRouteName="Onboarding">
         <Stack.Screen
           name="Onboarding"
           component={Onboarding}
@@ -64,6 +66,16 @@ const StackNavigation = () => {
         <Stack.Screen
           name="GoMission"
           component={GoMission}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="ReviseInfo"
+          component={ReviseInfo}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="AddInfo"
+          component={AddInfo}
           options={{headerShown: false}}
         />
       </Stack.Navigator>
