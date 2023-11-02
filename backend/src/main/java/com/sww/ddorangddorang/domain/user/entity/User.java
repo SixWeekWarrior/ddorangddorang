@@ -87,11 +87,8 @@ public class User {
     }
 
     public void updateSsafyInfo(UsersSsafyinfoPutReq usersSsafyinfoPutReq) {
-        this.generation = usersSsafyinfoPutReq.getGeneration();
         this.profileImage = usersSsafyinfoPutReq.getProfileImage();
-        this.campus = usersSsafyinfoPutReq.getCampus();
         this.classes = usersSsafyinfoPutReq.getClasses();
-        this.isMajor = usersSsafyinfoPutReq.getIsMajor();
         this.floor = usersSsafyinfoPutReq.getFloor();
     }
 

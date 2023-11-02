@@ -8,11 +8,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class UsersSsafyinfoPutReq {
 
-    private Integer generation;
     private String profileImage;
-    private Integer campus;
     private Integer classes;
-    private Byte isMajor;
     private Integer floor;
 
 }
