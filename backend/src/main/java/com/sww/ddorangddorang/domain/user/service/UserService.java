@@ -1,9 +1,10 @@
 package com.sww.ddorangddorang.domain.user.service;
 
 
-        import com.sww.ddorangddorang.domain.user.dto.UsersMoreinfoPostReq;
+        import com.sww.ddorangddorang.domain.user.dto.UsersMoreinfoPutReq;
         import com.sww.ddorangddorang.domain.user.dto.UsersSignupPostReq;
-        import com.sww.ddorangddorang.domain.user.dto.UsersSsafyinfoPostReq;
+        import com.sww.ddorangddorang.domain.user.dto.UsersSsafyinfoPutReq;
+        import com.sww.ddorangddorang.domain.user.dto.UsersTodayinfoPostReq;
         import com.sww.ddorangddorang.domain.user.entity.User;
         import java.util.Optional;
 
@@ -12,7 +13,9 @@ public interface UserService {
 
     Optional<User> findByEmail(String email);
 
-    void ssafyInfo(Long userId, UsersSsafyinfoPostReq usersSsafyinfoPostReq);
+    void ssafyInfo(Long userId, UsersSsafyinfoPutReq usersSsafyinfoPutReq);
 
-    void moreInfo(Long userId, UsersMoreinfoPostReq usersMoreinfoPostReq);
+    void moreInfo(Long userId, UsersMoreinfoPutReq usersMoreinfoPutReq);
+
+    void todayInfo(Long userId, UsersTodayinfoPostReq usersTodayinfoPostReq);
 }
