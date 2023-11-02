@@ -1,6 +1,6 @@
 import {View, StyleSheet} from 'react-native';
 import GlobalStyles from '../../../styles/GlobalStyles';
-import MenuTop from '../../atoms/menuTop';
+import MenuTop from '../../molecules/menuTop';
 import RangeSlider from '../../atoms/rangeSlider';
 import BtnBig from '../../atoms/btnBig';
 import {useState} from 'react';
