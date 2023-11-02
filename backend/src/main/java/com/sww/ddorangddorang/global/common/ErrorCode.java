@@ -65,6 +65,8 @@ public enum ErrorCode {
 
     MISSION_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 미션을 찾을 수 없습니다."),
 
+    MISSION_PERFORM_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 미션 수행 정보를 찾을 수 없습니다."),
+
     /**
      * 서버 에러 (서버 장애 상황)
      */

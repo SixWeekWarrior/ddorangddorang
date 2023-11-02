@@ -1,4 +1,4 @@
-package com.sww.ddorangddorang.domain.mission.exception;
+package com.sww.ddorangddorang.domain.user.exception;
 
 import com.sww.ddorangddorang.global.common.BaseException;
 import com.sww.ddorangddorang.global.common.ErrorCode;
