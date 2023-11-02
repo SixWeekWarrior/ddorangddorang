@@ -25,13 +25,13 @@ public class MissionApi {
     private static final String SUCCESS = "SUCCESS";
 
     @GetMapping
-    CommonResponse<List<MissionPerformsInfoRes>> findMissionByUser(@AuthenticationPrincipal CustomOAuth2User customOAuth2User) {
+    public CommonResponse<List<MissionPerformsInfoRes>> findMissionByUser(@AuthenticationPrincipal CustomOAuth2User customOAuth2User) {
         log.info("findMissionByUser Controller 진입");
         return CommonResponse.success(missionPerformService.findMissionByUser(customOAuth2User));
     }
 
     @PostMapping
-    CommonResponse<String> missionComplete(@RequestBody MissionCompleteReq missionCompleteReq, @AuthenticationPrincipal CustomOAuth2User customOAuth2User) {
+    public CommonResponse<String> missionComplete(@RequestBody MissionCompleteReq missionCompleteReq, @AuthenticationPrincipal CustomOAuth2User customOAuth2User) {
         log.info("missionComplete Controller 진입");
         missionPerformService.missionComplete(missionCompleteReq, customOAuth2User);
         return CommonResponse.success(SUCCESS);

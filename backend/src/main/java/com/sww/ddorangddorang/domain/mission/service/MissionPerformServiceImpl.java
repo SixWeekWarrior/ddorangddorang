@@ -3,16 +3,14 @@ package com.sww.ddorangddorang.domain.mission.service;
 import com.sww.ddorangddorang.auth.dto.CustomOAuth2User;
 import com.sww.ddorangddorang.domain.mission.dto.MissionCompleteReq;
 import com.sww.ddorangddorang.domain.mission.dto.MissionPerformsInfoRes;
-import com.sww.ddorangddorang.domain.mission.entity.Mission;
 import com.sww.ddorangddorang.domain.mission.entity.MissionPerform;
 import com.sww.ddorangddorang.domain.mission.exception.MissionNotFoundException;
-import com.sww.ddorangddorang.domain.mission.exception.UserNotFoundException;
+import com.sww.ddorangddorang.domain.user.exception.UserNotFoundException;
 import com.sww.ddorangddorang.domain.mission.repository.MissionPerformRepository;
 import com.sww.ddorangddorang.domain.user.entity.User;
 import com.sww.ddorangddorang.domain.user.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -34,20 +32,7 @@ public class MissionPerformServiceImpl implements MissionPerformService {
         List<MissionPerform> missionPerforms = missionPerformRepository.findAllByPlayer(user);
         log.info("missionPerforms: {}", missionPerforms);
 
-        return missionPerforms.stream()
-            .map(missionPerform -> {
-                Mission mission = missionPerform.getMission();
-                Boolean isCompleted = missionPerform.getPerformedAt() != null;
-
-                return MissionPerformsInfoRes.builder()
-                    .missionId(missionPerform.getId())
-                    .title(mission.getTitle())
-                    .content(mission.getContent())
-                    .isComplete(isCompleted)
-                    .missionType(mission.getMissionType())
-                    .build();
-            })
-            .collect(Collectors.toList());
+        return MissionPerformsInfoRes.listOf(missionPerforms);
     }
 
     public void missionComplete(MissionCompleteReq missionCompleteReq, CustomOAuth2User customOAuth2User) {
