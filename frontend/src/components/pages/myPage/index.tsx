@@ -1,5 +1,5 @@
 import {View, StyleSheet} from 'react-native';
-import MenuTop from '../../atoms/menuTop';
+import MenuTop from '../../molecules/menuTop';
 import GlobalStyles from '../../../styles/GlobalStyles';
 import InfoBox from '../../organisms/infoBox';
 

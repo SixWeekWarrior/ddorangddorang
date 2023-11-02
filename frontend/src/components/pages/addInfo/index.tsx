@@ -1,5 +1,5 @@
 import {StyleSheet, View} from 'react-native';
-import MenuTop from '../../atoms/menuTop';
+import MenuTop from '../../molecules/menuTop';
 
 export const AddInfo = ({navigation}: {navigation: any}): JSX.Element => {
   return (
