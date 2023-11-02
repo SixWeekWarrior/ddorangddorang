@@ -13,5 +13,5 @@ public interface ParticipantRepository extends JpaRepository<Participant, Long> 
 
     Optional<Participant> findByUser(User user);
 
-    Optional<Participant> findByUserAndGamecount(User user, Integer gameCount);
+    Optional<Participant> findByUserAndGameCount(User user, Integer gameCount);
 }

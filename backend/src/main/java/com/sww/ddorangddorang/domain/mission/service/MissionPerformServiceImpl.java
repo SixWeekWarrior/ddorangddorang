@@ -32,7 +32,7 @@ public class MissionPerformServiceImpl implements MissionPerformService {
         String email = customOAuth2User.getEmail();
         log.info("email: {}", email);
         User user = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
-        Participant participant = participantRepository.findByUserAndGamecount(user,
+        Participant participant = participantRepository.findByUserAndGameCount(user,
             user.getGameCount()).orElseThrow(ParticipantNotFoundException::new);
         log.info("user: {}", user);
         List<MissionPerform> missionPerforms = missionPerformRepository.findAllByPlayer(

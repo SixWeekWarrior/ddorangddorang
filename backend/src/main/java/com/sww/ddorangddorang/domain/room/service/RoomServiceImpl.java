@@ -201,7 +201,7 @@ public class RoomServiceImpl implements RoomService {
         }
 
         if (user.getStatus() == 3L) {
-            Participant participant = participantRepository.findByUserAndGamecount(user,
+            Participant participant = participantRepository.findByUserAndGameCount(user,
                 user.getGameCount()).orElseThrow(ParticipantNotFoundException::new);
             participant.deleteParticipant();
         } else {

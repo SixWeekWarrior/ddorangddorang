@@ -35,7 +35,7 @@ public class NoteServiceImpl implements NoteService {
         User user = userRepository.findByEmail(customOAuth2User.getEmail()).orElseThrow(
             UserNotFoundException::new);
 
-        Participant receiver = participantRepository.findByUserAndGamecount(user,
+        Participant receiver = participantRepository.findByUserAndGameCount(user,
             user.getGameCount()).orElseThrow(ParticipantNotFoundException::new);
 
         List<Note> notes = noteRepository.findAllByReceiver(receiver);
@@ -47,7 +47,7 @@ public class NoteServiceImpl implements NoteService {
         User user = userRepository.findByEmail(customOAuth2User.getEmail()).orElseThrow(
             UserNotFoundException::new);
 
-        Participant sender = participantRepository.findByUserAndGamecount(user, user.getGameCount())
+        Participant sender = participantRepository.findByUserAndGameCount(user, user.getGameCount())
             .orElseThrow(ParticipantNotFoundException::new);
         Participant receiver = sender.getManiti();
 

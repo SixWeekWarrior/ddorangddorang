@@ -3,6 +3,7 @@ package com.sww.ddorangddorang.domain.mission.entity;
 import com.sww.ddorangddorang.domain.participant.entity.Participant;
 import com.sww.ddorangddorang.domain.user.entity.User;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -24,11 +25,11 @@ public class MissionPerform {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;                    // BIGINT
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "player_id")
     private Participant player;                // BIGINT "Participant 아이디"
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "mission_id")
     private Mission mission;            // BIGINT "미션 아이디"
 
