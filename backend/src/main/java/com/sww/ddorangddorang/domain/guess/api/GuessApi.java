@@ -18,10 +18,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/guess")
 public class GuessApi {
-    private GuessService guessService;
-    private final static String SUCCESS = "Success";
+    private final GuessService guessService;
+    private final static String SUCCESS = "SUCCESS";
     @GetMapping
-    public CommonResponse<> getGuessInfo(@RequestHeader Long userId) {
+    public CommonResponse<Guess> getGuessInfo(@RequestHeader Long userId) {
         log.info("GuessApi_getGuessInfo start");
         log.info("GuessApi_getGuessInfo end: ");
         return CommonResponse.success(guessService.getGuessInfo(userId));

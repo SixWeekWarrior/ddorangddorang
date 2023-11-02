@@ -5,4 +5,6 @@ import com.sww.ddorangddorang.domain.guess.entity.Guess;
 public interface GuessService {
     public Guess getGuessInfo(Long userId);
     public void updateGuessInfo(Long userId, Long guessedUserId);
+
+    public Boolean guessManito(Long userId, Long guessUserId);
 }

@@ -1,4 +1,5 @@
 package com.sww.ddorangddorang.domain.guess.guess.service;
+
 import com.sww.ddorangddorang.domain.guess.entity.Guess;
 import com.sww.ddorangddorang.domain.guess.repository.GuessRepository;
 import com.sww.ddorangddorang.domain.participant.entity.Participant;
@@ -15,17 +16,17 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 @Slf4j
 @Service
-public class GuessServiceImpl implements GuessService{
+public class GuessServiceImpl implements GuessService {
+
     private final UserRepository userRepository;
     private final ParticipantRepository participantRepository;
     private final GuessRepository guessRepository;
 
 
-    public Participant getParticipantInfo(Long userId){
+    public Participant getParticipantInfo(Long userId) {
         User user = userRepository.getReferenceById(userId);
-        Room room = user.getRoom();
-        return participantRepository.findByUserAndRoomAndIsWithdrawalFalse(user, room).orElseThrow(
-            ParticipantNotFoundException::new);
+        return participantRepository.findByUserAndGameCount(user, user.getGameCount())
+            .orElseThrow(ParticipantNotFoundException::new);
     }
 
     @Override
