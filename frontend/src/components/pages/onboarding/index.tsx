@@ -36,7 +36,7 @@ export const Onboarding = ({navigation}: {navigation: any}): JSX.Element => {
       <View style={styles.loginContainer}>
         <TouchableOpacity
           onPress={() => {
-            navigation.navigate('Enter'); // 이 줄 삭제하시고 여기에 로그인 로직 추가하시면 됩니다.
+            navigation.navigate('AdditionalInfo'); // 이 줄 삭제하시고 여기에 로그인 로직 추가하시면 됩니다.
           }}>
           <Image source={googleLoginImg} style={styles.googleLoginImg} />
         </TouchableOpacity>
@@ -93,18 +93,19 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     flex: 1,
-    marginTop: '-30%',
+    marginLeft: '10%',
   },
   titleContainer: {
-    flex: 2,
+    flex: 1,
     alignSelf: 'flex-start',
   },
   loginContainer: {
-    flex: 2,
+    flex: 1,
     alignSelf: 'center',
+    justifyContent: 'center',
   },
   signupContainer: {
-    marginRight: 24,
+    marginRight: '10%',
     flex: 1,
     alignSelf: 'flex-end',
     rowGap: -13,
@@ -122,7 +123,9 @@ const styles = StyleSheet.create({
     textAlign: 'right',
   },
   googleLoginImg: {
+    justifyContent: 'center',
     width: 270,
+    height: 50,
     objectFit: 'scale-down',
   },
   blockImg: {
