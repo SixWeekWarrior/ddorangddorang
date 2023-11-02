@@ -1,5 +1,6 @@
 package com.sww.ddorangddorang.domain.mission.entity;
 
+import com.sww.ddorangddorang.domain.participant.entity.Participant;
 import com.sww.ddorangddorang.domain.user.entity.User;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -25,7 +26,7 @@ public class MissionPerform {
 
     @ManyToOne
     @JoinColumn(name = "player_id")
-    private User player;                // BIGINT "유저 아이디"
+    private Participant player;                // BIGINT "Participant 아이디"
 
     @ManyToOne
     @JoinColumn(name = "mission_id")
@@ -41,7 +42,7 @@ public class MissionPerform {
     private LocalDateTime deletedAt;    // TIMESTAMP "삭제 시간"
 
     @Builder
-    public MissionPerform(User player, Mission mission) {
+    public MissionPerform(Participant player, Mission mission) {
         this.player = player;
         this.mission = mission;
     }

@@ -70,10 +70,10 @@ public class Participant {
     private Boolean isCorrect;
 
     @Builder
-    public Participant(User user, Room room) {
+    public Participant(User user) {
         this.user = user;
         this.gameCount = user.getGameCount();
-        this.room = room;
+        this.room = user.getRoom();
     }
 
     public void matchManito(Participant participant) {
@@ -86,8 +86,10 @@ public class Participant {
 
     public void deleteParticipant() {
         this.deletedAt = LocalDateTime.now();
-        this.getUser().updateStatus(1L);
-        this.getUser().updateRoom(null);
+        this.getUser().withdrawRoom();
+        this.getRoom().removeMember();
+//        this.getUser().updateStatus(1L);
+//        this.getUser().updateRoom(null);
     }
 
     public void allocateNickname(String nickname) {

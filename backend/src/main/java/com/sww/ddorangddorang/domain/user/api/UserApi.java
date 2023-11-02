@@ -15,12 +15,12 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1/users")
 public class UserApi {
     private final UserService userService;
-    private final static String SUCCESS = "Success";
+    private final static String SUCCESS = "SUCCESS";
 
     @PostMapping("/signup")
-    public String signUp(@RequestBody UsersSignupPostReq usersSignupPostReq) throws Exception {
+    public CommonResponse<String> signUp(@RequestBody UsersSignupPostReq usersSignupPostReq) throws Exception {
         userService.signUp(usersSignupPostReq);
-        return "회원가입 성공";
+        return CommonResponse.success(SUCCESS);
     }
 
     @GetMapping("/jwt-test")

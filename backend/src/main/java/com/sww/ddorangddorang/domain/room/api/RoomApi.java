@@ -31,7 +31,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class RoomApi {
 
     private final RoomService roomService;
-    private final static String SUCCESS = "Success";
+    private final static String SUCCESS = "SUCCESS";
 
     @PostMapping
     public CommonResponse<Integer> createRoom(@RequestHeader Long userId,
