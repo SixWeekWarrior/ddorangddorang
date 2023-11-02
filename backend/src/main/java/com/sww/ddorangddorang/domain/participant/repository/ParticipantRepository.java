@@ -9,6 +9,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ParticipantRepository extends JpaRepository<Participant, Long> {
 
+    Optional<Participant> findByUserAndRoomAndIsWithdrawalFalseAndDeletedAtNull(User user, Room room);
+
     List<Participant> findAllByRoomAndIsWithdrawalFalseAndDeletedAtIsNull(Room room);
 
     Optional<Participant> findByUserAndRoomAndIsWithdrawalFalse(User user, Room room);
