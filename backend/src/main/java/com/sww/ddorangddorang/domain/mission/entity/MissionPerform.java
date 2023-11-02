@@ -46,4 +46,22 @@ public class MissionPerform {
         this.mission = mission;
     }
 
+    public void missionComplete(Long reaction, String proof) {
+        this.performedAt = LocalDateTime.now();
+        this.reaction = reaction;
+        this.proof = proof;
+    }
+
+    public void missionComplete() {
+        this.performedAt = LocalDateTime.now();
+    }
+
+    public void missionGiveup() {
+        this.discard = true;
+    }
+
+    public boolean isCompleted() {
+        return this.performedAt != null;
+    }
+
 }
