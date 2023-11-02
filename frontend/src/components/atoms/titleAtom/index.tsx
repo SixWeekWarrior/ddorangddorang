@@ -15,28 +15,20 @@ export const TitleAtom = ({
   text,
 }: TitleAtomProps) => {
   const styles = StyleSheet.create({
-    innerContainer: {
-      flex: 1,
-    },
     menu: {
-      marginLeft: 20,
-      bottom: -120,
       fontFamily: GlobalStyles.section_title.fontFamily,
       fontSize: 22,
       color: menuColor || GlobalStyles.white_1.color,
     },
     text: {
-      marginLeft: 20,
-      marginRight: -10,
-      bottom: -115,
       fontFamily: GlobalStyles.content.fontFamily,
       fontSize: 14,
-      lineHeight: 20,
+      marginTop: -10,
       color: textColor || GlobalStyles.white_1.color,
     },
   });
   return (
-    <View style={styles.innerContainer}>
+    <View>
       <Text style={styles.menu}>{menu}</Text>
       <Text style={styles.text}>{text}</Text>
     </View>

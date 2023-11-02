@@ -1,4 +1,3 @@
-import * as React from 'react';
 import {StyleSheet, Text, View, Image} from 'react-native';
 import GlobalStyles from '../../../styles/GlobalStyles';
 import blockImg from '../../../assets/blockImg.png';
@@ -14,29 +13,43 @@ interface MenuTopProps {
 export const MenuTop = ({menu, text, menuColor, textColor}: MenuTopProps) => {
   return (
     <View style={styles.container}>
-      <TitleAtom
-        menu={menu}
-        text={text}
-        menuColor={menuColor}
-        textColor={textColor}
-      />
-      <Image source={blockImg} style={styles.blockImg}></Image>
+      <View style={styles.contentContainer}>
+        <TitleAtom
+          menu={menu}
+          text={text}
+          menuColor={menuColor}
+          textColor={textColor}
+        />
+      </View>
+      <View style={styles.imgContainer}>
+        <Image source={blockImg} style={styles.blockImg} />
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    height: 235,
+    height: '25%',
     flexDirection: 'row',
     backgroundColor: GlobalStyles.blue.color,
   },
-
-  blockImg: {
+  contentContainer: {
     flex: 1,
-    height: 120,
-    objectFit: 'scale-down',
-    bottom: -90,
+    alignSelf: 'flex-end',
+    bottom: '5%',
+    marginLeft: '10%',
+  },
+  imgContainer: {
+    alignSelf: 'flex-end',
+    height: '68%',
+    bottom: '5%',
+    flex: 1,
+  },
+  blockImg: {
+    width: '100%',
+    height: '100%',
+    resizeMode: 'contain',
   },
 });
 
