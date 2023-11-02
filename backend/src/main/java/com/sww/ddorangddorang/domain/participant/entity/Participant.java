@@ -36,6 +36,8 @@ public class Participant {
     @JoinColumn(name = "user_id")
     private User user;
 
+    private Integer gameCount;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "room_id")
     private Room room;
@@ -44,29 +46,42 @@ public class Participant {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
-    private User manito;
+    private Participant manito;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
-    private User maniti;
+    private Participant maniti;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
     private Mission mission;
 
-    private Boolean isWithdrawal = false;
+    private Boolean icKickedOut = false;
 
     @Column(name = "changes")
-    private Short change = 0;
+    private final Short change = 0;
 
     private LocalDateTime deletedAt;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn
+    private User guess;
+
+    private Boolean isCorrect;
+
+    @Builder
+    public Participant(User user, Room room) {
+        this.user = user;
+        this.gameCount = user.getGameCount();
+        this.room = room;
+    }
+
     public void matchManito(Participant participant) {
-        this.manito = participant.getUser();
+        this.manito = participant;
     }
 
     public void matchManiti(Participant participant) {
-        this.maniti = participant.getUser();
+        this.maniti = participant;
     }
 
     public void deleteParticipant() {
@@ -75,17 +90,7 @@ public class Participant {
         this.getUser().updateRoom(null);
     }
 
-    public void applyWithdrawal() {
-        this.isWithdrawal = true;
-    }
-
     public void allocateNickname(String nickname) {
         this.nickname = nickname;
-    }
-
-    @Builder
-    public Participant(User user, Room room) {
-        this.user = user;
-        this.room = room;
     }
 }

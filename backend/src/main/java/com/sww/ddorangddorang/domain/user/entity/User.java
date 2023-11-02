@@ -53,6 +53,7 @@ public class User {
     private Room room;           // BIGINT - FK(ROOM)
     private Long status;                // BIGINT - FK(MASTER_CODE)
     private LocalDateTime deletedAt;    // TIMESTAMP
+    private Integer gameCount = 0;
 
     @Builder(builderMethodName = "signup", builderClassName = "Signup")
     public User(String name, String email, String password, String role) {
@@ -105,5 +106,11 @@ public class User {
 
     public void updateStatus(Long status) {
         this.status = status;
+    }
+
+    public void withdrawRoom() {
+        this.room = null;
+        this.status = 1L;
+        ++this.gameCount;
     }
 }
