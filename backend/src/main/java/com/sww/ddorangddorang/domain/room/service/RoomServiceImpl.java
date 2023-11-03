@@ -207,7 +207,7 @@ public class RoomServiceImpl implements RoomService {
 
         if (user.getStatus() == 3L) {
             room.removeMember();
-            Participant participant = participantRepository.findByUserAndRoomAndIsWithdrawalFalse(
+            Participant participant = participantRepository.findByUserAndRoomAndIsWithdrawalFalseAndDeletedAtIsNull(
                 user, room).orElseThrow(ParticipantNotFoundException::new);
             participant.deleteParticipant();
             participant.applyWithdrawal();

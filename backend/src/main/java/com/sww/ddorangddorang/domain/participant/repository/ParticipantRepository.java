@@ -11,5 +11,7 @@ public interface ParticipantRepository extends JpaRepository<Participant, Long> 
 
     List<Participant> findAllByRoomAndIsWithdrawalFalseAndDeletedAtIsNull(Room room);
 
-    Optional<Participant> findByUserAndRoomAndIsWithdrawalFalse(User user, Room room);
+    Optional<Participant> findByUser(User user);
+
+    Optional<Participant> findByUserAndRoomAndIsWithdrawalFalseAndDeletedAtIsNull(User user, Room room);
 }

@@ -1,7 +1,7 @@
 package com.sww.ddorangddorang.domain.opinion.service;
 
 import com.sww.ddorangddorang.auth.dto.CustomOAuth2User;
-import com.sww.ddorangddorang.domain.mission.exception.UserNotFoundException;
+import com.sww.ddorangddorang.domain.user.exception.UserNotFoundException;
 import com.sww.ddorangddorang.domain.opinion.dto.OpinionCreateReq;
 import com.sww.ddorangddorang.domain.opinion.entity.Opinion;
 import com.sww.ddorangddorang.domain.opinion.repository.OpinionRepository;
