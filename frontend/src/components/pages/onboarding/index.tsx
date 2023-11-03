@@ -55,25 +55,27 @@ export const Onboarding = ({navigation}: {navigation: any}): JSX.Element => {
   };
 
   const goLogin = () => (
-    <View style={styles.titleContainer}>
-      <TitleAtom
-        menu={'로그인'}
-        text={'로그인하고 지금 바로 또랑또랑을 시작해보세요!'}
-        menuColor={GlobalStyles.green.color}
-        textColor={GlobalStyles.grey_3.color}
-      />
-    </View>
-    <View style={styles.loginContainer}>
-      <TouchableOpacity
-        onPress={() => {
-          navigation.navigate('AdditionalInfo'); // 이 줄 삭제하시고 여기에 로그인 로직 추가하시면 됩니다.
-        }}>
-        <Image source={googleLoginImg} style={styles.googleLoginImg} />
-      </TouchableOpacity>
-    </View>
-    <View style={styles.signupContainer}>
-      <Text style={styles.text}>회원이 아니신가요?</Text>
-      <Text style={styles.menu}>회원가입</Text>
+    <View style={styles.contentContainer}>
+      <View style={styles.titleContainer}>
+        <TitleAtom
+          menu={'로그인'}
+          text={'로그인하고 지금 바로 또랑또랑을 시작해보세요!'}
+          menuColor={GlobalStyles.green.color}
+          textColor={GlobalStyles.grey_3.color}
+        />
+      </View>
+      <View style={styles.loginContainer}>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate('BasicInfo'); // 이 줄 삭제하시고 여기에 로그인 로직 추가하시면 됩니다.
+          }}>
+          <Image source={googleLoginImg} style={styles.googleLoginImg} />
+        </TouchableOpacity>
+      </View>
+      <View style={styles.signupContainer}>
+        <Text style={styles.text}>회원이 아니신가요?</Text>
+        <Text style={styles.menu}>회원가입</Text>
+      </View>
     </View>
   );
 

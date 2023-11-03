@@ -1,42 +1,80 @@
-import {
-  StyleSheet,
-  Text,
-  View,
-  TextInput,
-  Picker,
-  RadioButton,
-} from 'react-native';
+import {StyleSheet, Text, View, TextInput} from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import GlobalStyles from '../../../styles/GlobalStyles';
+import SelectDropdown from 'react-native-select-dropdown';
+import {RadioButton} from 'react-native-paper';
+import {useState} from 'react';
 
 type InputInfoMoleculesProps = {
   title: string;
-  placeholder: string;
+  placeholder?: string;
   type: string;
+  data?: string[];
+  onInputChange?: (text: string) => void;
 };
+
 export const InputInfoMolecules = ({
   title,
   placeholder,
   type,
+  data,
+  onInputChange,
 }: InputInfoMoleculesProps) => {
+  const [isMajor, setIsMajor] = useState('true');
   const renderInput = () => {
     switch (type) {
       case 'text':
         return (
-          <KeyboardAwareScrollView>
-            <TextInput
-              style={styles.input}
-              placeholder={placeholder}
-              placeholderTextColor={GlobalStyles.grey_3.color}
-            />
-          </KeyboardAwareScrollView>
+          <View style={styles.inputArea}>
+            <KeyboardAwareScrollView>
+              <TextInput
+                style={styles.input}
+                placeholder={placeholder}
+                placeholderTextColor={GlobalStyles.grey_3.color}
+                onChangeText={onInputChange}
+              />
+            </KeyboardAwareScrollView>
+          </View>
         );
       case 'select':
         return (
-          <Picker style={styles.input}>{/* Add Picker options here */}</Picker>
+          <View style={styles.inputArea}>
+            <SelectDropdown
+              data={data}
+              defaultButtonText={placeholder}
+              onSelect={selectedItem => onInputChange(selectedItem)}
+              rowTextStyle={styles.dropdownRowTxtStyle}
+              buttonTextStyle={styles.buttonTextStyle}
+            />
+          </View>
         );
       case 'radio':
-        return <RadioButton style={styles.input} />;
+        return (
+          <View style={styles.radioRowStyle}>
+            <View style={styles.radioInnerContainer}>
+              <Text style={styles.radioText}>전공</Text>
+              <RadioButton
+                value="전공"
+                status={isMajor === 'true' ? 'checked' : 'unchecked'}
+                onPress={() => {
+                  setIsMajor('true');
+                  onInputChange('true');
+                }}
+              />
+            </View>
+            <View style={styles.radioInnerContainer}>
+              <Text style={styles.radioText}>비전공</Text>
+              <RadioButton
+                value="비전공"
+                status={isMajor === 'false' ? 'checked' : 'unchecked'}
+                onPress={() => {
+                  setIsMajor('false');
+                  onInputChange('false');
+                }}
+              />
+            </View>
+          </View>
+        );
       default:
         return null;
     }
@@ -45,7 +83,7 @@ export const InputInfoMolecules = ({
     <View style={styles.container}>
       <Text style={styles.title}>{title}</Text>
       <Text style={styles.border}>|</Text>
-      <View style={styles.inputArea}>{renderInput()}</View>
+      {renderInput()}
     </View>
   );
 };
@@ -75,6 +113,29 @@ const styles = StyleSheet.create({
   input: {
     color: GlobalStyles.grey_3.color,
     lineHeight: 10,
+  },
+  buttonTextStyle: {
+    fontSize: GlobalStyles.content.fontSize,
+    color: GlobalStyles.grey_3.color,
+  },
+  dropdownRowTxtStyle: {
+    color: GlobalStyles.black.color,
+  },
+  radioRowStyle: {
+    width: 180,
+    height: 45,
+    justifyContent: 'center',
+    paddingLeft: '10%',
+    flexDirection: 'row',
+    columnGap: 10,
+  },
+  radioInnerContainer: {
+    flexDirection: 'row',
+  },
+  radioText: {
+    fontSize: 15,
+    color: GlobalStyles.black.color,
+    paddingTop: 10,
   },
 });
 export default InputInfoMolecules;

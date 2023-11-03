@@ -46,6 +46,9 @@ const InfoBox = ({navigation, destination}: InfoBoxProps): JSX.Element => {
       case 'InfoEtc':
         navigation.navigate('ReviseInfo', {destination: 'InfoEtc'});
         break;
+      case 'SendOpinion':
+        navigation.navigate('SendOpinion', {destination: 'SendOpinion'});
+        break;
       default:
         break;
     }
@@ -60,9 +63,11 @@ const InfoBox = ({navigation, destination}: InfoBoxProps): JSX.Element => {
       case 'InfoToday':
         return '오늘의 정보';
       case 'InfoSsafy':
-        return 'SSAFY 정보';
+        return '기본 정보';
       case 'InfoEtc':
         return '추가 정보';
+      case 'SendOpinion':
+        return '의견 보내기';
       default:
         return '';
     }
@@ -112,7 +117,7 @@ const InfoBox = ({navigation, destination}: InfoBoxProps): JSX.Element => {
           </View>
         );
       default:
-        return <Text>좋아하는 음식 알아내기</Text>;
+        return <></>;
     }
   };
 
@@ -126,6 +131,8 @@ const InfoBox = ({navigation, destination}: InfoBoxProps): JSX.Element => {
         return GlobalStyles.pink.color;
       case 'InfoEtc':
         return GlobalStyles.green.color;
+      case 'SendOpinion':
+        return GlobalStyles.blue.color;
       default:
         return GlobalStyles.green.color;
     }
@@ -178,6 +185,10 @@ const InfoBox = ({navigation, destination}: InfoBoxProps): JSX.Element => {
           <Image source={yellowArrowRightImg} style={style.coloredArrowImg} />
         );
       case 'InfoEtc':
+        return (
+          <Image source={whiteArrowRightImg} style={style.coloredArrowImg} />
+        );
+      case 'SendOpinion':
         return (
           <Image source={whiteArrowRightImg} style={style.coloredArrowImg} />
         );
