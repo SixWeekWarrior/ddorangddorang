@@ -52,23 +52,39 @@ public class MissionPerformServiceImpl implements MissionPerformService {
     public void changeMissionAt9Am() {
         log.info("Allocating new missions at 9 AM.");
 
-        // startedAt이 현재 시간과 15시간 이상 차이나면서, deletedAt이 null인 방을 찾는다
+        // startedAt이 현재 시간과 15시간 이상 차이나면서, deletedAt이 null인 방을 찾음
         List<Room> rooms = findEligibleRooms();
+
+        // 현재 가지고 있는 모든 미션을 조회함
         List<Mission> missions = fetchAllMissions();
 
-        // 저장시 일괄 처리를 진행하기 위한 리스트
+        // 모든 활성화 된 게임의 참가자들에게 새로운 미션을 할당함
         List<MissionPerform> missionPerformList = allocateNewMissions(rooms, missions);
         missionPerformRepository.saveAll(missionPerformList);
     }
 
+    // 원하지 않는 미션을 변경하는 메서드
     public void changeMission(MissionChangeReq missionChangeReq, CustomOAuth2User customOAuth2User) {
         String email = customOAuth2User.getEmail();
         User user = findUserByEmail(email);
+
+        // 유저가 참가한 방에서 현재 게임이 진행중인지 판단함
         validateRoom(user);
-        MissionPerform missionPerform = findMissionPerform(missionChangeReq.getMissionPerformId());
+
+        // 유저가 바꾸고자 하는 미션 객체를 찾음
+        MissionPerform missionPerform = findMissionPerform
+            (missionChangeReq.getMissionPerformId());
+
+        // 해당 유저의 미션인지, 이미 완료된 미션은 아닌지 판단함
         validateMissionPerform(missionPerform, user);
+
+        // 유저로부터 참가자 객체를 얻음
         Participant participant = findParticipant(user, user.getGameCount());
+
+        // 최대 미션 변경 횟수를 넘었으면 예외 처리
         validateMissionChangeCount(participant);
+
+        // 다른 미션을 할당받음
         reassignMission(participant);
     }
 
