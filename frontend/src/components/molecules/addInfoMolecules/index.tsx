@@ -4,49 +4,96 @@ import BlockImg from '../../../assets/blockImg.png';
 import TitleAtom from '../../atoms/titleAtom';
 import GlobalStyles from '../../../styles/GlobalStyles';
 import InputInfoMolecules from '../inputInfoMolecules';
-import {useNavigation} from '@react-navigation/native';
 
 type AddInfoMoleculesProps = {
   menu: string;
   text: string;
+  onInputChange: (title: string, value: string) => void;
+  onSkip?: () => void;
 };
 
-export const AddInfoMolecules = ({menu, text}: AddInfoMoleculesProps) => {
-  const navigation = useNavigation();
+export const AddInfoMolecules = ({
+  menu,
+  text,
+  onInputChange,
+  onSkip,
+}: AddInfoMoleculesProps) => {
+  const regions = ['서울', '대전', '광주', '구미', '부울경'];
+  const group = Array.from({length: 20}, (_, index) => (index + 1).toString());
+  const floor = Array.from({length: 20}, (_, index) => (index + 1).toString());
+
   const renderContent = (menu: string) => {
     switch (menu) {
       case '기본 정보':
         return (
           <View style={styles.contentContainer}>
             <InputInfoMolecules
+              title="지역"
+              placeholder="지역을 선택하세요"
+              type="select"
+              data={regions}
+              onInputChange={(text: string) => onInputChange('region', text)}
+            />
+            <InputInfoMolecules
+              title="전공"
+              type="radio"
+              onInputChange={(text: string) => onInputChange('isMajor', text)}
+            />
+            <InputInfoMolecules
+              title="반"
+              placeholder="반을 선택하세요"
+              type="select"
+              data={group}
+              onInputChange={(text: string) => onInputChange('group', text)}
+            />
+            <InputInfoMolecules
+              title="층"
+              placeholder="층을 선택하세요"
+              type="select"
+              data={floor}
+              onInputChange={(text: string) => onInputChange('floor', text)}
+            />
+          </View>
+        );
+      case '추가 정보':
+        return (
+          <View style={styles.contentContainer}>
+            <InputInfoMolecules
               title="MBTI"
               placeholder="MBTI를 입력해주세요"
               type="text"
+              onInputChange={(text: string) => onInputChange('MBTI', text)}
             />
             <InputInfoMolecules
               title="요즘 고민"
               placeholder="고민을 입력해주세요"
               type="text"
+              onInputChange={(text: string) =>
+                onInputChange('currentConcern', text)
+              }
             />
             <InputInfoMolecules
               title="좋아하는 것"
               placeholder="좋아하는 것을 입력해주세요"
               type="text"
+              onInputChange={(text: string) => onInputChange('likes', text)}
             />
             <InputInfoMolecules
               title="싫어하는 것"
               placeholder="싫어하는 것을 입력해주세요"
               type="text"
+              onInputChange={(text: string) => onInputChange('dislikes', text)}
             />
-            <Text
-              style={styles.skipText}
-              onPress={() => navigation.navigate('Enter')}>
-              건너뛰기
-            </Text>
+            {onSkip ? (
+              <Text style={styles.skipText} onPress={onSkip}>
+                건너뛰기
+              </Text>
+            ) : (
+              <></>
+            )}
           </View>
         );
-      case '추가 정보':
-        return <View style={styles.test}></View>;
+
       default:
         return null;
     }
@@ -68,9 +115,7 @@ export const AddInfoMolecules = ({menu, text}: AddInfoMoleculesProps) => {
     );
   };
 
-  return (
-    <BorderedBox renderContent={renderTitle} /> // Remove the parentheses when passing the function
-  );
+  return <BorderedBox renderContent={renderTitle} />;
 };
 
 const styles = StyleSheet.create({

@@ -1,11 +1,51 @@
-import {Image, Pressable, StyleSheet, Text, View} from 'react-native';
+import {
+  Image,
+  Pressable,
+  StyleSheet,
+  Text,
+  TouchableWithoutFeedback,
+  View,
+} from 'react-native';
 import GlobalStyles from '../../../styles/GlobalStyles';
 import yellowEyeImg from '../../../assets/yellowEyeImg.png';
 import greenEyeImg from '../../../assets/greenEyeImg.png';
 import arrowRightImg from '../../../assets/whiteArrowRightImg.png';
 import InfoBox from '../../organisms/infoBox';
+import Modal from 'react-native-modal';
+import CloseImg from '../../../assets/closeImg.png';
+import {useState} from 'react';
 
 export const Home = ({navigation}: {navigation: any}): JSX.Element => {
+  const [isModalVisible, setModalVisible] = useState(false);
+  const toggleModal = () => {
+    setModalVisible(!isModalVisible);
+  };
+
+  const modal = () => (
+    <Modal isVisible={isModalVisible} onBackdropPress={toggleModal}>
+      <View style={style.modalInnerContainer}>
+        <TouchableWithoutFeedback onPress={toggleModal}>
+          <Image source={CloseImg} style={style.closeImg} />
+        </TouchableWithoutFeedback>
+        <Text
+          style={{
+            ...style.titleFont,
+            color: GlobalStyles.green.color,
+            alignSelf: 'center',
+          }}>
+          아직 볼 수 없어요 😥
+        </Text>
+        <Text
+          style={{
+            ...style.midFont,
+            alignSelf: 'center',
+          }}>
+          진행 현황은 3일 전부터 확인 가능합니다.
+        </Text>
+      </View>
+    </Modal>
+  );
+
   return (
     <View style={style.container}>
       <View style={style.containerTop}>
@@ -48,7 +88,11 @@ export const Home = ({navigation}: {navigation: any}): JSX.Element => {
           </View>
           <View style={style.innerBottom}>
             <Text style={{...style.numberFont}}>D-</Text>
-            <Text style={{...style.numberFont, color: GlobalStyles.blue.color}}>
+            <Text
+              style={{
+                ...style.numberFont,
+                color: GlobalStyles.blue.color,
+              }}>
               7
             </Text>
           </View>
@@ -63,9 +107,12 @@ export const Home = ({navigation}: {navigation: any}): JSX.Element => {
         <View style={style.bottomLeft}>
           <Pressable
             style={style.bottomTop}
-            onPress={() => {
-              navigation.navigate('미션');
-            }}>
+            onPress={toggleModal}
+            //   () => {
+            //   navigation.navigate('미션');
+            // }
+            // }
+          >
             <Text
               style={{
                 ...style.titleFont,
@@ -115,6 +162,7 @@ export const Home = ({navigation}: {navigation: any}): JSX.Element => {
         <View style={style.bottomMiddle}></View>
         <Image source={greenEyeImg} style={style.bottomRight}></Image>
       </View>
+      <View style={style.modalContainer}>{modal()}</View>
     </View>
   );
 };
@@ -140,7 +188,18 @@ const style = StyleSheet.create({
   containerMid: {
     flex: 0.4,
   },
-
+  modalContainer: {
+    position: 'absolute',
+  },
+  modalInnerContainer: {
+    backgroundColor: GlobalStyles.white_1.color,
+    height: '20%',
+    width: '90%',
+    borderRadius: 24,
+    alignSelf: 'center',
+    justifyContent: 'center',
+    rowGap: 20,
+  },
   topLeft: {
     flex: 1.1,
   },
@@ -222,6 +281,13 @@ const style = StyleSheet.create({
     marginBottom: 60,
     justifyContent: 'space-between',
     paddingRight: 15,
+  },
+  closeImg: {
+    position: 'absolute',
+    width: 15,
+    objectFit: 'scale-down',
+    top: 0,
+    right: 24,
   },
   circle: {
     backgroundColor: GlobalStyles.orange.color,

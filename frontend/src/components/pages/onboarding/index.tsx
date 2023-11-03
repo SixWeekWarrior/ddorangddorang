@@ -36,7 +36,7 @@ export const Onboarding = ({navigation}: {navigation: any}): JSX.Element => {
       <View style={styles.loginContainer}>
         <TouchableOpacity
           onPress={() => {
-            navigation.navigate('AdditionalInfo'); // 이 줄 삭제하시고 여기에 로그인 로직 추가하시면 됩니다.
+            navigation.navigate('BasicInfo'); // 이 줄 삭제하시고 여기에 로그인 로직 추가하시면 됩니다.
           }}>
           <Image source={googleLoginImg} style={styles.googleLoginImg} />
         </TouchableOpacity>

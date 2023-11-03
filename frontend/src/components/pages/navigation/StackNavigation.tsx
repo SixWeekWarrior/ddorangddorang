@@ -12,12 +12,13 @@ import MissionToday from '../missionToday';
 import {GoMission} from '../goMission';
 import ReviseInfo from '../reviseInfo';
 import AdditionalInfo from '../additionalInfo';
+import BasicInfo from '../basicInfo';
 
 const StackNavigation = () => {
   const Stack = createStackNavigator();
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Onboarding">
+      <Stack.Navigator initialRouteName="NavBar">
         <Stack.Screen
           name="Onboarding"
           component={Onboarding}
@@ -71,6 +72,11 @@ const StackNavigation = () => {
         <Stack.Screen
           name="ReviseInfo"
           component={ReviseInfo}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="BasicInfo"
+          component={BasicInfo}
           options={{headerShown: false}}
         />
         <Stack.Screen
