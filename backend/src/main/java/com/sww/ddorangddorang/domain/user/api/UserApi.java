@@ -1,13 +1,19 @@
 package com.sww.ddorangddorang.domain.user.api;
 
+import com.sww.ddorangddorang.auth.service.JwtService;
 import com.sww.ddorangddorang.domain.user.dto.UsersMoreinfoPutReq;
 import com.sww.ddorangddorang.domain.user.dto.UsersSignupPostReq;
 import com.sww.ddorangddorang.domain.user.dto.UsersSsafyinfoPutReq;
 import com.sww.ddorangddorang.domain.user.dto.UsersTodayinfoPostReq;
+import com.sww.ddorangddorang.domain.user.entity.User;
+import com.sww.ddorangddorang.domain.user.exception.UserNotFoundException;
 import com.sww.ddorangddorang.domain.user.service.UserService;
 import com.sww.ddorangddorang.global.common.CommonResponse;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
@@ -16,7 +22,22 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1/users")
 public class UserApi {
     private final UserService userService;
+    private final JwtService jwtService;
     private final static String SUCCESS = "SUCCESS";
+
+    @PostMapping("/login")
+    public CommonResponse<String> login(@RequestHeader("Authorization") String authorizationHeader, HttpServletResponse response) throws Exception {
+        log.info(authorizationHeader.substring(7));
+
+        Jwt jwt = NimbusJwtDecoder.withJwkSetUri("https://www.googleapis.com/oauth2/v3/certs").build().decode(authorizationHeader.substring(7));
+
+        String email = jwt.getClaim("email");
+        log.info(email);
+
+        User checkUser = userService.findByEmail(email).orElseThrow(UserNotFoundException::new);
+
+        return CommonResponse.success(SUCCESS);
+    }
 
     @PostMapping("/signup")
     public CommonResponse<String> signUp(@RequestBody UsersSignupPostReq usersSignupPostReq) throws Exception {
