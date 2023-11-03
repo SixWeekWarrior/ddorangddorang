@@ -1,3 +1,4 @@
+import {useEffect} from 'react';
 import {View, Image, StyleSheet, TouchableOpacity, Text} from 'react-native';
 import GlobalStyles from '../../../styles/GlobalStyles';
 import blockImg from '../../../assets/blockImg.png';
@@ -7,8 +8,21 @@ import googleLoginImg from '../../../assets/googleLoginImg.png';
 import {useMemo, useRef, useCallback} from 'react';
 import BottomSheet, {BottomSheetBackdrop} from '@gorhom/bottom-sheet';
 import {JSX} from 'react/jsx-runtime';
+import {
+  GoogleSignin,
+  statusCodes,
+} from '@react-native-google-signin/google-signin';
 
 export const Onboarding = ({navigation}: {navigation: any}): JSX.Element => {
+  useEffect(() => {
+    // Google Sign-In 초기화
+    GoogleSignin.configure({
+      // webClientId: WEB_CLIENT_ID,
+      offlineAccess: true,
+      scopes: ['profile', 'email'],
+    });
+  }, []);
+
   const bottomSheetRef = useRef<BottomSheet>(null);
   const snapPoints = useMemo(() => ['25%', '20%', '30%'], []);
   const renderBackdrop = useCallback(
@@ -22,12 +36,26 @@ export const Onboarding = ({navigation}: {navigation: any}): JSX.Element => {
     [],
   );
 
+  const handleGoogleSignIn = async () => {
+    try {
+      await GoogleSignin.hasPlayServices();
+      const userInfo = await GoogleSignin.signIn();
+      console.log('Signed in with Google:', userInfo.user);
+    } catch (error: any) {
+      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+        // 사용자가 로그인을 취소했을 때 처리
+        console.log('Google Sign-In cancelled');
+      } else if (error.code === statusCodes.IN_PROGRESS) {
+        console.log('Google Sign-In is in progress');
+      } else {
+        console.error('Error in Google Sign-In:', error);
+      }
+    }
+  };
+
   const goLogin = () => (
     <View style={styles.contentContainer}>
-      <TouchableOpacity
-        onPress={() => {
-          navigation.navigate('Enter');
-        }}>
+      <TouchableOpacity onPress={handleGoogleSignIn}>
         <Image source={googleLoginImg} style={styles.googleLoginImg} />
       </TouchableOpacity>
     </View>
