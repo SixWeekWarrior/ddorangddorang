@@ -22,7 +22,7 @@ public class Hint {
     @JoinColumn(name = "user_id")
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
-    @JoinColumn(name = "mastercode_id")
+    @JoinColumn(name = "master_code_id")
     @ManyToOne(fetch = FetchType.LAZY)
     private MasterCode masterCode;
 
