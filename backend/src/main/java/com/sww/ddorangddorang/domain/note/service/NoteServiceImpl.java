@@ -55,8 +55,8 @@ public class NoteServiceImpl implements NoteService {
         User user = userRepository.findByEmail(customOAuth2User.getEmail()).orElseThrow(
             UserNotFoundException::new);
 
-        Participant participant = participantRepository.findByUserAndRoomAndIsWithdrawalFalseAndDeletedAtIsNull(
-            user, user.getRoom()).orElseThrow(ParticipantNotFoundException::new);
+        Participant participant = participantRepository.findByUserAndGameCount(user,
+            user.getGameCount()).orElseThrow(ParticipantNotFoundException::new);
 
         if (!note.getReceiver().equals(participant)) {
             throw new NoteAccessDeniedError();
