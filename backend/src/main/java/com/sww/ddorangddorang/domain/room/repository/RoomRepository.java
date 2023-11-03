@@ -8,9 +8,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface RoomRepository extends JpaRepository<Room, Long> {
 
-    Optional<Room> findByAccessCodeAndStartedAtNullAndDeletedAtNull(Integer accessCode);
+    Optional<Room> findByAccessCodeAndStartedAtIsNullAndDeletedAtIsNull(Integer accessCode);
 
-    List<Room> findAllByStartedAtNullAndDeletedAtNull();
+    List<Room> findAllByStartedAtIsNullAndDeletedAtIsNull();
 
-    Optional<Room> findByAdminAndStartedAtNullAndDeletedAtNull(User admin);
+    Optional<Room> findByAdminAndStartedAtIsNullAndDeletedAtIsNull(User admin);
 }

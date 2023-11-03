@@ -81,7 +81,6 @@ public class RoomServiceImpl implements RoomService {
         roomRepository.save(room);
 
         Participant participant = Participant.builder()
-            .room(room)
             .user(user)
             .build();
         participantRepository.save(participant);
@@ -97,7 +96,7 @@ public class RoomServiceImpl implements RoomService {
 
         if (accessCode == -1) {
             Boolean[] accessCodeStatusList = new Boolean[10000];
-            List<Room> roomList = roomRepository.findAllByStartedAtNullAndDeletedAtNull();
+            List<Room> roomList = roomRepository.findAllByStartedAtIsNullAndDeletedAtIsNull();
 
             for (Room room : roomList) {
                 accessCodeStatusList[room.getAccessCode()] = true;
@@ -120,7 +119,7 @@ public class RoomServiceImpl implements RoomService {
             throw new AlreadyParticipatingRoomException();
         }
 
-        Room room = roomRepository.findByAccessCodeAndStartedAtNullAndDeletedAtNull(accessCode)
+        Room room = roomRepository.findByAccessCodeAndStartedAtIsNullAndDeletedAtIsNull(accessCode)
             .orElseThrow(RoomNotFoundException::new);
 
         if (room.getHeadCount() >= room.getMaxMember()) {
@@ -131,6 +130,7 @@ public class RoomServiceImpl implements RoomService {
         user.updateRoom(room);
         user.updateStatus(5L);
 
+        //TODO: 알림 기능 추가 시 관리자에게 알림을 보내는 로직이 추가되면 좋을 것 같음
         log.info("RoomServiceImpl_joinRoom end");
     }
 
@@ -150,7 +150,7 @@ public class RoomServiceImpl implements RoomService {
             throw new InvalidParameterValueException();
         }
 
-        Room room = roomRepository.findByAdminAndStartedAtNullAndDeletedAtNull(user)
+        Room room = roomRepository.findByAdminAndStartedAtIsNullAndDeletedAtIsNull(user)
             .orElseThrow(RoomNotFoundException::new);
 
         Integer currentCount = room.getHeadCount();
@@ -176,14 +176,11 @@ public class RoomServiceImpl implements RoomService {
             throw new OnlyAdminAllowedException();
         }
 
-        Room room = roomRepository.findByAdminAndStartedAtNullAndDeletedAtNull(admin)
-            .orElseThrow(RoomNotFoundException::new);
-
+        Room room = admin.getRoom();
         List<User> userList = userRepository.findAllByRoom(room);
 
         for (User user : userList) {
-            user.updateStatus(1L);
-            user.updateRoom(null);
+            user.withdrawRoom();
         }
 
         room.deleteRoom();
@@ -203,14 +200,13 @@ public class RoomServiceImpl implements RoomService {
             throw new OnlyUserAllowedException();
         }
 
-        Room room = user.getRoom();
-
         if (user.getStatus() == 3L) {
-            room.removeMember();
-            Participant participant = participantRepository.findByUserAndRoomAndIsWithdrawalFalseAndDeletedAtIsNull(
-                user, room).orElseThrow(ParticipantNotFoundException::new);
+            Participant participant = participantRepository.findByUserAndGameCount(user,
+                user.getGameCount()).orElseThrow(ParticipantNotFoundException::new);
             participant.deleteParticipant();
-            participant.applyWithdrawal();
+        } else {
+            user.updateRoom(null);
+            user.updateStatus(1L);
         }
 
         log.info("RoomServiceImpl_withdrawalRoom end");
@@ -221,7 +217,7 @@ public class RoomServiceImpl implements RoomService {
     @Transactional
     public void startGame(Room room) {
         log.info("RoomServiceImpl_startGame start");
-        List<Participant> participantList = participantRepository.findAllByRoomAndIsWithdrawalFalseAndDeletedAtIsNull(
+        List<Participant> participantList = participantRepository.findAllByRoomAndDeletedAtIsNull(
             room);
 
         Map<Integer, Participant> indexToParticipant = new HashMap<>();
@@ -396,14 +392,18 @@ public class RoomServiceImpl implements RoomService {
         List<User> userList = userRepository.findAllByRoom(room);
 
         for (User registedUser : userList) {
-            ShowUsersRes showUsersRes = ShowUsersRes.builder()
-                .name(registedUser.getName())
-                .generation(registedUser.getGeneration())
-                .classes(registedUser.getGeneration())
-                .profileImage(registedUser.getProfileImage())
-                .build();
+            Long status = registedUser.getStatus();
 
-            showUsersResList.add(showUsersRes);
+            if (status >= 2L && status <= 4L) {
+                ShowUsersRes showUsersRes = ShowUsersRes.builder()
+                    .name(registedUser.getName())
+                    .generation(registedUser.getGeneration())
+                    .classes(registedUser.getGeneration())
+                    .profileImage(registedUser.getProfileImage())
+                    .build();
+
+                showUsersResList.add(showUsersRes);
+            }
         }
 
         log.info("RoomServiceImpl_showUsers end");
@@ -412,12 +412,12 @@ public class RoomServiceImpl implements RoomService {
 
     @Transactional
     public Boolean responseJoinRoom(Long userId, JoinRoomReq joinRoomReq) {
-        log.info("RoomServiceImpl_responseToJoinRoom start");
+        log.info("RoomServiceImpl_responseJoinRoom start");
         User admin = userRepository.getReferenceById(userId);
         User requestUser = userRepository.getReferenceById(joinRoomReq.getUserId());
 
         if (requestUser.getStatus() != 5L) {
-            log.info("RoomServiceImpl_responseToJoinRoom end");
+            log.info("RoomServiceImpl_responseJoinRoom end");
             throw new OnlyWaitingStateAllowedException();
         }
         Room room = requestUser.getRoom();
@@ -428,19 +428,19 @@ public class RoomServiceImpl implements RoomService {
         }
 
         if (!room.getAdmin().equals(admin)) {
-            log.info("RoomServiceImpl_responseToJoinRoom end");
+            log.info("RoomServiceImpl_responseJoinRoom end");
             throw new OnlyAdminAllowedException();
         }
 
         if (!joinRoomReq.getAccepted()) {
             requestUser.updateRoom(null);
             requestUser.updateStatus(1L);
-            log.info("RoomServiceImpl_responseToJoinRoom end");
+            log.info("RoomServiceImpl_responseJoinRoom end");
             return false;
         } else if (room.getMaxMember() <= room.getHeadCount()) {
             requestUser.updateRoom(null);
             requestUser.updateStatus(1L);
-            log.info("RoomServiceImpl_responseToJoinRoom end");
+            log.info("RoomServiceImpl_responseJoinRoom end");
             throw new RoomAlreadyFullException();
         }
 
@@ -449,7 +449,6 @@ public class RoomServiceImpl implements RoomService {
 
         Participant participant = Participant.builder()
             .user(requestUser)
-            .room(room)
             .build();
         participantRepository.save(participant);
 
@@ -487,7 +486,7 @@ public class RoomServiceImpl implements RoomService {
         }
 
         if (room.getMinMember() <= room.getHeadCount()
-            && room.getHeadCount() <= room.getMinMember()) {
+            && room.getHeadCount() <= room.getMaxMember()) {
             startGame(room);
             log.info("RoomServiceImpl_checkAndStartGame end");
             return true;

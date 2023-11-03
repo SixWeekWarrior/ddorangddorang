@@ -5,9 +5,12 @@ import com.sww.ddorangddorang.domain.mission.dto.MissionCompleteReq;
 import com.sww.ddorangddorang.domain.mission.dto.MissionPerformsInfoRes;
 import com.sww.ddorangddorang.domain.mission.entity.MissionPerform;
 import com.sww.ddorangddorang.domain.mission.exception.MissionNotFoundException;
-import com.sww.ddorangddorang.domain.user.exception.UserNotFoundException;
 import com.sww.ddorangddorang.domain.mission.repository.MissionPerformRepository;
+import com.sww.ddorangddorang.domain.participant.entity.Participant;
+import com.sww.ddorangddorang.domain.participant.exception.ParticipantNotFoundException;
+import com.sww.ddorangddorang.domain.participant.repository.ParticipantRepository;
 import com.sww.ddorangddorang.domain.user.entity.User;
+import com.sww.ddorangddorang.domain.user.exception.UserNotFoundException;
 import com.sww.ddorangddorang.domain.user.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import java.util.List;
@@ -23,19 +26,24 @@ public class MissionPerformServiceImpl implements MissionPerformService {
 
     private final MissionPerformRepository missionPerformRepository;
     private final UserRepository userRepository;
+    private final ParticipantRepository participantRepository;
 
     public List<MissionPerformsInfoRes> findMissionByUser(CustomOAuth2User customOAuth2User) {
         String email = customOAuth2User.getEmail();
         log.info("email: {}", email);
         User user = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
+        Participant participant = participantRepository.findByUserAndGameCount(user,
+            user.getGameCount()).orElseThrow(ParticipantNotFoundException::new);
         log.info("user: {}", user);
-        List<MissionPerform> missionPerforms = missionPerformRepository.findAllByPlayer(user);
+        List<MissionPerform> missionPerforms = missionPerformRepository.findAllByPlayer(
+            participant);
         log.info("missionPerforms: {}", missionPerforms);
 
         return MissionPerformsInfoRes.listOf(missionPerforms);
     }
 
-    public void missionComplete(MissionCompleteReq missionCompleteReq, CustomOAuth2User customOAuth2User) {
+    public void missionComplete(MissionCompleteReq missionCompleteReq,
+        CustomOAuth2User customOAuth2User) {
         String email = customOAuth2User.getEmail();
         User user = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
 
@@ -43,7 +51,7 @@ public class MissionPerformServiceImpl implements MissionPerformService {
             missionCompleteReq.getMissionId()).orElseThrow(
             MissionNotFoundException::new);
 
-        if (missionPerform.getPlayer().equals(user)) {
+        if (missionPerform.getPlayer().getUser().equals(user)) {
             missionPerform.missionComplete();
         } else {
             throw new MissionNotFoundException();

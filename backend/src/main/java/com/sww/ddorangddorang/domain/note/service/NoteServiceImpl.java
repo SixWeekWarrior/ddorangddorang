@@ -8,11 +8,14 @@ import com.sww.ddorangddorang.domain.participant.exception.ParticipantNotFoundEx
 import com.sww.ddorangddorang.domain.user.exception.UserNotFoundException;
 import com.sww.ddorangddorang.domain.mission.repository.MissionPerformRepository;
 import com.sww.ddorangddorang.domain.note.dto.NoteCreateReq;
+import com.sww.ddorangddorang.domain.note.dto.NoteViewRes;
 import com.sww.ddorangddorang.domain.note.entity.Note;
 import com.sww.ddorangddorang.domain.note.repository.NoteRepository;
 import com.sww.ddorangddorang.domain.participant.entity.Participant;
+import com.sww.ddorangddorang.domain.participant.exception.ParticipantNotFoundException;
 import com.sww.ddorangddorang.domain.participant.repository.ParticipantRepository;
 import com.sww.ddorangddorang.domain.user.entity.User;
+import com.sww.ddorangddorang.domain.user.exception.UserNotFoundException;
 import com.sww.ddorangddorang.domain.user.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import java.util.List;
@@ -36,8 +39,8 @@ public class NoteServiceImpl implements NoteService {
         User user = userRepository.findByEmail(customOAuth2User.getEmail()).orElseThrow(
             UserNotFoundException::new);
 
-        Participant receiver = participantRepository.findByUser(user).orElseThrow(
-            ParticipantNotFoundException::new);
+        Participant receiver = participantRepository.findByUserAndGameCount(user,
+            user.getGameCount()).orElseThrow(ParticipantNotFoundException::new);
 
         List<Note> notes = noteRepository.findAllByReceiver(receiver);
 
@@ -52,8 +55,8 @@ public class NoteServiceImpl implements NoteService {
         User user = userRepository.findByEmail(customOAuth2User.getEmail()).orElseThrow(
             UserNotFoundException::new);
 
-        Participant participant = participantRepository.findByUserAndRoomAndIsWithdrawalFalseAndDeletedAtIsNull(
-            user, user.getRoom()).orElseThrow(ParticipantNotFoundException::new);
+        Participant participant = participantRepository.findByUserAndGameCount(user,
+            user.getGameCount()).orElseThrow(ParticipantNotFoundException::new);
 
         if (!note.getReceiver().equals(participant)) {
             throw new NoteAccessDeniedError();
@@ -68,13 +71,9 @@ public class NoteServiceImpl implements NoteService {
         User user = userRepository.findByEmail(customOAuth2User.getEmail()).orElseThrow(
             UserNotFoundException::new);
 
-        Participant sender = participantRepository.findByUserAndRoomAndIsWithdrawalFalseAndDeletedAtIsNull
-            (user, user.getRoom()).orElseThrow(ParticipantNotFoundException::new);
-
-        User user2 = sender.getManiti();
-
-        Participant receiver = participantRepository.findByUserAndRoomAndIsWithdrawalFalseAndDeletedAtIsNull(
-            user2, user.getRoom()).orElseThrow(ParticipantNotFoundException::new);
+        Participant sender = participantRepository.findByUserAndGameCount(user, user.getGameCount())
+            .orElseThrow(ParticipantNotFoundException::new);
+        Participant receiver = sender.getManiti();
 
         Optional<MissionPerform> missionPerform = missionPerformRepository.findById(
             noteCreateReq.getMissionPerformId());
