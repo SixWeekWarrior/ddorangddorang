@@ -1,9 +1,9 @@
 package com.sww.ddorangddorang.domain.room.service;
 
+import com.sww.ddorangddorang.domain.room.dto.GuessUserRes;
 import com.sww.ddorangddorang.domain.room.dto.JoinRoomReq;
 import com.sww.ddorangddorang.domain.room.dto.RoomInfoReq;
 import com.sww.ddorangddorang.domain.room.dto.ShowUsersRes;
-import com.sww.ddorangddorang.global.common.CommonResponse;
 import java.util.List;
 
 public interface RoomService {
@@ -25,4 +25,8 @@ public interface RoomService {
     public Boolean checkAndRunIfRoomShouldStart(Long userId);
 
     public Boolean checkAndStartGame(Long userId);
+
+    public List<GuessUserRes> getCandidates(Long userId);
+
+    public GuessUserRes updateGuess(Long userId, Long guessedUserId);
 }

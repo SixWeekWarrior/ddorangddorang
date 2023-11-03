@@ -7,6 +7,7 @@ import com.sww.ddorangddorang.domain.participant.exception.ParticipantNotFoundEx
 import com.sww.ddorangddorang.domain.participant.repository.ParticipantRepository;
 import com.sww.ddorangddorang.domain.participant.repository.PrefixRepository;
 import com.sww.ddorangddorang.domain.participant.repository.SuffixRepository;
+import com.sww.ddorangddorang.domain.room.dto.GuessUserRes;
 import com.sww.ddorangddorang.domain.room.dto.JoinRoomReq;
 import com.sww.ddorangddorang.domain.room.dto.RoomInfoReq;
 import com.sww.ddorangddorang.domain.room.dto.ShowUsersRes;
@@ -15,6 +16,7 @@ import com.sww.ddorangddorang.domain.room.exception.AlreadyParticipatingRoomExce
 import com.sww.ddorangddorang.domain.room.exception.DataNotInRangeException;
 import com.sww.ddorangddorang.domain.room.exception.InvalidParameterValueException;
 import com.sww.ddorangddorang.domain.room.exception.NoParticipatingRoomException;
+import com.sww.ddorangddorang.domain.room.exception.NotGuessableException;
 import com.sww.ddorangddorang.domain.room.exception.OnlyAdminAllowedException;
 import com.sww.ddorangddorang.domain.room.exception.OnlyUserAllowedException;
 import com.sww.ddorangddorang.domain.room.exception.OnlyWaitingStateAllowedException;
@@ -494,5 +496,59 @@ public class RoomServiceImpl implements RoomService {
 
         log.info("RoomServiceImpl_checkAndStartGame end: invalid play condition");
         throw new PlayersNotEnoughException();
+    }
+
+    @Override
+    public List<GuessUserRes> getCandidates(Long userId) {
+        log.info("RoomServiceImpl_getCandidates start");
+        User loginUser = userRepository.getReferenceById(userId);
+        Room room = loginUser.getRoom();
+        List<Participant> participantList = participantRepository.findAllByRoomAndDeletedAtIsNull(
+            room);
+        List<GuessUserRes> guessUserList = new ArrayList<>();
+
+        for (Participant participant : participantList) {
+            User user = participant.getUser();
+
+            if (user.equals(loginUser)) {
+                continue;
+            }
+
+            GuessUserRes guessUser = GuessUserRes.builder()
+                .name(user.getName())
+                .profileImage(user.getProfileImage())
+                .isMajor(user.getIsMajor())
+                .classes(user.getClasses())
+                .build();
+
+            guessUserList.add(guessUser);
+        }
+        log.info("RoomServiceImpl_getCandidates end");
+        return guessUserList;
+    }
+
+    @Transactional
+    @Override
+    public GuessUserRes updateGuess(Long userId, Long guessedUserId) {
+        log.info("RoomServiceImpl_updateGuess start");
+        User user = userRepository.getReferenceById(userId);
+        Room room = user.getRoom();
+        if (!room.isGuessable()) {
+            throw new NotGuessableException();
+        }
+
+        User guessedUser = userRepository.getReferenceById(guessedUserId);
+        Participant participant = participantRepository.findByUserAndGameCount(user,
+            user.getGameCount()).orElseThrow(ParticipantNotFoundException::new);
+
+        participant.updateGuess(guessedUser);
+
+        log.info("RoomServiceImpl_updateGuess end");
+        return GuessUserRes.builder()
+            .name(guessedUser.getName())
+            .profileImage(guessedUser.getProfileImage())
+            .isMajor(guessedUser.getIsMajor())
+            .classes(guessedUser.getClasses())
+            .build();
     }
 }

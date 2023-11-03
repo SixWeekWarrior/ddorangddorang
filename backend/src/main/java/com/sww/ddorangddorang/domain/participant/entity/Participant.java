@@ -93,4 +93,8 @@ public class Participant {
     public void allocateNickname(String nickname) {
         this.nickname = nickname;
     }
+
+    public void updateGuess(User guess) {
+        this.guess = guess;
+    }
 }

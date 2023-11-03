@@ -110,6 +110,14 @@ public class Room {
         return LocalDateTime.now().isAfter(this.startedAt.plusDays(this.duration));
     }
 
+    public Boolean isGuessable() {
+        LocalDateTime end = this.startedAt.plusDays(this.duration);
+        LocalDateTime start = end.minusDays(3);
+        LocalDateTime now = LocalDateTime.now();
+
+        return now.isAfter(start) && now.isBefore(end);
+    }
+
     @Builder
     public Room(User admin, Integer accessCode, Integer minMember, Integer maxMember,
         Integer duration,

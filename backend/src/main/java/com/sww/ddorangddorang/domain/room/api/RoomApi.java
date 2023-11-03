@@ -1,19 +1,14 @@
 package com.sww.ddorangddorang.domain.room.api;
-
+import com.sww.ddorangddorang.domain.room.dto.GuessUserRes;
 import com.sww.ddorangddorang.domain.room.dto.JoinRoomReq;
 import com.sww.ddorangddorang.domain.room.dto.RoomInfoReq;
 import com.sww.ddorangddorang.domain.room.dto.ShowUsersRes;
 import com.sww.ddorangddorang.domain.room.service.RoomService;
+import com.sww.ddorangddorang.domain.user.entity.User;
 import com.sww.ddorangddorang.global.common.CommonResponse;
-import jakarta.persistence.criteria.CriteriaBuilder.In;
 import java.util.List;
-
-import com.sww.ddorangddorang.global.common.CommonResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -113,4 +108,20 @@ public class RoomApi {
         return CommonResponse.success(joined);
     }
 
+    @GetMapping("/guess/candidates")
+    public CommonResponse<List<GuessUserRes>> getCandidates(@RequestHeader Long userId) {
+        log.info("RoomApi_getCandidates start");
+        List<GuessUserRes> candidates = roomService.getCandidates(userId);
+        log.info("RoomApi_getCandidates end");
+        return CommonResponse.success(candidates);
+    }
+
+    @PostMapping("/guess/update")
+    public CommonResponse<GuessUserRes> updateGuess(@RequestHeader Long userId,
+        @RequestBody Long guessedUserId) {
+        log.info("RoomApi_updateGuess start");
+        GuessUserRes guessUserRes = roomService.updateGuess(userId, guessedUserId);
+        log.info("RoomApi_updateGuess end");
+        return CommonResponse.success(guessUserRes);
+    }
 }

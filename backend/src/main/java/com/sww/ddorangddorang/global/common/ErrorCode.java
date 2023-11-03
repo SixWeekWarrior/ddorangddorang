@@ -71,6 +71,8 @@ public enum ErrorCode {
 
     NOTE_ACCESS_DENIED(HttpStatus.FORBIDDEN, "해당 노트에 접근할 수 없습니다."),
 
+    ROOM_GUESS_NOT_GUESSABLE(HttpStatus.CONFLICT, "마니또 예측에 접근할 수 있는 기간이 아닙니다."),
+
     /**
      * 서버 에러 (서버 장애 상황)
      */
