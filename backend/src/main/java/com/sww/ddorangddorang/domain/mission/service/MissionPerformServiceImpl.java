@@ -53,35 +53,53 @@ public class MissionPerformServiceImpl implements MissionPerformService {
         log.info("Allocating new missions at 9 AM.");
 
         // startedAt이 현재 시간과 15시간 이상 차이나면서, deletedAt이 null인 방을 찾는다
-        List<Room> rooms = roomRepository.findByStartedAtBeforeAndDeletedAtIsNull(
-            LocalDateTime.now().minusHours(HOURS_DIFFERENCE));
-
-        List<Mission> missions = missionRepository.findAll(Sort.by(Sort.Direction.ASC, "id"));
-        long missionCount = missions.size();
+        List<Room> rooms = findEligibleRooms();
+        List<Mission> missions = fetchAllMissions();
 
         // 저장시 일괄 처리를 진행하기 위한 리스트
+        List<MissionPerform> missionPerformList = allocateNewMissions(rooms, missions);
+        missionPerformRepository.saveAll(missionPerformList);
+    }
+
+    public void changeMission(MissionChangeReq missionChangeReq, CustomOAuth2User customOAuth2User) {
+        String email = customOAuth2User.getEmail();
+        User user = findUserByEmail(email);
+        validateRoom(user);
+        MissionPerform missionPerform = findMissionPerform(missionChangeReq.getMissionPerformId());
+        validateMissionPerform(missionPerform, user);
+        Participant participant = findParticipant(user, user.getGameCount());
+        validateMissionChangeCount(participant);
+        reassignMission(participant);
+    }
+
+    private List<MissionPerform> allocateNewMissions(List<Room> rooms, List<Mission> missions) {
         List<MissionPerform> missionPerformList = new ArrayList<>();
+        Set<Long> allMissions = createMissionIdSet(missions.size());
 
-        // 전체 미션 번호를 가지고 있는 Set를 선언함.
-        Set<Long> allMissions = LongStream.rangeClosed(1, missionCount)
-            .boxed()
-            .collect(Collectors.toSet());
-
-        // 해당 방에 참가하고 있는 모든 Participant를 찾음.
         for (Room room : rooms) {
             List<Participant> participants = room.getParticipants();
-
-            // 해당 Participant들에 대해 새로운 미션을 할당한다.
-            // 해당 Participant가 이미 수행했거나, 이전에 거부했던 미션은 할당되지 않는다.
             for (Participant participant : participants) {
-                MissionPerform missionPerform = assignMission
-                    (participant, allMissions, missions);
-
+                MissionPerform missionPerform = assignMission(participant, allMissions, missions);
                 missionPerformList.add(missionPerform);
             }
         }
 
-        missionPerformRepository.saveAll(missionPerformList);
+        return missionPerformList;
+    }
+
+    private Set<Long> createMissionIdSet(long missionCount) {
+        return LongStream.rangeClosed(1, missionCount)
+            .boxed()
+            .collect(Collectors.toSet());
+    }
+
+    private List<Room> findEligibleRooms() {
+        return roomRepository.findByStartedAtBeforeAndDeletedAtIsNull(
+            LocalDateTime.now().minusHours(HOURS_DIFFERENCE));
+    }
+
+    private List<Mission> fetchAllMissions() {
+        return missionRepository.findAll(Sort.by(Sort.Direction.ASC, "id"));
     }
 
     private MissionPerform assignMission(Participant participant, Set<Long> allMissions, List<Mission> missions) {
@@ -117,50 +135,46 @@ public class MissionPerformServiceImpl implements MissionPerformService {
         return remainedMissionList.get((int) (Math.random() * remainedMissionList
             .size()));
     }
+    private void reassignMission(Participant participant) {
+        List<Mission> missions = fetchAllMissions();
+        Set<Long> allMissions = createMissionIdSet(missions.size());
+        MissionPerform newMissionPerform = assignMission(participant, allMissions, missions);
+        missionPerformRepository.save(newMissionPerform);
+    }
 
-    public void changeMission(MissionChangeReq missionChangeReq, CustomOAuth2User customOAuth2User) {
-        String email = customOAuth2User.getEmail();
-        User user = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
-
-        // 게임 진행중이 아닌데 보내면 예외
-        Room room = user.getRoom();
-        if (room.getStartedAt() == null || room.getDeletedAt() != null) {
-            throw new MissionNotFoundException();
-        }
-
-        // 해당하는 미션 수행 내역이 없으면 예외
-        MissionPerform missionPerform = missionPerformRepository.findById(missionChangeReq.getMissionPerformId()).orElseThrow(
-            MissionNotFoundException::new);
-
-        // 해당 미션 수행 내역이 내것이 아니면 예외
-        if (!missionPerform.getPlayer().getUser().equals(user)) {
-            throw new MissionNotFoundException();
-        }
-
-        // 오늘의 미션을 완료했는데 보내면 예외
-        if (missionPerform.getPerformedAt() != null) {
-            throw new MissionNotFoundException();
-        }
-
-        // 최대 미션 변경 가능 횟수 지났는데 보내면 예외
-        Participant participant = participantRepository.findByUserAndGameCount
-            (user, user.getGameCount()).orElseThrow(ParticipantNotFoundException::new);
-
+    private void validateMissionChangeCount(Participant participant) {
         if (participant.getChange() >= MAX_MISSION_CHANGE_COUNT) {
             throw new MissionNotFoundException();
         }
+    }
 
-        // 위에 예외 안걸렸으면 미션 하나 새로 할당해줌
-        List<Mission> missions = missionRepository.findAll(Sort.by(Sort.Direction.ASC, "id"));
-        long missionCount = missions.size();
+    private Participant findParticipant(User user, int gameCount) {
+        return participantRepository.findByUserAndGameCount(user, gameCount)
+            .orElseThrow(ParticipantNotFoundException::new);
+    }
 
-        Set<Long> allMissions = LongStream.rangeClosed(1, missionCount)
-            .boxed()
-            .collect(Collectors.toSet());
+    private void validateMissionPerform(MissionPerform missionPerform, User user) {
+        if (!missionPerform.getPlayer().getUser().equals(user)
+            || missionPerform.getPerformedAt() != null) {
+            throw new MissionNotFoundException();
+        }
+    }
 
-        // 미션을 수행시킴.
-        MissionPerform newMissionPerform = assignMission(participant, allMissions, missions);
-        missionPerformRepository.save(newMissionPerform);
+    private MissionPerform findMissionPerform(Long missionPerformId) {
+        return missionPerformRepository.findById(missionPerformId)
+            .orElseThrow(MissionNotFoundException::new);
+    }
+
+    private void validateRoom(User user) {
+        Room room = user.getRoom();
+
+        if (room.getStartedAt() == null || room.getDeletedAt() != null) {
+            throw new MissionNotFoundException();
+        }
+    }
+
+    private User findUserByEmail(String email) {
+        return userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
     }
 
 
