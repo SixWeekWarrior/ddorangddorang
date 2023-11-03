@@ -3,9 +3,11 @@ import MenuTop from '../../molecules/menuTop';
 import GlobalStyles from '../../../styles/GlobalStyles';
 import BtnBig from '../../atoms/btnBig';
 import InfoAtom from '../../atoms/infoAtom';
+import {useNavigation} from '@react-navigation/native';
 
 export const ReviseInfo = ({route}: {route: any}): JSX.Element => {
   const {destination} = route.params;
+  const navigation = useNavigation();
 
   const renderTitle = () => {
     switch (destination) {
@@ -16,9 +18,22 @@ export const ReviseInfo = ({route}: {route: any}): JSX.Element => {
       case 'InfoToday':
         return '오늘의 정보';
       case 'InfoSsafy':
-        return 'SSAFY 정보';
+        return '기본 정보';
       case 'InfoEtc':
         return '추가 정보';
+      default:
+        return '';
+    }
+  };
+
+  const renderDestination = () => {
+    switch (destination) {
+      case 'InfoToday':
+        return navigation.navigate('ReviseToday');
+      case 'InfoSsafy':
+        return navigation.navigate('ReviseSsafy');
+      case 'InfoEtc':
+        return navigation.navigate('ReviseEtc');
       default:
         return '';
     }
@@ -67,7 +82,7 @@ export const ReviseInfo = ({route}: {route: any}): JSX.Element => {
         {renderContent()}
       </View>
       <View style={styles.btnContainer}>
-        <BtnBig text="수정하기" onPress={() => console.log('수정버튼 누름')} />
+        <BtnBig text="수정하기" onPress={renderDestination} />
       </View>
     </View>
   );
@@ -95,6 +110,8 @@ const styles = StyleSheet.create({
     color: GlobalStyles.black.color,
   },
   flexColumn: {
+    // justifyContent: 'center',
+    // alignSelf: 'center',
     flexDirection: 'column',
     flexWrap: 'wrap',
     marginLeft: 24,

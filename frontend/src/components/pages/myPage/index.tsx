@@ -19,7 +19,9 @@ export const MyPage = ({navigation}: {navigation: any}): JSX.Element => {
       <View style={styles.bottomContainer}>
         <InfoBox navigation={navigation} destination="InfoEtc" />
       </View>
-      <View style={styles.emptyContainer} />
+      <View style={styles.emptyContainer}>
+        <InfoBox navigation={navigation} destination="SendOpinion" />
+      </View>
     </View>
   );
 };
@@ -41,7 +43,8 @@ const styles = StyleSheet.create({
     marginVertical: 20,
   },
   emptyContainer: {
-    flex: 0.3,
+    flex: 0.2,
+    marginBottom: 20,
   },
 });
 
