@@ -2,7 +2,6 @@ package com.sww.ddorangddorang.domain.note.service;
 
 import com.sww.ddorangddorang.auth.dto.CustomOAuth2User;
 import com.sww.ddorangddorang.domain.mission.entity.MissionPerform;
-import com.sww.ddorangddorang.domain.note.dto.NoteViewReq;
 import com.sww.ddorangddorang.domain.note.dto.NoteViewRes;
 import com.sww.ddorangddorang.domain.note.exception.NoteAccessDeniedError;
 import com.sww.ddorangddorang.domain.participant.exception.ParticipantNotFoundException;
@@ -46,8 +45,8 @@ public class NoteServiceImpl implements NoteService {
     }
 
 
-    public NoteViewRes getNote(NoteViewReq noteViewReq, CustomOAuth2User customOAuth2User) {
-        Note note = noteRepository.findById(noteViewReq.getId()).orElseThrow(
+    public NoteViewRes getNote(Long id, CustomOAuth2User customOAuth2User) {
+        Note note = noteRepository.findById(id).orElseThrow(
             ParticipantNotFoundException::new);
 
         User user = userRepository.findByEmail(customOAuth2User.getEmail()).orElseThrow(
