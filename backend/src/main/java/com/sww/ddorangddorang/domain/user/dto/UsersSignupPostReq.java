@@ -18,7 +18,7 @@ public class UsersSignupPostReq {
     private Integer classes;            // INT
     private Integer floor;              // INT
     private String profileImage;        // TEXT "프로필 이미지"
-    private String like;                // VARCHAR(255)
+    private String likes;                // VARCHAR(255)
     private String hate;                // VARCHAR(255)
     private String mbti;                // VARCHAR(255)
     private String worry;               // TEXT
