@@ -1,6 +1,6 @@
 import {View, StyleSheet} from 'react-native';
 // import GlobalStyles from '../../../styles/GlobalStyles';
-import MenuTop from '../../atoms/menuTop';
+import MenuTop from '../../molecules/menuTop';
 
 export const Chatting = (): JSX.Element => {
   return (

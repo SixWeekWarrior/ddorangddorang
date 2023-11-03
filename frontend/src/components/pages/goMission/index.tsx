@@ -1,5 +1,5 @@
 import {StyleSheet, View, Image, Text, Keyboard} from 'react-native';
-import MenuTop from '../../atoms/menuTop';
+import MenuTop from '../../molecules/menuTop';
 import pinkEyeImg from '../../../assets/pinkEyeImg.png';
 import yellowEyeImg from '../../../assets/yellowEyeImg.png';
 import GlobalStyles from '../../../styles/GlobalStyles';

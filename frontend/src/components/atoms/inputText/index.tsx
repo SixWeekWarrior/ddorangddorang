@@ -4,15 +4,20 @@ import GlobalStyles from '../../../styles/GlobalStyles';
 interface InputTextProps {
   onChangeText: (text: string) => void;
   value: string;
+  placeholder?: string;
 }
 
-export const InputText = ({onChangeText, value}: InputTextProps) => {
+export const InputText = ({
+  onChangeText,
+  value,
+  placeholder,
+}: InputTextProps) => {
   return (
     <TextInput
       style={styles.inputText}
       onChangeText={onChangeText}
       value={value}
-      placeholder="초대코드를 입력하세요."
+      placeholder={placeholder || '초대코드를 입력하세요.'}
     />
   );
 };

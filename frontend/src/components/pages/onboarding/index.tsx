@@ -3,7 +3,7 @@ import {View, Image, StyleSheet, TouchableOpacity, Text} from 'react-native';
 import GlobalStyles from '../../../styles/GlobalStyles';
 import blockImg from '../../../assets/blockImg.png';
 import logoImg from '../../../assets/logoImg.png';
-import BtnBig from '../../atoms/btnBig';
+import TitleAtom from '../../atoms/titleAtom';
 import googleLoginImg from '../../../assets/googleLoginImg.png';
 import {useMemo, useRef, useCallback} from 'react';
 import BottomSheet, {BottomSheetBackdrop} from '@gorhom/bottom-sheet';
@@ -12,6 +12,7 @@ import {
   GoogleSignin,
   statusCodes,
 } from '@react-native-google-signin/google-signin';
+import BtnBig from '../../atoms/btnBig';
 
 export const Onboarding = ({navigation}: {navigation: any}): JSX.Element => {
   useEffect(() => {
@@ -54,10 +55,25 @@ export const Onboarding = ({navigation}: {navigation: any}): JSX.Element => {
   };
 
   const goLogin = () => (
-    <View style={styles.contentContainer}>
-      <TouchableOpacity onPress={handleGoogleSignIn}>
+    <View style={styles.titleContainer}>
+      <TitleAtom
+        menu={'로그인'}
+        text={'로그인하고 지금 바로 또랑또랑을 시작해보세요!'}
+        menuColor={GlobalStyles.green.color}
+        textColor={GlobalStyles.grey_3.color}
+      />
+    </View>
+    <View style={styles.loginContainer}>
+      <TouchableOpacity
+        onPress={() => {
+          navigation.navigate('AdditionalInfo'); // 이 줄 삭제하시고 여기에 로그인 로직 추가하시면 됩니다.
+        }}>
         <Image source={googleLoginImg} style={styles.googleLoginImg} />
       </TouchableOpacity>
+    </View>
+    <View style={styles.signupContainer}>
+      <Text style={styles.text}>회원이 아니신가요?</Text>
+      <Text style={styles.menu}>회원가입</Text>
     </View>
   );
 
@@ -89,8 +105,7 @@ export const Onboarding = ({navigation}: {navigation: any}): JSX.Element => {
         detached={true}
         index={-1}
         backdropComponent={renderBackdrop}
-        enablePanDownToClose={true}
-        style={styles.sheetContainer}>
+        enablePanDownToClose={true}>
         {goLogin()}
       </BottomSheet>
     </View>
@@ -104,18 +119,41 @@ Onboarding.navigationOptions = {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: GlobalStyles.white_2.color,
-  },
-  sheetContainer: {
-    // paddingBottom: 1,
   },
   contentContainer: {
     flex: 1,
-    alignItems: 'center',
+    marginLeft: '10%',
+  },
+  titleContainer: {
+    flex: 1,
+    alignSelf: 'flex-start',
+  },
+  loginContainer: {
+    flex: 1,
+    alignSelf: 'center',
     justifyContent: 'center',
   },
+  signupContainer: {
+    marginRight: '10%',
+    flex: 1,
+    alignSelf: 'flex-end',
+    rowGap: -13,
+  },
+  menu: {
+    fontFamily: GlobalStyles.section_title.fontFamily,
+    fontSize: 18,
+    color: GlobalStyles.green.color,
+    textAlign: 'right',
+  },
+  text: {
+    fontFamily: GlobalStyles.content.fontFamily,
+    fontSize: 14,
+    color: GlobalStyles.grey_3.color,
+    textAlign: 'right',
+  },
   googleLoginImg: {
-    width: 220,
+    justifyContent: 'center',
+    width: 270,
     height: 50,
     objectFit: 'scale-down',
   },

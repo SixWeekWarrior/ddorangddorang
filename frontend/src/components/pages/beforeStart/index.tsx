@@ -1,6 +1,6 @@
 import {View, StyleSheet, Text, Image} from 'react-native';
 import GlobalStyles from '../../../styles/GlobalStyles';
-import MenuTop from '../../atoms/menuTop';
+import MenuTop from '../../molecules/menuTop';
 import GroupSummary from '../../atoms/groupSummary';
 import BtnReg from '../../atoms/btnReg';
 import CodeForm from '../../atoms/codeForm';
