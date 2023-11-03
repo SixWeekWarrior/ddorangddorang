@@ -37,7 +37,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
 
     // TODO: Filter에서 작동하지 않는 URL 체크 필요
-    private static final String NO_CHECK_URL = "/api/v1/users/login"; // "/login"으로 들어오는 요청은 Filter 작동 X
+    private static final String NO_CHECK_URL = "/users/login"; // "/login"으로 들어오는 요청은 Filter 작동 X
 
     private final JwtService jwtService;
     private final UserRepository userRepository;
