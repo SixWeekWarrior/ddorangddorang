@@ -56,10 +56,10 @@ public class Participant {
     @JoinColumn
     private Mission mission;
 
-    private Boolean icKickedOut = false;
+    private Boolean isKickedOut = false;
 
     @Column(name = "changes")
-    private final Short change = 0;
+    private Short change = 0;
 
     private LocalDateTime deletedAt;
 
@@ -88,8 +88,6 @@ public class Participant {
         this.deletedAt = LocalDateTime.now();
         this.getUser().withdrawRoom();
         this.getRoom().removeMember();
-//        this.getUser().updateStatus(1L);
-//        this.getUser().updateRoom(null);
     }
 
     public void allocateNickname(String nickname) {
