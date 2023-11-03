@@ -2,7 +2,9 @@ package com.sww.ddorangddorang.domain.note.service;
 
 import com.sww.ddorangddorang.auth.dto.CustomOAuth2User;
 import com.sww.ddorangddorang.domain.mission.entity.MissionPerform;
+import com.sww.ddorangddorang.domain.note.dto.NoteViewReq;
 import com.sww.ddorangddorang.domain.note.dto.NoteViewRes;
+import com.sww.ddorangddorang.domain.note.exception.NoteAccessDeniedError;
 import com.sww.ddorangddorang.domain.participant.exception.ParticipantNotFoundException;
 import com.sww.ddorangddorang.domain.user.exception.UserNotFoundException;
 import com.sww.ddorangddorang.domain.mission.repository.MissionPerformRepository;
@@ -41,6 +43,26 @@ public class NoteServiceImpl implements NoteService {
         List<Note> notes = noteRepository.findAllByReceiver(receiver);
 
         return NoteViewRes.listOf(notes);
+    }
+
+
+    public NoteViewRes getNote(NoteViewReq noteViewReq, CustomOAuth2User customOAuth2User) {
+        Note note = noteRepository.findById(noteViewReq.getId()).orElseThrow(
+            ParticipantNotFoundException::new);
+
+        User user = userRepository.findByEmail(customOAuth2User.getEmail()).orElseThrow(
+            UserNotFoundException::new);
+
+        Participant participant = participantRepository.findByUserAndRoomAndIsWithdrawalFalseAndDeletedAtIsNull(
+            user, user.getRoom()).orElseThrow(ParticipantNotFoundException::new);
+
+        if (!note.getReceiver().equals(participant)) {
+            throw new NoteAccessDeniedError();
+        }
+
+        note.read();
+
+        return NoteViewRes.of(note);
     }
 
     public void createNote(NoteCreateReq noteCreateReq, CustomOAuth2User customOAuth2User) {
