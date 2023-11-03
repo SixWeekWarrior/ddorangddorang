@@ -1,8 +1,9 @@
 package com.sww.ddorangddorang.domain.user.api;
 
-import com.sww.ddorangddorang.domain.user.dto.UsersMoreinfoPostReq;
+import com.sww.ddorangddorang.domain.user.dto.UsersMoreinfoPutReq;
 import com.sww.ddorangddorang.domain.user.dto.UsersSignupPostReq;
-import com.sww.ddorangddorang.domain.user.dto.UsersSsafyinfoPostReq;
+import com.sww.ddorangddorang.domain.user.dto.UsersSsafyinfoPutReq;
+import com.sww.ddorangddorang.domain.user.dto.UsersTodayinfoPostReq;
 import com.sww.ddorangddorang.domain.user.service.UserService;
 import com.sww.ddorangddorang.global.common.CommonResponse;
 import lombok.RequiredArgsConstructor;
@@ -28,18 +29,26 @@ public class UserApi {
         return "jwtTest 요청 성공";
     }
 
-    @PostMapping("/ssafyinfo")
-    public CommonResponse<String> ssafyInfo(@RequestHeader Long userId, @RequestBody UsersSsafyinfoPostReq usersSsafyinfoPostReq) {
+    @PostMapping("/todayinfo")
+    public CommonResponse<String> todayinfo(@RequestHeader Long userId, @RequestBody UsersTodayinfoPostReq usersTodayinfoPostReq) {
+        log.info("UserApi_todayInfo starts");
+        userService.todayInfo(userId, usersTodayinfoPostReq);
+        log.info("UserApi_todayInfo ends");
+        return CommonResponse.success(SUCCESS);
+    }
+
+    @PutMapping("/ssafyinfo")
+    public CommonResponse<String> ssafyInfo(@RequestHeader Long userId, @RequestBody UsersSsafyinfoPutReq usersSsafyinfoPutReq) {
         log.info("UserApi_ssafyInfo starts");
-        userService.ssafyInfo(userId, usersSsafyinfoPostReq);
+        userService.ssafyInfo(userId, usersSsafyinfoPutReq);
         log.info("UserApi_ssafyInfo ends");
         return CommonResponse.success(SUCCESS);
     }
 
-    @PostMapping("/moreinfo")
-    public CommonResponse<String> moreInfo(@RequestHeader Long userId, @RequestBody UsersMoreinfoPostReq usersMoreinfoPostReq) {
+    @PutMapping("/moreinfo")
+    public CommonResponse<String> moreInfo(@RequestHeader Long userId, @RequestBody UsersMoreinfoPutReq usersMoreinfoPutReq) {
         log.info("UserApi_moreInfo starts");
-        userService.moreInfo(userId, usersMoreinfoPostReq);
+        userService.moreInfo(userId, usersMoreinfoPutReq);
         log.info("UserApi_moreInfo ends");
         return CommonResponse.success(SUCCESS);
     }

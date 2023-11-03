@@ -8,6 +8,7 @@ import java.util.List;
 public interface NoteService {
 
     List<NoteViewRes> getNotes(CustomOAuth2User customOAuth2User);
+    NoteViewRes getNote(Long id, CustomOAuth2User customOAuth2User);
     void createNote(NoteCreateReq noteCreateReq, CustomOAuth2User customOAuth2User);
 
 }

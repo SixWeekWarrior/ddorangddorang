@@ -1,8 +1,8 @@
 package com.sww.ddorangddorang.domain.user.entity;
 
 import com.sww.ddorangddorang.domain.room.entity.Room;
-import com.sww.ddorangddorang.domain.user.dto.UsersMoreinfoPostReq;
-import com.sww.ddorangddorang.domain.user.dto.UsersSsafyinfoPostReq;
+import com.sww.ddorangddorang.domain.user.dto.UsersMoreinfoPutReq;
+import com.sww.ddorangddorang.domain.user.dto.UsersSsafyinfoPutReq;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -56,11 +56,13 @@ public class User {
     private Integer gameCount = 0;
 
     @Builder(builderMethodName = "signup", builderClassName = "Signup")
-    public User(String name, String email, String password, String role) {
+    public User(Long id, String name, String email, String password, String role, Byte gender) {
+        this.id = id;
         this.name = name;
         this.email = email;
         this.password = password;
         this.role = role;
+        this.gender = gender;
     }
 
     @Builder(builderMethodName = "auth", builderClassName = "Auth")
@@ -85,19 +87,17 @@ public class User {
         this.refreshToken = updatedRefreshToken;
     }
 
-    public void updateSsafyInfo(UsersSsafyinfoPostReq usersSsafyinfoPostReq) {
-        this.profileImage = usersSsafyinfoPostReq.getProfileImage();
-        this.campus = usersSsafyinfoPostReq.getCampus();
-        this.classes = usersSsafyinfoPostReq.getClasses();
-        this.isMajor = usersSsafyinfoPostReq.getIsMajor();
-        this.floor = usersSsafyinfoPostReq.getFloor();
+    public void updateSsafyInfo(UsersSsafyinfoPutReq usersSsafyinfoPutReq) {
+        this.profileImage = usersSsafyinfoPutReq.getProfileImage();
+        this.classes = usersSsafyinfoPutReq.getClasses();
+        this.floor = usersSsafyinfoPutReq.getFloor();
     }
 
-    public void updateMoreInfo(UsersMoreinfoPostReq usersMoreinfoPostReq) {
-        this.likes = usersMoreinfoPostReq.getLikes();
-        this.hate = usersMoreinfoPostReq.getHate();
-        this.mbti = usersMoreinfoPostReq.getMbti();
-        this.worry = usersMoreinfoPostReq.getWorry();
+    public void updateMoreInfo(UsersMoreinfoPutReq usersMoreinfoPutReq) {
+        this.likes = usersMoreinfoPutReq.getLikes();
+        this.hate = usersMoreinfoPutReq.getHate();
+        this.mbti = usersMoreinfoPutReq.getMbti();
+        this.worry = usersMoreinfoPutReq.getWorry();
     }
 
     public void updateRoom(Room room) {

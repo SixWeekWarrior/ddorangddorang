@@ -67,6 +67,10 @@ public enum ErrorCode {
 
     MISSION_PERFORM_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 미션 수행 정보를 찾을 수 없습니다."),
 
+    NOTE_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 노트를 찾을 수 없습니다."),
+
+    NOTE_ACCESS_DENIED(HttpStatus.FORBIDDEN, "해당 노트에 접근할 수 없습니다."),
+
     /**
      * 서버 에러 (서버 장애 상황)
      */
