@@ -37,13 +37,16 @@ public class UserServiceImpl implements UserService {
         // TODO: properties 추가
         User user = User.signup()
                 .email(usersSignupPostReq.getEmail())
-                .password(usersSignupPostReq.getPassword())
                 .name(usersSignupPostReq.getName())
                 .role("ROLE_USER")
                 .gender(usersSignupPostReq.getGender())
+                .mbti(usersSignupPostReq.getMbti())
+                .worry(usersSignupPostReq.getWorry())
+                .likes(usersSignupPostReq.getLikes())
+                .hate(usersSignupPostReq.getHate())
                 .build();
 
-        user.passwordEncode(passwordEncoder);
+//        user.passwordEncode(passwordEncoder);
         userRepository.save(user);
     }
 

@@ -56,13 +56,16 @@ public class User {
     private Integer gameCount = 0;
 
     @Builder(builderMethodName = "signup", builderClassName = "Signup")
-    public User(Long id, String name, String email, String password, String role, Byte gender) {
+    public User(Long id, String name, String email, String role, Byte gender, String mbti, String worry, String likes, String hate) {
         this.id = id;
         this.name = name;
         this.email = email;
-        this.password = password;
         this.role = role;
         this.gender = gender;
+        this.mbti = mbti;
+        this.worry = worry;
+        this.likes = likes;
+        this.hate = hate;
     }
 
     @Builder(builderMethodName = "auth", builderClassName = "Auth")
