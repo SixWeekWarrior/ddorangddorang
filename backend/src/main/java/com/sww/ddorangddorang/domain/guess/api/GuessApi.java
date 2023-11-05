@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/guess")
+@RequestMapping("/guess")
 public class GuessApi {
     private final GuessService guessService;
     private final static String SUCCESS = "SUCCESS";
