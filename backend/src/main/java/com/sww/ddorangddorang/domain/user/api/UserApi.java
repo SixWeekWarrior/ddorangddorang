@@ -52,7 +52,7 @@ public class UserApi {
     }
 
     @PostMapping("/signup")
-    public CommonResponse<UsersSignupPostRes> signUp(@RequestBody UsersSignupPostReq usersSignupPostReq) throws Exception {
+    public CommonResponse<UsersSignupPostRes> signUp(@RequestHeader("Authorization") String authorizationHeader, @RequestBody UsersSignupPostReq usersSignupPostReq) throws Exception {
         log.info("UserApi_signup starts");
 
         Jwt jwt = NimbusJwtDecoder.withJwkSetUri("https://www.googleapis.com/oauth2/v3/certs").build().decode(authorizationHeader.substring(7));
