@@ -29,18 +29,20 @@ public class UserApi {
 
     @PostMapping("/login")
     public CommonResponse<UsersLoginPostRes> login(@RequestHeader("Authorization") String authorizationHeader, HttpServletResponse response) throws Exception {
-        log.info(authorizationHeader.substring(7));
+        log.info("UserApi_login starts: {}", authorizationHeader);
 
         Jwt jwt = NimbusJwtDecoder.withJwkSetUri("https://www.googleapis.com/oauth2/v3/certs").build().decode(authorizationHeader.substring(7));
 
+        log.info("Claims: {}", jwt.getClaims());
         String email = jwt.getClaim("email");
-        log.info(email);
+        log.info("UserApi_login, email: {}", email);
 
         User checkUser = userService.findByEmail(email).orElseThrow(UserNotFoundException::new);
 
         String refreshToken = jwtService.createRefreshToken();
         String accessToken = jwtService.createAccessToken(email);
 
+        log.info("UserApi_login ends\n accessToken: {}\n refreshToken: {}", accessToken, refreshToken);
         return CommonResponse.success(
             UsersLoginPostRes.builder()
                 .accessToken(accessToken)
@@ -51,11 +53,19 @@ public class UserApi {
 
     @PostMapping("/signup")
     public CommonResponse<UsersSignupPostRes> signUp(@RequestBody UsersSignupPostReq usersSignupPostReq) throws Exception {
+        log.info("UserApi_signup starts");
+
+        Jwt jwt = NimbusJwtDecoder.withJwkSetUri("https://www.googleapis.com/oauth2/v3/certs").build().decode(authorizationHeader.substring(7));
+
+        String email = jwt.getClaim("email");
+        log.info("UserApi_login, email: {}", email);
+
         userService.signUp(usersSignupPostReq);
 
         String refreshToken = jwtService.createRefreshToken();
         String accessToken = jwtService.createAccessToken(usersSignupPostReq.getEmail());
 
+        log.info("UserApi_signup ends");
         return CommonResponse.success(
             UsersSignupPostRes.builder()
                 .accessToken(accessToken)
