@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/missions")
+@RequestMapping("/missions")
 public class MissionApi {
 
     private final MissionPerformService missionPerformService;

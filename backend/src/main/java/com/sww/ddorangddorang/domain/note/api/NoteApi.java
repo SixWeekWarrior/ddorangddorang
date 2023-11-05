@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/notes")
+@RequestMapping("/notes")
 public class NoteApi {
 
     private final NoteService noteService;
