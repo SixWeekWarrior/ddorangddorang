@@ -4,6 +4,7 @@ import com.sww.ddorangddorang.auth.service.JwtService;
 import com.sww.ddorangddorang.domain.user.dto.UsersLoginPostRes;
 import com.sww.ddorangddorang.domain.user.dto.UsersMoreinfoPutReq;
 import com.sww.ddorangddorang.domain.user.dto.UsersSignupPostReq;
+import com.sww.ddorangddorang.domain.user.dto.UsersSignupPostRes;
 import com.sww.ddorangddorang.domain.user.dto.UsersSsafyinfoPutReq;
 import com.sww.ddorangddorang.domain.user.dto.UsersTodayinfoPostReq;
 import com.sww.ddorangddorang.domain.user.entity.User;
@@ -49,9 +50,18 @@ public class UserApi {
     }
 
     @PostMapping("/signup")
-    public CommonResponse<String> signUp(@RequestBody UsersSignupPostReq usersSignupPostReq) throws Exception {
+    public CommonResponse<UsersSignupPostRes> signUp(@RequestBody UsersSignupPostReq usersSignupPostReq) throws Exception {
         userService.signUp(usersSignupPostReq);
-        return CommonResponse.success(SUCCESS);
+
+        String refreshToken = jwtService.createRefreshToken();
+        String accessToken = jwtService.createAccessToken(usersSignupPostReq.getEmail());
+
+        return CommonResponse.success(
+            UsersSignupPostRes.builder()
+                .accessToken(accessToken)
+                .refreshToken(refreshToken)
+                .build()
+        );
     }
 
     @GetMapping("/jwt-test")
