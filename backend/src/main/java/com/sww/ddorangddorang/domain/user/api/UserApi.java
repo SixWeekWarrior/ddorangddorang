@@ -1,6 +1,7 @@
 package com.sww.ddorangddorang.domain.user.api;
 
 import com.sww.ddorangddorang.auth.service.JwtService;
+import com.sww.ddorangddorang.domain.user.dto.UsersLoginPostRes;
 import com.sww.ddorangddorang.domain.user.dto.UsersMoreinfoPutReq;
 import com.sww.ddorangddorang.domain.user.dto.UsersSignupPostReq;
 import com.sww.ddorangddorang.domain.user.dto.UsersSsafyinfoPutReq;
@@ -26,7 +27,7 @@ public class UserApi {
     private final static String SUCCESS = "SUCCESS";
 
     @PostMapping("/login")
-    public CommonResponse<String> login(@RequestHeader("Authorization") String authorizationHeader, HttpServletResponse response) throws Exception {
+    public CommonResponse<UsersLoginPostRes> login(@RequestHeader("Authorization") String authorizationHeader, HttpServletResponse response) throws Exception {
         log.info(authorizationHeader.substring(7));
 
         Jwt jwt = NimbusJwtDecoder.withJwkSetUri("https://www.googleapis.com/oauth2/v3/certs").build().decode(authorizationHeader.substring(7));
@@ -36,7 +37,15 @@ public class UserApi {
 
         User checkUser = userService.findByEmail(email).orElseThrow(UserNotFoundException::new);
 
-        return CommonResponse.success(SUCCESS);
+        String refreshToken = jwtService.createRefreshToken();
+        String accessToken = jwtService.createAccessToken(email);
+
+        return CommonResponse.success(
+            UsersLoginPostRes.builder()
+                .accessToken(accessToken)
+                .refreshToken(refreshToken)
+                .build()
+        );
     }
 
     @PostMapping("/signup")
