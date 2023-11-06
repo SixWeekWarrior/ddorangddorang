@@ -2,6 +2,7 @@ import {StyleSheet, View} from 'react-native';
 import AddInfoMolecules from '../../molecules/addInfoMolecules';
 import {useState} from 'react';
 import BtnBig from '../../atoms/btnBig';
+import {userApi} from '../../../apis';
 
 export const AdditionalInfo = ({
   navigation,
@@ -10,9 +11,9 @@ export const AdditionalInfo = ({
 }): JSX.Element => {
   const [inputValues, setInputValues] = useState({
     MBTI: '',
-    currentConcern: '',
-    likes: '',
-    dislikes: '',
+    worry: '',
+    like: '',
+    hate: '',
   });
 
   const handleInputChange = (title: string, value: string) => {
@@ -22,13 +23,24 @@ export const AdditionalInfo = ({
     }));
   };
 
-  const handleSkip = () => {
-    navigation.navigate('Enter');
-  };
-
-  const handleSubmit = () => {
-    console.log(inputValues);
-    navigation.navigate('Enter');
+  const handleSignup = async () => {
+    try {
+      userApi
+        .postSignup(
+          inputValues.MBTI,
+          inputValues.worry,
+          inputValues.like,
+          inputValues.hate,
+        )
+        .then((data: any) => {
+          console.log(data);
+          navigation.navigate('Enter');
+        })
+        .catch((e: any) => {
+          console.log(e);
+          navigation.navigate('Enter');
+        });
+    } catch (error: any) {}
   };
 
   return (
@@ -37,9 +49,9 @@ export const AdditionalInfo = ({
         menu={'추가 정보'}
         text={`나의 마니띠에게 소개할 수 있는\n추가 정보를 입력해주세요.`}
         onInputChange={handleInputChange}
-        onSkip={handleSkip}
+        onSkip={handleSignup}
       />
-      <BtnBig text="완료" onPress={handleSubmit}></BtnBig>
+      <BtnBig text="회원가입" onPress={handleSignup} />
     </View>
   );
 };

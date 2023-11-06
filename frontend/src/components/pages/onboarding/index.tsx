@@ -21,7 +21,7 @@ export const Onboarding = ({navigation}: {navigation: any}): JSX.Element => {
     GoogleSignin.configure({
       webClientId:
         // TODO: change to env variable
-        '',
+        '705461399403-b63tooulpovabf2p7f1dljgemr84pj2p.apps.googleusercontent.com',
       offlineAccess: true,
       scopes: ['profile', 'email'],
     });
@@ -54,7 +54,7 @@ export const Onboarding = ({navigation}: {navigation: any}): JSX.Element => {
             if (data.success) {
               navigation.navigate('Enter');
             } else {
-              navigation.navigate('AdditionalInfo');
+              navigation.navigate('BasicInfo');
             }
           })
           .catch(e => {
