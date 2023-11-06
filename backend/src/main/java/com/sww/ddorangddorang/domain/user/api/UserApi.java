@@ -7,6 +7,7 @@ import com.sww.ddorangddorang.domain.user.dto.UsersSignupPostReq;
 import com.sww.ddorangddorang.domain.user.dto.UsersSignupPostRes;
 import com.sww.ddorangddorang.domain.user.dto.UsersSsafyinfoPutReq;
 import com.sww.ddorangddorang.domain.user.dto.UsersTodayinfoPostReq;
+import com.sww.ddorangddorang.domain.user.dto.UsersTokenInfo;
 import com.sww.ddorangddorang.domain.user.entity.User;
 import com.sww.ddorangddorang.domain.user.exception.UserNotFoundException;
 import com.sww.ddorangddorang.domain.user.service.UserService;
@@ -42,6 +43,11 @@ public class UserApi {
         String refreshToken = jwtService.createRefreshToken();
         String accessToken = jwtService.createAccessToken(email);
 
+        userService.saveRefreshToken(UsersTokenInfo.builder()
+            .email(checkUser.getEmail())
+            .refreshToken(refreshToken)
+            .build());
+
         log.info("UserApi_login ends\n accessToken: {}\n refreshToken: {}", accessToken, refreshToken);
         return CommonResponse.success(
             UsersLoginPostRes.builder()
@@ -64,6 +70,11 @@ public class UserApi {
 
         String refreshToken = jwtService.createRefreshToken();
         String accessToken = jwtService.createAccessToken(usersSignupPostReq.getEmail());
+
+        userService.saveRefreshToken(UsersTokenInfo.builder()
+            .email(email)
+            .refreshToken(refreshToken)
+            .build());
 
         log.info("UserApi_signup ends");
         return CommonResponse.success(

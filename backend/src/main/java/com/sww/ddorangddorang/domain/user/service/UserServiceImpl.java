@@ -5,8 +5,10 @@ import com.sww.ddorangddorang.domain.user.dto.UsersMoreinfoPutReq;
 import com.sww.ddorangddorang.domain.user.dto.UsersSignupPostReq;
 import com.sww.ddorangddorang.domain.user.dto.UsersSsafyinfoPutReq;
 import com.sww.ddorangddorang.domain.user.dto.UsersTodayinfoPostReq;
+import com.sww.ddorangddorang.domain.user.dto.UsersTokenInfo;
 import com.sww.ddorangddorang.domain.user.entity.Hint;
 import com.sww.ddorangddorang.domain.user.entity.User;
+import com.sww.ddorangddorang.domain.user.exception.UserNotFoundException;
 import com.sww.ddorangddorang.domain.user.repository.HintRepository;
 import com.sww.ddorangddorang.domain.user.repository.UserRepository;
 import jakarta.transaction.Transactional;
@@ -80,4 +82,10 @@ public class UserServiceImpl implements UserService {
         user.updateMoreInfo(usersMoreinfoPutReq);
     }
 
+    public void saveRefreshToken(UsersTokenInfo usersTokenInfo) {
+        User user = userRepository.findByEmail(usersTokenInfo.getEmail())
+            .orElseThrow(UserNotFoundException::new);
+
+        user.updateRefreshToken(usersTokenInfo.getRefreshToken());
+    };
 }
