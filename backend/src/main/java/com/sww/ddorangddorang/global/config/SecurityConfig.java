@@ -59,11 +59,11 @@ public class SecurityConfig {
                 // 아이콘, css, js 관련
                 // 기본 페이지, css, image, js 하위 폴더에 있는 자료들은 모두 접근 가능, h2-console에 접근 가능
                 .requestMatchers("/","/css/**","/images/**","/js/**","/favicon.ico","/h2-console/**").permitAll()
-                .requestMatchers("/signup").permitAll()
-                .requestMatchers("/login/oauth2/code/google").permitAll()
+                .requestMatchers("/users/login").permitAll()
+                .requestMatchers("/users/signup").permitAll()
                 .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
-//                .anyRequest().authenticated())
-                .anyRequest().permitAll())
+                .anyRequest().authenticated())
+//                .anyRequest().permitAll())
             //== 소셜 로그인 설정 ==//
             .oauth2Login(c -> c
                 .successHandler(oAuth2LoginSuccessHandler)                          // 동의하고 계속하기를 눌렀을 때 Handler 설정
