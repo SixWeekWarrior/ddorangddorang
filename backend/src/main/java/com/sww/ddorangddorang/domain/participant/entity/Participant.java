@@ -1,8 +1,10 @@
 package com.sww.ddorangddorang.domain.participant.entity;
 
 import com.sww.ddorangddorang.domain.mission.entity.Mission;
+import com.sww.ddorangddorang.domain.mission.entity.MissionPerform;
 import com.sww.ddorangddorang.domain.room.entity.Room;
 import com.sww.ddorangddorang.domain.user.entity.User;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -11,7 +13,9 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import java.time.LocalDateTime;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -68,6 +72,9 @@ public class Participant {
     private User guess;
 
     private Boolean isCorrect;
+
+    @OneToMany(mappedBy = "player", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<MissionPerform> missionPerforms;
 
     @Builder
     public Participant(User user) {
