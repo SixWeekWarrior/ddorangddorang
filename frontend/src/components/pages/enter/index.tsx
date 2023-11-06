@@ -32,11 +32,11 @@ export const Enter = ({navigation}: {navigation: any}): JSX.Element => {
       <View style={styles.noticeContainer}>
         <View style={styles.textContainer}>
           <Text style={styles.name}>홍재연</Text>
-          <Text style={styles.text}>방장님</Text>
+          <Text style={styles.text}>님</Text>
         </View>
         <View style={styles.textContainer}>
           <Text style={styles.text}>
-            방 생성을 <Text style={styles.textBig}>완료</Text>했어요.
+            가입을 <Text style={styles.textBig}>축하</Text>드려요!
           </Text>
         </View>
       </View>

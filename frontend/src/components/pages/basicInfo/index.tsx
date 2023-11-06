@@ -37,7 +37,8 @@ export const BasicInfo = ({navigation}: {navigation: any}): JSX.Element => {
       <BtnBig
         text="다음"
         onPress={handleSubmit}
-        disabled={!isAllInputsFilled}></BtnBig>
+        disabled={!isAllInputsFilled}
+      />
     </View>
   );
 };

@@ -38,15 +38,14 @@ export const InputInfoMolecules = ({
         );
       case 'select':
         return (
-          <View style={styles.inputArea}>
-            <SelectDropdown
-              data={data}
-              defaultButtonText={placeholder}
-              onSelect={selectedItem => onInputChange(selectedItem)}
-              rowTextStyle={styles.dropdownRowTxtStyle}
-              buttonTextStyle={styles.buttonTextStyle}
-            />
-          </View>
+          <SelectDropdown
+            data={data}
+            buttonStyle={styles.buttonStyle}
+            defaultButtonText={placeholder}
+            onSelect={selectedItem => onInputChange(selectedItem)}
+            rowTextStyle={styles.dropdownRowTxtStyle}
+            buttonTextStyle={styles.buttonTextStyle}
+          />
         );
       case 'radio':
         return (
@@ -104,15 +103,20 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
   },
   inputArea: {
-    width: 180,
-    height: 45,
+    width: '50%',
     backgroundColor: GlobalStyles.white_1.color,
-    paddingLeft: 15,
     borderRadius: 30,
+  },
+  buttonStyle: {
+    width: '50%',
+    borderRadius: 30,
+    backgroundColor: GlobalStyles.white_1.color,
   },
   input: {
     color: GlobalStyles.grey_3.color,
+    fontSize: 16,
     lineHeight: 10,
+    textAlign: 'center',
   },
   buttonTextStyle: {
     fontSize: GlobalStyles.content.fontSize,

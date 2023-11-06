@@ -7,7 +7,6 @@ import InputInfoMolecules from '../inputInfoMolecules';
 import {useNavigation} from '@react-navigation/native';
 import {userApi} from '../../../apis';
 import {useState} from 'react';
-import {useRoute} from '@react-navigation/native';
 
 type AddInfoMoleculesProps = {
   menu: string;
@@ -26,34 +25,17 @@ export const AddInfoMolecules = ({
   const group = Array.from({length: 20}, (_, index) => (index + 1).toString());
   const floor = Array.from({length: 20}, (_, index) => (index + 1).toString());
 
-  const navigation = useNavigation();
-
-  const [mbti, setMbti] = useState('');
-  const [worry, setWorry] = useState('');
-  const [likes, setLikes] = useState('');
-  const [hate, setHate] = useState('');
-
-  // TODO: 모듈화를 위해서 분리 필요
-  const handleSignup = async () => {
-    try {
-      userApi
-        .postSignup(mbti, worry, likes, hate)
-        .then(data => {
-          console.log(data);
-          navigation.navigate('Enter');
-        })
-        .catch(e => {
-          console.log(e);
-          navigation.navigate('Onboarding');
-        });
-    } catch (error: any) {}
-  };
-
   const renderContent = (menu: string) => {
     switch (menu) {
       case '기본 정보':
         return (
           <View style={styles.contentContainer}>
+            <InputInfoMolecules
+              title="이름"
+              placeholder="이름을 입력해주세요"
+              type="text"
+              onInputChange={(text: string) => onInputChange('name', text)}
+            />
             <InputInfoMolecules
               title="지역"
               placeholder="지역을 선택하세요"
@@ -111,13 +93,8 @@ export const AddInfoMolecules = ({
               type="text"
               onInputChange={(text: string) => onInputChange('dislikes', text)}
             />
-            <Text
-              style={styles.skipText}
-              onPress={
-                // navigation.navigate('Enter')
-                handleSignup
-              }>
-              회원가입
+            <Text style={styles.skipText} onPress={onSkip}>
+              건너뛰기
             </Text>
           </View>
         );
