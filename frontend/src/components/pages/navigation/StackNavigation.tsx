@@ -17,12 +17,15 @@ import ReviseToday from '../reviseToday';
 import ReviseSsafy from '../reviseSsafy';
 import ReviseEtc from '../reviseEtc';
 import SendOpinion from '../sendOpinion';
+import MatchStatus from '../matchStatus';
+import Home from '../home';
+import MatchGuess from '../matchGuess';
 
 const StackNavigation = () => {
   const Stack = createStackNavigator();
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Onboarding">
+      <Stack.Navigator initialRouteName="NavBar">
         <Stack.Screen
           name="Onboarding"
           component={Onboarding}
@@ -106,6 +109,16 @@ const StackNavigation = () => {
         <Stack.Screen
           name="SendOpinion"
           component={SendOpinion}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="MatchStatus"
+          component={MatchStatus}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="MatchGuess"
+          component={MatchGuess}
           options={{headerShown: false}}
         />
       </Stack.Navigator>
