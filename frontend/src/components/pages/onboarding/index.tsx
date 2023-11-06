@@ -14,6 +14,7 @@ import {
 } from '@react-native-google-signin/google-signin';
 import BtnBig from '../../atoms/btnBig';
 import {userApi} from '../../../apis';
+import {tokenUtil} from '../../../utils';
 
 export const Onboarding = ({navigation}: {navigation: any}): JSX.Element => {
   useEffect(() => {
@@ -43,19 +44,18 @@ export const Onboarding = ({navigation}: {navigation: any}): JSX.Element => {
   const handleGoogleSignIn = async () => {
     try {
       await GoogleSignin.hasPlayServices();
-      const userInfo = await GoogleSignin.signIn();
-
-      console.log(userInfo.idToken);
-      if (userInfo.idToken) {
+      const loginInfo = await GoogleSignin.signIn();
+      console.log('TEST-idToken: ', loginInfo.idToken);
+      if (loginInfo.idToken) {
         userApi
-          .postLogin(userInfo.idToken)
+          .postLogin(loginInfo.idToken)
           .then(data => {
-            console.log(data);
-            if (data.success) {
-              navigation.navigate('Enter');
-            } else {
-              navigation.navigate('BasicInfo');
-            }
+            console.log('TEST-data: ', data);
+            data.success
+              ? tokenUtil
+                  .setToken(data.data.accessToken, data.data.refreshToken)
+                  .then(navigation.navigate('Enter'))
+              : navigation.navigate('BasicInfo');
           })
           .catch(e => {
             console.log(e);
@@ -84,11 +84,7 @@ export const Onboarding = ({navigation}: {navigation: any}): JSX.Element => {
         />
       </View>
       <View style={styles.loginContainer}>
-        <TouchableOpacity
-          // onPress={() => {
-          //   navigation.navigate('AdditionalInfo'); // 이 줄 삭제하시고 여기에 로그인 로직 추가하시면 됩니다.
-          // }}
-          onPress={handleGoogleSignIn}>
+        <TouchableOpacity onPress={handleGoogleSignIn}>
           <Image source={googleLoginImg} style={styles.googleLoginImg} />
         </TouchableOpacity>
       </View>
