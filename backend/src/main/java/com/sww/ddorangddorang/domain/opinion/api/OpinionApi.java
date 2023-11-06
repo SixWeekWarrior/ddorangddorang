@@ -1,6 +1,6 @@
 package com.sww.ddorangddorang.domain.opinion.api;
 
-import com.sww.ddorangddorang.auth.dto.CustomOAuth2User;
+import com.sww.ddorangddorang.auth.dto.AuthenticatedUser;
 import com.sww.ddorangddorang.domain.opinion.dto.OpinionCreateReq;
 import com.sww.ddorangddorang.domain.opinion.service.OpinionService;
 import com.sww.ddorangddorang.global.common.CommonResponse;
@@ -22,9 +22,9 @@ public class OpinionApi {
     private static final String SUCCESS = "SUCCESS";
 
     @PostMapping
-    CommonResponse<String> createOpinion(@RequestBody OpinionCreateReq opinionCreateReq, @AuthenticationPrincipal CustomOAuth2User customOAuth2User) {
+    CommonResponse<String> createOpinion(@RequestBody OpinionCreateReq opinionCreateReq, @AuthenticationPrincipal AuthenticatedUser authenticatedUser) {
         log.info("createOpinion Controller 진입");
-        opinionService.createOpinion(opinionCreateReq, customOAuth2User);
+        opinionService.createOpinion(opinionCreateReq, authenticatedUser);
         return CommonResponse.success(SUCCESS);
     }
 

@@ -1,6 +1,6 @@
 package com.sww.ddorangddorang.domain.mission.api;
 
-import com.sww.ddorangddorang.auth.dto.CustomOAuth2User;
+import com.sww.ddorangddorang.auth.dto.AuthenticatedUser;
 import com.sww.ddorangddorang.domain.mission.dto.MissionCompleteReq;
 import com.sww.ddorangddorang.domain.mission.dto.MissionPerformsInfoRes;
 import com.sww.ddorangddorang.domain.mission.service.MissionPerformService;
@@ -25,15 +25,15 @@ public class MissionApi {
     private static final String SUCCESS = "SUCCESS";
 
     @GetMapping
-    public CommonResponse<List<MissionPerformsInfoRes>> findMissionByUser(@AuthenticationPrincipal CustomOAuth2User customOAuth2User) {
+    public CommonResponse<List<MissionPerformsInfoRes>> findMissionByUser(@AuthenticationPrincipal AuthenticatedUser authenticatedUser) {
         log.info("findMissionByUser Controller 진입");
-        return CommonResponse.success(missionPerformService.findMissionByUser(customOAuth2User));
+        return CommonResponse.success(missionPerformService.findMissionByUser(authenticatedUser));
     }
 
     @PostMapping
-    public CommonResponse<String> missionComplete(@RequestBody MissionCompleteReq missionCompleteReq, @AuthenticationPrincipal CustomOAuth2User customOAuth2User) {
+    public CommonResponse<String> missionComplete(@RequestBody MissionCompleteReq missionCompleteReq, @AuthenticationPrincipal AuthenticatedUser authenticatedUser) {
         log.info("missionComplete Controller 진입");
-        missionPerformService.missionComplete(missionCompleteReq, customOAuth2User);
+        missionPerformService.missionComplete(missionCompleteReq, authenticatedUser);
         return CommonResponse.success(SUCCESS);
     }
 

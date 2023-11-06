@@ -1,6 +1,6 @@
 package com.sww.ddorangddorang.domain.note.service;
 
-import com.sww.ddorangddorang.auth.dto.CustomOAuth2User;
+import com.sww.ddorangddorang.auth.dto.AuthenticatedUser;
 import com.sww.ddorangddorang.domain.mission.entity.MissionPerform;
 import com.sww.ddorangddorang.domain.note.dto.NoteViewRes;
 import com.sww.ddorangddorang.domain.note.exception.NoteAccessDeniedError;
@@ -8,14 +8,11 @@ import com.sww.ddorangddorang.domain.participant.exception.ParticipantNotFoundEx
 import com.sww.ddorangddorang.domain.user.exception.UserNotFoundException;
 import com.sww.ddorangddorang.domain.mission.repository.MissionPerformRepository;
 import com.sww.ddorangddorang.domain.note.dto.NoteCreateReq;
-import com.sww.ddorangddorang.domain.note.dto.NoteViewRes;
 import com.sww.ddorangddorang.domain.note.entity.Note;
 import com.sww.ddorangddorang.domain.note.repository.NoteRepository;
 import com.sww.ddorangddorang.domain.participant.entity.Participant;
-import com.sww.ddorangddorang.domain.participant.exception.ParticipantNotFoundException;
 import com.sww.ddorangddorang.domain.participant.repository.ParticipantRepository;
 import com.sww.ddorangddorang.domain.user.entity.User;
-import com.sww.ddorangddorang.domain.user.exception.UserNotFoundException;
 import com.sww.ddorangddorang.domain.user.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import java.util.List;
@@ -35,8 +32,8 @@ public class NoteServiceImpl implements NoteService {
     private final ParticipantRepository participantRepository;
     private final MissionPerformRepository missionPerformRepository;
 
-    public List<NoteViewRes> getNotes(CustomOAuth2User customOAuth2User) {
-        User user = userRepository.findByEmail(customOAuth2User.getEmail()).orElseThrow(
+    public List<NoteViewRes> getNotes(AuthenticatedUser authenticatedUser) {
+        User user = userRepository.findByEmail(authenticatedUser.getEmail()).orElseThrow(
             UserNotFoundException::new);
 
         Participant receiver = participantRepository.findByUserAndGameCount(user,
@@ -48,11 +45,11 @@ public class NoteServiceImpl implements NoteService {
     }
 
 
-    public NoteViewRes getNote(Long id, CustomOAuth2User customOAuth2User) {
+    public NoteViewRes getNote(Long id, AuthenticatedUser authenticatedUser) {
         Note note = noteRepository.findById(id).orElseThrow(
             ParticipantNotFoundException::new);
 
-        User user = userRepository.findByEmail(customOAuth2User.getEmail()).orElseThrow(
+        User user = userRepository.findByEmail(authenticatedUser.getEmail()).orElseThrow(
             UserNotFoundException::new);
 
         Participant participant = participantRepository.findByUserAndGameCount(user,
@@ -67,8 +64,8 @@ public class NoteServiceImpl implements NoteService {
         return NoteViewRes.of(note);
     }
 
-    public void createNote(NoteCreateReq noteCreateReq, CustomOAuth2User customOAuth2User) {
-        User user = userRepository.findByEmail(customOAuth2User.getEmail()).orElseThrow(
+    public void createNote(NoteCreateReq noteCreateReq, AuthenticatedUser authenticatedUser) {
+        User user = userRepository.findByEmail(authenticatedUser.getEmail()).orElseThrow(
             UserNotFoundException::new);
 
         Participant sender = participantRepository.findByUserAndGameCount(user, user.getGameCount())

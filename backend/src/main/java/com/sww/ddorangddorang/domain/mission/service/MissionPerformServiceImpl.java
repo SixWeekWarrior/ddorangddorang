@@ -1,6 +1,6 @@
 package com.sww.ddorangddorang.domain.mission.service;
 
-import com.sww.ddorangddorang.auth.dto.CustomOAuth2User;
+import com.sww.ddorangddorang.auth.dto.AuthenticatedUser;
 import com.sww.ddorangddorang.domain.mission.dto.MissionCompleteReq;
 import com.sww.ddorangddorang.domain.mission.dto.MissionPerformsInfoRes;
 import com.sww.ddorangddorang.domain.mission.entity.MissionPerform;
@@ -28,8 +28,8 @@ public class MissionPerformServiceImpl implements MissionPerformService {
     private final UserRepository userRepository;
     private final ParticipantRepository participantRepository;
 
-    public List<MissionPerformsInfoRes> findMissionByUser(CustomOAuth2User customOAuth2User) {
-        String email = customOAuth2User.getEmail();
+    public List<MissionPerformsInfoRes> findMissionByUser(AuthenticatedUser authenticatedUser) {
+        String email = authenticatedUser.getEmail();
         log.info("email: {}", email);
         User user = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
         Participant participant = participantRepository.findByUserAndGameCount(user,
@@ -43,8 +43,8 @@ public class MissionPerformServiceImpl implements MissionPerformService {
     }
 
     public void missionComplete(MissionCompleteReq missionCompleteReq,
-        CustomOAuth2User customOAuth2User) {
-        String email = customOAuth2User.getEmail();
+        AuthenticatedUser authenticatedUser) {
+        String email = authenticatedUser.getEmail();
         User user = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
 
         MissionPerform missionPerform = missionPerformRepository.findById(
