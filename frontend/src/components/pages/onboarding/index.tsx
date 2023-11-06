@@ -13,12 +13,15 @@ import {
   statusCodes,
 } from '@react-native-google-signin/google-signin';
 import BtnBig from '../../atoms/btnBig';
+import {userApi} from '../../../apis';
 
 export const Onboarding = ({navigation}: {navigation: any}): JSX.Element => {
   useEffect(() => {
     // Google Sign-In 초기화
     GoogleSignin.configure({
-      // webClientId: WEB_CLIENT_ID,
+      webClientId:
+        // TODO: change to env variable
+        '',
       offlineAccess: true,
       scopes: ['profile', 'email'],
     });
@@ -41,7 +44,23 @@ export const Onboarding = ({navigation}: {navigation: any}): JSX.Element => {
     try {
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
-      console.log('Signed in with Google:', userInfo.user);
+
+      console.log(userInfo.idToken);
+      if (userInfo.idToken) {
+        userApi
+          .postLogin(userInfo.idToken)
+          .then(data => {
+            console.log(data);
+            if (data.success) {
+              navigation.navigate('Enter');
+            } else {
+              navigation.navigate('AdditionalInfo');
+            }
+          })
+          .catch(e => {
+            console.log(e);
+          });
+      }
     } catch (error: any) {
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
         // 사용자가 로그인을 취소했을 때 처리
@@ -55,26 +74,29 @@ export const Onboarding = ({navigation}: {navigation: any}): JSX.Element => {
   };
 
   const goLogin = () => (
-    <View style={styles.titleContainer}>
-      <TitleAtom
-        menu={'로그인'}
-        text={'로그인하고 지금 바로 또랑또랑을 시작해보세요!'}
-        menuColor={GlobalStyles.green.color}
-        textColor={GlobalStyles.grey_3.color}
-      />
-    </View>
-    <View style={styles.loginContainer}>
-      <TouchableOpacity
-        onPress={() => {
-          navigation.navigate('AdditionalInfo'); // 이 줄 삭제하시고 여기에 로그인 로직 추가하시면 됩니다.
-        }}>
-        <Image source={googleLoginImg} style={styles.googleLoginImg} />
-      </TouchableOpacity>
-    </View>
-    <View style={styles.signupContainer}>
-      <Text style={styles.text}>회원이 아니신가요?</Text>
-      <Text style={styles.menu}>회원가입</Text>
-    </View>
+    <>
+      <View style={styles.titleContainer}>
+        <TitleAtom
+          menu={'로그인'}
+          text={'로그인하고 지금 바로 또랑또랑을 시작해보세요!'}
+          menuColor={GlobalStyles.green.color}
+          textColor={GlobalStyles.grey_3.color}
+        />
+      </View>
+      <View style={styles.loginContainer}>
+        <TouchableOpacity
+          // onPress={() => {
+          //   navigation.navigate('AdditionalInfo'); // 이 줄 삭제하시고 여기에 로그인 로직 추가하시면 됩니다.
+          // }}
+          onPress={handleGoogleSignIn}>
+          <Image source={googleLoginImg} style={styles.googleLoginImg} />
+        </TouchableOpacity>
+      </View>
+      <View style={styles.signupContainer}>
+        <Text style={styles.text}>회원이 아니신가요?</Text>
+        <Text style={styles.menu}>회원가입</Text>
+      </View>
+    </>
   );
 
   const handleExpand = () => {

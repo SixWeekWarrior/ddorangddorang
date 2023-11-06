@@ -13,11 +13,13 @@ type InputInfoMoleculesProps = {
   title: string;
   placeholder: string;
   type: string;
+  onChangeText?: (text: string) => void;
 };
 export const InputInfoMolecules = ({
   title,
   placeholder,
   type,
+  onChangeText,
 }: InputInfoMoleculesProps) => {
   const renderInput = () => {
     switch (type) {
@@ -28,6 +30,7 @@ export const InputInfoMolecules = ({
               style={styles.input}
               placeholder={placeholder}
               placeholderTextColor={GlobalStyles.grey_3.color}
+              onChangeText={onChangeText}
             />
           </KeyboardAwareScrollView>
         );

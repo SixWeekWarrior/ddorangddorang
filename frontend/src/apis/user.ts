@@ -21,7 +21,32 @@ const postLogin = async (idToken: string) => {
   }
 };
 
+const postSignup = async (
+  mbti: string,
+  worry: string,
+  likes: string,
+  hate: string,
+) => {
+  try {
+    const res = await client.post('users/signup', {
+      mbti,
+      worry,
+      likes,
+      hate,
+      // TODO: Change page to additional pass values
+      email: 'Email',
+      gender: 0,
+      name: 'Hyosik',
+    });
+    return res.data;
+  } catch (e) {
+    console.log(e);
+    throw new Error('ERROR IN SIGN UP');
+  }
+};
+
 const user = {
   postLogin,
+  postSignup,
 };
 export default user;

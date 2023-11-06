@@ -5,6 +5,9 @@ import TitleAtom from '../../atoms/titleAtom';
 import GlobalStyles from '../../../styles/GlobalStyles';
 import InputInfoMolecules from '../inputInfoMolecules';
 import {useNavigation} from '@react-navigation/native';
+import {userApi} from '../../../apis';
+import {useState} from 'react';
+import {useRoute} from '@react-navigation/native';
 
 type AddInfoMoleculesProps = {
   menu: string;
@@ -13,6 +16,28 @@ type AddInfoMoleculesProps = {
 
 export const AddInfoMolecules = ({menu, text}: AddInfoMoleculesProps) => {
   const navigation = useNavigation();
+
+  const [mbti, setMbti] = useState('');
+  const [worry, setWorry] = useState('');
+  const [likes, setLikes] = useState('');
+  const [hate, setHate] = useState('');
+
+  // TODO: 모듈화를 위해서 분리 필요
+  const handleSignup = async () => {
+    try {
+      userApi
+        .postSignup(mbti, worry, likes, hate)
+        .then(data => {
+          console.log(data);
+          navigation.navigate('Enter');
+        })
+        .catch(e => {
+          console.log(e);
+          navigation.navigate('Onboarding');
+        });
+    } catch (error: any) {}
+  };
+
   const renderContent = (menu: string) => {
     switch (menu) {
       case '기본 정보':
@@ -22,26 +47,33 @@ export const AddInfoMolecules = ({menu, text}: AddInfoMoleculesProps) => {
               title="MBTI"
               placeholder="MBTI를 입력해주세요"
               type="text"
+              onChangeText={text => setMbti(text)}
             />
             <InputInfoMolecules
               title="요즘 고민"
               placeholder="고민을 입력해주세요"
               type="text"
+              onChangeText={text => setWorry(text)}
             />
             <InputInfoMolecules
               title="좋아하는 것"
               placeholder="좋아하는 것을 입력해주세요"
               type="text"
+              onChangeText={text => setLikes(text)}
             />
             <InputInfoMolecules
               title="싫어하는 것"
               placeholder="싫어하는 것을 입력해주세요"
               type="text"
+              onChangeText={text => setHate(text)}
             />
             <Text
               style={styles.skipText}
-              onPress={() => navigation.navigate('Enter')}>
-              건너뛰기
+              onPress={
+                // navigation.navigate('Enter')
+                handleSignup
+              }>
+              회원가입
             </Text>
           </View>
         );
