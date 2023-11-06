@@ -101,7 +101,6 @@ const styles = StyleSheet.create({
   },
   sheetContainer: {
     marginHorizontal: 20,
-    // paddingBottom: 1,
   },
   contentContainer: {
     flex: 1,

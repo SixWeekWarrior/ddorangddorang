@@ -54,7 +54,7 @@ export const WaitList = ({navigation, route}): JSX.Element => {
     }
   };
 
-  const toggleSelect = id => {
+  const toggleSelect = (id: string) => {
     const newData = data.map(item => {
       if (item.id === id) {
         item.selected = !item.selected;
