@@ -5,11 +5,15 @@ import GlobalStyles from '../../../styles/GlobalStyles';
 interface BtnBigProps {
   onPress: () => void;
   text: string;
+  disabled?: boolean;
 }
 
-export const BtnBig = ({onPress, text}: BtnBigProps) => {
+export const BtnBig = ({onPress, text, disabled}: BtnBigProps) => {
   return (
-    <Pressable onPress={onPress} style={styles.btnContainer}>
+    <Pressable
+      onPress={onPress}
+      style={[styles.btnContainer, disabled ? styles.disabled : null]}
+      disabled={disabled}>
       <Text style={styles.btn}>{text}</Text>
     </Pressable>
   );
@@ -30,6 +34,9 @@ const styles = StyleSheet.create({
     fontSize: GlobalStyles.btn.fontSize,
     color: GlobalStyles.white_1.color,
     textAlign: 'center',
+  },
+  disabled: {
+    opacity: 0.6,
   },
 });
 

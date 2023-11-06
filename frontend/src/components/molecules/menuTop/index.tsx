@@ -33,12 +33,12 @@ const styles = StyleSheet.create({
     height: '25%',
     flexDirection: 'row',
     backgroundColor: GlobalStyles.blue.color,
+    padding: 15,
   },
   contentContainer: {
     flex: 1,
     alignSelf: 'flex-end',
     bottom: '5%',
-    marginLeft: '10%',
   },
   imgContainer: {
     alignSelf: 'flex-end',

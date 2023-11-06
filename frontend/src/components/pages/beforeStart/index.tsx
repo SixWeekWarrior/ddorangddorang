@@ -150,7 +150,7 @@ const styles = StyleSheet.create({
   },
   congratsImg: {
     flex: 1,
-    width: 220,
+    width: '70%',
     objectFit: 'scale-down',
   },
   sumContainer: {

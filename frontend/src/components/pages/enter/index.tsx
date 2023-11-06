@@ -2,9 +2,47 @@ import {Text, View, Image, StyleSheet} from 'react-native';
 import GlobalStyles from '../../../styles/GlobalStyles';
 import blockImg from '../../../assets/blockImg.png';
 import BtnMid from '../../atoms/btnMid';
+import {LogBox} from 'react-native';
+import BottomSheet, {BottomSheetBackdrop} from '@gorhom/bottom-sheet';
 import InputTextwithBtn from '../../molecules/inputTextwithBtn';
+import {useCallback, useRef, useMemo} from 'react';
+import congratsImg from '../../../assets/congratsImg.png';
+
+LogBox.ignoreLogs([
+  'Non-serializable values were found in the navigation state',
+]);
 
 export const Enter = ({navigation}: {navigation: any}): JSX.Element => {
+  const bottomSheetRef = useRef<BottomSheet>(null);
+  const snapPoints = useMemo(() => ['50%', '20%', '50%'], []);
+  const renderBackdrop = useCallback(
+    (props: any) => (
+      <BottomSheetBackdrop
+        {...props}
+        disappearsOnIndex={1}
+        appearsOnIndex={2}
+      />
+    ),
+    [],
+  );
+
+  const congrats = () => (
+    <View style={styles.contentContainer}>
+      <Image source={congratsImg} style={styles.congratsImg} />
+      <View style={styles.noticeContainer}>
+        <View style={styles.textContainer}>
+          <Text style={styles.name}>홍재연</Text>
+          <Text style={styles.text}>방장님</Text>
+        </View>
+        <View style={styles.textContainer}>
+          <Text style={styles.text}>
+            방 생성을 <Text style={styles.textBig}>완료</Text>했어요.
+          </Text>
+        </View>
+      </View>
+    </View>
+  );
+
   return (
     <View style={styles.container}>
       <Image source={blockImg} style={styles.blockImg} />
@@ -25,6 +63,17 @@ export const Enter = ({navigation}: {navigation: any}): JSX.Element => {
           destination="EnterWait"
         />
       </View>
+      <BottomSheet
+        ref={bottomSheetRef}
+        snapPoints={snapPoints}
+        bottomInset={46}
+        detached={true}
+        index={0}
+        backdropComponent={renderBackdrop}
+        enablePanDownToClose={true}
+        style={styles.sheetContainer}>
+        {congrats()}
+      </BottomSheet>
     </View>
   );
 };
@@ -49,6 +98,57 @@ const styles = StyleSheet.create({
   },
   innerContainer: {
     alignSelf: 'center',
+  },
+  sheetContainer: {
+    marginHorizontal: 20,
+    // paddingBottom: 1,
+  },
+  contentContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  congratsImg: {
+    position: 'absolute',
+    flex: 1,
+    width: '70%',
+    objectFit: 'scale-down',
+  },
+  noticeContainer: {
+    position: 'absolute',
+    flex: 1,
+    marginTop: 110,
+  },
+  textContainer: {
+    flexDirection: 'row',
+    marginTop: -25,
+    justifyContent: 'center',
+    alignItems: 'flex-end',
+  },
+  noticeShare: {
+    flex: 1,
+    alignItems: 'center',
+  },
+  noticeCode: {
+    flex: 1,
+    alignItems: 'center',
+  },
+  name: {
+    fontFamily: GlobalStyles.section_title.fontFamily,
+    fontSize: 25,
+    color: GlobalStyles.green.color,
+    marginBottom: -6,
+    marginRight: 4,
+  },
+  text: {
+    fontFamily: GlobalStyles.section_title.fontFamily,
+    fontSize: GlobalStyles.section_title.fontSize,
+    color: GlobalStyles.black.color,
+  },
+  textBig: {
+    fontFamily: GlobalStyles.section_title.fontFamily,
+    fontSize: 22,
+    color: GlobalStyles.black.color,
   },
 });
 

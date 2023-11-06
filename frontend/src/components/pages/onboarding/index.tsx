@@ -74,7 +74,7 @@ export const Onboarding = ({navigation}: {navigation: any}): JSX.Element => {
   };
 
   const goLogin = () => (
-    <>
+    <View style={styles.contentContainer}>
       <View style={styles.titleContainer}>
         <TitleAtom
           menu={'로그인'}
@@ -96,7 +96,7 @@ export const Onboarding = ({navigation}: {navigation: any}): JSX.Element => {
         <Text style={styles.text}>회원이 아니신가요?</Text>
         <Text style={styles.menu}>회원가입</Text>
       </View>
-    </>
+    </View>
   );
 
   const handleExpand = () => {
