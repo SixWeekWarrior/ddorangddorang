@@ -137,7 +137,7 @@ export const NavBar = ({navigation}: {navigation: any}): JSX.Element => {
                   ...style.midBoldFont,
                   marginLeft: 15,
                 }}>
-                내 그룹 보기
+                진행 현황 보기
               </Text>
               <Image
                 source={arrowRightImg}

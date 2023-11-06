@@ -20,10 +20,30 @@ export const ReviseEtc = ({navigation}: {navigation: any}) => {
     }));
   };
 
-  const handleSubmit = () => {
-    console.log(inputValues);
-    navigation.navigate('NavBar');
-  };
+  const sendToSpringBoot = () => {
+    const requestData = {
+      MBTI: inputValues.MBTI,
+      currentConcern: inputValues.currentConcern,
+      likes: inputValues.likes,
+      dislikes: inputValues.dislikes,
+    };
+
+    fetch('https://k9a210.p.ssafy.io/api/v1/users/moreinfo', {
+      method: 'PUT',
+      headers: {
+        'Content-type': 'application/json',
+      },
+      body: JSON.stringify(requestData),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log('Spring Boot로부터의 응답:', data);
+        navigation.navigate('NavBar');
+      })
+      .catch((error) => {
+        console.log('오류:', error);
+      });
+  }
 
   return (
     <View style={styles.container}>
@@ -64,7 +84,7 @@ export const ReviseEtc = ({navigation}: {navigation: any}) => {
         </View>
       </View>
       <View style={styles.btnContainer}>
-        <BtnBig text="수정완료" onPress={handleSubmit} />
+        <BtnBig text="수정완료" onPress={sendToSpringBoot} />
       </View>
     </View>
   );
