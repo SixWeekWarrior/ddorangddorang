@@ -23,11 +23,9 @@ import jakarta.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.stream.LongStream;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
@@ -59,10 +57,10 @@ public class MissionPerformServiceImpl implements MissionPerformService {
         List<Room> rooms = findEligibleRooms();
 
         // 현재 가지고 있는 모든 미션을 조회함
-        List<Mission> missions = fetchAllMissions();
+        List<Long> missionIdList = fetchMissionIds();
 
         // 모든 활성화 된 게임의 참가자들에게 새로운 미션을 할당함
-        List<MissionPerform> missionPerformList = allocateNewMissions(rooms, missions);
+        List<MissionPerform> missionPerformList = allocateNewMissions(rooms, missionIdList);
         missionPerformRepository.saveAll(missionPerformList);
     }
 
@@ -73,12 +71,10 @@ public class MissionPerformServiceImpl implements MissionPerformService {
 
         // 유저가 참가한 방에서 현재 게임이 진행중인지 판단함
         validateRoom(user);
-
         MissionPerform missionPerform = findMissionPerform(missionChangeReq.getMissionPerformId());
 
         // 해당 유저의 미션인지, 이미 완료된 미션은 아닌지 판단함
         validateMissionPerform(missionPerform, user);
-
         Participant participant = findParticipant(user, user.getGameCount());
 
         // 최대 미션 변경 횟수 이내인지 판단
@@ -87,14 +83,13 @@ public class MissionPerformServiceImpl implements MissionPerformService {
         reassignMission(participant);
     }
 
-    private List<MissionPerform> allocateNewMissions(List<Room> rooms, List<Mission> missions) {
+    private List<MissionPerform> allocateNewMissions(List<Room> rooms, List<Long> missionIdList) {
         List<MissionPerform> missionPerformList = new ArrayList<>();
-        Set<Long> allMissions = createMissionIdSet(missions.size());
 
         for (Room room : rooms) {
             List<Participant> participants = room.getParticipants();
             for (Participant participant : participants) {
-                MissionPerform missionPerform = assignMission(participant, allMissions, missions);
+                MissionPerform missionPerform = assignMission(participant, missionIdList);
                 missionPerformList.add(missionPerform);
             }
         }
@@ -102,24 +97,21 @@ public class MissionPerformServiceImpl implements MissionPerformService {
         return missionPerformList;
     }
 
-    private Set<Long> createMissionIdSet(long missionCount) {
-        return LongStream.rangeClosed(1, missionCount).boxed().collect(Collectors.toSet());
-    }
-
     private List<Room> findEligibleRooms() {
         return roomRepository.findByStartedAtBeforeAndDeletedAtIsNull(
             LocalDateTime.now().minusHours(HOURS_DIFFERENCE));
     }
 
-    private List<Mission> fetchAllMissions() {
-        return missionRepository.findAll(Sort.by(Sort.Direction.ASC, "id"));
+    private List<Long> fetchMissionIds() {
+        return missionRepository.findAll(Sort.by(Sort.Direction.ASC, "id")).stream()
+            .map(Mission::getId).collect(Collectors.toList());
     }
 
     // assignMission이 9시 스케줄링에서도 불러와지고 개별 미션 변환에서도 불러와짐
     // 따라서 개별 미션 변환에서 최근 미션을 중복 조회하게 되는 문제가 발생하는데 음...
     // 일단 보류
-    private MissionPerform assignMission(Participant participant, Set<Long> allMissions,
-        List<Mission> missions) {
+    private MissionPerform assignMission(Participant participant, List<Long> missionIdList) {
+
         List<MissionPerform> missionPerforms = participant.getMissionPerforms();
 
         int missionCount = missionPerforms.size();
@@ -131,11 +123,13 @@ public class MissionPerformServiceImpl implements MissionPerformService {
             .map(Mission::getId).collect(Collectors.toSet());
 
         // 모든 미션 id와 수행한 미션의 id의 차집합을 계산하고, 랜덤으로 하나의 미션 id를 받아옴.
-        Long newMissionId = randomNumber(allMissions, performedMissions);
+        Long newMissionId = randomNumber(missionIdList, performedMissions);
+
+        Mission newMission = missionRepository.findById(newMissionId)
+            .orElseThrow(MissionNotFoundException::new);
 
         // 해당 미션 id를 할당해 새로운 미션 할당 객체를 생성하고 반환함.
-        return MissionPerform.builder().mission(missions.get(newMissionId.intValue() - 1))
-            .player(participant).build();
+        return MissionPerform.builder().mission(newMission).player(participant).build();
     }
 
     private void handleUncompletedMission(MissionPerform missionPerform) {
@@ -145,10 +139,14 @@ public class MissionPerformServiceImpl implements MissionPerformService {
     }
 
     // 두 Set의 차집합을 구하고, 랜덤한 원소를 반환함.
-    private Long randomNumber(Set<Long> allMissions, Set<Long> performedMissions) {
-        Set<Long> remainedMission = new HashSet<>(allMissions);
-        remainedMission.removeAll(performedMissions);
-        List<Long> remainedMissionList = new ArrayList<>(remainedMission);
+    private Long randomNumber(List<Long> missionIdList, Set<Long> performedMissions) {
+        List<Long> remainedMissionList = new ArrayList<>();
+
+        for (Long missionId : missionIdList) {
+            if (!performedMissions.contains(missionId)) {
+                remainedMissionList.add(missionId);
+            }
+        }
 
         if (remainedMissionList.isEmpty()) {
             throw new MissionNoMoreException();
@@ -158,9 +156,8 @@ public class MissionPerformServiceImpl implements MissionPerformService {
     }
 
     private void reassignMission(Participant participant) {
-        List<Mission> missions = fetchAllMissions();
-        Set<Long> allMissions = createMissionIdSet(missions.size());
-        MissionPerform newMissionPerform = assignMission(participant, allMissions, missions);
+        List<Long> missionIdList = fetchMissionIds();
+        MissionPerform newMissionPerform = assignMission(participant, missionIdList);
         missionPerformRepository.save(newMissionPerform);
     }
 
