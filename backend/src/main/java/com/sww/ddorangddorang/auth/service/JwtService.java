@@ -2,6 +2,7 @@ package com.sww.ddorangddorang.auth.service;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.sww.ddorangddorang.auth.dto.TokenClaims;
 import com.sww.ddorangddorang.domain.user.repository.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -40,6 +41,7 @@ public class JwtService {
      */
     private static final String ACCESS_TOKEN_SUBJECT = "AccessToken";
     private static final String REFRESH_TOKEN_SUBJECT = "RefreshToken";
+    private static final String ID_CLAIM = "id";
     private static final String EMAIL_CLAIM = "email";
     private static final String BEARER = "Bearer ";
 
@@ -48,6 +50,18 @@ public class JwtService {
     /**
      * AccessToken 생성 메소드
      */
+    public String createAccessToken(TokenClaims tokenClaims) {
+        Date now = new Date();
+        return JWT.create() // JWT 토큰을 생성하는 빌더 반환
+            .withSubject(ACCESS_TOKEN_SUBJECT) // JWT의 Subject 지정 -> AccessToken이므로 AccessToken
+            .withExpiresAt(new Date(now.getTime() + accessTokenExpirationPeriod)) // 토큰 만료 시간 설정
+
+            // TODO: Access Token Claim 목록 추가
+            .withClaim(ID_CLAIM, tokenClaims.getId())
+            .withClaim(EMAIL_CLAIM, tokenClaims.getEmail())
+            .sign(Algorithm.HMAC512(secretKey)); // HMAC512 알고리즘 사용, application-jwt.yml에서 지정한 secret 키로 암호화
+    }
+
     public String createAccessToken(String email) {
         Date now = new Date();
         return JWT.create() // JWT 토큰을 생성하는 빌더 반환
@@ -59,10 +73,11 @@ public class JwtService {
             .sign(Algorithm.HMAC512(secretKey)); // HMAC512 알고리즘 사용, application-jwt.yml에서 지정한 secret 키로 암호화
     }
 
-    /**
-     * RefreshToken 생성
-     * RefreshToken은 Claim에 email도 넣지 않으므로 withClaim() X
-     */
+
+        /**
+         * RefreshToken 생성
+         * RefreshToken은 Claim에 email도 넣지 않으므로 withClaim() X
+         */
     public String createRefreshToken() {
         Date now = new Date();
         return JWT.create()

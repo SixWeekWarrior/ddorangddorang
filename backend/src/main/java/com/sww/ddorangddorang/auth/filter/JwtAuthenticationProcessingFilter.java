@@ -1,5 +1,6 @@
 package com.sww.ddorangddorang.auth.filter;
 
+import com.sww.ddorangddorang.auth.dto.TokenClaims;
 import com.sww.ddorangddorang.domain.user.entity.User;
 import com.sww.ddorangddorang.domain.user.repository.UserRepository;
 import com.sww.ddorangddorang.global.util.PasswordUtil;
@@ -89,7 +90,11 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
         userRepository.findByRefreshToken(refreshToken)
             .ifPresent(user -> {
                 String reIssuedRefreshToken = reIssueRefreshToken(user);
-                jwtService.sendAccessAndRefreshToken(response, jwtService.createAccessToken(user.getEmail()),
+                jwtService.sendAccessAndRefreshToken(response, jwtService.createAccessToken(
+                        TokenClaims.builder()
+                                .id(user.getId())
+                                .email(user.getEmail())
+                                .build()),
                     reIssuedRefreshToken);
             });
     }

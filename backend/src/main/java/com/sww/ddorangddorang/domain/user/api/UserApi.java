@@ -1,5 +1,6 @@
 package com.sww.ddorangddorang.domain.user.api;
 
+import com.sww.ddorangddorang.auth.dto.TokenClaims;
 import com.sww.ddorangddorang.auth.service.JwtService;
 import com.sww.ddorangddorang.domain.user.dto.UsersLoginPostRes;
 import com.sww.ddorangddorang.domain.user.dto.UsersMoreinfoPutReq;
@@ -38,13 +39,16 @@ public class UserApi {
         String email = jwt.getClaim("email");
         log.info("UserApi_login, email: {}", email);
 
-        User checkUser = userService.findByEmail(email).orElseThrow(UserNotFoundException::new);
+        User user = userService.findByEmail(email).orElseThrow(UserNotFoundException::new);
 
         String refreshToken = jwtService.createRefreshToken();
-        String accessToken = jwtService.createAccessToken(email);
+        String accessToken = jwtService.createAccessToken(TokenClaims.builder()
+                                                                .id(user.getId())
+                                                                .email(user.getEmail())
+                                                                .build());
 
         userService.saveRefreshToken(UsersTokenInfo.builder()
-            .email(checkUser.getEmail())
+            .email(user.getEmail())
             .refreshToken(refreshToken)
             .build());
 
@@ -66,10 +70,13 @@ public class UserApi {
         String email = jwt.getClaim("email");
         log.info("UserApi_login, email: {}", email);
 
-        userService.signUp(usersSignupPostReq);
+        User user = userService.signUp(usersSignupPostReq);
 
         String refreshToken = jwtService.createRefreshToken();
-        String accessToken = jwtService.createAccessToken(usersSignupPostReq.getEmail());
+        String accessToken = jwtService.createAccessToken(TokenClaims.builder()
+            .id(user.getId())
+            .email(user.getEmail())
+            .build());
 
         userService.saveRefreshToken(UsersTokenInfo.builder()
             .email(email)
