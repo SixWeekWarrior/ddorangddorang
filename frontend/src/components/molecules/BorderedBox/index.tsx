@@ -1,7 +1,7 @@
 import {Image, ScrollView, StyleSheet, Text, View} from 'react-native';
 import BlockImg from '../../../assets/blockImg.png';
 import TitleAtom from '../../atoms/titleAtom';
-import GlobalStyles from '../../../styles/GlobalStyles';
+import GlobalStyles, {height} from '../../../styles/GlobalStyles';
 import InfoSelectInput from '../../atoms/infoSelectInput';
 import InfoTextInput from '../../atoms/infoTextInput';
 import InfoRadioInput from '../../atoms/infoRadioInput';
@@ -155,9 +155,10 @@ const styles = StyleSheet.create({
   title: {
     flex: 1,
     marginLeft: '10%',
-    marginTop: 10,
+    marginTop: height * 10,
   },
   content: {
+    marginTop: height * 30,
     flex: 3,
   },
   skipText: {
