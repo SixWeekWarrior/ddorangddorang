@@ -24,7 +24,7 @@ const StackNavigation = () => {
   const Stack = createStackNavigator();
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="BasicInfo">
+      <Stack.Navigator initialRouteName="MakeRoom">
         <Stack.Screen
           name="Onboarding"
           component={Onboarding}
