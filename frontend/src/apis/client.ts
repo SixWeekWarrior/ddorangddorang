@@ -3,7 +3,7 @@ import {tokenUtil} from '../utils';
 
 function apiInstance(contentType: string = 'application/json;charset=utf-8') {
   const client = axios.create({
-    baseURL: 'https://k9a210.p.ssafy.io/api/v1/',
+    baseURL: 'https://k9a210.p.ssafy.io/api/v1',
     headers: {
       'Content-Type': contentType,
     },
