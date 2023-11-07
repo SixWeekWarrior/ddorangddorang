@@ -21,6 +21,7 @@ const InfoRadioInput = ({
         <View style={styles.radioInnerContainer}>
           <Text style={styles.radioText}>{data[0]}</Text>
           <RadioButton
+            color="#34A853"
             value={data[0]}
             status={checked === data[0] ? 'checked' : 'unchecked'}
             onPress={() => {
@@ -32,6 +33,7 @@ const InfoRadioInput = ({
         <View style={styles.radioInnerContainer}>
           <Text style={styles.radioText}>{data[1]}</Text>
           <RadioButton
+            color="#34A853"
             value={data[1]}
             status={checked === data[1] ? 'checked' : 'unchecked'}
             onPress={() => {
@@ -61,7 +63,7 @@ const styles = StyleSheet.create({
   },
   radioRowStyle: {
     width: 180,
-    height: 45,
+    height: 40,
     justifyContent: 'center',
     paddingLeft: '10%',
     flexDirection: 'row',
@@ -73,7 +75,7 @@ const styles = StyleSheet.create({
   radioText: {
     fontSize: 15,
     color: GlobalStyles.black.color,
-    paddingTop: 10,
+    paddingTop: 8,
   },
 });
 
