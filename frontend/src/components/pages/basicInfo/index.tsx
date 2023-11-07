@@ -1,14 +1,18 @@
 import {StyleSheet, View} from 'react-native';
-import AddInfoMolecules from '../../molecules/addInfoMolecules';
 import {useState} from 'react';
 import BtnBig from '../../atoms/btnBig';
+import BorderedBox from '../../molecules/BorderedBox';
 
 export const BasicInfo = ({navigation}: {navigation: any}): JSX.Element => {
   const [inputValues, setInputValues] = useState({
-    region: '',
-    isMajor: 'true',
-    group: '',
+    name: '',
+    generation: '',
+    isMajor: true,
+    gender: true,
+    campus: '',
+    class: '',
     floor: '',
+    // profileImage: '',
   });
 
   const isAllInputsFilled = Object.values(inputValues).every(
@@ -29,7 +33,7 @@ export const BasicInfo = ({navigation}: {navigation: any}): JSX.Element => {
 
   return (
     <View style={styles.container}>
-      <AddInfoMolecules
+      <BorderedBox
         menu={'기본 정보'}
         text={`SSAFY 교육생으로서\n나의 정보를 입력해주세요.`}
         onInputChange={handleInputChange}

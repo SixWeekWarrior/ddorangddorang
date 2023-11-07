@@ -1,5 +1,5 @@
 import {StyleSheet, View} from 'react-native';
-import AddInfoMolecules from '../../molecules/addInfoMolecules';
+import AddInfoMolecules, {BorderedBox} from '../../molecules/BorderedBox';
 import {useState} from 'react';
 import BtnBig from '../../atoms/btnBig';
 import {userApi} from '../../../apis';
@@ -24,6 +24,7 @@ export const AdditionalInfo = ({
   };
 
   const handleSignup = async () => {
+    console.log(inputValues);
     try {
       userApi
         .postSignup(
@@ -45,7 +46,7 @@ export const AdditionalInfo = ({
 
   return (
     <View style={styles.container}>
-      <AddInfoMolecules
+      <BorderedBox
         menu={'추가 정보'}
         text={`나의 마니띠에게 소개할 수 있는\n추가 정보를 입력해주세요.`}
         onInputChange={handleInputChange}
