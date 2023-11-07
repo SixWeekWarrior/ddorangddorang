@@ -3,6 +3,7 @@ package com.sww.ddorangddorang.domain.user.api;
 import com.sww.ddorangddorang.auth.dto.AuthenticatedUser;
 import com.sww.ddorangddorang.auth.dto.TokenClaims;
 import com.sww.ddorangddorang.auth.service.JwtService;
+import com.sww.ddorangddorang.domain.user.dto.UsersGetRes;
 import com.sww.ddorangddorang.domain.user.dto.UsersLoginPostRes;
 import com.sww.ddorangddorang.domain.user.dto.UsersMoreinfoPutReq;
 import com.sww.ddorangddorang.domain.user.dto.UsersSignupPostReq;
@@ -72,7 +73,12 @@ public class UserApi {
         String email = jwt.getClaim("email");
         log.info("UserApi_login, email: {}", email);
 
-        User user = userService.signUp(usersSignupPostReq);
+        User user = usersSignupPostReq.toUser();
+        // TODO: Need to fix if we add other OAuth
+        user.addProviderInfo(email, "Google");
+
+        userService.signUp(user);
+
 
         String refreshToken = jwtService.createRefreshToken();
         String accessToken = jwtService.createAccessToken(TokenClaims.builder()
@@ -92,6 +98,11 @@ public class UserApi {
                 .refreshToken(refreshToken)
                 .build()
         );
+    }
+
+    @GetMapping
+    public CommonResponse<UsersGetRes> getUserInfo(@AuthenticationPrincipal AuthenticatedUser authenticatedUser) {
+        return CommonResponse.success(UsersGetRes.userToDto(userService.getUserInfo(authenticatedUser.getId())));
     }
 
     @GetMapping("/jwt-test")

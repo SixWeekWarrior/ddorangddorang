@@ -8,6 +8,7 @@ import com.sww.ddorangddorang.domain.user.dto.UsersTodayinfoPostReq;
 import com.sww.ddorangddorang.domain.user.dto.UsersTokenInfo;
 import com.sww.ddorangddorang.domain.user.entity.Hint;
 import com.sww.ddorangddorang.domain.user.entity.User;
+import com.sww.ddorangddorang.domain.user.exception.UserAlreadyExistException;
 import com.sww.ddorangddorang.domain.user.exception.UserNotFoundException;
 import com.sww.ddorangddorang.domain.user.repository.HintRepository;
 import com.sww.ddorangddorang.domain.user.repository.UserRepository;
@@ -30,28 +31,12 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
     private final HintRepository hintRepository;
 
-    public User signUp(UsersSignupPostReq usersSignupPostReq) throws Exception {
-
-        if (userRepository.findByEmail(usersSignupPostReq.getEmail()).isPresent()) {
-            throw new Exception("이미 존재하는 이메일입니다.");
+    public void signUp(User user) throws Exception {
+        if (userRepository.findByEmailAndProviderType(user.getEmail(), user.getProviderType()).isPresent()) {
+            throw new UserAlreadyExistException(user);
         }
 
-        // TODO: properties 추가
-        User user = User.signup()
-                .email(usersSignupPostReq.getEmail())
-                .name(usersSignupPostReq.getName())
-                .role("ROLE_USER")
-                .gender(usersSignupPostReq.getGender())
-                .mbti(usersSignupPostReq.getMbti())
-                .worry(usersSignupPostReq.getWorry())
-                .likes(usersSignupPostReq.getLikes())
-                .hate(usersSignupPostReq.getHate())
-                .build();
-
-//        user.passwordEncode(passwordEncoder);
         userRepository.save(user);
-
-        return user;
     }
 
     @Override
@@ -90,4 +75,8 @@ public class UserServiceImpl implements UserService {
 
         user.updateRefreshToken(usersTokenInfo.getRefreshToken());
     };
+
+    public User getUserInfo(Long id) {
+        return userRepository.findById(id).orElseThrow(UserNotFoundException::new);
+    }
 }

@@ -36,8 +36,8 @@ public class User {
     private String role;                // VARCHAR(255)                                 - for security
     private String refreshToken;        // VARCHAR(255) "리프레시 토큰"                   - for jwt
     private Integer generation;         // INT
-    private Byte isMajor;               // TINYINT
-    private Byte gender;                // TINYINT
+    private Boolean isMajor;               // TINYINT
+    private Boolean gender;                // TINYINT
     private Integer campus;             // INT
     @Column(name = "class")
     private Integer classes;            // INT
@@ -56,16 +56,22 @@ public class User {
     private Integer gameCount = 0;
 
     @Builder(builderMethodName = "signup", builderClassName = "Signup")
-    public User(Long id, String name, String email, String role, Byte gender, String mbti, String worry, String likes, String hate) {
-        this.id = id;
+    public User(String name, String providerType, String role, Integer generation, Boolean isMajor,
+        Boolean gender, Integer campus, Integer classes, Integer floor, String likes, String hate,
+        String mbti, String worry) {
         this.name = name;
-        this.email = email;
+        this.providerType = providerType;
         this.role = role;
+        this.generation = generation;
+        this.isMajor = isMajor;
         this.gender = gender;
-        this.mbti = mbti;
-        this.worry = worry;
+        this.campus = campus;
+        this.classes = classes;
+        this.floor = floor;
         this.likes = likes;
         this.hate = hate;
+        this.mbti = mbti;
+        this.worry = worry;
     }
 
     @Builder(builderMethodName = "auth", builderClassName = "Auth")
@@ -115,5 +121,10 @@ public class User {
         this.room = null;
         this.status = 1L;
         ++this.gameCount;
+    }
+
+    public void addProviderInfo(String email, String providerType) {
+        this.email = email;
+        this.providerType = providerType;
     }
 }
