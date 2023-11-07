@@ -27,17 +27,17 @@ const postSignup = async (data: UserInfo) => {
     const res = await client.post('/users/signup', data);
     return res.data;
   } catch (e) {
-    throw new Error('ERROR IN POST_SING_UP');
+    throw new Error('ERROR IN POST_SIGN_UP');
   }
 };
 
 // 부가 정보 (mbti, likes, hate, worry) 수정 API
-const postMoreInfo = async (data: UserMoreInfo) => {
+const putMoreInfo = async (data: UserMoreInfo) => {
   try {
     const res = await client.put('/users/moreinfo', data);
     return res.data;
   } catch (e) {
-    throw new Error('ERROR IN Post_More_Info');
+    throw new Error('ERROR IN Put_More_Info');
   }
 };
 
@@ -47,7 +47,7 @@ const putSsafyInfo = async (data: UserSsafyInfo) => {
     const res = await client.put('/users/ssafyinfo', data);
     return res.data;
   } catch (e) {
-    throw new Error('ERROR IN Post_More_Info');
+    throw new Error('ERROR IN Put_Ssafy_Info');
   }
 };
 
@@ -55,6 +55,7 @@ const user = {
   postLogin,
   postSignup,
   putSsafyInfo,
-  postMoreInfo,
+  putMoreInfo,
 };
+
 export default user;

@@ -9,7 +9,7 @@ export const ReviseEtc = ({navigation}: {navigation: any}) => {
   const [inputValues, setInputValues] = useState({
     MBTI: '',
     worry: '',
-    like: '',
+    likes: '',
     hate: '',
   });
 
@@ -46,7 +46,7 @@ export const ReviseEtc = ({navigation}: {navigation: any}) => {
           <InfoTextInput
             title="좋아하는 것"
             placeholder="좋아하는 것을 입력해주세요"
-            setValue={data => onInputChange('like', data)}
+            setValue={data => onInputChange('likes', data)}
           />
           <InfoTextInput
             title="싫어하는 것"

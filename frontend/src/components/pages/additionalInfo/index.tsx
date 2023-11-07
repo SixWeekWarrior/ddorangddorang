@@ -12,12 +12,12 @@ export const AdditionalInfo = ({
   const [inputValues, setInputValues] = useState({
     MBTI: '',
     worry: '',
-    like: '',
+    likes: '',
     hate: '',
   });
 
   const handleInputChange = (title: string, value: string) => {
-    setInputValues(prevState => ({
+    setInputValues((prevState) => ({
       ...prevState,
       [title]: value,
     }));
@@ -26,23 +26,19 @@ export const AdditionalInfo = ({
   const handleSignup = async () => {
     console.log(inputValues);
     try {
-      userApi
-        .postSignup(
-          inputValues.MBTI,
-          inputValues.worry,
-          inputValues.like,
-          inputValues.hate,
-        )
-        .then((data: any) => {
-          console.log(data);
-          navigation.navigate('Enter');
-        })
-        .catch((e: any) => {
+      const response = await userApi.putMoreInfo({
+         mbti: inputValues.MBTI,
+         worry: inputValues.worry,
+         likes: inputValues.likes,
+         hate: inputValues.hate,
+      });
+        console.log(response);
+        navigation.navigate('Enter');
+      } catch (e: any) {
           console.log(e);
           navigation.navigate('Enter');
-        });
-    } catch (error: any) {}
-  };
+      }
+    };
 
   return (
     <View style={styles.container}>

@@ -4,6 +4,7 @@ import GlobalStyles from '../../../styles/GlobalStyles';
 import BtnBig from '../../atoms/btnBig';
 import {useState} from 'react';
 import InfoSelectInput from '../../atoms/infoSelectInput';
+import { userApi } from '../../../apis';
 
 export const ReviseSsafy = ({navigation}: {navigation: any}) => {
   const classList = Array.from({length: 20}, (_, index) =>
@@ -14,19 +15,29 @@ export const ReviseSsafy = ({navigation}: {navigation: any}) => {
   );
 
   const [inputValues, setInputValues] = useState({
-    class: '',
+    classes: '',
     floor: '',
   });
-  const onInputChange = (title: string, value: string) => {
+
+  const onInputChange = (title: number, value: number) => {
     setInputValues(prevState => ({
       ...prevState,
       [title]: value,
     }));
   };
 
-  const handleSubmit = () => {
-    console.log(inputValues);
-    navigation.navigate('NavBar');
+  const handleSubmit = async () => {
+    try {
+      const res = await userApi.putSsafyInfo({
+        classes: inputValues.classes,
+        floor: inputValues.floor,
+      });
+      console.log('ssafy_info_updated', res);
+
+      navigation.navigate('Navbar');
+    } catch (error) {
+      console.error('ssafy_info_ERROR', error);
+    }
   };
 
   return (
