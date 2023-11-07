@@ -247,7 +247,7 @@ public class RoomServiceImpl implements RoomService {
             participantToIndex.put(participant, i + 1);
 
             //우선 이성끼리 매칭
-            if (participant.getUser().getGender() == 1) {
+            if (participant.getUser().getGender()) {
                 maleList.add(participant);
             } else {
                 femaleList.add(participant);
@@ -258,7 +258,7 @@ public class RoomServiceImpl implements RoomService {
             Participant participant = indexToParticipant.get(i);
 
             //추후 차단 로직 구현 시 여기서 차단한 사용자는 간선에서 뺴기
-            if (participant.getUser().getGender() == 1) {
+            if (participant.getUser().getGender()) {
                 wishManitoList[i] = List.copyOf(femaleList);
             } else {
                 wishManitoList[i] = List.copyOf(maleList);

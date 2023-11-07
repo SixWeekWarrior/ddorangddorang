@@ -63,6 +63,8 @@ public enum ErrorCode {
 
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 유저를 찾을 수 없습니다."),
 
+    USER_ALREADY_EXIST(HttpStatus.FORBIDDEN, "이미 존재하는 계정입니다."),
+
     MISSION_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 미션을 찾을 수 없습니다."),
 
     MISSION_PERFORM_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 미션 수행 정보를 찾을 수 없습니다."),
