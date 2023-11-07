@@ -29,6 +29,7 @@ public class AuthenticatedUser implements UserDetails {
             .id(user.getId())
             .providerType(user.getProviderType())
             .email(user.getEmail())
+            .role(user.getRole())
             .build();
     }
 

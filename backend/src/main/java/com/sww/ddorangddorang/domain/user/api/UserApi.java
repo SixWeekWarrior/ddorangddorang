@@ -1,5 +1,6 @@
 package com.sww.ddorangddorang.domain.user.api;
 
+import com.sww.ddorangddorang.auth.dto.AuthenticatedUser;
 import com.sww.ddorangddorang.auth.dto.TokenClaims;
 import com.sww.ddorangddorang.auth.service.JwtService;
 import com.sww.ddorangddorang.domain.user.dto.UsersLoginPostRes;
@@ -16,6 +17,7 @@ import com.sww.ddorangddorang.global.common.CommonResponse;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.web.bind.annotation.*;
@@ -93,7 +95,16 @@ public class UserApi {
     }
 
     @GetMapping("/jwt-test")
-    public String jwtTest() {
+    public String jwtTest(@AuthenticationPrincipal AuthenticatedUser authenticatedUser) {
+        log.info("jwt-test start: {}", authenticatedUser);
+        log.info("id: {}", authenticatedUser.getId());
+        log.info("providerType: {}", authenticatedUser.getProviderType());
+        log.info("email: {}", authenticatedUser.getEmail());
+        log.info("username: {}", authenticatedUser.getUsername());
+        log.info("role: {}", authenticatedUser.getRole());
+        log.info("authorities: {}", authenticatedUser.getAuthorities());
+        log.info("password: {}", authenticatedUser.getPassword());
+
         return "jwtTest 요청 성공";
     }
 

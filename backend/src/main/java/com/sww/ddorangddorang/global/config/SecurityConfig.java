@@ -52,7 +52,7 @@ public class SecurityConfig {
                 .requestMatchers("/users/signup").permitAll()
                 .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
                 .anyRequest().authenticated());
-//                .anyRequest().permitAll())
+//                .anyRequest().permitAll());
 
         http.addFilterBefore(jwtAuthenticationProcessingFilter(), UsernamePasswordAuthenticationFilter.class);
 

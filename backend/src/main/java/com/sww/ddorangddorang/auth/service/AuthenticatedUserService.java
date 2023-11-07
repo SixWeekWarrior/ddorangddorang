@@ -17,6 +17,7 @@ public class AuthenticatedUserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        log.info("LoadUserByUserName start with username: {}", username);
         return AuthenticatedUser.authenticate(userRepository.getReferenceById(Long.parseLong(username)));
     }
 }
