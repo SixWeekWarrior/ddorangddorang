@@ -2,41 +2,34 @@ import {StyleSheet, View} from 'react-native';
 import MenuTop from '../../molecules/menuTop';
 import GlobalStyles from '../../../styles/GlobalStyles';
 import BtnBig from '../../atoms/btnBig';
-import {useState} from 'react';
 import InfoSelectInput from '../../atoms/infoSelectInput';
 import { userApi } from '../../../apis';
+import { useRecoilState, useSetRecoilState } from 'recoil';
+import user from '../../../modules/user';
+
 
 export const ReviseSsafy = ({navigation}: {navigation: any}) => {
-  const classList = Array.from({length: 20}, (_, index) =>
-    (index + 1).toString(),
-  );
-  const floorList = Array.from({length: 20}, (_, index) =>
-    (index + 1).toString(),
-  );
+  const classList = Array.from({length: 20}, (_, index) => index + 1);
+  const floorList = Array.from({length: 20}, (_, index) => index + 1);
 
-  const [inputValues, setInputValues] = useState({
-    classes: '',
-    floor: '',
-  });
+  const [tmpUserInfo, setTmpUserInfo] = useRecoilState(user.TmpUserInfoState);
+  const  setUserInfo = useSetRecoilState(user.UserInfoState);
 
-  const onInputChange = (title: number, value: number) => {
-    setInputValues(prevState => ({
-      ...prevState,
+  function onInputChange(title: string, value: number) {
+    setTmpUserInfo(prevUserInfo => ({
+      ...prevUserInfo,
       [title]: value,
     }));
-  };
+  }
 
   const handleSubmit = async () => {
     try {
-      const res = await userApi.putSsafyInfo({
-        classes: inputValues.classes,
-        floor: inputValues.floor,
-      });
-      console.log('ssafy_info_updated', res);
-
+      await userApi.putSsafyInfo(tmpUserInfo);
+      await setUserInfo(tmpUserInfo);
       navigation.navigate('Navbar');
     } catch (error) {
       console.error('ssafy_info_ERROR', error);
+      navigation.navigate('Navbar');
     }
   };
 
@@ -52,7 +45,7 @@ export const ReviseSsafy = ({navigation}: {navigation: any}) => {
             title="반"
             placeholder="반을 선택하세요"
             data={classList}
-            setValue={data => onInputChange('class', data)}
+            setValue={data => onInputChange('classes', data)}
           />
           <InfoSelectInput
             title="층"

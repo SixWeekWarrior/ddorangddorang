@@ -4,10 +4,11 @@ import GlobalStyles from '../../../styles/GlobalStyles';
 import BtnBig from '../../atoms/btnBig';
 import {useState} from 'react';
 import InfoTextInput from '../../atoms/infoTextInput';
+import { userApi } from '../../../apis';
 
 export const ReviseEtc = ({navigation}: {navigation: any}) => {
   const [inputValues, setInputValues] = useState({
-    MBTI: '',
+    mbti: '',
     worry: '',
     likes: '',
     hate: '',
@@ -20,9 +21,22 @@ export const ReviseEtc = ({navigation}: {navigation: any}) => {
     }));
   };
 
-  const handleSubmit = () => {
-    console.log(inputValues);
-    navigation.navigate('NavBar');
+  const handleSubmit = async () => {
+    try {
+      const moreInfoData = {
+        mbti: inputValues.mbti,
+        worry: inputValues.worry,
+        likes: inputValues.likes,
+        hate: inputValues.hate,
+      };
+
+      const response = await userApi.putMoreInfo(moreInfoData);
+      console.log('MoreInfo_updated', response);
+      navigation.navigate('NavBar');
+    } catch (error) {
+      console.error('moreInfo_ERROR', error)
+      navigation.navigate('NavBar');
+    }
   };
 
   return (
@@ -34,9 +48,9 @@ export const ReviseEtc = ({navigation}: {navigation: any}) => {
       <View style={styles.innerContainer}>
         <View style={[styles.flexColumn, {height: '50%', rowGap: 15}]}>
           <InfoTextInput
-            title="MBTI"
+            title="mbti"
             placeholder="MBTI를 입력해주세요"
-            setValue={data => onInputChange('MBTI', data)}
+            setValue={data => onInputChange('mbti', data)}
           />
           <InfoTextInput
             title="요즘 고민"
