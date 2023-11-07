@@ -14,11 +14,11 @@ export const setToken = async (accessToken: string, refreshToken: string) => {
 };
 
 export const getAccessToken = async () => {
-  await AsyncStorage.getItem('accessToken');
+  return await AsyncStorage.getItem('accessToken');
 };
 
 export const getRefreshToken = async () => {
-  await AsyncStorage.getItem('refreshToken');
+  return await AsyncStorage.getItem('refreshToken');
 };
 
 const token = {
