@@ -2,18 +2,22 @@ import {StyleSheet, View} from 'react-native';
 import MenuTop from '../../molecules/menuTop';
 import GlobalStyles from '../../../styles/GlobalStyles';
 import BtnBig from '../../atoms/btnBig';
-import InputInfoMolecules from '../../molecules/inputInfoMolecules';
 import {useState} from 'react';
+import InfoSelectInput from '../../atoms/infoSelectInput';
 
 export const ReviseSsafy = ({navigation}: {navigation: any}) => {
-  const group = Array.from({length: 20}, (_, index) => (index + 1).toString());
-  const floor = Array.from({length: 20}, (_, index) => (index + 1).toString());
+  const classList = Array.from({length: 20}, (_, index) =>
+    (index + 1).toString(),
+  );
+  const floorList = Array.from({length: 20}, (_, index) =>
+    (index + 1).toString(),
+  );
 
   const [inputValues, setInputValues] = useState({
-    group: '',
+    class: '',
     floor: '',
   });
-  const handleInputChange = (title: string, value: string) => {
+  const onInputChange = (title: string, value: string) => {
     setInputValues(prevState => ({
       ...prevState,
       [title]: value,
@@ -24,7 +28,7 @@ export const ReviseSsafy = ({navigation}: {navigation: any}) => {
     console.log(inputValues);
     navigation.navigate('NavBar');
   };
-  
+
   return (
     <View style={styles.container}>
       <MenuTop
@@ -33,19 +37,17 @@ export const ReviseSsafy = ({navigation}: {navigation: any}) => {
       />
       <View style={styles.innerContainer}>
         <View style={[styles.flexColumn, {height: '50%', rowGap: 15}]}>
-          <InputInfoMolecules
+          <InfoSelectInput
             title="반"
-            data={group}
-            placeholder="현재 계신 반을 알려주세요"
-            type="select"
-            onInputChange={(text: string) => handleInputChange('group', text)}
+            placeholder="반을 선택하세요"
+            data={classList}
+            setValue={data => onInputChange('class', data)}
           />
-          <InputInfoMolecules
+          <InfoSelectInput
             title="층"
-            data={floor}
-            placeholder="현재 계신 층을 알려주세요"
-            type="select"
-            onInputChange={(text: string) => handleInputChange('floor', text)}
+            placeholder="층을 선택하세요"
+            data={floorList}
+            setValue={data => onInputChange('floor', data)}
           />
         </View>
       </View>

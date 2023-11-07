@@ -2,20 +2,20 @@ import {StyleSheet, View} from 'react-native';
 import MenuTop from '../../molecules/menuTop';
 import GlobalStyles from '../../../styles/GlobalStyles';
 import BtnBig from '../../atoms/btnBig';
-import InputInfoMolecules from '../../molecules/inputInfoMolecules';
 import {useState} from 'react';
+import InfoTextInput from '../../atoms/infoTextInput';
 
 export const ReviseEtc = ({navigation}: {navigation: any}) => {
   const [inputValues, setInputValues] = useState({
     MBTI: '',
-    currentConcern: '',
-    likes: '',
-    dislikes: '',
+    worry: '',
+    like: '',
+    hate: '',
   });
 
-  const handleInputChange = (title: string, value: string) => {
+  const onInputChange = (title: string, value: string) => {
     setInputValues(prevState => ({
-      ...prevState, 
+      ...prevState,
       [title]: value,
     }));
   };
@@ -33,33 +33,25 @@ export const ReviseEtc = ({navigation}: {navigation: any}) => {
       />
       <View style={styles.innerContainer}>
         <View style={[styles.flexColumn, {height: '50%', rowGap: 15}]}>
-          <InputInfoMolecules
+          <InfoTextInput
             title="MBTI"
             placeholder="MBTI를 입력해주세요"
-            type="text"
-            onInputChange={(text: string) => handleInputChange('MBTI', text)}
+            setValue={data => onInputChange('MBTI', data)}
           />
-          <InputInfoMolecules
+          <InfoTextInput
             title="요즘 고민"
             placeholder="고민을 입력해주세요"
-            type="text"
-            onInputChange={(text: string) =>
-              handleInputChange('currentConcern', text)
-            }
+            setValue={data => onInputChange('worry', data)}
           />
-          <InputInfoMolecules
+          <InfoTextInput
             title="좋아하는 것"
             placeholder="좋아하는 것을 입력해주세요"
-            type="text"
-            onInputChange={(text: string) => handleInputChange('likes', text)}
+            setValue={data => onInputChange('like', data)}
           />
-          <InputInfoMolecules
+          <InfoTextInput
             title="싫어하는 것"
             placeholder="싫어하는 것을 입력해주세요"
-            type="text"
-            onInputChange={(text: string) =>
-              handleInputChange('dislikes', text)
-            }
+            setValue={data => onInputChange('hate', data)}
           />
         </View>
       </View>
