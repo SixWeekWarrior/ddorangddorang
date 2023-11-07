@@ -71,6 +71,8 @@ public enum ErrorCode {
 
     NOTE_ACCESS_DENIED(HttpStatus.FORBIDDEN, "해당 노트에 접근할 수 없습니다."),
 
+    MISSION_NO_MORE(HttpStatus.NOT_FOUND, "더 이상 수행할 미션이 없습니다."),
+
     /**
      * 서버 에러 (서버 장애 상황)
      */
