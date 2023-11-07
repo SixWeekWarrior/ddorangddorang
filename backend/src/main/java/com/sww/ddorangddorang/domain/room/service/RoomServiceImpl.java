@@ -1,5 +1,7 @@
 package com.sww.ddorangddorang.domain.room.service;
 
+import com.sww.ddorangddorang.auth.dto.AuthenticatedUser;
+import com.sww.ddorangddorang.domain.mission.service.MissionPerformService;
 import com.sww.ddorangddorang.domain.participant.entity.Participant;
 import com.sww.ddorangddorang.domain.participant.entity.Prefix;
 import com.sww.ddorangddorang.domain.participant.entity.Suffix;
@@ -23,6 +25,7 @@ import com.sww.ddorangddorang.domain.room.exception.RoomAlreadyFullException;
 import com.sww.ddorangddorang.domain.room.exception.RoomNotFoundException;
 import com.sww.ddorangddorang.domain.room.repository.RoomRepository;
 import com.sww.ddorangddorang.domain.user.entity.User;
+import com.sww.ddorangddorang.domain.user.exception.UserNotFoundException;
 import com.sww.ddorangddorang.domain.user.repository.UserRepository;
 import com.sww.ddorangddorang.global.util.RedisUtil;
 import jakarta.transaction.Transactional;
@@ -47,14 +50,16 @@ public class RoomServiceImpl implements RoomService {
     private final PrefixRepository prefixRepository;
     private final SuffixRepository suffixRepository;
     private final RedisUtil redisUtil;
+    private final MissionPerformService missionPerformService;
 
     @Transactional
-    public Integer createRoom(Long userId, RoomInfoReq roomInfoReq) {
+    public Integer createRoom(RoomInfoReq roomInfoReq, AuthenticatedUser authenticatedUser) {
         //사용자가 현재 참여중인 방이 있는지
         //선택하지 않은 옵션
         //정상
         log.info("RoomServiceImpl_createRoom start");
-        User user = userRepository.getReferenceById(userId);
+        log.info("id: {}", authenticatedUser.getId());
+        User user = findUserById(authenticatedUser.getId());
 
         if (user.getStatus() != 1L) {
             log.info("RoomServiceImpl_createRoom end");
@@ -110,9 +115,10 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Transactional
-    public void joinRoom(Long userId, Integer accessCode) {
+    public void joinRoom(Integer accessCode, AuthenticatedUser authenticatedUser) {
         log.info("RoomServiceImpl_joinRoom start");
-        User user = userRepository.getReferenceById(userId);
+        log.info("id: {}", authenticatedUser.getId());
+        User user = findUserById(authenticatedUser.getId());
 
         if (user.getStatus() != 1L) {
             log.info("RoomServiceImpl_joinRoom end");
@@ -134,10 +140,12 @@ public class RoomServiceImpl implements RoomService {
         log.info("RoomServiceImpl_joinRoom end");
     }
 
+    // 어드민 유저의 방 정보 수정 요청
     @Transactional
-    public void updateRoom(Long userId, RoomInfoReq roomInfoReq) {
+    public void updateRoom(RoomInfoReq roomInfoReq, AuthenticatedUser authenticatedUser) {
         log.info("RoomServiceImpl_updateRoom start");
-        User user = userRepository.getReferenceById(userId);
+        log.info("id: {}", authenticatedUser.getId());
+        User user = findUserById(authenticatedUser.getId());
 
         if (user.getStatus() != 2L) {
             log.info("RoomServiceImpl_updateRoom end");
@@ -167,9 +175,10 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Transactional
-    public void deleteGame(Long userId) {
+    public void deleteGame(AuthenticatedUser authenticatedUser) {
         log.info("RoomServiceImpl_deleteGame start");
-        User admin = userRepository.getReferenceById(userId);
+        log.info("id: {}", authenticatedUser.getId());
+        User admin = findUserById(authenticatedUser.getId());
 
         if (admin.getStatus() != 2L) {
             log.info("RoomServiceImpl_deleteGame end");
@@ -190,10 +199,10 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Transactional
-    public void withdrawalRoom(Long userId) {
+    public void withdrawalRoom(AuthenticatedUser authenticatedUser) {
         log.info("RoomServiceImpl_withdrawalRoom start");
-
-        User user = userRepository.getReferenceById(userId);
+        log.info("id: {}", authenticatedUser.getId());
+        User user = findUserById(authenticatedUser.getId());
 
         if (user.getStatus() != 3L && user.getStatus() != 5L) {
             log.info("RoomServiceImpl_withdrawalRoom end");
@@ -213,7 +222,8 @@ public class RoomServiceImpl implements RoomService {
     }
 
 
-    //TODO: 미션 부여는 아직 안 됨
+    // TODO: 미션 부여는 아직 안 됨
+    // 미션 부여 코드 한 줄 추가했습니다
     @Transactional
     public void startGame(Room room) {
         log.info("RoomServiceImpl_startGame start");
@@ -345,6 +355,7 @@ public class RoomServiceImpl implements RoomService {
 
         room.updateHeadCount(count);
         room.startGame();
+        missionPerformService.startGameAndAssignMission(room);
         redisUtil.putAccessCode(room.getAccessCode());
         log.info("RoomServiceImpl_startGame end: " + count + " participants started a game");
     }
@@ -372,10 +383,11 @@ public class RoomServiceImpl implements RoomService {
         return false;
     }
 
-    public List<ShowUsersRes> showUsers(Long userId) {
+    public List<ShowUsersRes> showUsers(AuthenticatedUser authenticatedUser) {
         log.info("RoomServiceImpl_showUsers start");
+        log.info("id: {}", authenticatedUser.getId());
 
-        User user = userRepository.getReferenceById(userId);
+        User user = findUserById(authenticatedUser.getId());
         List<ShowUsersRes> showUsersResList = new ArrayList<>();
 
         if (user.getStatus() == 1L) {
@@ -411,10 +423,11 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Transactional
-    public Boolean responseJoinRoom(Long userId, JoinRoomReq joinRoomReq) {
+    public Boolean responseJoinRoom(JoinRoomReq joinRoomReq, AuthenticatedUser authenticatedUser) {
         log.info("RoomServiceImpl_responseJoinRoom start");
-        User admin = userRepository.getReferenceById(userId);
-        User requestUser = userRepository.getReferenceById(joinRoomReq.getUserId());
+        log.info("id: {}", authenticatedUser.getId());
+        User admin = findUserById(authenticatedUser.getId());
+        User requestUser = findUserById(joinRoomReq.getUserId());
 
         if (requestUser.getStatus() != 5L) {
             log.info("RoomServiceImpl_responseJoinRoom end");
@@ -457,9 +470,10 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Transactional
-    public Boolean checkAndRunIfRoomShouldStart(Long userId) {
+    public Boolean checkAndRunIfRoomShouldStart(AuthenticatedUser authenticatedUser) {
         log.info("RoomServiceImpl_checkAndRunIfRoomShouldStart start");
-        User user = userRepository.getReferenceById(userId);
+        log.info("id: {}", authenticatedUser.getId());
+        User user = findUserById(authenticatedUser.getId());
 
         Room room = user.getRoom();
 
@@ -474,9 +488,11 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Transactional
-    public Boolean checkAndStartGame(Long userId) {
+    public Boolean checkAndStartGame(AuthenticatedUser authenticatedUser) {
         log.info("RoomServiceImpl_checkAndStartGame start");
-        User user = userRepository.getReferenceById(userId);
+        log.info("id: {}", authenticatedUser.getId());
+
+        User user = findUserById(authenticatedUser.getId());
 
         Room room = user.getRoom();
 
@@ -495,4 +511,9 @@ public class RoomServiceImpl implements RoomService {
         log.info("RoomServiceImpl_checkAndStartGame end: invalid play condition");
         throw new PlayersNotEnoughException();
     }
+
+    private User findUserById(Long id) {
+        return userRepository.findById(id).orElseThrow(UserNotFoundException::new);
+    }
+
 }

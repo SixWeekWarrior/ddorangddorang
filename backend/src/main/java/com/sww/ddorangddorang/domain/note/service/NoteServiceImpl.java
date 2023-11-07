@@ -33,8 +33,10 @@ public class NoteServiceImpl implements NoteService {
     private final MissionPerformRepository missionPerformRepository;
 
     public List<NoteViewRes> getNotes(AuthenticatedUser authenticatedUser) {
-        User user = userRepository.findByEmail(authenticatedUser.getEmail()).orElseThrow(
-            UserNotFoundException::new);
+        log.info("getNotes Service 진입");
+        log.info("id: {}", authenticatedUser.getId());
+
+        User user = findUserById(authenticatedUser.getId());
 
         Participant receiver = participantRepository.findByUserAndGameCount(user,
             user.getGameCount()).orElseThrow(ParticipantNotFoundException::new);
@@ -46,11 +48,13 @@ public class NoteServiceImpl implements NoteService {
 
 
     public NoteViewRes getNote(Long id, AuthenticatedUser authenticatedUser) {
+        log.info("getNote Service 진입");
+        log.info("id: {}", authenticatedUser.getId());
+
         Note note = noteRepository.findById(id).orElseThrow(
             ParticipantNotFoundException::new);
 
-        User user = userRepository.findByEmail(authenticatedUser.getEmail()).orElseThrow(
-            UserNotFoundException::new);
+        User user = findUserById(authenticatedUser.getId());
 
         Participant participant = participantRepository.findByUserAndGameCount(user,
             user.getGameCount()).orElseThrow(ParticipantNotFoundException::new);
@@ -65,8 +69,9 @@ public class NoteServiceImpl implements NoteService {
     }
 
     public void createNote(NoteCreateReq noteCreateReq, AuthenticatedUser authenticatedUser) {
-        User user = userRepository.findByEmail(authenticatedUser.getEmail()).orElseThrow(
-            UserNotFoundException::new);
+        log.info("createNote Service 진입");
+        log.info("id: {}", authenticatedUser.getId());
+        User user = findUserById(authenticatedUser.getId());
 
         Participant sender = participantRepository.findByUserAndGameCount(user, user.getGameCount())
             .orElseThrow(ParticipantNotFoundException::new);
@@ -86,6 +91,10 @@ public class NoteServiceImpl implements NoteService {
             .build();
 
         noteRepository.save(note);
+    }
+
+    private User findUserById(Long id) {
+        return userRepository.findById(id).orElseThrow(UserNotFoundException::new);
     }
 
 }
