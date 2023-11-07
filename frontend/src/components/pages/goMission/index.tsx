@@ -34,7 +34,8 @@ export const GoMission = ({navigation}: {navigation: any}): JSX.Element => {
     <View style={style.contentContainer}>
       <Image
         source={answerRight ? rightImg : wrongImg}
-        style={style.missionImg}></Image>
+        style={style.missionImg}
+      />
       <View style={style.contentInnerContainer}>
         <Text style={style.noticeText}>
           {answerRight ? '🎉 맞았습니다! 🎉' : '틀렸습니다.'}

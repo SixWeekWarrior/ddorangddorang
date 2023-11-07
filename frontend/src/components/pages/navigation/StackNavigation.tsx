@@ -18,14 +18,13 @@ import ReviseSsafy from '../reviseSsafy';
 import ReviseEtc from '../reviseEtc';
 import SendOpinion from '../sendOpinion';
 import MatchStatus from '../matchStatus';
-import Home from '../home';
 import MatchGuess from '../matchGuess';
 
 const StackNavigation = () => {
   const Stack = createStackNavigator();
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="NavBar">
+      <Stack.Navigator initialRouteName="Onboarding">
         <Stack.Screen
           name="Onboarding"
           component={Onboarding}

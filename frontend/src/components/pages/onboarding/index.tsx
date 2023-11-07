@@ -45,12 +45,11 @@ export const Onboarding = ({navigation}: {navigation: any}): JSX.Element => {
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
 
-      console.log(userInfo.idToken);
+      console.log(userInfo.user.name);
       if (userInfo.idToken) {
         userApi
           .postLogin(userInfo.idToken)
           .then(data => {
-            console.log(data);
             if (data.success) {
               navigation.navigate('Enter');
             } else {
