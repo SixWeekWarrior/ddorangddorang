@@ -22,7 +22,8 @@ public class OpinionApi {
     private static final String SUCCESS = "SUCCESS";
 
     @PostMapping
-    CommonResponse<String> createOpinion(@RequestBody OpinionCreateReq opinionCreateReq, @AuthenticationPrincipal AuthenticatedUser authenticatedUser) {
+    CommonResponse<String> createOpinion(@RequestBody OpinionCreateReq opinionCreateReq,
+        @AuthenticationPrincipal AuthenticatedUser authenticatedUser) {
         log.info("createOpinion Controller 진입");
         opinionService.createOpinion(opinionCreateReq, authenticatedUser);
         return CommonResponse.success(SUCCESS);

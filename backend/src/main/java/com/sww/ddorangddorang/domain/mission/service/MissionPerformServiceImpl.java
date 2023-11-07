@@ -64,10 +64,25 @@ public class MissionPerformServiceImpl implements MissionPerformService {
         missionPerformRepository.saveAll(missionPerformList);
     }
 
+    public void startGameAndAssignMission(Room room) {
+        List<Long> missionIdList = fetchMissionIds();
+        List<Participant> participants = room.getParticipants();
+        List<MissionPerform> missionPerformList = new ArrayList<>();
+
+        for (Participant participant : participants) {
+            MissionPerform missionPerform = assignMission(participant, missionIdList);
+            missionPerformList.add(missionPerform);
+        }
+
+        missionPerformRepository.saveAll(missionPerformList);
+    }
+
     // 원하지 않는 미션을 변경하는 메서드
     public void changeMission(MissionChangeReq missionChangeReq,
         AuthenticatedUser authenticatedUser) {
-        User user = findUserByEmail(authenticatedUser.getEmail());
+        log.info("email: {}", authenticatedUser.getEmail());
+        log.info("id: {}", authenticatedUser.getId());
+        User user = findUserById(authenticatedUser.getId());
 
         // 유저가 참가한 방에서 현재 게임이 진행중인지 판단함
         validateRoom(user);
@@ -115,8 +130,12 @@ public class MissionPerformServiceImpl implements MissionPerformService {
         List<MissionPerform> missionPerforms = participant.getMissionPerforms();
 
         int missionCount = missionPerforms.size();
-        MissionPerform lastMissionPerfrom = missionPerforms.get(missionCount - 1);
-        handleUncompletedMission(lastMissionPerfrom);
+
+        if (missionCount > 0) {
+            MissionPerform lastMissionPerfrom = missionPerforms.get(missionCount - 1);
+            handleUncompletedMission(lastMissionPerfrom);
+        }
+
 
         // 참가자가 수행한 미션들의 id를 Set로 저장함.
         Set<Long> performedMissions = missionPerforms.stream().map(MissionPerform::getMission)
@@ -192,16 +211,15 @@ public class MissionPerformServiceImpl implements MissionPerformService {
             throw new MissionNotFoundException();
         }
     }
-
-    private User findUserByEmail(String email) {
-        return userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
+    private User findUserById(Long id) {
+        return userRepository.findById(id).orElseThrow(UserNotFoundException::new);
     }
 
 
     // 특정 유저의 수행중인 미션을 조회하고, 시작부터 지난 날짜와 완료한 미션의 개수를 반환하는 메소드
     public MissionPerformAndDayCountRes findMissionByUser(AuthenticatedUser authenticatedUser) {
-        log.info("email: {}", authenticatedUser.getEmail());
-        User user = findUserByEmail(authenticatedUser.getEmail());
+        log.info("id: {}", authenticatedUser.getId());
+        User user = findUserById(authenticatedUser.getId());
 
         Room room = user.getRoom();
         log.info("room_id: {}", room.getId());
@@ -229,7 +247,8 @@ public class MissionPerformServiceImpl implements MissionPerformService {
     public void missionComplete(MissionCompleteReq missionCompleteReq,
         AuthenticatedUser authenticatedUser) {
         log.info("email: {}", authenticatedUser.getEmail());
-        User user = findUserByEmail(authenticatedUser.getEmail());
+        log.info("id: {}", authenticatedUser.getId());
+        User user = findUserById(authenticatedUser.getId());
         MissionPerform missionPerform = missionPerformRepository.findById(
             missionCompleteReq.getMissionId()).orElseThrow(MissionNotFoundException::new);
 

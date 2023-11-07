@@ -22,10 +22,9 @@ public class OpinionServiceImpl implements OpinionService {
     private final UserRepository userRepository;
 
     public void createOpinion(OpinionCreateReq opinionCreateReq, AuthenticatedUser authenticatedUser) {
-        String email = authenticatedUser.getEmail();
-        log.info("email: {}", email);
-        User user = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
-        log.info("user: {}", user);
+        log.info("email: {}", authenticatedUser.getEmail());
+        log.info("id: {}", authenticatedUser.getId());
+        User user = findUserById(authenticatedUser.getId());
 
         Opinion opinion = Opinion.builder()
             .user(user)
@@ -33,6 +32,10 @@ public class OpinionServiceImpl implements OpinionService {
             .build();
 
         opinionRepository.save(opinion);
+    }
+
+    private User findUserById(Long id) {
+        return userRepository.findById(id).orElseThrow(UserNotFoundException::new);
     }
 
 }
