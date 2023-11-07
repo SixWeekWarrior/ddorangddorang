@@ -1,9 +1,10 @@
 import apiInstance from './client';
 import axios from 'axios';
-import {UserInfo, UserMoreInfo} from '../types/user';
+import {UserInfo, UserMoreInfo, UserSsafyInfo} from '../types/user';
 
 const client = apiInstance();
 
+// 로그인 요청 API
 const postLogin = async (idToken: string) => {
   try {
     const res = await axios
@@ -20,42 +21,30 @@ const postLogin = async (idToken: string) => {
   }
 };
 
+// 회원가입시 정보 입력 API
 const postSignup = async (data: UserInfo) => {
   try {
-    const res = await client.post(
-      'users/signup',
-      data,
-      // {
-      //   name: data.name,
-      //   email: data.email,
-      //   password: data.password,
-      //   generation: data.generation,
-      //   isMajor: data.isMajor,
-      //   gender: data.gender,
-      //   campus: data.campus,
-      //   classes: data.classes,
-      //   floor: data.floor,
-      //   profileImage: data.profileImage,
-      //   likes: data.likes,
-      //   hate: data.hate,
-      //   mbti: data.mbti,
-      //   worry: data.worry,
-      // }
-    );
+    const res = await client.post('/users/signup', data);
     return res.data;
   } catch (e) {
     throw new Error('ERROR IN POST_SING_UP');
   }
 };
 
+// 부가 정보 (mbti, likes, hate, worry) 수정 API
 const postMoreInfo = async (data: UserMoreInfo) => {
   try {
-    const res = await client.post('users/moreinfo', {
-      mbti: data.mbti,
-      likes: data.likes,
-      hate: data.hate,
-      worry: data.worry,
-    });
+    const res = await client.put('/users/moreinfo', data);
+    return res.data;
+  } catch (e) {
+    throw new Error('ERROR IN Post_More_Info');
+  }
+};
+
+// 싸피 정보 수정 API
+const putSsafyInfo = async (data: UserSsafyInfo) => {
+  try {
+    const res = await client.put('/users/ssafyinfo', data);
     return res.data;
   } catch (e) {
     throw new Error('ERROR IN Post_More_Info');
@@ -65,6 +54,7 @@ const postMoreInfo = async (data: UserMoreInfo) => {
 const user = {
   postLogin,
   postSignup,
+  putSsafyInfo,
   postMoreInfo,
 };
 export default user;
