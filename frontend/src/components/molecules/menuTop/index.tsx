@@ -1,5 +1,5 @@
-import {StyleSheet, Text, View, Image} from 'react-native';
-import GlobalStyles from '../../../styles/GlobalStyles';
+import {StyleSheet, View, Image} from 'react-native';
+import GlobalStyles, {height, width} from '../../../styles/GlobalStyles';
 import blockImg from '../../../assets/blockImg.png';
 import TitleAtom from '../../atoms/titleAtom';
 
@@ -30,20 +30,20 @@ export const MenuTop = ({menu, text, menuColor, textColor}: MenuTopProps) => {
 
 const styles = StyleSheet.create({
   container: {
-    height: '25%',
+    height: height * 255,
     flexDirection: 'row',
     backgroundColor: GlobalStyles.blue.color,
-    padding: 15,
+    paddingLeft: width * 24,
+    paddingRight: width * 24,
   },
   contentContainer: {
     flex: 1,
     alignSelf: 'flex-end',
-    bottom: '5%',
+    bottom: width * 25,
   },
   imgContainer: {
     alignSelf: 'flex-end',
     height: '68%',
-    bottom: '5%',
     flex: 1,
   },
   blockImg: {

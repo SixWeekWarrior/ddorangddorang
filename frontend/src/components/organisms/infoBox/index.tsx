@@ -2,7 +2,7 @@ import {Image, Pressable, StyleSheet, Text, View} from 'react-native';
 import greenArrowRightImg from '../../../assets/greenArrowRightImg.png';
 import yellowArrowRightImg from '../../../assets/yellowArrowRightImg.png';
 import whiteArrowRightImg from '../../../assets/whiteArrowRightImg.png';
-import GlobalStyles from '../../../styles/GlobalStyles';
+import GlobalStyles, {width} from '../../../styles/GlobalStyles';
 import InfoAtom from '../../atoms/infoAtom';
 
 type InfoBoxProps = {
@@ -81,7 +81,7 @@ const InfoBox = ({navigation, destination}: InfoBoxProps): JSX.Element => {
         return <InnerInfo navigation={navigation} />;
       case 'InfoToday':
         return (
-          <View style={[style.flexColumn, {height: '50%'}]}>
+          <View style={[style.flexColumn, {flexWrap: 'wrap'}]}>
             <InfoAtom title="기분" content="약간 흐림" />
             <InfoAtom title="입은 옷" content="빨간색" />
           </View>
@@ -217,8 +217,8 @@ const InfoBox = ({navigation, destination}: InfoBoxProps): JSX.Element => {
 const style = StyleSheet.create({
   container: {
     flex: 1,
-    marginLeft: 24,
-    marginRight: 24,
+    marginLeft: width * 25,
+    marginRight: width * 25,
     backgroundColor: GlobalStyles.white_2.color,
     borderWidth: 0.5,
     borderStyle: 'solid',
@@ -227,26 +227,24 @@ const style = StyleSheet.create({
   },
   flexColumn: {
     flexDirection: 'column',
-    flexWrap: 'wrap',
     marginLeft: 24,
-    marginTop: -5,
-    columnGap: 70,
+    columnGap: width * 1.4,
   },
   titleFont: {
     fontFamily: GlobalStyles.home_title.fontFamily,
-    fontSize: GlobalStyles.home_title.fontSize,
+    fontSize: width * 18,
     letterSpacing: -1,
     marginLeft: 15,
     marginTop: 5,
-    marginBottom: 5,
   },
   midFont: {
     color: GlobalStyles.grey_2.color,
     fontFamily: 'NotoSansKR-Medium',
-    fontSize: GlobalStyles.home_title.fontSize,
+    fontSize: width * 14,
     letterSpacing: -1,
     marginLeft: 15,
     marginTop: -10,
+    marginBottom: width * 10,
   },
   arrowImg: {
     marginLeft: 10,
@@ -281,22 +279,22 @@ const style = StyleSheet.create({
   },
   coloredFont: {
     fontFamily: GlobalStyles.section_title.fontFamily,
-    fontSize: 16,
+    fontSize: width * 14,
     color: GlobalStyles.yellow.color,
     letterSpacing: -1,
   },
   bigFont: {
     fontFamily: GlobalStyles.home_title.fontFamily,
-    fontSize: 25,
+    fontSize: width * 20,
     color: GlobalStyles.white_2.color,
     marginTop: -20,
   },
   regFont: {
-    fontSize: GlobalStyles.section_title.fontSize,
+    fontSize: width * 14,
     color: GlobalStyles.white_2.color,
   },
   smFont: {
-    fontSize: GlobalStyles.section_title.fontSize,
+    fontSize: width * 12,
     color: GlobalStyles.white_2.color,
     letterSpacing: -1,
   },

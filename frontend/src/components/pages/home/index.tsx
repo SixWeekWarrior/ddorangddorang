@@ -1,12 +1,13 @@
 import {
   Image,
   Pressable,
+  ScrollView,
   StyleSheet,
   Text,
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
-import GlobalStyles from '../../../styles/GlobalStyles';
+import GlobalStyles, {height, width} from '../../../styles/GlobalStyles';
 import yellowEyeImg from '../../../assets/yellowEyeImg.png';
 import greenEyeImg from '../../../assets/greenEyeImg.png';
 import arrowRightImg from '../../../assets/whiteArrowRightImg.png';
@@ -47,7 +48,7 @@ export const Home = ({navigation}: {navigation: any}): JSX.Element => {
   );
 
   return (
-    <View style={style.container}>
+    <ScrollView style={style.container}>
       <View style={style.containerTop}>
         <View style={style.topLeft}>
           <Pressable
@@ -60,12 +61,12 @@ export const Home = ({navigation}: {navigation: any}): JSX.Element => {
                 ...style.titleFont,
                 color: GlobalStyles.yellow.color,
                 marginLeft: 15,
-                marginTop: 15,
+                justifyContent: 'center',
               }}>{`오늘 나의 \n마니또는?`}</Text>
-            <Text style={style.miniFont}>입은 옷</Text>
-            <Text style={style.bigFont}>빨간색</Text>
-            <Text style={style.miniFont}>기분</Text>
-            <Text style={style.bigFont}>약간 흐림</Text>
+            {/* <Text style={style.miniFont}>입은 옷</Text> */}
+            <Text style={style.bigFont}>옷 | 빨간색</Text>
+            {/* <Text style={style.miniFont}>기분</Text> */}
+            <Text style={style.bigFont}>기분 | 약간 흐림</Text>
           </Pressable>
           <Image source={yellowEyeImg} style={style.topBottom}></Image>
         </View>
@@ -77,7 +78,6 @@ export const Home = ({navigation}: {navigation: any}): JSX.Element => {
                 ...style.titleFont,
                 color: GlobalStyles.white_1.color,
                 textAlign: 'center',
-                marginTop: '25%',
               }}>
               종료까지
             </Text>
@@ -104,7 +104,7 @@ export const Home = ({navigation}: {navigation: any}): JSX.Element => {
       </View>
 
       <View style={style.containerBottom}>
-        <View style={style.bottomLeft}>
+        <View>
           <Pressable
             style={style.bottomTop}
             onPress={toggleModal}
@@ -163,7 +163,7 @@ export const Home = ({navigation}: {navigation: any}): JSX.Element => {
         <Image source={greenEyeImg} style={style.bottomRight}></Image>
       </View>
       <View style={style.modalContainer}>{modal()}</View>
-    </View>
+    </ScrollView>
   );
 };
 
@@ -200,26 +200,29 @@ const style = StyleSheet.create({
     justifyContent: 'center',
     rowGap: 20,
   },
+
   topLeft: {
     flex: 1.1,
   },
+
   topTop: {
-    flex: 3,
     backgroundColor: GlobalStyles.pink.color,
     borderRadius: 20,
-    marginTop: 50,
-    marginLeft: 24,
+    justifyContent: 'center',
+    marginTop: height * 35,
+    marginLeft: width * 24,
+    height: height * 160,
   },
 
   topBottom: {
-    flex: 1,
     resizeMode: 'contain',
-    // height: 20,
     borderRadius: 20,
-    marginTop: 24,
-    marginBottom: 24,
-    marginLeft: 24,
+    marginLeft: width * 24,
+    marginTop: width * 20,
+    width: width * 145,
+    height: height * 53,
   },
+
   topMiddle: {
     flex: 0.3,
   },
@@ -229,56 +232,59 @@ const style = StyleSheet.create({
     marginLeft: 20,
     marginRight: 24,
     marginBottom: 50,
+    height: height * 170,
   },
   innerTop: {
     flex: 1,
     backgroundColor: GlobalStyles.blue.color,
-    borderTopStartRadius: 20,
-    borderTopEndRadius: 20,
+    borderTopStartRadius: 24,
+    borderTopEndRadius: 24,
+    justifyContent: 'center',
   },
   innerBottom: {
     flex: 1.2,
     backgroundColor: GlobalStyles.white_1.color,
-    borderBottomEndRadius: 20,
-    borderBottomStartRadius: 20,
+    borderBottomEndRadius: 24,
+    borderBottomStartRadius: 24,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
   },
-  bottomLeft: {
-    flex: 1.1,
-  },
+
   bottomMiddle: {
     flex: 0.3,
   },
+
   bottomRight: {
     flex: 1,
-    borderRadius: 20,
-    height: 230,
-    marginTop: 24,
-    marginRight: 24,
-    marginBottom: 24,
+    borderRadius: 24,
+    width: width * 145,
+    height: width * 213,
+    marginTop: width * 20,
+    marginRight: width * 24,
+    marginBottom: width * 24,
   },
 
   bottomTop: {
     backgroundColor: GlobalStyles.white_2.color,
     flex: 4,
-    marginTop: 24,
-    marginLeft: 24,
+    marginTop: width * 20,
+    marginLeft: width * 24,
     borderWidth: 0.5,
     borderStyle: 'solid',
-    borderRadius: 20,
+    borderRadius: 24,
     borderColor: GlobalStyles.grey_3.color,
+    height: height * 160,
   },
 
   bottomBottom: {
     backgroundColor: GlobalStyles.grey_1.color,
     flexDirection: 'row',
     flex: 1,
-    borderRadius: 20,
-    marginTop: 24,
-    marginLeft: 24,
-    marginBottom: 60,
+    borderRadius: 24,
+    marginTop: width * 24,
+    marginLeft: width * 24,
+    marginBottom: width * 24,
     justifyContent: 'space-between',
     paddingRight: 15,
   },
@@ -291,13 +297,13 @@ const style = StyleSheet.create({
   },
   circle: {
     backgroundColor: GlobalStyles.orange.color,
-    width: 70,
-    height: 70,
+    width: width * 70,
+    height: width * 70,
     borderRadius: 100,
     justifyContent: 'center',
     alignItems: 'center',
-    marginLeft: 35,
-    marginTop: 25,
+    marginLeft: width * 28,
+    marginTop: width * 2,
   },
   titleFont: {
     fontFamily: GlobalStyles.home_title.fontFamily,
@@ -307,7 +313,7 @@ const style = StyleSheet.create({
   miniFont: {
     fontFamily: GlobalStyles.section_title.fontFamily,
     fontSize: 13,
-    color: GlobalStyles.grey_2.color,
+    color: GlobalStyles.grey_4.color,
     marginLeft: 15,
     marginTop: -15,
   },
@@ -316,14 +322,7 @@ const style = StyleSheet.create({
     fontSize: 9,
     color: GlobalStyles.white_2.color,
   },
-  midFont: {
-    color: GlobalStyles.black.color,
-    fontFamily: GlobalStyles.content.fontFamily,
-    fontSize: GlobalStyles.home_title.fontSize,
-    letterSpacing: -1,
-    marginLeft: 15,
-    marginTop: -10,
-  },
+
   midBoldFont: {
     fontFamily: 'NotoSansKR-Bold',
     color: GlobalStyles.white_2.color,
@@ -332,9 +331,9 @@ const style = StyleSheet.create({
   },
   bigFont: {
     fontFamily: 'NotoSansKR-Bold',
-    fontSize: 18,
+    fontSize: 12,
     color: GlobalStyles.white_2.color,
-    marginTop: -25,
+    marginTop: -20,
     marginLeft: 15,
   },
   numberFont: {
