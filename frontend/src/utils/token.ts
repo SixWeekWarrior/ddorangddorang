@@ -21,6 +21,12 @@ export const getRefreshToken = async () => {
   await AsyncStorage.getItem('refreshToken');
 };
 
-const token = {setAccessToken, setRefreshToken, setToken, getAccessToken};
+const token = {
+  setAccessToken,
+  setRefreshToken,
+  setToken,
+  getAccessToken,
+  getRefreshToken,
+};
 
 export default token;

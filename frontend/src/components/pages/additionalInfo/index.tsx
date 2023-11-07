@@ -42,7 +42,7 @@ export const AdditionalInfo = ({
       navigation.navigate('Enter');
     } catch (error) {
       console.error(error);
-      navigation.navigate('Enter');
+      navigation.navigate('Onboarding');
     }
   };
 

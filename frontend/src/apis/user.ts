@@ -1,6 +1,7 @@
 import apiInstance from './client';
 import axios from 'axios';
 import {UserInfo, UserMoreInfo, UserSsafyInfo} from '../types/user';
+import {tokenUtil} from '../utils';
 
 const client = apiInstance();
 
@@ -15,6 +16,11 @@ const postLogin = async (idToken: string) => {
         },
       })
       .post('https://k9a210.p.ssafy.io/api/v1/users/login');
+
+    await tokenUtil.setToken(
+      res.data.data.accessToken,
+      res.data.data.refreshToken,
+    );
     return res.data;
   } catch (e) {
     throw new Error('ERROR IN POST_LOGIN');
