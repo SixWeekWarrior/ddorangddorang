@@ -36,7 +36,7 @@ const style = StyleSheet.create({
     width: 90,
     objectFit: 'scale-down',
   },
-  
+
   yellowEyeImg: {
     width: width * 10,
     height: height * 5,
