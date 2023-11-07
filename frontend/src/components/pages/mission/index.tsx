@@ -1,4 +1,4 @@
-import {View, StyleSheet} from 'react-native';
+import {View, StyleSheet, ScrollView} from 'react-native';
 import GlobalStyles from '../../../styles/GlobalStyles';
 import MenuTop from '../../molecules/menuTop';
 import InfoBox from '../../organisms/infoBox';
@@ -6,7 +6,7 @@ import MissionList from '../../molecules/missionList';
 
 export const Misson = ({navigation}: {navigation: any}): JSX.Element => {
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <MenuTop
         menu="미션"
         text={`오늘의 미션을 완수하고\n미션 도장을 찍어봐요!`}
@@ -20,7 +20,7 @@ export const Misson = ({navigation}: {navigation: any}): JSX.Element => {
       <View style={styles.bottomContainer}>
         <MissionList />
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
