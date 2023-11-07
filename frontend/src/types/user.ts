@@ -23,7 +23,7 @@ export type UserMoreInfo = {
 };
 
 export type UserSsafyInfo = {
-  // profileImage: string;
+  profileImage: string;
   classes: number;
   floor: number;
 };

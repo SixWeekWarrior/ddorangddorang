@@ -2,34 +2,41 @@ import {StyleSheet, View} from 'react-native';
 import MenuTop from '../../molecules/menuTop';
 import GlobalStyles from '../../../styles/GlobalStyles';
 import BtnBig from '../../atoms/btnBig';
+import {useState} from 'react';
 import InfoSelectInput from '../../atoms/infoSelectInput';
 import { userApi } from '../../../apis';
-import { useRecoilState, useSetRecoilState } from 'recoil';
-import user from '../../../modules/user';
-
+import user from '../../../apis/user';
+import { UserSsafyInfo } from '../../../types/user';
 
 export const ReviseSsafy = ({navigation}: {navigation: any}) => {
   const classList = Array.from({length: 20}, (_, index) => index + 1);
   const floorList = Array.from({length: 20}, (_, index) => index + 1);
 
-  const [tmpUserInfo, setTmpUserInfo] = useRecoilState(user.TmpUserInfoState);
-  const  setUserInfo = useSetRecoilState(user.UserInfoState);
+  const [inputValues, setInputValues] = useState<UserSsafyInfo>({
+    classes: 0,
+    floor: 0,
+    profileImage: '',
+  });
 
-  function onInputChange(title: string, value: number) {
-    setTmpUserInfo(prevUserInfo => ({
-      ...prevUserInfo,
+  const onInputChange = (title: string, value: string) => {
+    setInputValues((prevState) => ({
+      ...prevState,
       [title]: value,
     }));
-  }
+  };
 
   const handleSubmit = async () => {
     try {
-      await userApi.putSsafyInfo(tmpUserInfo);
-      await setUserInfo(tmpUserInfo);
+      const res = await userApi.putSsafyInfo({
+        classes: inputValues.classes,
+        floor: inputValues.floor,
+        profileImage: inputValues.profileImage,
+      });
+      console.log('ssafy_info_updated', res);
+
       navigation.navigate('Navbar');
     } catch (error) {
       console.error('ssafy_info_ERROR', error);
-      navigation.navigate('Navbar');
     }
   };
 
