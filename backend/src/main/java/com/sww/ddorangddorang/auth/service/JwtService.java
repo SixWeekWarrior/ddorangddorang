@@ -62,18 +62,6 @@ public class JwtService {
             .sign(Algorithm.HMAC512(secretKey)); // HMAC512 알고리즘 사용, application-jwt.yml에서 지정한 secret 키로 암호화
     }
 
-    public String createAccessToken(String email) {
-        Date now = new Date();
-        return JWT.create() // JWT 토큰을 생성하는 빌더 반환
-            .withSubject(ACCESS_TOKEN_SUBJECT) // JWT의 Subject 지정 -> AccessToken이므로 AccessToken
-            .withExpiresAt(new Date(now.getTime() + accessTokenExpirationPeriod)) // 토큰 만료 시간 설정
-
-            // TODO: Access Token Claim 목록 추가
-            .withClaim(EMAIL_CLAIM, email)
-            .sign(Algorithm.HMAC512(secretKey)); // HMAC512 알고리즘 사용, application-jwt.yml에서 지정한 secret 키로 암호화
-    }
-
-
         /**
          * RefreshToken 생성
          * RefreshToken은 Claim에 email도 넣지 않으므로 withClaim() X
@@ -150,6 +138,20 @@ public class JwtService {
         }
     }
 
+    public Optional<Long> extractId(String accessToken) {
+        try {
+            // 토큰 유효성 검사하는 데에 사용할 알고리즘이 있는 JWT verifier builder 반환
+            return Optional.ofNullable(JWT.require(Algorithm.HMAC512(secretKey))
+                .build() // 반환된 빌더로 JWT verifier 생성
+                .verify(accessToken) // accessToken을 검증하고 유효하지 않다면 예외 발생
+                .getClaim(ID_CLAIM) // claim(ID) 가져오기
+                .asLong());
+        } catch (Exception e) {
+            log.error("액세스 토큰이 유효하지 않습니다.");
+            return Optional.empty();
+        }
+    }
+
     /**
      * AccessToken 헤더 설정
      */
@@ -177,6 +179,7 @@ public class JwtService {
 
     public boolean isTokenValid(String token) {
         try {
+            log.info("Token: {}", token);
             JWT.require(Algorithm.HMAC512(secretKey)).build().verify(token);
             return true;
         } catch (Exception e) {

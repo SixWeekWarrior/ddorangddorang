@@ -3,6 +3,7 @@ package com.sww.ddorangddorang.auth.filter;
 import com.sww.ddorangddorang.auth.dto.AuthenticatedUser;
 import com.sww.ddorangddorang.auth.dto.TokenClaims;
 import com.sww.ddorangddorang.domain.user.entity.User;
+import com.sww.ddorangddorang.domain.user.exception.UserNotFoundException;
 import com.sww.ddorangddorang.domain.user.repository.UserRepository;
 import com.sww.ddorangddorang.auth.service.JwtService;
 import jakarta.servlet.FilterChain;
@@ -122,11 +123,12 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
     public void checkAccessTokenAndAuthentication(HttpServletRequest request, HttpServletResponse response,
         FilterChain filterChain) throws ServletException, IOException {
         log.info("checkAccessTokenAndAuthentication() 호출");
+        log.info("Id: {}", jwtService.extractAccessToken(request)
+            .filter(jwtService::isTokenValid).flatMap(jwtService::extractId));
+
         jwtService.extractAccessToken(request)
-            .filter(jwtService::isTokenValid)
-            .ifPresent(accessToken -> jwtService.extractEmail(accessToken)
-                .ifPresent(email -> userRepository.findByEmail(email)
-                    .ifPresent(this::saveAuthentication)));
+            .filter(jwtService::isTokenValid).flatMap(jwtService::extractId)
+            .flatMap(userRepository::findById).ifPresent(this::saveAuthentication);
 
         filterChain.doFilter(request, response);
     }
@@ -147,11 +149,7 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
      * setAuthentication()을 이용하여 위에서 만든 Authentication 객체에 대한 인증 허가 처리
      */
     public void saveAuthentication(User user) {
-//        String password = myUser.getPassword();
-//        if (password == null) { // 소셜 로그인 유저의 비밀번호 임의로 설정 하여 소셜 로그인 유저도 인증 되도록 설정
-//            password = PasswordUtil.generateRandomPassword();
-//        }
-
+        log.info("Save Authentication start: {}", user);
         UserDetails userDetailsUser = AuthenticatedUser.authenticate(user);
 
         Authentication authentication =
@@ -159,5 +157,7 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
                 authoritiesMapper.mapAuthorities(userDetailsUser.getAuthorities()));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        log.info("Save Authentication end");
     }
 }
