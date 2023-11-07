@@ -4,6 +4,7 @@ import {UserInfo, UserMoreInfo, UserSsafyInfo} from '../types/user';
 import {tokenUtil} from '../utils';
 
 const client = apiInstance();
+const serverUrl = 'https://k9a210.p.ssafy.io/api/v1';
 
 // 로그인 요청 API
 const postLogin = async (idToken: string) => {
@@ -15,7 +16,7 @@ const postLogin = async (idToken: string) => {
           Authorization: 'Bearer ' + idToken,
         },
       })
-      .post('https://k9a210.p.ssafy.io/api/v1/users/login');
+      .post(serverUrl + '/users/login');
 
     await tokenUtil.setToken(
       res.data.data.accessToken,
@@ -31,6 +32,11 @@ const postLogin = async (idToken: string) => {
 const postSignup = async (data: UserInfo) => {
   try {
     const res = await client.post('/users/signup', data);
+
+    await tokenUtil.setToken(
+      res.data.data.accessToken,
+      res.data.data.refreshToken,
+    );
     return res.data;
   } catch (e) {
     throw new Error('ERROR IN POST_SIGN_UP');
