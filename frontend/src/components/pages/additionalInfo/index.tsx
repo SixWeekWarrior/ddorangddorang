@@ -2,9 +2,8 @@ import {StyleSheet, View} from 'react-native';
 import {BorderedBox} from '../../molecules/BorderedBox';
 import BtnBig from '../../atoms/btnBig';
 import {userApi} from '../../../apis';
-import {useRecoilState} from 'recoil';
+import {useRecoilState, useSetRecoilState} from 'recoil';
 import user from '../../../modules/user';
-import {UserInfo} from '../../../types/user';
 
 export const AdditionalInfo = ({
   navigation,
@@ -12,7 +11,7 @@ export const AdditionalInfo = ({
   navigation: any;
 }): JSX.Element => {
   const [tmpUserInfo, setTmpUserInfo] = useRecoilState(user.TmpUserInfoState);
-  const [userInfo, setUserInfo] = useRecoilState(user.UserInfoState);
+  const setUserInfo = useSetRecoilState(user.UserInfoState);
 
   const handleInputChange = (title: string, value: string) => {
     setTmpUserInfo(prevUserInfo => ({
