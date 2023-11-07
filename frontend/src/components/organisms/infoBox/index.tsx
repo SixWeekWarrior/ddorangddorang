@@ -4,6 +4,7 @@ import yellowArrowRightImg from '../../../assets/yellowArrowRightImg.png';
 import whiteArrowRightImg from '../../../assets/whiteArrowRightImg.png';
 import GlobalStyles, {width} from '../../../styles/GlobalStyles';
 import InfoAtom from '../../atoms/infoAtom';
+import token from '../../../utils/token';
 
 type InfoBoxProps = {
   navigation: any;
@@ -38,7 +39,6 @@ const InfoBox = ({navigation, destination}: InfoBoxProps): JSX.Element => {
         break;
       case 'InfoToday':
         navigation.navigate('ReviseInfo', {destination: 'InfoToday'});
-
         break;
       case 'InfoSsafy':
         navigation.navigate('ReviseInfo', {destination: 'InfoSsafy'});
@@ -48,6 +48,13 @@ const InfoBox = ({navigation, destination}: InfoBoxProps): JSX.Element => {
         break;
       case 'SendOpinion':
         navigation.navigate('SendOpinion', {destination: 'SendOpinion'});
+        break;
+      case 'Logout':
+        (async () => {
+          await token.removeToken();
+          navigation.navigate('Onboarding', {destination: 'Onboarding'});
+        })();
+
         break;
       default:
         break;
@@ -68,6 +75,8 @@ const InfoBox = ({navigation, destination}: InfoBoxProps): JSX.Element => {
         return '추가 정보';
       case 'SendOpinion':
         return '의견 보내기';
+      case 'Logout':
+        return '로그아웃';
       default:
         return '';
     }
@@ -133,6 +142,8 @@ const InfoBox = ({navigation, destination}: InfoBoxProps): JSX.Element => {
         return GlobalStyles.green.color;
       case 'SendOpinion':
         return GlobalStyles.blue.color;
+      case 'Logout':
+        return GlobalStyles.yellow.color;
       default:
         return GlobalStyles.green.color;
     }
@@ -149,6 +160,10 @@ const InfoBox = ({navigation, destination}: InfoBoxProps): JSX.Element => {
       case 'InfoSsafy':
         return 0;
       case 'InfoEtc':
+        return 0;
+      case 'SendOpinion':
+        return 0;
+      case 'Logout':
         return 0;
       default:
         return 0.5;
@@ -192,6 +207,10 @@ const InfoBox = ({navigation, destination}: InfoBoxProps): JSX.Element => {
         return (
           <Image source={whiteArrowRightImg} style={style.coloredArrowImg} />
         );
+      case 'Logout':
+        return (
+          <Image source={whiteArrowRightImg} style={style.coloredArrowImg} />
+        );
       default:
         return;
     }
@@ -217,8 +236,8 @@ const InfoBox = ({navigation, destination}: InfoBoxProps): JSX.Element => {
 const style = StyleSheet.create({
   container: {
     flex: 1,
-    marginLeft: width * 25,
-    marginRight: width * 25,
+    marginLeft: width * 24,
+    marginRight: width * 24,
     backgroundColor: GlobalStyles.white_2.color,
     borderWidth: 0.5,
     borderStyle: 'solid',
@@ -227,12 +246,13 @@ const style = StyleSheet.create({
   },
   flexColumn: {
     flexDirection: 'column',
-    marginLeft: 24,
+    marginLeft: width * 24,
+    marginBottom: width * 24,
     columnGap: width * 1.4,
   },
   titleFont: {
     fontFamily: GlobalStyles.home_title.fontFamily,
-    fontSize: width * 18,
+    fontSize: width * 16,
     letterSpacing: -1,
     marginLeft: 15,
     marginTop: 5,

@@ -22,6 +22,9 @@ export const MyPage = ({navigation}: {navigation: any}): JSX.Element => {
       <View style={styles.emptyContainer}>
         <InfoBox navigation={navigation} destination="SendOpinion" />
       </View>
+      <View style={styles.emptyContainer}>
+        <InfoBox navigation={navigation} destination="Logout" />
+      </View>
     </ScrollView>
   );
 };
