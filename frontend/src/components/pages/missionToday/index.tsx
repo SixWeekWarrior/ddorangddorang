@@ -2,7 +2,7 @@ import {StyleSheet, View, Image, Text} from 'react-native';
 import MenuTop from '../../molecules/menuTop';
 import pinkEyeImg from '../../../assets/pinkEyeImg.png';
 import yellowEyeImg from '../../../assets/yellowEyeImg.png';
-import GlobalStyles from '../../../styles/GlobalStyles';
+import GlobalStyles, {height, width} from '../../../styles/GlobalStyles';
 import BtnBig from '../../atoms/btnBig';
 
 export const MissionToday = ({navigation: {navigate}}): JSX.Element => {
@@ -21,7 +21,7 @@ export const MissionToday = ({navigation: {navigate}}): JSX.Element => {
         </Text>
       </View>
       <Image source={yellowEyeImg} style={style.yellowEyeImg} />
-      <BtnBig text="미션 수행하기" onPress={() => navigate('GoMission')} />
+      <BtnBig text="수행하기" onPress={() => navigate('GoMission')} />
     </View>
   );
 };
@@ -36,12 +36,13 @@ const style = StyleSheet.create({
     width: 90,
     objectFit: 'scale-down',
   },
+
   yellowEyeImg: {
-    top: -310,
-    left: '7%',
-    width: 70,
-    objectFit: 'scale-down',
+    width: width * 10,
+    height: height * 5,
+    resizeMode: 'cover',
   },
+
   innerContainer: {
     backgroundColor: 'rgba(255, 255, 255, 0.8)', // Adjust the opacity to your preference
     width: '80%',
@@ -59,7 +60,7 @@ const style = StyleSheet.create({
   },
   missionText: {
     fontFamily: GlobalStyles.home_title.fontFamily,
-    fontSize: 20,
+    fontSize: width * 16,
     color: GlobalStyles.black.color,
     marginTop: -20,
   },

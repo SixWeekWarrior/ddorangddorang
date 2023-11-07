@@ -1,14 +1,14 @@
-import {View, StyleSheet} from 'react-native';
+import {View, StyleSheet, ScrollView} from 'react-native';
 import MenuTop from '../../molecules/menuTop';
 import GlobalStyles from '../../../styles/GlobalStyles';
 import InfoBox from '../../organisms/infoBox';
 
 export const MyPage = ({navigation}: {navigation: any}): JSX.Element => {
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <MenuTop
         menu="마이페이지"
-        text={`오늘의 기분과 옷 색깔을 설정하고, \n추가정보를 입력해보세요!`}
+        text={`오늘의 정보를 설정하고 \n추가정보를 입력해보세요!`}
       />
       <View style={styles.topContainer}>
         <InfoBox navigation={navigation} destination="InfoToday" />
@@ -22,7 +22,10 @@ export const MyPage = ({navigation}: {navigation: any}): JSX.Element => {
       <View style={styles.emptyContainer}>
         <InfoBox navigation={navigation} destination="SendOpinion" />
       </View>
-    </View>
+      <View style={styles.emptyContainer}>
+        <InfoBox navigation={navigation} destination="Logout" />
+      </View>
+    </ScrollView>
   );
 };
 

@@ -37,7 +37,7 @@ const putMoreInfo = async (data: UserMoreInfo) => {
     const res = await client.put('/users/moreinfo', data);
     return res.data;
   } catch (e) {
-    throw new Error('ERROR IN Put_More_Info');
+    throw new Error('ERROR IN PUT_MORE_INFO');
   }
 };
 
@@ -47,7 +47,7 @@ const putSsafyInfo = async (data: UserSsafyInfo) => {
     const res = await client.put('/users/ssafyinfo', data);
     return res.data;
   } catch (e) {
-    throw new Error('ERROR IN Put_Ssafy_Info');
+    throw new Error('ERROR IN PUT_SSAFY_INFO');
   }
 };
 

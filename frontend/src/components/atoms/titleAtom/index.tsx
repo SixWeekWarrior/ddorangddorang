@@ -1,5 +1,5 @@
 import {StyleSheet, Text, View} from 'react-native';
-import GlobalStyles from '../../../styles/GlobalStyles';
+import GlobalStyles, {width} from '../../../styles/GlobalStyles';
 
 type TitleAtomProps = {
   menuColor?: string;
@@ -17,12 +17,12 @@ export const TitleAtom = ({
   const styles = StyleSheet.create({
     menu: {
       fontFamily: GlobalStyles.section_title.fontFamily,
-      fontSize: 22,
+      fontSize: width * 18,
       color: menuColor || GlobalStyles.white_1.color,
     },
     text: {
       fontFamily: GlobalStyles.content.fontFamily,
-      fontSize: 14,
+      fontSize: width * 13,
       marginTop: -10,
       color: textColor || GlobalStyles.white_1.color,
     },
