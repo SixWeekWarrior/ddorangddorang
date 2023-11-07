@@ -4,6 +4,7 @@ import BlockImg from '../../../assets/blockImg.png';
 import TitleAtom from '../../atoms/titleAtom';
 import GlobalStyles from '../../../styles/GlobalStyles';
 import InputInfoMolecules from '../inputInfoMolecules';
+import InfoSelectInput from '../../atoms/infoSelectInput';
 import {useNavigation} from '@react-navigation/native';
 import {userApi} from '../../../apis';
 import {useState} from 'react';
@@ -21,7 +22,7 @@ export const AddInfoMolecules = ({
   onInputChange,
   onSkip,
 }: AddInfoMoleculesProps) => {
-  const regions = ['서울', '대전', '광주', '구미', '부울경'];
+  const regionsList = ['서울', '대전', '광주', '구미', '부울경'];
   const group = Array.from({length: 20}, (_, index) => (index + 1).toString());
   const floor = Array.from({length: 20}, (_, index) => (index + 1).toString());
 
@@ -36,12 +37,11 @@ export const AddInfoMolecules = ({
               type="text"
               onInputChange={(text: string) => onInputChange('name', text)}
             />
-            <InputInfoMolecules
+            <InfoSelectInput
               title="지역"
               placeholder="지역을 선택하세요"
-              type="select"
-              data={regions}
-              onInputChange={(text: string) => onInputChange('region', text)}
+              data={regionsList}
+              setValue={() => {}}
             />
             <InputInfoMolecules
               title="전공"

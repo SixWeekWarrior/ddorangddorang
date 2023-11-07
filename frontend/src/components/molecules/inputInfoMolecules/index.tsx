@@ -1,7 +1,6 @@
 import {StyleSheet, Text, View, TextInput} from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import GlobalStyles from '../../../styles/GlobalStyles';
-import SelectDropdown from 'react-native-select-dropdown';
 import {RadioButton} from 'react-native-paper';
 import {useState} from 'react';
 
@@ -14,7 +13,6 @@ type InputInfoMoleculesProps = {
 };
 
 export const InputInfoMolecules = ({
-  title,
   placeholder,
   type,
   data,
@@ -37,16 +35,7 @@ export const InputInfoMolecules = ({
           </View>
         );
       case 'select':
-        return (
-          <SelectDropdown
-            data={data}
-            buttonStyle={styles.buttonStyle}
-            defaultButtonText={placeholder}
-            onSelect={selectedItem => onInputChange(selectedItem)}
-            rowTextStyle={styles.dropdownRowTxtStyle}
-            buttonTextStyle={styles.buttonTextStyle}
-          />
-        );
+        return <InfoSelectInput />;
       case 'radio':
         return (
           <View style={styles.radioRowStyle}>
@@ -107,23 +96,12 @@ const styles = StyleSheet.create({
     backgroundColor: GlobalStyles.white_1.color,
     borderRadius: 30,
   },
-  buttonStyle: {
-    width: '50%',
-    borderRadius: 30,
-    backgroundColor: GlobalStyles.white_1.color,
-  },
+
   input: {
     color: GlobalStyles.grey_3.color,
     fontSize: 16,
     lineHeight: 10,
     textAlign: 'center',
-  },
-  buttonTextStyle: {
-    fontSize: GlobalStyles.content.fontSize,
-    color: GlobalStyles.grey_3.color,
-  },
-  dropdownRowTxtStyle: {
-    color: GlobalStyles.black.color,
   },
   radioRowStyle: {
     width: 180,

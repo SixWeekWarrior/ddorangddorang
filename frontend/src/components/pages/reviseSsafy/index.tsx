@@ -24,7 +24,7 @@ export const ReviseSsafy = ({navigation}: {navigation: any}) => {
     console.log(inputValues);
     navigation.navigate('NavBar');
   };
-
+  
   return (
     <View style={styles.container}>
       <MenuTop

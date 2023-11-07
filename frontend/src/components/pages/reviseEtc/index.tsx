@@ -15,7 +15,7 @@ export const ReviseEtc = ({navigation}: {navigation: any}) => {
 
   const handleInputChange = (title: string, value: string) => {
     setInputValues(prevState => ({
-      ...prevState,
+      ...prevState, 
       [title]: value,
     }));
   };
