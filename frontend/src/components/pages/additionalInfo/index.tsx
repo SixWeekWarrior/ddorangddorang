@@ -1,44 +1,51 @@
 import {StyleSheet, View} from 'react-native';
 import {BorderedBox} from '../../molecules/BorderedBox';
-import {useState} from 'react';
 import BtnBig from '../../atoms/btnBig';
 import {userApi} from '../../../apis';
+import {useRecoilState} from 'recoil';
+import user from '../../../modules/user';
+import {UserInfo} from '../../../types/user';
 
 export const AdditionalInfo = ({
   navigation,
 }: {
   navigation: any;
 }): JSX.Element => {
-  const [inputValues, setInputValues] = useState({
-    MBTI: '',
-    worry: '',
-    likes: '',
-    hate: '',
-  });
+  const [tmpUserInfo, setTmpUserInfo] = useRecoilState(user.TmpUserInfoState);
+  const [userInfo, setUserInfo] = useRecoilState(user.UserInfoState);
 
   const handleInputChange = (title: string, value: string) => {
-    setInputValues((prevState) => ({
-      ...prevState,
+    setTmpUserInfo(prevUserInfo => ({
+      ...prevUserInfo,
       [title]: value,
     }));
   };
 
-  const handleSignup = async () => {
-    console.log(inputValues);
+  const handleSkip = async () => {
     try {
-      const response = await userApi.putMoreInfo({
-         mbti: inputValues.MBTI,
-         worry: inputValues.worry,
-         likes: inputValues.likes,
-         hate: inputValues.hate,
-      });
-        console.log(response);
-        navigation.navigate('Enter');
-      } catch (e: any) {
-          console.log(e);
-          navigation.navigate('Enter');
-      }
-    };
+      await setTmpUserInfo(prevUserInfo => ({
+        ...prevUserInfo,
+        mbti: '',
+        likes: '',
+        hate: '',
+        worry: '',
+      }));
+      await handleSignup();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleSignup = async () => {
+    try {
+      await userApi.postSignup(tmpUserInfo);
+      await setUserInfo(tmpUserInfo);
+      navigation.navigate('Enter');
+    } catch (error) {
+      console.error(error);
+      navigation.navigate('Enter');
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -46,7 +53,7 @@ export const AdditionalInfo = ({
         menu={'추가 정보'}
         text={`나의 마니띠에게 소개할 수 있는\n추가 정보를 입력해주세요.`}
         onInputChange={handleInputChange}
-        onSkip={handleSignup}
+        onSkip={handleSkip}
       />
       <BtnBig text="회원가입" onPress={handleSignup} />
     </View>

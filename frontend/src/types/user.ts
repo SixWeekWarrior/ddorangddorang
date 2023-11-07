@@ -3,12 +3,12 @@ export type UserInfo = {
   email: string;
   password: string;
   generation: number;
-  isMajor: string;
-  gender: string;
+  isMajor: boolean;
+  gender: boolean;
   campus: number;
   classes: number;
   floor: number;
-  profileImage: string;
+  // profileImage: string;
   likes: string;
   hate: string;
   mbti: string;

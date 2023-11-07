@@ -1,33 +1,32 @@
 import {StyleSheet, View} from 'react-native';
-import {useState} from 'react';
 import BtnBig from '../../atoms/btnBig';
 import BorderedBox from '../../molecules/BorderedBox';
+import user from '../../../modules/user';
+import {useRecoilState} from 'recoil';
 
 export const BasicInfo = ({navigation}: {navigation: any}): JSX.Element => {
-  const [inputValues, setInputValues] = useState({
-    name: '',
-    generation: '',
-    isMajor: true,
-    gender: true,
-    campus: '',
-    class: '',
-    floor: '',
-    // profileImage: '',
-  });
+  const [tmpUserInfo, setTmpUserInfo] = useRecoilState(user.TmpUserInfoState);
 
-  const isAllInputsFilled = Object.values(inputValues).every(
-    value => value !== '',
-  );
+  const {name, gender, generation, campus, isMajor, classes, floor} =
+    tmpUserInfo;
+  const isAllInputsFilled =
+    name !== '' &&
+    gender !== undefined &&
+    generation !== 0 &&
+    campus !== 0 &&
+    isMajor !== undefined &&
+    classes !== 0 &&
+    floor !== 0;
 
   const handleInputChange = (title: string, value: string) => {
-    setInputValues(prevState => ({
-      ...prevState,
+    setTmpUserInfo(prevUserInfo => ({
+      ...prevUserInfo,
       [title]: value,
     }));
   };
 
-  const handleSubmit = () => {
-    console.log(inputValues);
+  const handleSubmit = async () => {
+    console.log(tmpUserInfo);
     navigation.navigate('AdditionalInfo');
   };
 
