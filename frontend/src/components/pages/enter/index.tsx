@@ -1,5 +1,5 @@
 import {Text, View, Image, StyleSheet} from 'react-native';
-import GlobalStyles from '../../../styles/GlobalStyles';
+import GlobalStyles, {height, width} from '../../../styles/GlobalStyles';
 import blockImg from '../../../assets/blockImg.png';
 import BtnMid from '../../atoms/btnMid';
 import {LogBox} from 'react-native';
@@ -7,6 +7,7 @@ import BottomSheet, {BottomSheetBackdrop} from '@gorhom/bottom-sheet';
 import InputTextwithBtn from '../../molecules/inputTextwithBtn';
 import {useCallback, useRef, useMemo} from 'react';
 import congratsImg from '../../../assets/congratsImg.png';
+import token from '../../../utils/token';
 
 LogBox.ignoreLogs([
   'Non-serializable values were found in the navigation state',
@@ -63,6 +64,14 @@ export const Enter = ({navigation}: {navigation: any}): JSX.Element => {
           destination="EnterWait"
         />
       </View>
+      <Text
+        style={styles.logout}
+        onPress={async () => {
+          await token.removeToken();
+          navigation.navigate('Onboarding', {destination: 'Onboarding'});
+        }}>
+        로그아웃
+      </Text>
       <BottomSheet
         ref={bottomSheetRef}
         snapPoints={snapPoints}
@@ -148,6 +157,13 @@ const styles = StyleSheet.create({
     fontFamily: GlobalStyles.section_title.fontFamily,
     fontSize: 22,
     color: GlobalStyles.black.color,
+  },
+  logout: {
+    fontFamily: GlobalStyles.section_title.fontFamily,
+    marginLeft: width * 260,
+    marginTop: height * 20,
+    fontSize: width * 10,
+    color: GlobalStyles.grey_3.color,
   },
 });
 
