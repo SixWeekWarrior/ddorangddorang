@@ -1,6 +1,6 @@
 import {useEffect} from 'react';
 import {View, Image, StyleSheet, TouchableOpacity, Text} from 'react-native';
-import GlobalStyles from '../../../styles/GlobalStyles';
+import GlobalStyles, {width} from '../../../styles/GlobalStyles';
 import blockImg from '../../../assets/blockImg.png';
 import logoImg from '../../../assets/logoImg.png';
 import TitleAtom from '../../atoms/titleAtom';
@@ -29,7 +29,7 @@ export const Onboarding = ({navigation}: {navigation: any}): JSX.Element => {
   }, []);
 
   const bottomSheetRef = useRef<BottomSheet>(null);
-  const snapPoints = useMemo(() => ['25%', '20%', '30%'], []);
+  const snapPoints = useMemo(() => ['35%', '35%'], []);
   const renderBackdrop = useCallback(
     (props: any) => (
       <BottomSheetBackdrop
@@ -118,10 +118,8 @@ export const Onboarding = ({navigation}: {navigation: any}): JSX.Element => {
       <BtnBig text="시작하기" onPress={handleExpand} />
       <BottomSheet
         ref={bottomSheetRef}
+        index={1}
         snapPoints={snapPoints}
-        bottomInset={46}
-        detached={true}
-        index={-1}
         backdropComponent={renderBackdrop}
         enablePanDownToClose={true}>
         {goLogin()}
@@ -148,7 +146,6 @@ const styles = StyleSheet.create({
   },
   loginContainer: {
     flex: 1,
-    alignSelf: 'center',
     justifyContent: 'center',
   },
   signupContainer: {
@@ -159,21 +156,19 @@ const styles = StyleSheet.create({
   },
   menu: {
     fontFamily: GlobalStyles.section_title.fontFamily,
-    fontSize: 18,
+    fontSize: width * 14,
     color: GlobalStyles.green.color,
     textAlign: 'right',
   },
   text: {
     fontFamily: GlobalStyles.content.fontFamily,
-    fontSize: 14,
+    fontSize: width * 10,
     color: GlobalStyles.grey_3.color,
     textAlign: 'right',
   },
   googleLoginImg: {
-    justifyContent: 'center',
-    width: 270,
-    height: 50,
-    objectFit: 'scale-down',
+    width: width * 280,
+    objectFit: 'contain',
   },
   blockImg: {
     width: 260,

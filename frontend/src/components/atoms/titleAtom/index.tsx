@@ -17,7 +17,7 @@ export const TitleAtom = ({
   const styles = StyleSheet.create({
     menu: {
       fontFamily: GlobalStyles.section_title.fontFamily,
-      fontSize: width * 19,
+      fontSize: width * 18,
       color: menuColor || GlobalStyles.white_1.color,
     },
     text: {
