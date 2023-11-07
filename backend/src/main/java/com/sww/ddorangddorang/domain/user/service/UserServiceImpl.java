@@ -30,7 +30,7 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
     private final HintRepository hintRepository;
 
-    public void signUp(UsersSignupPostReq usersSignupPostReq) throws Exception {
+    public User signUp(UsersSignupPostReq usersSignupPostReq) throws Exception {
 
         if (userRepository.findByEmail(usersSignupPostReq.getEmail()).isPresent()) {
             throw new Exception("이미 존재하는 이메일입니다.");
@@ -50,6 +50,8 @@ public class UserServiceImpl implements UserService {
 
 //        user.passwordEncode(passwordEncoder);
         userRepository.save(user);
+
+        return user;
     }
 
     @Override

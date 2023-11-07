@@ -1,8 +1,9 @@
 package com.sww.ddorangddorang.auth.filter;
 
+import com.sww.ddorangddorang.auth.dto.AuthenticatedUser;
+import com.sww.ddorangddorang.auth.dto.TokenClaims;
 import com.sww.ddorangddorang.domain.user.entity.User;
 import com.sww.ddorangddorang.domain.user.repository.UserRepository;
-import com.sww.ddorangddorang.global.util.PasswordUtil;
 import com.sww.ddorangddorang.auth.service.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -89,7 +90,11 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
         userRepository.findByRefreshToken(refreshToken)
             .ifPresent(user -> {
                 String reIssuedRefreshToken = reIssueRefreshToken(user);
-                jwtService.sendAccessAndRefreshToken(response, jwtService.createAccessToken(user.getEmail()),
+                jwtService.sendAccessAndRefreshToken(response, jwtService.createAccessToken(
+                        TokenClaims.builder()
+                                .id(user.getId())
+                                .email(user.getEmail())
+                                .build()),
                     reIssuedRefreshToken);
             });
     }
@@ -141,17 +146,13 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
      * SecurityContextHolder.getContext()로 SecurityContext를 꺼낸 후,
      * setAuthentication()을 이용하여 위에서 만든 Authentication 객체에 대한 인증 허가 처리
      */
-    public void saveAuthentication(User myUser) {
-        String password = myUser.getPassword();
-        if (password == null) { // 소셜 로그인 유저의 비밀번호 임의로 설정 하여 소셜 로그인 유저도 인증 되도록 설정
-            password = PasswordUtil.generateRandomPassword();
-        }
+    public void saveAuthentication(User user) {
+//        String password = myUser.getPassword();
+//        if (password == null) { // 소셜 로그인 유저의 비밀번호 임의로 설정 하여 소셜 로그인 유저도 인증 되도록 설정
+//            password = PasswordUtil.generateRandomPassword();
+//        }
 
-        UserDetails userDetailsUser = org.springframework.security.core.userdetails.User.builder()
-            .username(myUser.getEmail())
-            .password(password)
-            .roles(myUser.getRole().substring(5))
-            .build();
+        UserDetails userDetailsUser = AuthenticatedUser.authenticate(user);
 
         Authentication authentication =
             new UsernamePasswordAuthenticationToken(userDetailsUser, null,

@@ -10,7 +10,7 @@ package com.sww.ddorangddorang.domain.user.service;
         import java.util.Optional;
 
 public interface UserService {
-    void signUp(UsersSignupPostReq usersPostReq) throws Exception;
+    User signUp(UsersSignupPostReq usersPostReq) throws Exception;
 
     Optional<User> findByEmail(String email);
 

@@ -1,6 +1,6 @@
 package com.sww.ddorangddorang.domain.opinion.service;
 
-import com.sww.ddorangddorang.auth.dto.CustomOAuth2User;
+import com.sww.ddorangddorang.auth.dto.AuthenticatedUser;
 import com.sww.ddorangddorang.domain.user.exception.UserNotFoundException;
 import com.sww.ddorangddorang.domain.opinion.dto.OpinionCreateReq;
 import com.sww.ddorangddorang.domain.opinion.entity.Opinion;
@@ -21,8 +21,8 @@ public class OpinionServiceImpl implements OpinionService {
     private final OpinionRepository opinionRepository;
     private final UserRepository userRepository;
 
-    public void createOpinion(OpinionCreateReq opinionCreateReq, CustomOAuth2User customOAuth2User) {
-        String email = customOAuth2User.getEmail();
+    public void createOpinion(OpinionCreateReq opinionCreateReq, AuthenticatedUser authenticatedUser) {
+        String email = authenticatedUser.getEmail();
         log.info("email: {}", email);
         User user = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
         log.info("user: {}", user);

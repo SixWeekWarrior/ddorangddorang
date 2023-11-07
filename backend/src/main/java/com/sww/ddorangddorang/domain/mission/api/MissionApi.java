@@ -1,6 +1,6 @@
 package com.sww.ddorangddorang.domain.mission.api;
 
-import com.sww.ddorangddorang.auth.dto.CustomOAuth2User;
+import com.sww.ddorangddorang.auth.dto.AuthenticatedUser;
 import com.sww.ddorangddorang.domain.mission.dto.MissionChangeReq;
 import com.sww.ddorangddorang.domain.mission.dto.MissionCompleteReq;
 import com.sww.ddorangddorang.domain.mission.dto.MissionPerformAndDayCountRes;
@@ -27,25 +27,25 @@ public class MissionApi {
 
     // 유저가 가지고 있는 미션들을 조회하는 메소드
     @GetMapping
-    public CommonResponse<MissionPerformAndDayCountRes> findMissionByUser(@AuthenticationPrincipal CustomOAuth2User customOAuth2User) {
+    public CommonResponse<MissionPerformAndDayCountRes> findMissionByUser(@AuthenticationPrincipal AuthenticatedUser authenticatedUser) {
         log.info("findMissionByUser Controller 진입");
-        return CommonResponse.success(missionPerformService.findMissionByUser(customOAuth2User));
+        return CommonResponse.success(missionPerformService.findMissionByUser(authenticatedUser));
     }
 
 
     // 유저가 미션을 완료했을 때 호출되는 메소드
     @PostMapping
-    public CommonResponse<String> missionComplete(@RequestBody MissionCompleteReq missionCompleteReq, @AuthenticationPrincipal CustomOAuth2User customOAuth2User) {
+    public CommonResponse<String> missionComplete(@RequestBody MissionCompleteReq missionCompleteReq, @AuthenticationPrincipal AuthenticatedUser authenticatedUser) {
         log.info("missionComplete Controller 진입");
-        missionPerformService.missionComplete(missionCompleteReq, customOAuth2User);
+        missionPerformService.missionComplete(missionCompleteReq, authenticatedUser);
         return CommonResponse.success(SUCCESS);
     }
 
     // 미션 변경 요청
     @PutMapping
-    public CommonResponse<String> changeMission(@RequestBody MissionChangeReq missionChangeReq, @AuthenticationPrincipal CustomOAuth2User customOAuth2User) {
+    public CommonResponse<String> changeMission(@RequestBody MissionChangeReq missionChangeReq, @AuthenticationPrincipal AuthenticatedUser authenticatedUser) {
         log.info("changeMission Controller 진입");
-        missionPerformService.changeMission(missionChangeReq, customOAuth2User);
+        missionPerformService.changeMission(missionChangeReq, authenticatedUser);
         return CommonResponse.success(SUCCESS);
     }
 
