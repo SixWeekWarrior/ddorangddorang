@@ -19,16 +19,12 @@ export const BorderedBox = ({
   onInputChange,
   onSkip,
 }: BorderedBoxProps) => {
-  const generationList = ['9', '10'];
+  const generationList = [9, 10];
   const isMajor = ['전공', '비전공'];
   const gender = ['남자', '여자'];
   const campusList = ['서울', '대전', '광주', '구미', '부울경'];
-  const classList = Array.from({length: 20}, (_, index) =>
-    (index + 1).toString(),
-  );
-  const floorList = Array.from({length: 20}, (_, index) =>
-    (index + 1).toString(),
-  );
+  const classList = Array.from({length: 20}, (_, index) => index + 1);
+  const floorList = Array.from({length: 20}, (_, index) => index + 1);
 
   const renderContent = (menu: string) => {
     switch (menu) {
@@ -67,7 +63,7 @@ export const BorderedBox = ({
                 title="반"
                 placeholder="반을 선택하세요"
                 data={classList}
-                setValue={data => onInputChange('class', data)}
+                setValue={data => onInputChange('classes', data)}
               />
               <InfoSelectInput
                 title="층"
@@ -84,7 +80,7 @@ export const BorderedBox = ({
             <InfoTextInput
               title="MBTI"
               placeholder="MBTI를 입력해주세요"
-              setValue={data => onInputChange('MBTI', data)}
+              setValue={data => onInputChange('mbti', data)}
             />
             <InfoTextInput
               title="요즘 고민"
@@ -94,7 +90,7 @@ export const BorderedBox = ({
             <InfoTextInput
               title="좋아하는 것"
               placeholder="좋아하는 것을 입력해주세요"
-              setValue={data => onInputChange('like', data)}
+              setValue={data => onInputChange('likes', data)}
             />
             <InfoTextInput
               title="싫어하는 것"
