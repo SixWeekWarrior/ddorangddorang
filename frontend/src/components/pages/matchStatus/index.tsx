@@ -9,7 +9,7 @@ import MenuTop from '../../molecules/menuTop';
 import GlobalStyles from '../../../styles/GlobalStyles';
 import greenArrowRightImg from '../../../assets/greenArrowRightImg.png';
 import BottomSheet, {BottomSheetBackdrop} from '@gorhom/bottom-sheet';
-import {useCallback, useRef, useMemo, useEffect} from 'react';
+import {useCallback, useRef, useMemo} from 'react';
 
 const MatchStatus = ({navigation, route}): JSX.Element => {
   const showNotice = route.params ? route.params.showNotice : false;

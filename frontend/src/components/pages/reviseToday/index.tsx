@@ -2,15 +2,16 @@ import {StyleSheet, View} from 'react-native';
 import MenuTop from '../../molecules/menuTop';
 import GlobalStyles from '../../../styles/GlobalStyles';
 import BtnBig from '../../atoms/btnBig';
-import InputInfoMolecules from '../../molecules/inputInfoMolecules';
+// import InputInfoMolecules from '../../molecules/inputInfoMolecules';
 import {useState} from 'react';
+import InfoTextInput from '../../atoms/infoTextInput';
 
 export const ReviseToday = ({navigation}: {navigation: any}) => {
   const [inputValues, setInputValues] = useState({
-    currentMood: '',
-    currentColor: '',
+    mood: '',
+    color: '',
   });
-  const handleInputChange = (title: string, value: string) => {
+  const onInputChange = (title: string, value: string) => {
     setInputValues(prevState => ({
       ...prevState,
       [title]: value,
@@ -30,21 +31,15 @@ export const ReviseToday = ({navigation}: {navigation: any}) => {
       />
       <View style={styles.innerContainer}>
         <View style={[styles.flexColumn, {height: '50%', rowGap: 15}]}>
-          <InputInfoMolecules
+          <InfoTextInput
             title="기분"
             placeholder="오늘 기분을 알려주세요"
-            type="text"
-            onInputChange={(text: string) =>
-              handleInputChange('currentMood', text)
-            }
+            setValue={data => onInputChange('mood', data)}
           />
-          <InputInfoMolecules
+          <InfoTextInput
             title="입은 옷"
-            placeholder="입은 옷 색깔을 알려주세요"
-            type="text"
-            onInputChange={(text: string) =>
-              handleInputChange('currentColor', text)
-            }
+            placeholder="옷 색깔을 알려주세요"
+            setValue={data => onInputChange('color', data)}
           />
         </View>
       </View>

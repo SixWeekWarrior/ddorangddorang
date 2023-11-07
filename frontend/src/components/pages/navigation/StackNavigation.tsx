@@ -18,7 +18,6 @@ import ReviseSsafy from '../reviseSsafy';
 import ReviseEtc from '../reviseEtc';
 import SendOpinion from '../sendOpinion';
 import MatchStatus from '../matchStatus';
-import Home from '../home';
 import MatchGuess from '../matchGuess';
 
 const StackNavigation = () => {
