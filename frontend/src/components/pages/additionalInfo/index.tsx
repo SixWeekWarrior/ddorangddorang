@@ -1,5 +1,5 @@
 import {StyleSheet, View} from 'react-native';
-import AddInfoMolecules, {BorderedBox} from '../../molecules/BorderedBox';
+import {BorderedBox} from '../../molecules/BorderedBox';
 import {useState} from 'react';
 import BtnBig from '../../atoms/btnBig';
 import {userApi} from '../../../apis';
