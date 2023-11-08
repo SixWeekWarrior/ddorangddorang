@@ -3,11 +3,9 @@ import MenuTop from '../../molecules/menuTop';
 import GlobalStyles from '../../../styles/GlobalStyles';
 import BtnBig from '../../atoms/btnBig';
 import InfoAtom from '../../atoms/infoAtom';
-import {useNavigation} from '@react-navigation/native';
 
-export const ReviseInfo = ({route}: {route: any}): JSX.Element => {
+export const ReviseInfo = ({navigation, route}: any): JSX.Element => {
   const {destination} = route.params;
-  const navigation = useNavigation();
 
   const renderTitle = () => {
     switch (destination) {
