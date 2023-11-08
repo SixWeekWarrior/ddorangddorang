@@ -12,7 +12,7 @@ import java.util.List;
 
 public class MainApplication extends Application implements ReactApplication {
 
-  private final ReactNativeHost mReactNativeHost =
+  private final ReactNativeHost mReactNativeHost =r
       new DefaultReactNativeHost(this) {
         @Override
         public boolean getUseDeveloperSupport() {
