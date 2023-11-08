@@ -528,8 +528,8 @@ public class RoomServiceImpl implements RoomService {
         throw new PlayersNotEnoughException();
     }
 
-    public Integer getRoom(Long id) {
-        return userRepository.findById(id).orElseThrow(UserNotFoundException::new).getRoom().getAccessCode();
+    public Room getRoom(Long id) {
+        return userRepository.findById(id).orElseThrow(UserNotFoundException::new).getRoom();
     }
 
     @Transactional

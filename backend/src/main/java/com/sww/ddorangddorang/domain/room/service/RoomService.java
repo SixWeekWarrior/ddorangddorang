@@ -5,6 +5,7 @@ import com.sww.ddorangddorang.domain.room.dto.JoinRoomReq;
 import com.sww.ddorangddorang.domain.room.dto.RoomInfoReq;
 import com.sww.ddorangddorang.domain.room.dto.ShowUsersRes;
 import com.sww.ddorangddorang.domain.room.dto.WaitingListRes;
+import com.sww.ddorangddorang.domain.room.entity.Room;
 import java.util.List;
 
 public interface RoomService {
@@ -27,7 +28,7 @@ public interface RoomService {
 
     Boolean checkAndStartGame(AuthenticatedUser authenticatedUser);
 
-    Integer getRoom(Long id);
+    Room getRoom(Long id);
 
     List<WaitingListRes> getWaitingList(Long userId);
 }
