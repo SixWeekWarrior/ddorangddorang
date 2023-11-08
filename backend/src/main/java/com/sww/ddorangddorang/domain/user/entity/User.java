@@ -54,6 +54,8 @@ public class User {
     private Long status;                // BIGINT - FK(MASTER_CODE)
     private LocalDateTime deletedAt;    // TIMESTAMP
     private Integer gameCount = 0;
+    private String mood;
+    private String color;
 
     @Builder(builderMethodName = "signup", builderClassName = "Signup")
     public User(String name, String providerType, String role, Integer generation, Boolean isMajor,
@@ -126,5 +128,10 @@ public class User {
     public void addProviderInfo(String email, String providerType) {
         this.email = email;
         this.providerType = providerType;
+    }
+
+    public void updateColorAndMood(String color, String mood) {
+        this.color = color;
+        this.mood = mood;
     }
 }
