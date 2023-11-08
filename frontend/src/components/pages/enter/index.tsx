@@ -1,5 +1,5 @@
 import {Text, View, Image, StyleSheet} from 'react-native';
-import GlobalStyles, {height, width} from '../../../styles/GlobalStyles';
+import GlobalStyles, {height} from '../../../styles/GlobalStyles';
 import blockImg from '../../../assets/blockImg.png';
 import BtnMid from '../../atoms/btnMid';
 import {LogBox} from 'react-native';
@@ -75,12 +75,9 @@ export const Enter = ({navigation}: {navigation: any}): JSX.Element => {
       <BottomSheet
         ref={bottomSheetRef}
         snapPoints={snapPoints}
-        bottomInset={46}
-        detached={true}
         index={0}
         backdropComponent={renderBackdrop}
-        enablePanDownToClose={true}
-        style={styles.sheetContainer}>
+        enablePanDownToClose={true}>
         {congrats()}
       </BottomSheet>
     </View>
@@ -108,9 +105,7 @@ const styles = StyleSheet.create({
   innerContainer: {
     alignSelf: 'center',
   },
-  sheetContainer: {
-    marginHorizontal: 20,
-  },
+
   contentContainer: {
     flex: 1,
     alignItems: 'center',
@@ -160,9 +155,9 @@ const styles = StyleSheet.create({
   },
   logout: {
     fontFamily: GlobalStyles.section_title.fontFamily,
-    marginLeft: width * 260,
+    marginLeft: height * 260,
     marginTop: height * 20,
-    fontSize: width * 10,
+    fontSize: height * 10,
     color: GlobalStyles.grey_3.color,
   },
 });

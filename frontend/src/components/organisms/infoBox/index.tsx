@@ -2,7 +2,7 @@ import {Image, Pressable, StyleSheet, Text, View} from 'react-native';
 import greenArrowRightImg from '../../../assets/greenArrowRightImg.png';
 import yellowArrowRightImg from '../../../assets/yellowArrowRightImg.png';
 import whiteArrowRightImg from '../../../assets/whiteArrowRightImg.png';
-import GlobalStyles, {width} from '../../../styles/GlobalStyles';
+import GlobalStyles, {height} from '../../../styles/GlobalStyles';
 import InfoAtom from '../../atoms/infoAtom';
 import token from '../../../utils/token';
 
@@ -19,7 +19,7 @@ const InnerInfo = ({navigation}: {navigation: any}): JSX.Element => {
       </View>
       <View style={style.middle}>
         <Text style={style.bigFont}>8일차</Text>
-        <Text style={style.regFont}>지금까지 6개 수행😀</Text>
+        <Text style={style.regFont}>지금까지 6개 수행 😀</Text>
       </View>
       <Pressable
         onPress={() => navigation.navigate('MyGroup')}
@@ -90,7 +90,7 @@ const InfoBox = ({navigation, destination}: InfoBoxProps): JSX.Element => {
         return <InnerInfo navigation={navigation} />;
       case 'InfoToday':
         return (
-          <View style={[style.flexColumn, {flexWrap: 'wrap'}]}>
+          <View style={[style.flexColumn]}>
             <InfoAtom title="기분" content="약간 흐림" />
             <InfoAtom title="입은 옷" content="빨간색" />
           </View>
@@ -236,8 +236,8 @@ const InfoBox = ({navigation, destination}: InfoBoxProps): JSX.Element => {
 const style = StyleSheet.create({
   container: {
     flex: 1,
-    marginLeft: width * 24,
-    marginRight: width * 24,
+    marginLeft: height * 24,
+    marginRight: height * 24,
     backgroundColor: GlobalStyles.white_2.color,
     borderWidth: 0.5,
     borderStyle: 'solid',
@@ -246,13 +246,13 @@ const style = StyleSheet.create({
   },
   flexColumn: {
     flexDirection: 'column',
-    marginLeft: width * 24,
-    marginBottom: width * 24,
-    columnGap: width * 1.4,
+    marginLeft: height * 24,
+    marginBottom: height * 24,
+    columnGap: height * 1.4,
   },
   titleFont: {
-    fontFamily: GlobalStyles.home_title.fontFamily,
-    fontSize: width * 16,
+    fontFamily: GlobalStyles.bold.fontFamily,
+    fontSize: height * 16,
     letterSpacing: -1,
     marginLeft: 15,
     marginTop: 5,
@@ -260,17 +260,18 @@ const style = StyleSheet.create({
   midFont: {
     color: GlobalStyles.grey_2.color,
     fontFamily: 'NotoSansKR-Medium',
-    fontSize: width * 14,
+    fontSize: height * 14,
     letterSpacing: -1,
     marginLeft: 15,
     marginTop: -10,
-    marginBottom: width * 10,
+    marginBottom: height * 10,
   },
   arrowImg: {
     marginLeft: 10,
     marginRight: 30,
     width: 6,
     height: 11,
+    marginBottom: height * 10,
   },
   coloredArrowImg: {
     position: 'absolute',
@@ -299,24 +300,25 @@ const style = StyleSheet.create({
   },
   coloredFont: {
     fontFamily: GlobalStyles.section_title.fontFamily,
-    fontSize: width * 14,
+    fontSize: height * 14,
     color: GlobalStyles.yellow.color,
     letterSpacing: -1,
   },
   bigFont: {
     fontFamily: GlobalStyles.home_title.fontFamily,
-    fontSize: width * 20,
+    fontSize: height * 20,
     color: GlobalStyles.white_2.color,
-    marginTop: -20,
+    marginTop: -height * 30,
   },
   regFont: {
-    fontSize: width * 14,
+    fontSize: height * 14,
     color: GlobalStyles.white_2.color,
   },
   smFont: {
-    fontSize: width * 12,
+    fontSize: height * 12,
     color: GlobalStyles.white_2.color,
     letterSpacing: -1,
+    marginBottom: height * 12,
   },
 });
 export default InfoBox;

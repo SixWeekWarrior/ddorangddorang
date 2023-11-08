@@ -6,12 +6,13 @@ import BtnBig from '../../atoms/btnBig';
 import {useState} from 'react';
 
 export const MakeRoom = ({navigation: {navigate}}): JSX.Element => {
-  const [multiSliderValue, setMultiSliderValue] = useState([30, 70]);
+  const [multiSliderValue, setMultiSliderValue] = useState([10, 70]);
   const [sliderValue, setSliderValue] = useState(15);
   const selectedCount = useState(0);
   const handleMultiSliderChange = (values: number[]) => {
     setMultiSliderValue(values);
   };
+
   const handleSliderChange = (values: number) => {
     setSliderValue(values);
   };
@@ -19,7 +20,7 @@ export const MakeRoom = ({navigation: {navigate}}): JSX.Element => {
     <View style={styles.container}>
       <MenuTop
         menu="그룹 만들기"
-        text={`마니또를 함께 할 그룹을 만들고\n친구들을 초대하세요!`}
+        text={`그룹을 만들고\n친구들을 초대하세요!`}
       />
       <RangeSlider
         multiSliderValueProp={multiSliderValue}

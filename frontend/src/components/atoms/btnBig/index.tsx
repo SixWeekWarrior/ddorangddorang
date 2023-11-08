@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {StyleSheet, Pressable, Text} from 'react-native';
-import GlobalStyles, {height, width} from '../../../styles/GlobalStyles';
+import GlobalStyles, {height} from '../../../styles/GlobalStyles';
 
 interface BtnBigProps {
   onPress: () => void;
@@ -20,7 +20,7 @@ export const BtnBig = ({onPress, text, disabled}: BtnBigProps) => {
 };
 const styles = StyleSheet.create({
   btnContainer: {
-    width: width * 326,
+    width: height * 326,
     height: height * 48,
     justifyContent: 'center',
     alignSelf: 'center',
@@ -31,8 +31,8 @@ const styles = StyleSheet.create({
   },
   btn: {
     fontFamily: GlobalStyles.btn.fontFamily,
-    fontSize: width * 16,
-    color: GlobalStyles.white_1.color,
+    fontSize: height * 16,
+    color: GlobalStyles.white_2.color,
     textAlign: 'center',
   },
   disabled: {

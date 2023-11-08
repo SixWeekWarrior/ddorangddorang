@@ -2,10 +2,10 @@ import {StyleSheet, View, Image, Text} from 'react-native';
 import MenuTop from '../../molecules/menuTop';
 import pinkEyeImg from '../../../assets/pinkEyeImg.png';
 import yellowEyeImg from '../../../assets/yellowEyeImg.png';
-import GlobalStyles, {height, width} from '../../../styles/GlobalStyles';
+import GlobalStyles, {height} from '../../../styles/GlobalStyles';
 import BtnBig from '../../atoms/btnBig';
 
-export const MissionToday = ({navigation: {navigate}}): JSX.Element => {
+export const MissionToday = ({navigation}: {navigation: any}): JSX.Element => {
   return (
     <View style={style.container}>
       <MenuTop
@@ -21,7 +21,7 @@ export const MissionToday = ({navigation: {navigate}}): JSX.Element => {
         </Text>
       </View>
       <Image source={yellowEyeImg} style={style.yellowEyeImg} />
-      <BtnBig text="수행하기" onPress={() => navigate('GoMission')} />
+      <BtnBig text="수행하기" onPress={() => navigation('GoMission')} />
     </View>
   );
 };
@@ -38,7 +38,7 @@ const style = StyleSheet.create({
   },
 
   yellowEyeImg: {
-    width: width * 10,
+    width: height * 10,
     height: height * 5,
     resizeMode: 'cover',
   },
@@ -60,7 +60,7 @@ const style = StyleSheet.create({
   },
   missionText: {
     fontFamily: GlobalStyles.home_title.fontFamily,
-    fontSize: width * 16,
+    fontSize: height * 16,
     color: GlobalStyles.black.color,
     marginTop: -20,
   },
