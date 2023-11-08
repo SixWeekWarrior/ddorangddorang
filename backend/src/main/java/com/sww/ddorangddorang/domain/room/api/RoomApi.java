@@ -3,9 +3,11 @@ package com.sww.ddorangddorang.domain.room.api;
 import com.sww.ddorangddorang.auth.dto.AuthenticatedUser;
 import com.sww.ddorangddorang.domain.room.dto.AccessCodeReq;
 import com.sww.ddorangddorang.domain.room.dto.JoinRoomReq;
+import com.sww.ddorangddorang.domain.room.dto.RoomGetRes;
 import com.sww.ddorangddorang.domain.room.dto.RoomInfoReq;
 import com.sww.ddorangddorang.domain.room.dto.ShowUsersRes;
 import com.sww.ddorangddorang.domain.room.dto.WaitingListRes;
+import com.sww.ddorangddorang.domain.room.entity.Room;
 import com.sww.ddorangddorang.domain.room.service.RoomService;
 import com.sww.ddorangddorang.global.common.CommonResponse;
 import java.util.List;
@@ -32,11 +34,11 @@ public class RoomApi {
     private final static String SUCCESS = "SUCCESS";
 
     @GetMapping
-    public CommonResponse<Integer> getRoom(@AuthenticationPrincipal AuthenticatedUser authenticatedUser) {
+    public CommonResponse<RoomGetRes> getRoom(@AuthenticationPrincipal AuthenticatedUser authenticatedUser) {
         log.info("RoomApi_getRoom start");
-        Integer accessCode = roomService.getRoom(authenticatedUser.getId());
-        log.info("RoomApi_getRoom end: {}", accessCode);
-        return CommonResponse.success(accessCode);
+        Room room = roomService.getRoom(authenticatedUser.getId());
+        log.info("RoomApi_getRoom end: {}", room);
+        return CommonResponse.success(RoomGetRes.toDto(room));
     }
 
     @PostMapping
