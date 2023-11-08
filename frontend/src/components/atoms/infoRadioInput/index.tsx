@@ -19,7 +19,7 @@ const InfoRadioInput = ({
       <Text style={styles.border}>|</Text>
       <View style={styles.radioRowStyle}>
         <View style={styles.radioInnerContainer}>
-          <Text style={styles.radioText}>{data[0]}</Text>
+          <Text style={styles.radioText}>전공</Text>
           <RadioButton
             color="#34A853"
             value={data[0]}
@@ -31,7 +31,7 @@ const InfoRadioInput = ({
           />
         </View>
         <View style={styles.radioInnerContainer}>
-          <Text style={styles.radioText}>{data[1]}</Text>
+          <Text style={styles.radioText}>비전공</Text>
           <RadioButton
             color="#34A853"
             value={data[1]}

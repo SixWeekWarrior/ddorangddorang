@@ -20,8 +20,8 @@ export const BorderedBox = ({
   onSkip,
 }: BorderedBoxProps) => {
   const generationList = [9, 10];
-  const isMajor = ['전공', '비전공'];
-  const gender = ['남자', '여자'];
+  const isMajor = [true, false];
+  const gender = [true, false];
   const campusList = ['서울', '대전', '광주', '구미', '부울경'];
   const classList = Array.from({length: 20}, (_, index) => index + 1);
   const floorList = Array.from({length: 20}, (_, index) => index + 1);

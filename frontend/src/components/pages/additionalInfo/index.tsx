@@ -25,7 +25,7 @@ export const AdditionalInfo = ({
       await setTmpUserInfo(prevUserInfo => ({
         ...prevUserInfo,
         mbti: '',
-        likes: '',
+        like: '',
         hate: '',
         worry: '',
       }));
@@ -41,7 +41,6 @@ export const AdditionalInfo = ({
       await setUserInfo(tmpUserInfo);
       navigation.navigate('Enter');
     } catch (error) {
-      console.error(error);
       navigation.navigate('Onboarding');
     }
   };

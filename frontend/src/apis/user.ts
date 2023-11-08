@@ -18,12 +18,9 @@ const postLogin = async (idToken: string) => {
       })
       .post(serverUrl + '/users/login');
 
-    await tokenUtil.setToken(
-      res.data.data.accessToken,
-      res.data.data.refreshToken,
-    );
     return res.data;
   } catch (e) {
+    // console.log(e);
     throw new Error('ERROR IN POST_LOGIN');
   }
 };
@@ -39,6 +36,7 @@ const postSignup = async (data: UserInfo) => {
     );
     return res.data;
   } catch (e) {
+    console.log(e);
     throw new Error('ERROR IN POST_SIGN_UP');
   }
 };

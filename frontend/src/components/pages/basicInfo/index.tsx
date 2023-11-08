@@ -7,10 +7,8 @@ import {useRecoilState} from 'recoil';
 export const BasicInfo = ({navigation}: {navigation: any}): JSX.Element => {
   const [tmpUserInfo, setTmpUserInfo] = useRecoilState(user.TmpUserInfoState);
 
-  const {name, gender, generation, campus, isMajor, classes, floor} =
-    tmpUserInfo;
+  const {gender, generation, campus, isMajor, classes, floor} = tmpUserInfo;
   const isAllInputsFilled =
-    name !== '' &&
     gender !== undefined &&
     generation !== 0 &&
     campus !== 0 &&
