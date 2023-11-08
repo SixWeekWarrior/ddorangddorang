@@ -4,10 +4,14 @@ import GlobalStyles, {height} from '../../../styles/GlobalStyles';
 import BtnBig from '../../atoms/btnBig';
 import {useState} from 'react';
 
-export const WaitList = ({navigation, route}): JSX.Element => {
-  const {sliderValue, multiSliderValue} = route.params;
-  const [selectedCount, setSelectedCount] = useState(0);
-  const [selectedProfiles, setSelectedProfiles] = useState([]);
+export const WaitList = ({
+  navigation,
+  route,
+}: {
+  navigation: any;
+  route: any;
+}): JSX.Element => {
+  const {minMember, maxMember, selectedCount, setSelectedCount} = route.params;
   const [isAllChecked, setisAllChecked] = useState<boolean>(false);
 
   const [data, setData] = useState(
@@ -42,16 +46,12 @@ export const WaitList = ({navigation, route}): JSX.Element => {
   };
 
   const onApprove = () => {
-    if (selectedCount < multiSliderValue[0]) {
-      alert(`최소 선택인원은 ${multiSliderValue[0]}명입니다.`);
-    } else if (selectedCount > multiSliderValue[1]) {
-      alert(`최대 선택인원 ${multiSliderValue[1]}명을 초과하였습니다.`);
+    if (selectedCount < minMember) {
+      alert(`최소 선택인원은 ${minMember}명입니다.`);
+    } else if (selectedCount > maxMember) {
+      alert(`최대 선택인원 ${maxMember}명을 초과하였습니다.`);
     } else {
-      navigation.navigate('BeforeStart', {
-        sliderValue: sliderValue,
-        multiSliderValue: multiSliderValue,
-        selectedCount: selectedCount,
-      });
+      navigation.navigate('BeforeStart');
     }
   };
 
@@ -88,9 +88,8 @@ export const WaitList = ({navigation, route}): JSX.Element => {
       <View style={styles.firstView}>
         <Text style={styles.titleText}>50명이 대기중입니다.</Text>
         <Text style={styles.miniText}>
-          최소 <Text style={styles.numberText}>{multiSliderValue[0]}</Text>명
-          최대 <Text style={styles.numberText}>{multiSliderValue[1]}</Text>명을
-          선택해주세요
+          최소 <Text style={styles.numberText}>{minMember}</Text>명 최대{' '}
+          <Text style={styles.numberText}>{maxMember}</Text>명을 선택해주세요
         </Text>
       </View>
       <View style={styles.secondView}>

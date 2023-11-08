@@ -3,17 +3,20 @@ import GlobalStyles from '../../../styles/GlobalStyles';
 import MenuTop from '../../molecules/menuTop';
 import RangeSlider from '../../atoms/rangeSlider';
 import BtnBig from '../../atoms/btnBig';
-import {useState} from 'react';
-import {useSetRecoilState} from 'recoil';
+import {useEffect, useState} from 'react';
 import {roomApi} from '../../../apis';
-
-import room from '../../../modules/room';
+import {RoomInfo} from '../../../types/room';
+import BeforeStart from '../beforeStart';
 
 export const MakeRoom = ({navigation}: {navigation: any}): JSX.Element => {
   const [multiSliderValue, setMultiSliderValue] = useState([30, 70]);
   const [sliderValue, setSliderValue] = useState(15);
-  const [selectedCount, setSelectedCount] = useState(0);
-  const setRoomInfo = useSetRecoilState(room.RoomInfoState);
+  const [tmpRoomInfo, setTmpRoomInfo] = useState<RoomInfo>({
+    isOpen: true,
+    maxMember: 0,
+    minMember: 0,
+    duration: 0,
+  });
 
   const handleMultiSliderChange = (values: number[]) => {
     setMultiSliderValue(values);
@@ -23,27 +26,19 @@ export const MakeRoom = ({navigation}: {navigation: any}): JSX.Element => {
     setSliderValue(values);
   };
 
+  useEffect(() => {
+    setTmpRoomInfo(prevTmpRoomInfo => ({
+      ...prevTmpRoomInfo,
+      minMember: multiSliderValue[0],
+      maxMember: multiSliderValue[1],
+      duration: sliderValue,
+    }));
+  }, [multiSliderValue, sliderValue]);
+
   const handleSubmit = async () => {
     try {
-      await setRoomInfo({
-        isOpen: true,
-        minMember: multiSliderValue[0],
-        maxMember: multiSliderValue[1],
-        duration: sliderValue,
-      });
-      const updatedRoomInfo = {
-        isOpen: true,
-        minMember: multiSliderValue[0],
-        maxMember: multiSliderValue[1],
-        duration: sliderValue,
-      };
-
-      await roomApi.postRoom(updatedRoomInfo);
-      navigation.navigate('BeforeStart', {
-        sliderValue: sliderValue,
-        multiSliderValue: multiSliderValue,
-        selectedCount: selectedCount,
-      });
+      await roomApi.postRoom(tmpRoomInfo);
+      navigation.navigate(BeforeStart);
     } catch (error) {
       console.error(error);
     }

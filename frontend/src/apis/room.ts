@@ -7,7 +7,15 @@ const client = apiInstance();
 // 방 생성 API
 const postRoom = async (data: RoomInfo) => {
   try {
-    const res = await client.post('/rooms', data);
+    console.log('postRoom_data', data);
+
+    const res = await client.post('/rooms', {
+      isOpen: data.isOpen,
+      minMember: data.minMember,
+      maxMember: data.maxMember,
+      duration: data.duration,
+    });
+
     return res.data;
   } catch (e) {
     console.log(e);
@@ -35,10 +43,21 @@ const postRoomStart = async () => {
   }
 };
 
+// 나의 room 정보 가져오기 API
+const getRoomInfo = async () => {
+  try {
+    const res = await client.get('/rooms/start');
+    return res.data;
+  } catch (e) {
+    throw new Error('ERROR IN POST_ROOM_START');
+  }
+};
+
 const room = {
   postRoom,
   putRoom,
   postRoomStart,
+  getRoomInfo,
 };
 
 export default room;

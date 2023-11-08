@@ -4,13 +4,13 @@ import GlobalStyles from '../../../styles/GlobalStyles';
 import copyImg from '../../../assets/copy.png';
 
 type CodeFormProps = {
-  code: string;
+  code: number;
 };
 
 export const CodeForm = ({code}: CodeFormProps) => {
-  const onCopyCode = async (code: string) => {
+  const onCopyCode = async (code: number) => {
     try {
-      await Clipboard.setString(code);
+      await Clipboard.setString(code.toString());
       // Alert.alert('복사 완료', '코드가 복사되었습니다.');
     } catch (e) {
       Alert.alert('복사 실패', '코드 복사에 실패하였습니다.');
