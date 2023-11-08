@@ -68,10 +68,11 @@ public class UserApi {
     public CommonResponse<UsersSignupPostRes> signUp(@RequestHeader("Authorization") String authorizationHeader, @RequestBody UsersSignupPostReq usersSignupPostReq) throws Exception {
         log.info("UserApi_signup starts");
 
+        log.info("UserApi_signup, header: {}", authorizationHeader.substring(7));
         Jwt jwt = NimbusJwtDecoder.withJwkSetUri("https://www.googleapis.com/oauth2/v3/certs").build().decode(authorizationHeader.substring(7));
 
         String email = jwt.getClaim("email");
-        log.info("UserApi_login, email: {}", email);
+        log.info("UserApi_signup, email: {}", email);
 
         User user = usersSignupPostReq.toUser();
         // TODO: Need to fix if we add other OAuth

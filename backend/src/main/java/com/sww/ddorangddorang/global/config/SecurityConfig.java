@@ -50,7 +50,6 @@ public class SecurityConfig {
                 .requestMatchers("/","/css/**","/images/**","/js/**","/favicon.ico","/h2-console/**").permitAll()
                 .requestMatchers("/users/login").permitAll()
                 .requestMatchers("/users/signup").permitAll()
-                .requestMatchers("/missions/**").permitAll()   // permitAll for test
                 .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
                 .anyRequest().authenticated());
 //                .anyRequest().permitAll());
