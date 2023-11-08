@@ -1,6 +1,6 @@
 import {useEffect} from 'react';
 import {View, Image, StyleSheet, TouchableOpacity, Text} from 'react-native';
-import GlobalStyles, {width} from '../../../styles/GlobalStyles';
+import GlobalStyles, {height} from '../../../styles/GlobalStyles';
 import blockImg from '../../../assets/blockImg.png';
 import logoImg from '../../../assets/logoImg.png';
 import TitleAtom from '../../atoms/titleAtom';
@@ -45,17 +45,17 @@ export const Onboarding = ({navigation}: {navigation: any}): JSX.Element => {
     try {
       await GoogleSignin.hasPlayServices();
       const loginInfo = await GoogleSignin.signIn();
-      console.log(loginInfo.idToken);
-      // console.log(loginInfo.user.name);
+      // console.log(loginInfo.idToken);
+      console.log(loginInfo.user.name);
       if (loginInfo.idToken) {
         userApi
           .postLogin(loginInfo.idToken)
           .then(data => {
-            console.log('TEST-data: ', data);
+            // console.log('TEST-data: ', data);
             data.success
               ? tokenUtil
                   .setToken(data.data.accessToken, data.data.refreshToken)
-                  .then(navigation.navigate('Enter'))
+                  .then(navigation.navigate('Enter', 'login'))
               : navigation.navigate('BasicInfo');
           })
           .catch(e => {
@@ -157,18 +157,18 @@ const styles = StyleSheet.create({
   },
   menu: {
     fontFamily: GlobalStyles.section_title.fontFamily,
-    fontSize: width * 14,
+    fontSize: height * 14,
     color: GlobalStyles.green.color,
     textAlign: 'right',
   },
   text: {
     fontFamily: GlobalStyles.content.fontFamily,
-    fontSize: width * 10,
+    fontSize: height * 10,
     color: GlobalStyles.grey_3.color,
     textAlign: 'right',
   },
   googleLoginImg: {
-    width: width * 280,
+    width: height * 280,
     objectFit: 'contain',
   },
   blockImg: {

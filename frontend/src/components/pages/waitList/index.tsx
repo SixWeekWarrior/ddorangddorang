@@ -1,6 +1,6 @@
 import {View, StyleSheet, Text, Pressable, FlatList} from 'react-native';
 import MenuTop from '../../molecules/menuTop';
-import GlobalStyles from '../../../styles/GlobalStyles';
+import GlobalStyles, {height} from '../../../styles/GlobalStyles';
 import BtnBig from '../../atoms/btnBig';
 import {useState} from 'react';
 
@@ -8,6 +8,7 @@ export const WaitList = ({navigation, route}): JSX.Element => {
   const {sliderValue, multiSliderValue} = route.params;
   const [selectedCount, setSelectedCount] = useState(0);
   const [selectedProfiles, setSelectedProfiles] = useState([]);
+  const [isAllChecked, setisAllChecked] = useState<boolean>(false);
 
   const [data, setData] = useState(
     new Array(50).fill(null).map((_, index) => ({
@@ -24,7 +25,7 @@ export const WaitList = ({navigation, route}): JSX.Element => {
       item.selected = true;
       return item;
     });
-
+    setisAllChecked(pre => !pre);
     setSelectedCount(newData.length);
     setData(newData);
   };
@@ -35,7 +36,7 @@ export const WaitList = ({navigation, route}): JSX.Element => {
       item.selected = false;
       return item;
     });
-
+    setisAllChecked(pre => !pre);
     setSelectedCount(0);
     setData(newData);
   };
@@ -82,9 +83,9 @@ export const WaitList = ({navigation, route}): JSX.Element => {
     <View style={styles.container}>
       <MenuTop
         menu="대기목록"
-        text="승인 대기 중인 사용자 목록입니다. 승인할 사용자를 추가해주세요."
+        text={`대기 중인 친구입니다.\n승인할 찬구를 추가하세요.`}
       />
-      <View style={styles.noticeContainer}>
+      <View style={styles.firstView}>
         <Text style={styles.titleText}>50명이 대기중입니다.</Text>
         <Text style={styles.miniText}>
           최소 <Text style={styles.numberText}>{multiSliderValue[0]}</Text>명
@@ -92,26 +93,21 @@ export const WaitList = ({navigation, route}): JSX.Element => {
           선택해주세요
         </Text>
       </View>
-      <View style={styles.selectContainer}>
-        <Pressable onPress={selectAll}>
-          <Text style={styles.selectText}>전체선택</Text>
+      <View style={styles.secondView}>
+        <Pressable onPress={isAllChecked ? selectAll : unselectAll}>
+          <Text style={styles.selectText}>
+            {isAllChecked ? '전체 선택' : '전체 선택 해제'}
+          </Text>
         </Pressable>
-        <Pressable onPress={unselectAll}>
-          <Text style={styles.selectText}>전체선택 해제</Text>
-        </Pressable>
+        <Text style={styles.selectText}>선택 인원 : {selectedCount}명</Text>
       </View>
-      <View style={styles.listContainer}>
+      <View style={styles.thirdView}>
         <FlatList
           data={data}
           renderItem={renderItem}
           keyExtractor={item => item.id}
-          // contentContainerStyle={styles.listContainer}
           numColumns={4}
-          style={{flexGrow: 0}}
         />
-      </View>
-      <View style={styles.btnContainer}>
-        <Text style={styles.selectedText}>선택 인원 : {selectedCount}명</Text>
       </View>
       <BtnBig onPress={onApprove} text="승인하기" />
     </View>
@@ -123,16 +119,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: GlobalStyles.white_2.color,
   },
-  noticeContainer: {
-    flex: 1,
-  },
-  selectContainer: {
-    width: '80%',
-    flexDirection: 'row',
-    alignSelf: 'center',
-    justifyContent: 'space-between',
-    marginBottom: 10,
-  },
+
   listContainer: {
     flex: 4,
     alignSelf: 'center',
@@ -168,7 +155,7 @@ const styles = StyleSheet.create({
   },
   titleText: {
     fontFamily: GlobalStyles.home_title.fontFamily,
-    fontSize: GlobalStyles.home_title.fontSize,
+    fontSize: height * 16,
     color: GlobalStyles.grey_2.color,
     marginLeft: 30,
     marginTop: 20,
@@ -183,25 +170,44 @@ const styles = StyleSheet.create({
   },
   miniText: {
     fontFamily: GlobalStyles.sub_title.fontFamily,
-    fontSize: GlobalStyles.sub_title.fontSize,
+    fontSize: height * 12,
     color: GlobalStyles.orange.color,
     marginLeft: 30,
     marginTop: -20,
   },
   numberText: {
     fontFamily: GlobalStyles.section_title.fontFamily,
-    fontSize: GlobalStyles.section_title.fontSize,
+    fontSize: height * 15,
     color: GlobalStyles.orange.color,
   },
   selectText: {
     fontFamily: GlobalStyles.section_title.fontFamily,
     color: GlobalStyles.blue.color,
-    fontSize: 17,
+    fontSize: height * 13,
   },
   selectBtn: {
     width: 100,
     height: 100,
     color: GlobalStyles.blue.color,
+  },
+
+  firstView: {
+    flex: 0.2,
+  },
+
+  secondView: {
+    flex: 0.1,
+    width: '80%',
+    flexDirection: 'row',
+    alignSelf: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 10,
+  },
+
+  thirdView: {
+    flex: 0.5,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 

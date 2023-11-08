@@ -1,5 +1,5 @@
 import {Text, View, Image, StyleSheet} from 'react-native';
-import GlobalStyles, {height, width} from '../../../styles/GlobalStyles';
+import GlobalStyles, {height} from '../../../styles/GlobalStyles';
 import blockImg from '../../../assets/blockImg.png';
 import BtnMid from '../../atoms/btnMid';
 import {LogBox} from 'react-native';
@@ -9,12 +9,17 @@ import {useCallback, useRef, useMemo} from 'react';
 import congratsImg from '../../../assets/congratsImg.png';
 import token from '../../../utils/token';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
+import {useRecoilState} from 'recoil';
+import user from '../../../modules/user';
 
 LogBox.ignoreLogs([
   'Non-serializable values were found in the navigation state',
 ]);
 
-export const Enter = ({navigation}: {navigation: any}): JSX.Element => {
+export const Enter = ({navigation, route}): JSX.Element => {
+  const {params} = route;
+
+  const [userInfo, setUserInfo] = useRecoilState(user.UserInfoState);
   const bottomSheetRef = useRef<BottomSheet>(null);
   const snapPoints = useMemo(() => ['50%', '20%', '50%'], []);
   const renderBackdrop = useCallback(
@@ -33,7 +38,7 @@ export const Enter = ({navigation}: {navigation: any}): JSX.Element => {
       <Image source={congratsImg} style={styles.congratsImg} />
       <View style={styles.noticeContainer}>
         <View style={styles.textContainer}>
-          <Text style={styles.name}>홍재연</Text>
+          <Text style={styles.name}>{userInfo.name}</Text>
           <Text style={styles.text}>님</Text>
         </View>
         <View style={styles.textContainer}>
@@ -78,12 +83,9 @@ export const Enter = ({navigation}: {navigation: any}): JSX.Element => {
       <BottomSheet
         ref={bottomSheetRef}
         snapPoints={snapPoints}
-        bottomInset={46}
-        detached={true}
         index={0}
         backdropComponent={renderBackdrop}
-        enablePanDownToClose={true}
-        style={styles.sheetContainer}>
+        enablePanDownToClose={true}>
         {congrats()}
       </BottomSheet>
     </View>
@@ -111,9 +113,7 @@ const styles = StyleSheet.create({
   innerContainer: {
     alignSelf: 'center',
   },
-  sheetContainer: {
-    marginHorizontal: 20,
-  },
+
   contentContainer: {
     flex: 1,
     alignItems: 'center',
@@ -163,9 +163,9 @@ const styles = StyleSheet.create({
   },
   logout: {
     fontFamily: GlobalStyles.section_title.fontFamily,
-    marginLeft: width * 260,
+    marginLeft: height * 260,
     marginTop: height * 20,
-    fontSize: width * 10,
+    fontSize: height * 10,
     color: GlobalStyles.grey_3.color,
   },
 });

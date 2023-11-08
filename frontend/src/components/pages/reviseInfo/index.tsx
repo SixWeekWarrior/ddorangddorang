@@ -3,11 +3,9 @@ import MenuTop from '../../molecules/menuTop';
 import GlobalStyles from '../../../styles/GlobalStyles';
 import BtnBig from '../../atoms/btnBig';
 import InfoAtom from '../../atoms/infoAtom';
-import {useNavigation} from '@react-navigation/native';
 
-export const ReviseInfo = ({route}: {route: any}): JSX.Element => {
+export const ReviseInfo = ({navigation, route}: any): JSX.Element => {
   const {destination} = route.params;
-  const navigation = useNavigation();
 
   const renderTitle = () => {
     switch (destination) {
@@ -73,10 +71,7 @@ export const ReviseInfo = ({route}: {route: any}): JSX.Element => {
 
   return (
     <View style={styles.container}>
-      <MenuTop
-        menu="마이페이지 수정"
-        text={`마이페이지를 수정할 수 있는 페이지입니다.`}
-      />
+      <MenuTop menu="추가 정보 수정" text={`내 정보를 수정해봐요.`} />
       <View style={styles.innerContainer}>
         <Text style={[styles.titleFont]}>{renderTitle()}</Text>
         {renderContent()}
@@ -104,14 +99,11 @@ const styles = StyleSheet.create({
   },
   btnContainer: {
     flex: 1,
-    bottom: '25%',
   },
   text: {
     color: GlobalStyles.black.color,
   },
   flexColumn: {
-    // justifyContent: 'center',
-    // alignSelf: 'center',
     flexDirection: 'column',
     flexWrap: 'wrap',
     marginLeft: 24,
@@ -119,7 +111,7 @@ const styles = StyleSheet.create({
     columnGap: 70,
   },
   titleFont: {
-    fontFamily: GlobalStyles.home_title.fontFamily,
+    fontFamily: GlobalStyles.bold.fontFamily,
     fontSize: GlobalStyles.home_title.fontSize,
     color: GlobalStyles.green.color,
     letterSpacing: -1,

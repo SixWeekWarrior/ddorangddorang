@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
   btn: {
     fontFamily: GlobalStyles.btn.fontFamily,
     fontSize: GlobalStyles.btn.fontSize,
-    color: GlobalStyles.white_1.color,
+    color: GlobalStyles.white_2.color,
     lineHeight: 25,
     textAlign: 'center',
   },

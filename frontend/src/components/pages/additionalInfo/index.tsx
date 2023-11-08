@@ -25,7 +25,7 @@ export const AdditionalInfo = ({
       await setTmpUserInfo(prevUserInfo => ({
         ...prevUserInfo,
         mbti: '',
-        likes: '',
+        like: '',
         hate: '',
         worry: '',
       }));
@@ -39,9 +39,8 @@ export const AdditionalInfo = ({
     try {
       await userApi.postSignup(tmpUserInfo);
       await setUserInfo(tmpUserInfo);
-      navigation.navigate('Enter');
+      navigation.navigate('Enter', 'signup');
     } catch (error) {
-      console.error(error);
       navigation.navigate('Onboarding');
     }
   };

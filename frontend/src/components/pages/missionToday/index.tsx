@@ -2,7 +2,7 @@ import {StyleSheet, View, Image, Text} from 'react-native';
 import MenuTop from '../../molecules/menuTop';
 import pinkEyeImg from '../../../assets/pinkEyeImg.png';
 import yellowEyeImg from '../../../assets/yellowEyeImg.png';
-import GlobalStyles, {height, width} from '../../../styles/GlobalStyles';
+import GlobalStyles, {height} from '../../../styles/GlobalStyles';
 import BtnBig from '../../atoms/btnBig';
 import React, {useState, useEffect} from 'react';
 import { missionApi } from '../../../apis';
@@ -54,7 +54,7 @@ const style = StyleSheet.create({
   },
 
   yellowEyeImg: {
-    width: width * 10,
+    width: height * 10,
     height: height * 5,
     resizeMode: 'cover',
   },
@@ -76,7 +76,7 @@ const style = StyleSheet.create({
   },
   missionText: {
     fontFamily: GlobalStyles.home_title.fontFamily,
-    fontSize: width * 16,
+    fontSize: height * 16,
     color: GlobalStyles.black.color,
     marginTop: -20,
   },

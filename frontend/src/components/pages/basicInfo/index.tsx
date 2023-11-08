@@ -13,12 +13,12 @@ export const BasicInfo = ({navigation}: {navigation: any}): JSX.Element => {
     name !== '' &&
     gender !== undefined &&
     generation !== 0 &&
-    campus !== 0 &&
+    campus !== -1 &&
     isMajor !== undefined &&
     classes !== 0 &&
     floor !== 0;
 
-  const handleInputChange = (title: string, value: string) => {
+  const handleInputChange = (title: string, value: any) => {
     setTmpUserInfo(prevUserInfo => ({
       ...prevUserInfo,
       [title]: value,

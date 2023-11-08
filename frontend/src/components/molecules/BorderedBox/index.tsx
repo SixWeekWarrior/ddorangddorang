@@ -9,7 +9,7 @@ import InfoRadioInput from '../../atoms/infoRadioInput';
 type BorderedBoxProps = {
   menu: string;
   text: string;
-  onInputChange: (title: string, value: string) => void;
+  onInputChange: (title: string, value: any) => void;
   onSkip?: () => void;
 };
 
@@ -40,7 +40,10 @@ export const BorderedBox = ({
               <InfoRadioInput
                 title="성별"
                 data={gender}
-                setValue={data => onInputChange('gender', data)}
+                setValue={data => {
+                  const genderValue = data === '남자' ? true : false;
+                  onInputChange('gender', genderValue);
+                }}
               />
               <InfoSelectInput
                 title="기수"
@@ -52,12 +55,24 @@ export const BorderedBox = ({
                 title="지역"
                 placeholder="지역을 선택하세요"
                 data={campusList}
-                setValue={data => onInputChange('campus', data)}
+                setValue={data => {
+                  const campusDict = {
+                    서울: 0,
+                    대전: 1,
+                    광주: 2,
+                    구미: 3,
+                    부울경: 4,
+                  };
+                  onInputChange('campus', campusDict[data]);
+                }}
               />
               <InfoRadioInput
                 title="전공"
                 data={isMajor}
-                setValue={data => onInputChange('isMajor', data)}
+                setValue={data => {
+                  const isMajorValue = data === '전공' ? true : false;
+                  onInputChange('isMajor', isMajorValue);
+                }}
               />
               <InfoSelectInput
                 title="반"
@@ -159,11 +174,10 @@ const styles = StyleSheet.create({
   },
   skipText: {
     fontFamily: GlobalStyles.section_title.fontFamily,
-    fontSize: 16,
+    fontSize: height * 12,
     color: GlobalStyles.grey_3.color,
     marginTop: 10,
     alignSelf: 'flex-end',
-    width: '100%',
   },
   contentContainer: {
     flex: 1,
