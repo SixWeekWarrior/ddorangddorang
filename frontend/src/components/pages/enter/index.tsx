@@ -16,9 +16,10 @@ LogBox.ignoreLogs([
   'Non-serializable values were found in the navigation state',
 ]);
 
-export const Enter = ({navigation}: {navigation: any}): JSX.Element => {
-  const [userInfo, setUserInfo] = useRecoilState(user.UserInfoState);
+export const Enter = ({navigation, route}): JSX.Element => {
+  const {params} = route;
 
+  const [userInfo, setUserInfo] = useRecoilState(user.UserInfoState);
   const bottomSheetRef = useRef<BottomSheet>(null);
   const snapPoints = useMemo(() => ['50%', '20%', '50%'], []);
   const renderBackdrop = useCallback(
@@ -79,17 +80,21 @@ export const Enter = ({navigation}: {navigation: any}): JSX.Element => {
         }}>
         로그아웃
       </Text>
-      <BottomSheet
-        ref={bottomSheetRef}
-        snapPoints={snapPoints}
-        bottomInset={46}
-        detached={true}
-        index={0}
-        backdropComponent={renderBackdrop}
-        enablePanDownToClose={true}
-        style={styles.sheetContainer}>
-        {congrats()}
-      </BottomSheet>
+      {params === 'login' ? (
+        ''
+      ) : (
+        <BottomSheet
+          ref={bottomSheetRef}
+          snapPoints={snapPoints}
+          bottomInset={46}
+          detached={true}
+          index={0}
+          backdropComponent={renderBackdrop}
+          enablePanDownToClose={true}
+          style={styles.sheetContainer}>
+          {congrats()}
+        </BottomSheet>
+      )}
     </View>
   );
 };
