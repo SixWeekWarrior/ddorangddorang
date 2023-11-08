@@ -4,29 +4,40 @@ import GlobalStyles from '../../../styles/GlobalStyles';
 import BtnBig from '../../atoms/btnBig';
 import {useState} from 'react';
 import InfoSelectInput from '../../atoms/infoSelectInput';
+import { userApi } from '../../../apis';
+import user from '../../../apis/user';
+import { UserSsafyInfo } from '../../../types/user';
 
 export const ReviseSsafy = ({navigation}: {navigation: any}) => {
-  const classList = Array.from({length: 20}, (_, index) =>
-    (index + 1).toString(),
-  );
-  const floorList = Array.from({length: 20}, (_, index) =>
-    (index + 1).toString(),
-  );
+  const classList = Array.from({length: 20}, (_, index) => index + 1);
+  const floorList = Array.from({length: 20}, (_, index) => index + 1);
 
-  const [inputValues, setInputValues] = useState({
-    class: '',
-    floor: '',
+  const [inputValues, setInputValues] = useState<UserSsafyInfo>({
+    classes: 0,
+    floor: 0,
+    profileImage: '',
   });
+
   const onInputChange = (title: string, value: string) => {
-    setInputValues(prevState => ({
+    setInputValues((prevState) => ({
       ...prevState,
       [title]: value,
     }));
   };
 
-  const handleSubmit = () => {
-    console.log(inputValues);
-    navigation.navigate('NavBar');
+  const handleSubmit = async () => {
+    try {
+      const res = await userApi.putSsafyInfo({
+        classes: inputValues.classes,
+        floor: inputValues.floor,
+        profileImage: inputValues.profileImage,
+      });
+      console.log('ssafy_info_updated', res);
+
+      navigation.navigate('Navbar');
+    } catch (error) {
+      console.error('ssafy_info_ERROR', error);
+    }
   };
 
   return (
@@ -41,7 +52,7 @@ export const ReviseSsafy = ({navigation}: {navigation: any}) => {
             title="반"
             placeholder="반을 선택하세요"
             data={classList}
-            setValue={data => onInputChange('class', data)}
+            setValue={data => onInputChange('classes', data)}
           />
           <InfoSelectInput
             title="층"

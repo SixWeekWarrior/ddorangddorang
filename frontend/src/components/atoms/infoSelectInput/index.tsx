@@ -11,7 +11,7 @@ export const InfoSelectInput = ({
   title: string;
   placeholder: string;
   data: any[];
-  setValue: (value: string) => void;
+  setValue: (value: any) => void;
 }) => {
   return (
     <View style={styles.container}>

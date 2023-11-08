@@ -69,4 +69,5 @@ const user = {
   putSsafyInfo,
   putMoreInfo,
 };
+
 export default user;
