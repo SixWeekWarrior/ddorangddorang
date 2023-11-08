@@ -24,6 +24,7 @@ public class OpinionServiceImpl implements OpinionService {
     public void createOpinion(OpinionCreateReq opinionCreateReq, AuthenticatedUser authenticatedUser) {
         log.info("email: {}", authenticatedUser.getEmail());
         log.info("id: {}", authenticatedUser.getId());
+        log.info("opinion: {}", opinionCreateReq.getContent());
         User user = findUserById(authenticatedUser.getId());
 
         Opinion opinion = Opinion.builder()

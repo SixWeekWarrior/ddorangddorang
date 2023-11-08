@@ -26,19 +26,22 @@ public class NoteApi {
     private static final String SUCCESS = "SUCCESS";
 
     @GetMapping("/{id}")
-    public CommonResponse<NoteViewRes> getNote(@PathVariable Long id, @AuthenticationPrincipal AuthenticatedUser authenticatedUser) {
+    public CommonResponse<NoteViewRes> getNote(@PathVariable Long id,
+        @AuthenticationPrincipal AuthenticatedUser authenticatedUser) {
         log.info("getNote Controller 진입");
         return CommonResponse.success(noteService.getNote(id, authenticatedUser));
     }
 
     @GetMapping
-    public CommonResponse<List<NoteViewRes>> getNotes(@AuthenticationPrincipal AuthenticatedUser authenticatedUser) {
+    public CommonResponse<List<NoteViewRes>> getNotes(
+        @AuthenticationPrincipal AuthenticatedUser authenticatedUser) {
         log.info("getNotes Controller 진입");
         return CommonResponse.success(noteService.getNotes(authenticatedUser));
     }
 
     @PostMapping
-    public CommonResponse<String> createNote(@RequestBody NoteCreateReq noteCreateReq, @AuthenticationPrincipal AuthenticatedUser authenticatedUser) {
+    public CommonResponse<String> createNote(@RequestBody NoteCreateReq noteCreateReq,
+        @AuthenticationPrincipal AuthenticatedUser authenticatedUser) {
         log.info("createNote Controller 진입");
         noteService.createNote(noteCreateReq, authenticatedUser);
         return CommonResponse.success(SUCCESS);
