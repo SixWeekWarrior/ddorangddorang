@@ -1,41 +1,31 @@
-import {View, StyleSheet, Text, Image, ScrollView} from 'react-native';
-import GlobalStyles, {height, width} from '../../../styles/GlobalStyles';
+import {View, StyleSheet, Text, ScrollView} from 'react-native';
+import GlobalStyles, {height} from '../../../styles/GlobalStyles';
 import MenuTop from '../../molecules/menuTop';
 import GroupSummary from '../../atoms/groupSummary';
 import BtnReg from '../../atoms/btnReg';
 import CodeForm from '../../atoms/codeForm';
-import {LogBox} from 'react-native';
 import BottomSheet, {BottomSheetBackdrop} from '@gorhom/bottom-sheet';
-import {useCallback, useRef, useMemo} from 'react';
-import congratsImg from '../../../assets/congratsImg.png';
+import {useCallback, useRef, useMemo, useState, useEffect} from 'react';
+import {roomApi} from '../../../apis';
 
-LogBox.ignoreLogs([
-  'Non-serializable values were found in the navigation state',
-]);
-type BeforeStartRouteProp = {
-  params: {
-    sliderValue: number;
-    multiSliderValue: number[];
-    selectedCount: number;
+export const BeforeStart = ({navigation}: {navigation: any}) => {
+  type RoomInfo = {
+    duration: number;
+    minMember: number;
+    maxMember: number;
+    roomKey: number;
   };
-};
-
-type BeforeStartNavigationProp = {
-  navigate: (screen: string, params?: object) => void;
-};
-
-type BeforeStartProps = {
-  route: BeforeStartRouteProp;
-  navigation: BeforeStartNavigationProp;
-};
-
-export const BeforeStart = ({navigation, route}: BeforeStartProps) => {
-  const {sliderValue, multiSliderValue, selectedCount} = route.params;
-  const isStartButtonDisabled = !(
-    selectedCount >= multiSliderValue[0] && selectedCount <= multiSliderValue[1]
-  );
   const bottomSheetRef = useRef<BottomSheet>(null);
+  const [selectedCount, setSelectedCount] = useState<number>(0);
+  const [isbtnActive, setIsBtnActive] = useState<boolean>(false);
   const snapPoints = useMemo(() => ['40%', '40%', '40%'], []);
+  const [roomInfo, setRoomInfo] = useState<RoomInfo>({
+    duration: 0,
+    minMember: 0,
+    maxMember: 0,
+    roomKey: 0,
+  });
+
   const renderBackdrop = useCallback(
     (props: any) => (
       <BottomSheetBackdrop
@@ -47,36 +37,52 @@ export const BeforeStart = ({navigation, route}: BeforeStartProps) => {
     [],
   );
 
-  const congrats = () => (
-    <View style={styles.contentContainer}>
-      <Text style={styles.textSm}>아래의 초대코드를 복사해서</Text>
-      <Text style={styles.textSm}>친구들에게 공유해보세요 🥳</Text>
-      <CodeForm code="WUJtQT09" />
-    </View>
-  );
+  useEffect(() => {
+    try {
+      roomApi.getRoomInfo().then(data =>
+        setRoomInfo({
+          duration: data.duration,
+          minMember: data.minMember,
+          maxMember: data.maxMember,
+          roomKey: data.roomKey,
+        }),
+      );
+    } catch (e) {
+      console.log('error');
+    }
+  }, []);
+
+  useEffect(() => {
+    setIsBtnActive(
+      roomInfo.minMember <= selectedCount &&
+        selectedCount <= roomInfo.maxMember,
+    );
+  }, [roomInfo.maxMember, roomInfo.minMember, selectedCount]);
 
   return (
     <ScrollView style={styles.container}>
       <MenuTop
         menu="그룹 정보"
-        text={`방장님께서 생성한 그룹정보입니다.\n어서 친구들을 초대해보세요!`}
+        text={`어서 친구들을 초대하고 \n 마니또를 즐겨요!`}
       />
       <View style={styles.sumContainer}>
         <GroupSummary
-          period={sliderValue}
-          min={multiSliderValue[0]}
-          max={multiSliderValue[1]}
+          period={roomInfo.duration}
+          min={roomInfo.minMember}
+          max={roomInfo.maxMember}
           selectedCount={selectedCount}
         />
         <Text style={styles.code}>초대코드</Text>
-        <CodeForm code="WUJtQT09" />
+        <CodeForm code={roomInfo.roomKey} />
       </View>
       <View style={styles.btnContainer}>
         <BtnReg
           onPress={() => {
             navigation.navigate('WaitList', {
-              sliderValue: sliderValue,
-              multiSliderValue: multiSliderValue,
+              minMember: roomInfo.minMember,
+              maxMember: roomInfo.maxMember,
+              selectedCount: selectedCount,
+              setSelectedCount: setSelectedCount,
             });
           }}
           text="대기 목록"
@@ -89,7 +95,7 @@ export const BeforeStart = ({navigation, route}: BeforeStartProps) => {
           }}
           text="시작"
           color={GlobalStyles.green.color}
-          disabled={isStartButtonDisabled}
+          disabled={isbtnActive}
         />
       </View>
       <BottomSheet
@@ -98,7 +104,11 @@ export const BeforeStart = ({navigation, route}: BeforeStartProps) => {
         index={0}
         backdropComponent={renderBackdrop}
         enablePanDownToClose={true}>
-        {congrats()}
+        <View style={styles.contentContainer}>
+          <Text style={styles.textSm}>아래의 초대코드를 복사해서</Text>
+          <Text style={styles.textSm}>친구들에게 공유해보세요 🥳</Text>
+          <CodeForm code={roomInfo.roomKey} />
+        </View>
       </BottomSheet>
     </ScrollView>
   );

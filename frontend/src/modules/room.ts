@@ -3,6 +3,13 @@ import {RoomInfo} from '../types/room';
 
 const KEY = 'ROOM';
 
+export const RoomKeyState = atom({
+  key: `${KEY}/code`,
+  default: {
+    code: 0,
+  },
+});
+
 // 수정 중인 정보를 가진다.
 // 이 값은 실제 DB와 다를 수 있다.
 export const TmpRoomInfoState = atom<RoomInfo>({
@@ -26,6 +33,6 @@ export const RoomInfoState = atom<RoomInfo>({
   },
 });
 
-const room = {RoomInfoState, TmpRoomInfoState};
+const room = {RoomKeyState, RoomInfoState, TmpRoomInfoState};
 
 export default room;
