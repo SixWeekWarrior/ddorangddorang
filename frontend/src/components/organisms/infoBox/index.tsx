@@ -5,6 +5,7 @@ import whiteArrowRightImg from '../../../assets/whiteArrowRightImg.png';
 import GlobalStyles, {height} from '../../../styles/GlobalStyles';
 import InfoAtom from '../../atoms/infoAtom';
 import token from '../../../utils/token';
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
 
 type InfoBoxProps = {
   navigation: any;
@@ -52,6 +53,13 @@ const InfoBox = ({navigation, destination}: InfoBoxProps): JSX.Element => {
       case 'Logout':
         (async () => {
           await token.removeToken();
+          try {
+            await GoogleSignin.revokeAccess();
+            await GoogleSignin.signOut();
+          } catch (error) {
+            console.log('Error in Logout', error);
+          }
+
           navigation.navigate('Onboarding', {destination: 'Onboarding'});
         })();
 

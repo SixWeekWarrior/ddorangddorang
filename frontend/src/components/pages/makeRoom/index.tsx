@@ -4,11 +4,17 @@ import MenuTop from '../../molecules/menuTop';
 import RangeSlider from '../../atoms/rangeSlider';
 import BtnBig from '../../atoms/btnBig';
 import {useState} from 'react';
+import {useSetRecoilState} from 'recoil';
+import {roomApi} from '../../../apis';
 
-export const MakeRoom = ({navigation: {navigate}}): JSX.Element => {
-  const [multiSliderValue, setMultiSliderValue] = useState([10, 70]);
+import room from '../../../modules/room';
+
+export const MakeRoom = ({navigation}: {navigation: any}): JSX.Element => {
+  const [multiSliderValue, setMultiSliderValue] = useState([30, 70]);
   const [sliderValue, setSliderValue] = useState(15);
-  const selectedCount = useState(0);
+  const [selectedCount, setSelectedCount] = useState(0);
+  const setRoomInfo = useSetRecoilState(room.RoomInfoState);
+
   const handleMultiSliderChange = (values: number[]) => {
     setMultiSliderValue(values);
   };
@@ -16,6 +22,33 @@ export const MakeRoom = ({navigation: {navigate}}): JSX.Element => {
   const handleSliderChange = (values: number) => {
     setSliderValue(values);
   };
+
+  const handleSubmit = async () => {
+    try {
+      await setRoomInfo({
+        isOpen: true,
+        minMember: multiSliderValue[0],
+        maxMember: multiSliderValue[1],
+        duration: sliderValue,
+      });
+      const updatedRoomInfo = {
+        isOpen: true,
+        minMember: multiSliderValue[0],
+        maxMember: multiSliderValue[1],
+        duration: sliderValue,
+      };
+
+      await roomApi.postRoom(updatedRoomInfo);
+      navigation.navigate('BeforeStart', {
+        sliderValue: sliderValue,
+        multiSliderValue: multiSliderValue,
+        selectedCount: selectedCount,
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <MenuTop
@@ -28,16 +61,7 @@ export const MakeRoom = ({navigation: {navigate}}): JSX.Element => {
         onMultiSliderChange={handleMultiSliderChange}
         onSliderChange={handleSliderChange}
       />
-      <BtnBig
-        onPress={() => {
-          navigate('BeforeStart', {
-            sliderValue: sliderValue,
-            multiSliderValue: multiSliderValue,
-            selectedCount: selectedCount,
-          });
-        }}
-        text="그룹 만들기"
-      />
+      <BtnBig onPress={handleSubmit} text="그룹 만들기" />
     </View>
   );
 };

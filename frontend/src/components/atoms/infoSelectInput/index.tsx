@@ -10,8 +10,8 @@ export const InfoSelectInput = ({
 }: {
   title: string;
   placeholder: string;
-  data: string[];
-  setValue: (value: string) => void;
+  data: any[];
+  setValue: (value: any) => void;
 }) => {
   return (
     <View style={styles.container}>
@@ -21,7 +21,7 @@ export const InfoSelectInput = ({
         data={data}
         buttonStyle={styles.buttonStyle}
         defaultButtonText={placeholder}
-        onSelect={(value: string) => setValue(value)}
+        onSelect={(value: string) => setValue(data.indexOf(value))}
         rowTextStyle={styles.dropdownRowTxtStyle}
         buttonTextStyle={styles.buttonTextStyle}
       />

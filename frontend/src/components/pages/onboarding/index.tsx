@@ -45,16 +45,15 @@ export const Onboarding = ({navigation}: {navigation: any}): JSX.Element => {
     try {
       await GoogleSignin.hasPlayServices();
       const loginInfo = await GoogleSignin.signIn();
-      console.log(loginInfo.user.name);
       if (loginInfo.idToken) {
         userApi
           .postLogin(loginInfo.idToken)
           .then(data => {
-            console.log('TEST-data: ', data);
+            // console.log('TEST-data: ', data);
             data.success
               ? tokenUtil
                   .setToken(data.data.accessToken, data.data.refreshToken)
-                  .then(navigation.navigate('Enter'))
+                  .then(navigation.navigate('Enter', 'login'))
               : navigation.navigate('BasicInfo');
           })
           .catch(e => {

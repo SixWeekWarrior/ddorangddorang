@@ -8,12 +8,18 @@ import InputTextwithBtn from '../../molecules/inputTextwithBtn';
 import {useCallback, useRef, useMemo} from 'react';
 import congratsImg from '../../../assets/congratsImg.png';
 import token from '../../../utils/token';
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
+import {useRecoilState} from 'recoil';
+import user from '../../../modules/user';
 
 LogBox.ignoreLogs([
   'Non-serializable values were found in the navigation state',
 ]);
 
-export const Enter = ({navigation}: {navigation: any}): JSX.Element => {
+export const Enter = ({navigation, route}): JSX.Element => {
+  const {params} = route;
+
+  const [userInfo, setUserInfo] = useRecoilState(user.UserInfoState);
   const bottomSheetRef = useRef<BottomSheet>(null);
   const snapPoints = useMemo(() => ['50%', '20%', '50%'], []);
   const renderBackdrop = useCallback(
@@ -32,7 +38,7 @@ export const Enter = ({navigation}: {navigation: any}): JSX.Element => {
       <Image source={congratsImg} style={styles.congratsImg} />
       <View style={styles.noticeContainer}>
         <View style={styles.textContainer}>
-          <Text style={styles.name}>홍재연</Text>
+          <Text style={styles.name}>{userInfo.name}</Text>
           <Text style={styles.text}>님</Text>
         </View>
         <View style={styles.textContainer}>
@@ -68,6 +74,8 @@ export const Enter = ({navigation}: {navigation: any}): JSX.Element => {
         style={styles.logout}
         onPress={async () => {
           await token.removeToken();
+          await GoogleSignin.revokeAccess();
+          await GoogleSignin.signOut();
           navigation.navigate('Onboarding', {destination: 'Onboarding'});
         }}>
         로그아웃
