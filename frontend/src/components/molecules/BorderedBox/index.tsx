@@ -9,7 +9,7 @@ import InfoRadioInput from '../../atoms/infoRadioInput';
 type BorderedBoxProps = {
   menu: string;
   text: string;
-  onInputChange: (title: string, value: string) => void;
+  onInputChange: (title: string, value: any) => void;
   onSkip?: () => void;
 };
 
@@ -40,7 +40,10 @@ export const BorderedBox = ({
               <InfoRadioInput
                 title="성별"
                 data={gender}
-                setValue={data => onInputChange('gender', data)}
+                setValue={data => {
+                  const genderValue = data === '남자' ? true : false;
+                  onInputChange('gender', genderValue);
+                }}
               />
               <InfoSelectInput
                 title="기수"
@@ -57,7 +60,10 @@ export const BorderedBox = ({
               <InfoRadioInput
                 title="전공"
                 data={isMajor}
-                setValue={data => onInputChange('isMajor', data)}
+                setValue={data => {
+                  const isMajorValue = data === '전공' ? true : false;
+                  onInputChange('isMajor', isMajorValue);
+                }}
               />
               <InfoSelectInput
                 title="반"

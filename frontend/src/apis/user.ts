@@ -20,6 +20,7 @@ const postLogin = async (idToken: string) => {
 
     return res.data;
   } catch (e) {
+    // console.log(e);
     throw new Error('ERROR IN POST_LOGIN');
   }
 };
@@ -27,14 +28,22 @@ const postLogin = async (idToken: string) => {
 // 회원가입시 정보 입력 API
 const postSignup = async (data: UserInfo) => {
   try {
-    const res = await client.post('/users/signup', data);
+    const res = await axios.create({
+      headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+        Authorization: 'Bearer ' + idToken,
+      },
+    });
 
+    client.post('/users/signup', data);
+    console.log(res.data);
     await tokenUtil.setToken(
       res.data.data.accessToken,
       res.data.data.refreshToken,
     );
     return res.data;
   } catch (e) {
+    console.log(e);
     throw new Error('ERROR IN POST_SIGN_UP');
   }
 };
