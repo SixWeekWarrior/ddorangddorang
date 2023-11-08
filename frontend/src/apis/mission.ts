@@ -1,8 +1,7 @@
-import { MissionInfo, MissionPerformInfo } from "../types/mission";
+import {MissionInfo, MissionPerformInfo} from '../types/mission';
 import apiInstance from './client';
 
 const client = apiInstance();
-
 
 // mission 조회 API
 const getMission = async () => {
@@ -16,7 +15,7 @@ const getMission = async () => {
 };
 
 // mission 변경 API
-const putMissionChange =async (data: MissionPerformInfo) => {
+const putMissionChange = async (data: MissionPerformInfo) => {
   try {
     const res = await client.put('/missions', data);
     return res.data;
@@ -39,6 +38,6 @@ const mission = {
   getMission,
   putMissionChange,
   postMissionComplete,
-}
+};
 
-export default mission
+export default mission;
