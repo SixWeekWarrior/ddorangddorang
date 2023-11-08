@@ -10,6 +10,7 @@ const postRoom = async (data: RoomInfo) => {
     const res = await client.post('/rooms', data);
     return res.data;
   } catch (e) {
+    console.log(e);
     throw new Error('ERROR IN POST_ROOM');
   }
 };
