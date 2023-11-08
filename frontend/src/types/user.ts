@@ -10,6 +10,8 @@ export type UserInfo = {
   hate: string;
   mbti: string;
   worry: string;
+  mood: string;
+  color: string;
 };
 
 export type UserMoreInfo = {

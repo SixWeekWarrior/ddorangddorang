@@ -15,8 +15,12 @@ import {
 import BtnBig from '../../atoms/btnBig';
 import {userApi} from '../../../apis';
 import {tokenUtil} from '../../../utils';
+import {useSetRecoilState} from 'recoil';
+import {userAtom} from '../../../modules';
 
 export const Onboarding = ({navigation}: {navigation: any}): JSX.Element => {
+  const setUserInfo = useSetRecoilState(userAtom.UserInfoState);
+
   useEffect(() => {
     // Google Sign-In 초기화
     GoogleSignin.configure({
@@ -41,30 +45,39 @@ export const Onboarding = ({navigation}: {navigation: any}): JSX.Element => {
     [],
   );
 
+  const getUserInfo = () => {
+    userApi
+      .getUserInfo()
+      .then(data => {
+        setUserInfo(data.data);
+      })
+      .catch(error => {
+        console.log('getUserInfo_Error', error);
+      });
+  };
+
   const handleGoogleSignIn = async () => {
     try {
       await GoogleSignin.hasPlayServices();
       const loginInfo = await GoogleSignin.signIn();
-      // console.log(loginInfo.idToken);
       console.log(loginInfo.user.name);
+
       if (loginInfo.idToken) {
-        userApi
-          .postLogin(loginInfo.idToken)
-          .then(data => {
-            // console.log('TEST-data: ', data);
-            data.success
-              ? tokenUtil
-                  .setToken(data.data.accessToken, data.data.refreshToken)
-                  .then(navigation.navigate('Enter'))
-              : tokenUtil
-                  .setIdToken(loginInfo.idToken as string)
-                  .then(navigation.navigate('BasicInfo'));
-          })
-          .catch(e => {
-            console.log(e);
-          });
+        const data = await userApi.postLogin(loginInfo.idToken);
+
+        if (data.success) {
+          await tokenUtil.setToken(
+            data.data.accessToken,
+            data.data.refreshToken,
+          );
+          await getUserInfo();
+          navigation.navigate('Enter');
+        } else {
+          await tokenUtil.setIdToken(loginInfo.idToken);
+          navigation.navigate('BasicInfo');
+        }
       }
-    } catch (error: any) {
+    } catch (error) {
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
         // 사용자가 로그인을 취소했을 때 처리
         console.log('Google Sign-In cancelled');

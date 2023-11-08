@@ -38,18 +38,21 @@ export const BeforeStart = ({navigation}: {navigation: any}) => {
   );
 
   useEffect(() => {
-    try {
-      roomApi.getRoomInfo().then(data =>
+    roomApi
+      .getRoomInfo()
+      .then(data => {
+        console.log('여기 테스트!!!', data);
         setRoomInfo({
+          ...roomInfo,
           duration: data.duration,
           minMember: data.minMember,
           maxMember: data.maxMember,
           roomKey: data.roomKey,
-        }),
-      );
-    } catch (e) {
-      console.log('error');
-    }
+        });
+      })
+      .catch(error => {
+        console.log('error', error);
+      });
   }, []);
 
   useEffect(() => {

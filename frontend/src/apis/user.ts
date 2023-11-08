@@ -69,11 +69,22 @@ const putSsafyInfo = async (data: UserSsafyInfo) => {
   }
 };
 
+// 싸피 정보 수정 API
+const getUserInfo = async () => {
+  try {
+    const res = await client.get('/users');
+    return res.data;
+  } catch (e) {
+    throw new Error('ERROR IN GetUserInfo');
+  }
+};
+
 const user = {
   postLogin,
   postSignup,
   putSsafyInfo,
   putMoreInfo,
+  getUserInfo,
 };
 
 export default user;
