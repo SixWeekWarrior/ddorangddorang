@@ -4,13 +4,15 @@ import GlobalStyles from '../../../styles/GlobalStyles';
 import BtnBig from '../../atoms/btnBig';
 import {useState} from 'react';
 import InfoSelectInput from '../../atoms/infoSelectInput';
-import { userApi } from '../../../apis';
-import { UserSsafyInfo } from '../../../types/user';
+import {userApi} from '../../../apis';
+import user from '../../../modules/user';
+import {UserInfo, UserSsafyInfo} from '../../../types/user';
+import {useRecoilState} from 'recoil';
 
 export const ReviseSsafy = ({navigation}: {navigation: any}) => {
   const classList = Array.from({length: 20}, (_, index) => index + 1);
   const floorList = Array.from({length: 20}, (_, index) => index + 1);
-
+  const [userInfo, setUserInfo] = useRecoilState(user.UserInfoState);
   const [inputValues, setInputValues] = useState<UserSsafyInfo>({
     classes: 0,
     floor: 0,
@@ -18,7 +20,7 @@ export const ReviseSsafy = ({navigation}: {navigation: any}) => {
   });
 
   const onInputChange = (title: string, value: string) => {
-    setInputValues((prevState) => ({
+    setInputValues(prevState => ({
       ...prevState,
       [title]: value,
     }));
@@ -26,16 +28,12 @@ export const ReviseSsafy = ({navigation}: {navigation: any}) => {
 
   const handleSubmit = async () => {
     try {
-      const res = await userApi.putSsafyInfo({
-        classes: inputValues.classes,
-        floor: inputValues.floor,
-        profileImage: inputValues.profileImage,
-      });
-      console.log('ssafy_info_updated', res);
-
+      const updatedUserInfo: UserInfo = {...userInfo, ...inputValues}; // Merge properties of both types
+      await userApi.putSsafyInfo(inputValues);
+      await setUserInfo(updatedUserInfo);
       navigation.navigate('Navbar');
     } catch (error) {
-      console.error('ssafy_info_ERROR', error);
+      console.error(error);
     }
   };
 

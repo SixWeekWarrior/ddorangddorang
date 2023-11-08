@@ -14,9 +14,25 @@ import arrowRightImg from '../../../assets/whiteArrowRightImg.png';
 import InfoBox from '../../organisms/infoBox';
 import Modal from 'react-native-modal';
 import CloseImg from '../../../assets/closeImg.png';
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
+import {useSetRecoilState} from 'recoil';
+import user from '../../../modules/user';
+import {userApi} from '../../../apis';
 
 export const Home = ({navigation}: {navigation: any}): JSX.Element => {
+  const setUserInfo = useSetRecoilState(user.UserInfoState);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await userApi.getUser();
+        await setUserInfo(data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchData();
+  }, []);
+
   const [isModalVisible, setModalVisible] = useState(false);
   const toggleModal = () => {
     setModalVisible(!isModalVisible);

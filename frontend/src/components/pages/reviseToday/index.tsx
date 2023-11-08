@@ -2,7 +2,6 @@ import {StyleSheet, View} from 'react-native';
 import MenuTop from '../../molecules/menuTop';
 import GlobalStyles from '../../../styles/GlobalStyles';
 import BtnBig from '../../atoms/btnBig';
-// import InputInfoMolecules from '../../molecules/inputInfoMolecules';
 import {useState} from 'react';
 import InfoTextInput from '../../atoms/infoTextInput';
 
