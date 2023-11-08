@@ -16,7 +16,7 @@ export const BasicInfo = ({navigation}: {navigation: any}): JSX.Element => {
     classes !== 0 &&
     floor !== 0;
 
-  const handleInputChange = (title: string, value: string) => {
+  const handleInputChange = (title: string, value: any) => {
     setTmpUserInfo(prevUserInfo => ({
       ...prevUserInfo,
       [title]: value,

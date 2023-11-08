@@ -8,9 +8,10 @@ const KEY = 'USER';
 export const TmpUserInfoState = atom<UserInfo>({
   key: `${KEY}/tmpinfo`,
   default: {
+    name: '',
     generation: 0,
-    isMajor: [true],
-    gender: [true],
+    isMajor: true,
+    gender: true,
     campus: 0,
     classes: 0,
     floor: 0,
@@ -25,9 +26,10 @@ export const TmpUserInfoState = atom<UserInfo>({
 export const UserInfoState = atom<UserInfo>({
   key: `${KEY}/info`,
   default: {
+    name: '',
     generation: 0,
-    isMajor: [true],
-    gender: [true],
+    isMajor: true,
+    gender: true,
     campus: 0,
     classes: 0,
     floor: 0,

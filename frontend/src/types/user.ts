@@ -1,7 +1,8 @@
 export type UserInfo = {
+  name: string;
   generation: number;
-  isMajor: boolean[];
-  gender: boolean[];
+  isMajor: boolean;
+  gender: boolean;
   campus: number;
   classes: number;
   floor: number;

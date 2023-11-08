@@ -9,7 +9,7 @@ import InfoRadioInput from '../../atoms/infoRadioInput';
 type BorderedBoxProps = {
   menu: string;
   text: string;
-  onInputChange: (title: string, value: string) => void;
+  onInputChange: (title: string, value: any) => void;
   onSkip?: () => void;
 };
 
@@ -20,8 +20,8 @@ export const BorderedBox = ({
   onSkip,
 }: BorderedBoxProps) => {
   const generationList = [9, 10];
-  const isMajor = [true, false];
-  const gender = [true, false];
+  const isMajor = ['전공', '비전공'];
+  const gender = ['남자', '여자'];
   const campusList = ['서울', '대전', '광주', '구미', '부울경'];
   const classList = Array.from({length: 20}, (_, index) => index + 1);
   const floorList = Array.from({length: 20}, (_, index) => index + 1);
@@ -40,7 +40,10 @@ export const BorderedBox = ({
               <InfoRadioInput
                 title="성별"
                 data={gender}
-                setValue={data => onInputChange('gender', data)}
+                setValue={data => {
+                  const genderValue = data === '남자' ? true : false;
+                  onInputChange('gender', genderValue);
+                }}
               />
               <InfoSelectInput
                 title="기수"
@@ -57,7 +60,10 @@ export const BorderedBox = ({
               <InfoRadioInput
                 title="전공"
                 data={isMajor}
-                setValue={data => onInputChange('isMajor', data)}
+                setValue={data => {
+                  const isMajorValue = data === '전공' ? true : false;
+                  onInputChange('isMajor', isMajorValue);
+                }}
               />
               <InfoSelectInput
                 title="반"
