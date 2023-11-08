@@ -278,7 +278,9 @@ public class RoomServiceImpl implements RoomService {
                 wishManitoList[i] = List.copyOf(maleList);
             }
 
-            Collections.shuffle(wishManitoList[i]);
+            List<Participant> tmp = new ArrayList<>(wishManitoList[i]);
+            Collections.shuffle(tmp);
+            wishManitoList[i] = tmp;
         }
 
         for (int i = 1; i < size; ++i) {
@@ -526,6 +528,10 @@ public class RoomServiceImpl implements RoomService {
         throw new PlayersNotEnoughException();
     }
 
+    public Integer getRoom(Long id) {
+        return userRepository.findById(id).orElseThrow(UserNotFoundException::new).getRoom().getAccessCode();
+    }
+
     @Transactional
     public List<WaitingListRes> getWaitingList(Long userId) {
         User admin = findUserById(userId);
@@ -536,7 +542,6 @@ public class RoomServiceImpl implements RoomService {
 
 //    @Transactional
 //    public
-
     private User findUserById(Long id) {
         return userRepository.findById(id).orElseThrow(UserNotFoundException::new);
     }

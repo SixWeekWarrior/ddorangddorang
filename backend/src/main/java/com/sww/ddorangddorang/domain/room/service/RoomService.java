@@ -27,5 +27,7 @@ public interface RoomService {
 
     Boolean checkAndStartGame(AuthenticatedUser authenticatedUser);
 
+    Integer getRoom(Long id);
+
     List<WaitingListRes> getWaitingList(Long userId);
 }
