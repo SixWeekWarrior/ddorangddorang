@@ -4,7 +4,7 @@ import MenuTop from '../../molecules/menuTop';
 import RangeSlider from '../../atoms/rangeSlider';
 import BtnBig from '../../atoms/btnBig';
 import {useState} from 'react';
-import {useRecoilState} from 'recoil';
+import {useSetRecoilState} from 'recoil';
 import {roomApi} from '../../../apis';
 
 import room from '../../../modules/room';
@@ -13,7 +13,7 @@ export const MakeRoom = ({navigation}: {navigation: any}): JSX.Element => {
   const [multiSliderValue, setMultiSliderValue] = useState([30, 70]);
   const [sliderValue, setSliderValue] = useState(15);
   const [selectedCount, setSelectedCount] = useState(0);
-  const [roomInfo, setRoomInfo] = useRecoilState(room.RoomInfoState);
+  const setRoomInfo = useSetRecoilState(room.RoomInfoState);
 
   const handleMultiSliderChange = (values: number[]) => {
     setMultiSliderValue(values);
@@ -30,7 +30,14 @@ export const MakeRoom = ({navigation}: {navigation: any}): JSX.Element => {
         maxMember: multiSliderValue[1],
         duration: sliderValue,
       });
-      await roomApi.postRoom(roomInfo);
+      const updatedRoomInfo = {
+        isOpen: true,
+        minMember: multiSliderValue[0],
+        maxMember: multiSliderValue[1],
+        duration: sliderValue,
+      };
+
+      await roomApi.postRoom(updatedRoomInfo);
       navigation.navigate('BeforeStart', {
         sliderValue: sliderValue,
         multiSliderValue: multiSliderValue,

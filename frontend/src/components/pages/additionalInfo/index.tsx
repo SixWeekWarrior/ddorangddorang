@@ -39,7 +39,7 @@ export const AdditionalInfo = ({
     try {
       await userApi.postSignup(tmpUserInfo);
       await setUserInfo(tmpUserInfo);
-      navigation.navigate('Enter');
+      navigation.navigate('Enter', 'signup');
     } catch (error) {
       navigation.navigate('Onboarding');
     }

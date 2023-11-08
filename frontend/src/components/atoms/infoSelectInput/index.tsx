@@ -21,7 +21,7 @@ export const InfoSelectInput = ({
         data={data}
         buttonStyle={styles.buttonStyle}
         defaultButtonText={placeholder}
-        onSelect={(value: string) => setValue(value)}
+        onSelect={(value: string) => setValue(data.indexOf(value))}
         rowTextStyle={styles.dropdownRowTxtStyle}
         buttonTextStyle={styles.buttonTextStyle}
       />
