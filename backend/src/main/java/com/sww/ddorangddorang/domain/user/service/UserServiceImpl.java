@@ -13,8 +13,11 @@ import com.sww.ddorangddorang.domain.user.exception.UserAlreadyExistException;
 import com.sww.ddorangddorang.domain.user.exception.UserNotFoundException;
 import com.sww.ddorangddorang.domain.user.repository.HintRepository;
 import com.sww.ddorangddorang.domain.user.repository.UserRepository;
+import com.sww.ddorangddorang.global.common.exception.UnexpectedException;
 import jakarta.transaction.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import lombok.RequiredArgsConstructor;
@@ -39,7 +42,7 @@ public class UserServiceImpl implements UserService {
 
         userRepository.save(user);
     }
-
+    @Transactional
     @Override
     public Optional<User> findByEmail(String email) {
         return userRepository.findByEmail(email);
@@ -48,16 +51,33 @@ public class UserServiceImpl implements UserService {
 
     public void todayInfo(Long userId, UsersTodayinfoPostReq usersTodayinfoPostReq) {
         User user = userRepository.getReferenceById(userId);
-        MasterCode masterCode = masterCodeRepository.getReferenceById(usersTodayinfoPostReq.getId());
 
-        Optional<Hint> optionalHint = hintRepository.findByUserAndMasterCode(user, masterCode);
-        Hint hint;
-        if (optionalHint.isEmpty()) {
-            hint = Hint.builder().content(usersTodayinfoPostReq.getContent()).user(user).masterCode(masterCode).build();
-            hintRepository.save(hint);
-        } else {
-            hint = optionalHint.get();
-            hint.updateContent(usersTodayinfoPostReq.getContent());
+        List<Hint> hintList = new ArrayList<Hint>();
+        if (usersTodayinfoPostReq.getColor() != null) {
+            MasterCode colorCode = masterCodeRepository.getReferenceById(1_001L);
+            hintList.add(Hint.builder()
+                            .user(user)
+                            .masterCode(colorCode)
+                            .content(usersTodayinfoPostReq.getColor())
+                            .build());
+        }
+
+        if (usersTodayinfoPostReq.getMood() != null) {
+            MasterCode moodCode = masterCodeRepository.getReferenceById(1_002L);
+            hintList.add(Hint.builder()
+                            .user(user)
+                            .masterCode(moodCode)
+                            .content(usersTodayinfoPostReq.getMood())
+                            .build());
+        }
+
+        for (Hint hint : hintList) {
+            Optional<Hint> optionalHint = hintRepository.findByUserAndMasterCode(user, hint.getMasterCode());
+            if (optionalHint.isEmpty()) {
+                hintRepository.save(hint);
+            } else {
+                optionalHint.orElseThrow(UnexpectedException::new).updateContent(hint.getContent());
+            }
         }
     }
 

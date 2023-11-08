@@ -75,6 +75,8 @@ public enum ErrorCode {
 
     MISSION_NO_MORE(HttpStatus.NOT_FOUND, "더 이상 수행할 미션이 없습니다."),
 
+    UNEXPECTED_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "알 수 없는 오류가 발생하였습니다."),
+
     /**
      * 서버 에러 (서버 장애 상황)
      */

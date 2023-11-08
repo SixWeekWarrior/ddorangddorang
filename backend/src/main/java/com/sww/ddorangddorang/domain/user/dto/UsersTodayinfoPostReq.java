@@ -1,5 +1,5 @@
 package com.sww.ddorangddorang.domain.user.dto;
-import com.sww.ddorangddorang.domain.mastercode.entity.MasterCode;
+
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -7,6 +7,6 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class UsersTodayinfoPostReq {
-    private Long id;
-    private String content;
+    private String mood;        // 1_002
+    private String color;       // 1_001
 }
