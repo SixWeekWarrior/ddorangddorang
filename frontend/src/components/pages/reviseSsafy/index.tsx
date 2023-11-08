@@ -5,7 +5,6 @@ import BtnBig from '../../atoms/btnBig';
 import {useState} from 'react';
 import InfoSelectInput from '../../atoms/infoSelectInput';
 import { userApi } from '../../../apis';
-import user from '../../../apis/user';
 import { UserSsafyInfo } from '../../../types/user';
 
 export const ReviseSsafy = ({navigation}: {navigation: any}) => {
