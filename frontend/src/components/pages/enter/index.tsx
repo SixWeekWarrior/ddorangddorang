@@ -70,6 +70,13 @@ export const Enter = ({navigation, route}: any): JSX.Element => {
           destination="EnterWait"
         />
       </View>
+      <Text 
+        style={styles.myInfo}
+        onPress={async () => {
+          navigation.navigate('MyPage', {destination: 'MyPage'})
+        }}>
+        내 정보 수정
+      </Text>
       <Text
         style={styles.logout}
         onPress={async () => {
@@ -165,10 +172,17 @@ const styles = StyleSheet.create({
     fontSize: 22,
     color: GlobalStyles.black.color,
   },
+  myInfo: {
+    fontFamily: GlobalStyles.section_title.fontFamily,
+    marginLeft: height * 246,
+    marginTop: height * 20,
+    fontSize: height * 10,
+    color: GlobalStyles.grey_3.color,
+  },
   logout: {
     fontFamily: GlobalStyles.section_title.fontFamily,
     marginLeft: height * 260,
-    marginTop: height * 20,
+    marginTop: height * 2,
     fontSize: height * 10,
     color: GlobalStyles.grey_3.color,
   },
