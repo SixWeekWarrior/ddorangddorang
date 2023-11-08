@@ -79,7 +79,6 @@ public class RoomServiceImpl implements RoomService {
 
         user.updateStatus(2L);
 
-        log.info("null이 대체 어디서 터지는거야?");
         log.info("user = {}, accessCode = {}, ", user, accessCode);
         log.info("minMember: {}, maxMember: {}, duration: {}", roomInfoReq.getMinMember(),
             roomInfoReq.getMaxMember(), roomInfoReq.getDuration());
