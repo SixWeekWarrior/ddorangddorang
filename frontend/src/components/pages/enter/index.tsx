@@ -80,14 +80,18 @@ export const Enter = ({navigation, route}: any): JSX.Element => {
         }}>
         로그아웃
       </Text>
-      <BottomSheet
-        ref={bottomSheetRef}
-        snapPoints={snapPoints}
-        index={0}
-        backdropComponent={renderBackdrop}
-        enablePanDownToClose={true}>
-        {congrats()}
-      </BottomSheet>
+      {params === 'login' ? (
+        ''
+      ) : (
+        <BottomSheet
+          ref={bottomSheetRef}
+          snapPoints={snapPoints}
+          index={0}
+          backdropComponent={renderBackdrop}
+          enablePanDownToClose={true}>
+          {congrats()}
+        </BottomSheet>
+      )}
     </View>
   );
 };
