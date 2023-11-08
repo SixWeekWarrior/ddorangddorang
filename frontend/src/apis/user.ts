@@ -29,15 +29,15 @@ const postLogin = async (idToken: string) => {
 const postSignup = async (data: UserInfo) => {
   try {
     const idToken = await tokenUtil.getIdToken();
-    const res = await axios.create({
-      headers: {
-        'Content-Type': 'application/json; charset=UTF-8',
-        Authorization: 'Bearer ' + idToken,
-      },
-    });
+    const res = await axios
+      .create({
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
+          Authorization: 'Bearer ' + idToken,
+        },
+      })
+      .post(serverUrl + '/users/signup', data);
 
-    client.post('/users/signup', data);
-    console.log(res);
     await tokenUtil.setToken(
       res.data.data.accessToken,
       res.data.data.refreshToken,
