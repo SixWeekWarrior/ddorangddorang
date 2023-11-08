@@ -2,6 +2,7 @@ package com.sww.ddorangddorang.domain.user.service;
 
 import com.sww.ddorangddorang.domain.mastercode.entity.MasterCode;
 import com.sww.ddorangddorang.domain.mastercode.repository.MasterCodeRepository;
+import com.sww.ddorangddorang.domain.user.dto.HintDto;
 import com.sww.ddorangddorang.domain.user.dto.UsersMoreinfoPutReq;
 import com.sww.ddorangddorang.domain.user.dto.UsersSignupPostReq;
 import com.sww.ddorangddorang.domain.user.dto.UsersSsafyinfoPutReq;
@@ -101,4 +102,33 @@ public class UserServiceImpl implements UserService {
     public User getUserInfo(Long id) {
         return userRepository.findById(id).orElseThrow(UserNotFoundException::new);
     }
+
+    @Transactional
+    @Override
+    public HintDto getHints(Long id) {
+        String color = "";
+        String mood = "";
+
+        User user = userRepository.findById(id).orElseThrow(UserNotFoundException::new);
+
+        MasterCode colorCode = masterCodeRepository.findById(1_001L).orElseThrow(UnexpectedException::new);
+        Optional<Hint> colorHint = hintRepository.findByUserAndMasterCode(user, colorCode);
+
+        if (colorHint.isPresent()) {
+            color = colorHint.orElseThrow(UnexpectedException::new).getContent();
+        }
+
+        MasterCode moodCode = masterCodeRepository.findById(1_002L).orElseThrow(UnexpectedException::new);
+        Optional<Hint>  moodHint = hintRepository.findByUserAndMasterCode(user, moodCode);
+
+        if (moodHint.isPresent()) {
+            mood = moodHint.orElseThrow(UnexpectedException::new).getContent();
+        }
+
+        return HintDto.builder()
+                        .color(color)
+                        .mood(mood)
+                        .build();
+    }
+
 }

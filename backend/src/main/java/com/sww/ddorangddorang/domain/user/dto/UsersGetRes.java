@@ -53,7 +53,7 @@ public class UsersGetRes {
         this.color = color;
     }
 
-    public static UsersGetRes userToDto(User user) {
+    public static UsersGetRes userToDto(User user, HintDto hintDto) {
         return UsersGetRes.builder()
             .name(user.getName())
             .email(user.getEmail())
@@ -70,8 +70,8 @@ public class UsersGetRes {
             .worry(user.getWorry())
             .roomId(user.getRoom().getId())
             .status(user.getStatus())
-            .mood(user.getMood())
-            .color(user.getColor())
+            .mood(hintDto.getMood())
+            .color(hintDto.getColor())
             .build();
     }
 }
