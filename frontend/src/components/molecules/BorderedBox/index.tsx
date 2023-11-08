@@ -165,11 +165,10 @@ const styles = StyleSheet.create({
   },
   skipText: {
     fontFamily: GlobalStyles.section_title.fontFamily,
-    fontSize: 16,
+    fontSize: height * 12,
     color: GlobalStyles.grey_3.color,
     marginTop: 10,
     alignSelf: 'flex-end',
-    width: '100%',
   },
   contentContainer: {
     flex: 1,

@@ -1,5 +1,5 @@
-import {View, StyleSheet, Text, Image} from 'react-native';
-import GlobalStyles from '../../../styles/GlobalStyles';
+import {View, StyleSheet, Text, Image, ScrollView} from 'react-native';
+import GlobalStyles, {height, width} from '../../../styles/GlobalStyles';
 import MenuTop from '../../molecules/menuTop';
 import GroupSummary from '../../atoms/groupSummary';
 import BtnReg from '../../atoms/btnReg';
@@ -35,7 +35,7 @@ export const BeforeStart = ({navigation, route}: BeforeStartProps) => {
     selectedCount >= multiSliderValue[0] && selectedCount <= multiSliderValue[1]
   );
   const bottomSheetRef = useRef<BottomSheet>(null);
-  const snapPoints = useMemo(() => ['70%', '20%', '70%'], []);
+  const snapPoints = useMemo(() => ['40%', '40%', '40%'], []);
   const renderBackdrop = useCallback(
     (props: any) => (
       <BottomSheetBackdrop
@@ -49,35 +49,14 @@ export const BeforeStart = ({navigation, route}: BeforeStartProps) => {
 
   const congrats = () => (
     <View style={styles.contentContainer}>
-      <Image source={congratsImg} style={styles.congratsImg} />
-      <View style={styles.noticeContainer}>
-        <View style={styles.textContainer}>
-          <Text style={styles.name}>홍재연</Text>
-          <Text style={styles.text}>방장님</Text>
-        </View>
-        <View style={styles.textContainer}>
-          <Text style={styles.text}>
-            방 생성을 <Text style={styles.textBig}>완료</Text>했어요.
-          </Text>
-        </View>
-      </View>
-      <View style={styles.codeContainer}>
-        <View style={styles.noticeShare}>
-          <Text style={styles.textSm}>아래의 초대코드를 복사해서</Text>
-          <Text style={styles.textSm}>친구들에게 공유해보세요!</Text>
-        </View>
-        <View style={styles.noticeCode}>
-          <CodeForm code="WUJtQT09" />
-          <Text style={styles.textXs}>
-            초대코드는 홈 방입장 탭에서도 확인가능합니다.
-          </Text>
-        </View>
-      </View>
+      <Text style={styles.textSm}>아래의 초대코드를 복사해서</Text>
+      <Text style={styles.textSm}>친구들에게 공유해보세요 🥳</Text>
+      <CodeForm code="WUJtQT09" />
     </View>
   );
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <MenuTop
         menu="그룹 정보"
         text={`방장님께서 생성한 그룹정보입니다.\n어서 친구들을 초대해보세요!`}
@@ -116,15 +95,12 @@ export const BeforeStart = ({navigation, route}: BeforeStartProps) => {
       <BottomSheet
         ref={bottomSheetRef}
         snapPoints={snapPoints}
-        bottomInset={46}
-        detached={true}
         index={0}
         backdropComponent={renderBackdrop}
-        enablePanDownToClose={true}
-        style={styles.sheetContainer}>
+        enablePanDownToClose={true}>
         {congrats()}
       </BottomSheet>
-    </View>
+    </ScrollView>
   );
 };
 
@@ -140,14 +116,13 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
     marginLeft: 50,
   },
-  sheetContainer: {
-    marginHorizontal: 20,
-    // paddingBottom: 1,
-  },
+
   contentContainer: {
-    flex: 1,
     alignItems: 'center',
+    justifyContent: 'center',
+    top: 50,
   },
+
   congratsImg: {
     flex: 1,
     width: '70%',
@@ -161,7 +136,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     alignSelf: 'center',
-    width: '80%',
+    marginBottom: height * 40,
     justifyContent: 'space-between',
   },
   noticeContainer: {
@@ -174,19 +149,6 @@ const styles = StyleSheet.create({
     marginTop: -25,
     justifyContent: 'center',
     alignItems: 'flex-end',
-  },
-  codeContainer: {
-    flex: 1,
-    position: 'relative',
-    marginTop: 30,
-  },
-  noticeShare: {
-    flex: 1,
-    alignItems: 'center',
-  },
-  noticeCode: {
-    flex: 3,
-    alignItems: 'center',
   },
   name: {
     fontFamily: GlobalStyles.section_title.fontFamily,
@@ -207,14 +169,9 @@ const styles = StyleSheet.create({
   },
   textSm: {
     fontFamily: GlobalStyles.sub_title.fontFamily,
-    fontSize: GlobalStyles.btn.fontSize,
+    fontSize: height * 12,
     color: GlobalStyles.grey_3.color,
     marginTop: -20,
-  },
-  textXs: {
-    fontFamily: GlobalStyles.sub_title.fontFamily,
-    fontSize: GlobalStyles.content.fontSize,
-    color: GlobalStyles.grey_3.color,
   },
 });
 

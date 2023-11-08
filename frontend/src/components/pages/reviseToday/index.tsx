@@ -66,7 +66,6 @@ const styles = StyleSheet.create({
   },
   btnContainer: {
     flex: 1,
-    bottom: '25%',
   },
   flexColumn: {
     flex: 1,
