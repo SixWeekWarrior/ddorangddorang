@@ -7,6 +7,6 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class UsersTodayinfoPostReq {
-    private MasterCode masterCode;
+    private Long id;
     private String content;
 }
