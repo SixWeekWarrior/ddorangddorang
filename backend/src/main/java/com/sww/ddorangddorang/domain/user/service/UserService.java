@@ -1,6 +1,7 @@
 package com.sww.ddorangddorang.domain.user.service;
 
 
+        import com.sww.ddorangddorang.domain.user.dto.HintDto;
         import com.sww.ddorangddorang.domain.user.dto.UsersMoreinfoPutReq;
         import com.sww.ddorangddorang.domain.user.dto.UsersSignupPostReq;
         import com.sww.ddorangddorang.domain.user.dto.UsersSsafyinfoPutReq;
@@ -23,4 +24,6 @@ public interface UserService {
     void saveRefreshToken(UsersTokenInfo build);
 
     User getUserInfo(Long id);
+
+    HintDto getHints(Long id);
 }

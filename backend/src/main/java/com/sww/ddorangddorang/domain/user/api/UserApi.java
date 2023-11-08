@@ -3,6 +3,7 @@ package com.sww.ddorangddorang.domain.user.api;
 import com.sww.ddorangddorang.auth.dto.AuthenticatedUser;
 import com.sww.ddorangddorang.auth.dto.TokenClaims;
 import com.sww.ddorangddorang.auth.service.JwtService;
+import com.sww.ddorangddorang.domain.user.dto.HintDto;
 import com.sww.ddorangddorang.domain.user.dto.UsersGetRes;
 import com.sww.ddorangddorang.domain.user.dto.UsersLoginPostRes;
 import com.sww.ddorangddorang.domain.user.dto.UsersMoreinfoPutReq;
@@ -16,6 +17,7 @@ import com.sww.ddorangddorang.domain.user.exception.UserNotFoundException;
 import com.sww.ddorangddorang.domain.user.service.UserService;
 import com.sww.ddorangddorang.global.common.CommonResponse;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -103,7 +105,8 @@ public class UserApi {
 
     @GetMapping
     public CommonResponse<UsersGetRes> getUserInfo(@AuthenticationPrincipal AuthenticatedUser authenticatedUser) {
-        return CommonResponse.success(UsersGetRes.userToDto(userService.getUserInfo(authenticatedUser.getId())));
+        HintDto hintDto = userService.getHints(authenticatedUser.getId());
+        return CommonResponse.success(UsersGetRes.userToDto(userService.getUserInfo(authenticatedUser.getId()), hintDto));
     }
 
     @GetMapping("/jwt-test")

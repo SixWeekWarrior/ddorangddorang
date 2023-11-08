@@ -2,6 +2,7 @@ package com.sww.ddorangddorang.domain.user.service;
 
 import com.sww.ddorangddorang.domain.mastercode.entity.MasterCode;
 import com.sww.ddorangddorang.domain.mastercode.repository.MasterCodeRepository;
+import com.sww.ddorangddorang.domain.user.dto.HintDto;
 import com.sww.ddorangddorang.domain.user.dto.UsersMoreinfoPutReq;
 import com.sww.ddorangddorang.domain.user.dto.UsersSignupPostReq;
 import com.sww.ddorangddorang.domain.user.dto.UsersSsafyinfoPutReq;
@@ -13,8 +14,11 @@ import com.sww.ddorangddorang.domain.user.exception.UserAlreadyExistException;
 import com.sww.ddorangddorang.domain.user.exception.UserNotFoundException;
 import com.sww.ddorangddorang.domain.user.repository.HintRepository;
 import com.sww.ddorangddorang.domain.user.repository.UserRepository;
+import com.sww.ddorangddorang.global.common.exception.UnexpectedException;
 import jakarta.transaction.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import lombok.RequiredArgsConstructor;
@@ -39,7 +43,7 @@ public class UserServiceImpl implements UserService {
 
         userRepository.save(user);
     }
-
+    @Transactional
     @Override
     public Optional<User> findByEmail(String email) {
         return userRepository.findByEmail(email);
@@ -48,16 +52,33 @@ public class UserServiceImpl implements UserService {
 
     public void todayInfo(Long userId, UsersTodayinfoPostReq usersTodayinfoPostReq) {
         User user = userRepository.getReferenceById(userId);
-        MasterCode masterCode = masterCodeRepository.getReferenceById(usersTodayinfoPostReq.getId());
 
-        Optional<Hint> optionalHint = hintRepository.findByUserAndMasterCode(user, masterCode);
-        Hint hint;
-        if (optionalHint.isEmpty()) {
-            hint = Hint.builder().content(usersTodayinfoPostReq.getContent()).user(user).masterCode(masterCode).build();
-            hintRepository.save(hint);
-        } else {
-            hint = optionalHint.get();
-            hint.updateContent(usersTodayinfoPostReq.getContent());
+        List<Hint> hintList = new ArrayList<Hint>();
+        if (usersTodayinfoPostReq.getColor() != null) {
+            MasterCode colorCode = masterCodeRepository.getReferenceById(1_001L);
+            hintList.add(Hint.builder()
+                            .user(user)
+                            .masterCode(colorCode)
+                            .content(usersTodayinfoPostReq.getColor())
+                            .build());
+        }
+
+        if (usersTodayinfoPostReq.getMood() != null) {
+            MasterCode moodCode = masterCodeRepository.getReferenceById(1_002L);
+            hintList.add(Hint.builder()
+                            .user(user)
+                            .masterCode(moodCode)
+                            .content(usersTodayinfoPostReq.getMood())
+                            .build());
+        }
+
+        for (Hint hint : hintList) {
+            Optional<Hint> optionalHint = hintRepository.findByUserAndMasterCode(user, hint.getMasterCode());
+            if (optionalHint.isEmpty()) {
+                hintRepository.save(hint);
+            } else {
+                optionalHint.orElseThrow(UnexpectedException::new).updateContent(hint.getContent());
+            }
         }
     }
 
@@ -81,4 +102,33 @@ public class UserServiceImpl implements UserService {
     public User getUserInfo(Long id) {
         return userRepository.findById(id).orElseThrow(UserNotFoundException::new);
     }
+
+    @Transactional
+    @Override
+    public HintDto getHints(Long id) {
+        String color = "";
+        String mood = "";
+
+        User user = userRepository.findById(id).orElseThrow(UserNotFoundException::new);
+
+        MasterCode colorCode = masterCodeRepository.findById(1_001L).orElseThrow(UnexpectedException::new);
+        Optional<Hint> colorHint = hintRepository.findByUserAndMasterCode(user, colorCode);
+
+        if (colorHint.isPresent()) {
+            color = colorHint.orElseThrow(UnexpectedException::new).getContent();
+        }
+
+        MasterCode moodCode = masterCodeRepository.findById(1_002L).orElseThrow(UnexpectedException::new);
+        Optional<Hint>  moodHint = hintRepository.findByUserAndMasterCode(user, moodCode);
+
+        if (moodHint.isPresent()) {
+            mood = moodHint.orElseThrow(UnexpectedException::new).getContent();
+        }
+
+        return HintDto.builder()
+                        .color(color)
+                        .mood(mood)
+                        .build();
+    }
+
 }
