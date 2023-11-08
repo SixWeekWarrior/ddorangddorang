@@ -76,9 +76,9 @@ public class UserApi {
         User user = usersSignupPostReq.toUser();
         // TODO: Need to fix if we add other OAuth
         user.addProviderInfo(email, "Google");
+        user.authorizeUser();
 
         userService.signUp(user);
-
 
         String refreshToken = jwtService.createRefreshToken();
         String accessToken = jwtService.createAccessToken(TokenClaims.builder()
