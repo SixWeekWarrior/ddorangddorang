@@ -45,7 +45,8 @@ export const Onboarding = ({navigation}: {navigation: any}): JSX.Element => {
     try {
       await GoogleSignin.hasPlayServices();
       const loginInfo = await GoogleSignin.signIn();
-      console.log(loginInfo.user.name);
+      console.log(loginInfo.idToken);
+      // console.log(loginInfo.user.name);
       if (loginInfo.idToken) {
         userApi
           .postLogin(loginInfo.idToken)
