@@ -38,7 +38,7 @@ export const Home = ({navigation}: {navigation: any}): JSX.Element => {
         </Text>
         <Text
           style={{
-            ...style.midFont,
+            ...style.midBoldFont,
             alignSelf: 'center',
           }}>
           진행 현황은 3일 전부터 확인 가능합니다.

@@ -4,8 +4,24 @@ import pinkEyeImg from '../../../assets/pinkEyeImg.png';
 import yellowEyeImg from '../../../assets/yellowEyeImg.png';
 import GlobalStyles, {height} from '../../../styles/GlobalStyles';
 import BtnBig from '../../atoms/btnBig';
+import React, {useState, useEffect} from 'react';
+import { missionApi } from '../../../apis';
 
-export const MissionToday = ({navigation}: {navigation: any}): JSX.Element => {
+function MissionToday({navigation}: {navigation: any}): JSX.Element {
+  const [missionTitle, setMissionTitle] = useState<string>('');
+  
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const title = await missionApi.getMission();
+        setMissionTitle(title);
+      } catch (error) {
+        console.error('미션 데이터 불러오기 실패', error);
+      }
+    };
+    fetchData();
+  }, []);
+  
   return (
     <View style={style.container}>
       <MenuTop
@@ -15,9 +31,9 @@ export const MissionToday = ({navigation}: {navigation: any}): JSX.Element => {
       <Image source={pinkEyeImg} style={style.pinkEyeImg} />
       <View style={style.innerContainer}>
         <Text style={style.titleText}>미션 소개</Text>
-        <Text style={style.missionText}>좋아하는 음식 알아내기</Text>
+        <Text style={style.missionText}>{ missionTitle }</Text>
         <Text style={style.contentText}>
-          {`좋아하는 음식을 알아내는 것은\n빠르게 친해질 수 있는 방법 중 하나이죠!\n오늘도 미션 도장을 찍어봐요!`}
+          { missionTitle }{`,\n빠르게 친해질 수 있는 방법 중 하나이죠!\n오늘도 미션 도장을 찍어봐요!`}
         </Text>
       </View>
       <Image source={yellowEyeImg} style={style.yellowEyeImg} />
@@ -71,4 +87,5 @@ const style = StyleSheet.create({
     marginTop: 10,
   },
 });
+
 export default MissionToday;
