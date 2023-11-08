@@ -24,7 +24,6 @@ const MissionList = () => {
         renderItem={renderItem}
         horizontal={true}
         keyExtractor={item => item.id}
-        style={{flexGrow: 0}}
       />
     </View>
   );
@@ -34,6 +33,7 @@ const styles = StyleSheet.create({
   listContainer: {
     alignSelf: 'center',
     flex: 0.8,
+    marginBottom: 20,
   },
   profileContainer: {
     flexDirection: 'row',

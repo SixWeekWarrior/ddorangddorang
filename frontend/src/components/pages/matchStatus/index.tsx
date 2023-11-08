@@ -18,7 +18,7 @@ const MatchStatus = ({navigation, route}): JSX.Element => {
   };
 
   const bottomSheetRef = useRef<BottomSheet>(null);
-  const snapPoints = useMemo(() => ['40%', '20%', '40%'], []);
+  const snapPoints = useMemo(() => ['35%', '35%', '35%'], []);
   const renderBackdrop = useCallback(
     (props: any) => (
       <BottomSheetBackdrop
@@ -97,12 +97,9 @@ const MatchStatus = ({navigation, route}): JSX.Element => {
         <BottomSheet
           ref={bottomSheetRef}
           snapPoints={snapPoints}
-          bottomInset={46}
-          detached={true}
           index={0}
           backdropComponent={renderBackdrop}
-          enablePanDownToClose={true}
-          style={styles.sheetContainer}>
+          enablePanDownToClose={true}>
           {noticeBottom()}
         </BottomSheet>
       ) : null}

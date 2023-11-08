@@ -7,7 +7,7 @@ import {
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
-import GlobalStyles, {height, width} from '../../../styles/GlobalStyles';
+import GlobalStyles, {height} from '../../../styles/GlobalStyles';
 import yellowEyeImg from '../../../assets/yellowEyeImg.png';
 import greenEyeImg from '../../../assets/greenEyeImg.png';
 import arrowRightImg from '../../../assets/whiteArrowRightImg.png';
@@ -38,7 +38,7 @@ export const Home = ({navigation}: {navigation: any}): JSX.Element => {
         </Text>
         <Text
           style={{
-            ...style.midFont,
+            ...style.midBoldFont,
             alignSelf: 'center',
           }}>
           진행 현황은 3일 전부터 확인 가능합니다.
@@ -155,7 +155,7 @@ export const Home = ({navigation}: {navigation: any}): JSX.Element => {
             </Text>
             <Image
               source={arrowRightImg}
-              style={{marginTop: 20, width: 6, height: 11}}
+              style={{marginTop: 20, width: 6, height: 11, marginLeft: 10}}
             />
           </Pressable>
         </View>
@@ -209,17 +209,17 @@ const style = StyleSheet.create({
     backgroundColor: GlobalStyles.pink.color,
     borderRadius: 20,
     justifyContent: 'center',
-    marginTop: height * 35,
-    marginLeft: width * 24,
+    marginTop: height * 40,
+    marginLeft: height * 24,
     height: height * 160,
   },
 
   topBottom: {
     resizeMode: 'contain',
     borderRadius: 20,
-    marginLeft: width * 24,
-    marginTop: width * 20,
-    width: width * 145,
+    marginLeft: height * 24,
+    marginTop: height * 20,
+    width: height * 145,
     height: height * 53,
   },
 
@@ -257,19 +257,18 @@ const style = StyleSheet.create({
 
   bottomRight: {
     flex: 1,
-    borderRadius: 24,
-    width: width * 145,
-    height: width * 213,
-    marginTop: width * 20,
-    marginRight: width * 24,
-    marginBottom: width * 24,
+    width: height * 145,
+    height: height * 213,
+    marginTop: height * 20,
+    marginRight: height * 24,
+    resizeMode: 'contain',
   },
 
   bottomTop: {
     backgroundColor: GlobalStyles.white_2.color,
     flex: 4,
-    marginTop: width * 20,
-    marginLeft: width * 24,
+    marginTop: height * 20,
+    marginLeft: height * 24,
     borderWidth: 0.5,
     borderStyle: 'solid',
     borderRadius: 24,
@@ -282,9 +281,8 @@ const style = StyleSheet.create({
     flexDirection: 'row',
     flex: 1,
     borderRadius: 24,
-    marginTop: width * 24,
-    marginLeft: width * 24,
-    marginBottom: width * 24,
+    marginTop: height * 24,
+    marginLeft: height * 24,
     justifyContent: 'space-between',
     paddingRight: 15,
   },
@@ -297,13 +295,13 @@ const style = StyleSheet.create({
   },
   circle: {
     backgroundColor: GlobalStyles.orange.color,
-    width: width * 70,
-    height: width * 70,
+    width: height * 70,
+    height: height * 70,
     borderRadius: 100,
     justifyContent: 'center',
     alignItems: 'center',
-    marginLeft: width * 28,
-    marginTop: width * 2,
+    marginLeft: height * 28,
+    marginTop: height * 2,
   },
   titleFont: {
     fontFamily: GlobalStyles.home_title.fontFamily,

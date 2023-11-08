@@ -4,7 +4,7 @@ import {StyleSheet, View, Text} from 'react-native';
 import MultiSlider from '@ptomasroos/react-native-multi-slider';
 // import CustomMarker from './CustomMarker';
 import CustomLabel from './customLabel';
-import GlobalStyles from '../../../styles/GlobalStyles';
+import GlobalStyles, {height, width} from '../../../styles/GlobalStyles';
 
 type RangeSliderProps = {
   multiSliderValueProp: number[];
@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
   },
   textLeft: {
     marginLeft: 50,
-    marginTop: 30,
+    marginTop: height * 18,
     flexDirection: 'row',
     alignSelf: 'flex-start',
   },
@@ -154,13 +154,13 @@ const styles = StyleSheet.create({
   },
   contentBig: {
     fontFamily: GlobalStyles.section_title.fontFamily,
-    fontSize: 25,
-    color: GlobalStyles.black.color,
+    fontSize: width * 18,
+    color: GlobalStyles.blue.color,
   },
   content: {
-    fontFamily: GlobalStyles.section_title.fontFamily,
+    fontFamily: GlobalStyles.nomal.fontFamily,
     alignSelf: 'center',
-    fontSize: 18,
+    fontSize: width * 15,
     color: GlobalStyles.black.color,
   },
 });

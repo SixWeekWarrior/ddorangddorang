@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {StyleSheet, Pressable, Text} from 'react-native';
-import GlobalStyles from '../../../styles/GlobalStyles';
+import GlobalStyles, {height, width} from '../../../styles/GlobalStyles';
 
 type BtnMidProps = {
   onPress: () => void;
@@ -29,8 +29,8 @@ export const BtnReg = ({onPress, text, color, disabled}: BtnMidProps) => {
 };
 const styles = StyleSheet.create({
   btnContainer: {
-    width: 145,
-    height: 50,
+    width: width * 160,
+    height: height * 48,
     backgroundColor: GlobalStyles.black.color,
     borderRadius: 30,
     flexDirection: 'row',
@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
   },
   btnText: {
     fontFamily: GlobalStyles.btn.fontFamily,
-    fontSize: 17,
+    fontSize: height * 14,
     color: GlobalStyles.white_1.color,
     alignSelf: 'center',
   },

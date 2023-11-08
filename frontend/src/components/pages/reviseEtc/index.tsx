@@ -41,10 +41,7 @@ export const ReviseEtc = ({navigation}: {navigation: any}) => {
 
   return (
     <View style={styles.container}>
-      <MenuTop
-        menu="기본 정보 수정"
-        text={`SSAFY 교육생으로서 \n나의 정보를 입력해주세요.`}
-      />
+      <MenuTop menu="추가 정보 수정" text={`추가 정보를 수정해봐요.`} />
       <View style={styles.innerContainer}>
         <View style={[styles.flexColumn, {height: '50%', rowGap: 15}]}>
           <InfoTextInput
@@ -92,7 +89,6 @@ const styles = StyleSheet.create({
   },
   btnContainer: {
     flex: 1,
-    bottom: '25%',
   },
   flexColumn: {
     flex: 1,

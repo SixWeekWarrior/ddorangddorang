@@ -58,6 +58,22 @@ export default StyleSheet.create({
     fontFamily: 'NotoSansKR-Bold',
     fontSize: 16,
   },
+
+  boldest: {
+    fontFamily: 'NotoSansKR-Black',
+  },
+
+  bold: {
+    fontFamily: 'NotoSansKR-Bold',
+  },
+
+  nomal: {
+    fontFamily: 'NotoSansKR',
+  },
+
+  light: {
+    fontFamily: 'NotoSansKR-Light',
+  },
 });
 
 const basicDimensions = {

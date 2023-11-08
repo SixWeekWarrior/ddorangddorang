@@ -1,5 +1,5 @@
 import {StyleSheet, View, Image} from 'react-native';
-import GlobalStyles, {height, width} from '../../../styles/GlobalStyles';
+import GlobalStyles, {height} from '../../../styles/GlobalStyles';
 import blockImg from '../../../assets/blockImg.png';
 import TitleAtom from '../../atoms/titleAtom';
 
@@ -33,13 +33,13 @@ const styles = StyleSheet.create({
     height: height * 255,
     flexDirection: 'row',
     backgroundColor: GlobalStyles.blue.color,
-    paddingLeft: width * 24,
-    paddingRight: width * 24,
+    paddingLeft: height * 24,
+    paddingRight: height * 24,
   },
   contentContainer: {
     flex: 1,
     alignSelf: 'flex-end',
-    bottom: width * 25,
+    bottom: height * 25,
   },
   imgContainer: {
     alignSelf: 'flex-end',

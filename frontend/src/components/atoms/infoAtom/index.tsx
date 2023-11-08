@@ -15,16 +15,18 @@ export const InfoAtom = ({title, content, isWhite}: InfoAtomProps) => {
     container: {
       flexDirection: 'row',
       marginVertical: -7,
+      alignItems: 'center',
     },
     titleText: {
       color: textColor,
-      fontFamily: GlobalStyles.home_title.fontFamily,
+      fontFamily: GlobalStyles.bold.fontFamily,
       fontSize: 15,
     },
     contentText: {
       color: textColor,
-      fontFamily: GlobalStyles.section_title.fontFamily,
+      fontFamily: GlobalStyles.nomal.fontFamily,
       fontSize: 15,
+      alignContent: 'center',
     },
     border: {
       color: GlobalStyles.yellow.color,
