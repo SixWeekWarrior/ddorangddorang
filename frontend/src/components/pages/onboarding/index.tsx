@@ -55,7 +55,7 @@ export const Onboarding = ({navigation}: {navigation: any}): JSX.Element => {
             data.success
               ? tokenUtil
                   .setToken(data.data.accessToken, data.data.refreshToken)
-                  .then(navigation.navigate('Enter'))
+                  .then(navigation.navigate('Enter', 'login'))
               : tokenUtil
                   .setIdToken(loginInfo.idToken as string)
                   .then(navigation.navigate('BasicInfo'));
