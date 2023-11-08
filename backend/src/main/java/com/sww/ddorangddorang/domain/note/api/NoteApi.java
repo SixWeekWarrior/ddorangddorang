@@ -25,20 +25,24 @@ public class NoteApi {
     private final NoteService noteService;
     private static final String SUCCESS = "SUCCESS";
 
+    // TODO: 게임 시작 메소드 테스트 이후에 Note 보내지는지 확인하기
     @GetMapping("/{id}")
-    public CommonResponse<NoteViewRes> getNote(@PathVariable Long id, @AuthenticationPrincipal AuthenticatedUser authenticatedUser) {
+    public CommonResponse<NoteViewRes> getNote(@PathVariable Long id,
+        @AuthenticationPrincipal AuthenticatedUser authenticatedUser) {
         log.info("getNote Controller 진입");
         return CommonResponse.success(noteService.getNote(id, authenticatedUser));
     }
 
     @GetMapping
-    public CommonResponse<List<NoteViewRes>> getNotes(@AuthenticationPrincipal AuthenticatedUser authenticatedUser) {
+    public CommonResponse<List<NoteViewRes>> getNotes(
+        @AuthenticationPrincipal AuthenticatedUser authenticatedUser) {
         log.info("getNotes Controller 진입");
         return CommonResponse.success(noteService.getNotes(authenticatedUser));
     }
 
     @PostMapping
-    public CommonResponse<String> createNote(@RequestBody NoteCreateReq noteCreateReq, @AuthenticationPrincipal AuthenticatedUser authenticatedUser) {
+    public CommonResponse<String> createNote(@RequestBody NoteCreateReq noteCreateReq,
+        @AuthenticationPrincipal AuthenticatedUser authenticatedUser) {
         log.info("createNote Controller 진입");
         noteService.createNote(noteCreateReq, authenticatedUser);
         return CommonResponse.success(SUCCESS);

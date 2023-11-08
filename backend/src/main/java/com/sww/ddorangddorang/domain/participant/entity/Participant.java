@@ -24,6 +24,8 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
+// TODO: 외래키 참조 컬럼은 참조 컬럼 이름을 설정해주지 않으면 컬럼네임_id로 DB에서 조회함. 이와 관련해서 에러 발생해서 전부 수정하였음
+// TODO: 방장이 방을 삭제해도 관련된 방의 participant의 deletedAt 값이 변경되지 않는 문제가 발생함. gameCount로 분류하니까 상관없는가?
 @DynamicInsert
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -49,15 +51,15 @@ public class Participant {
     private String nickname;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn
+    @JoinColumn(name = "manito")
     private Participant manito;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn
+    @JoinColumn(name = "maniti")
     private Participant maniti;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn
+    @JoinColumn(name = "mission")
     private Mission mission;
 
     private Boolean isKickedOut = false;
@@ -68,7 +70,7 @@ public class Participant {
     private LocalDateTime deletedAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn
+    @JoinColumn(name = "guess")
     private User guess;
 
     private Boolean isCorrect;

@@ -12,6 +12,7 @@ import com.sww.ddorangddorang.domain.participant.repository.SuffixRepository;
 import com.sww.ddorangddorang.domain.room.dto.JoinRoomReq;
 import com.sww.ddorangddorang.domain.room.dto.RoomInfoReq;
 import com.sww.ddorangddorang.domain.room.dto.ShowUsersRes;
+import com.sww.ddorangddorang.domain.room.dto.WaitingListRes;
 import com.sww.ddorangddorang.domain.room.entity.Room;
 import com.sww.ddorangddorang.domain.room.exception.AlreadyParticipatingRoomException;
 import com.sww.ddorangddorang.domain.room.exception.DataNotInRangeException;
@@ -61,7 +62,8 @@ public class RoomServiceImpl implements RoomService {
         log.info("id: {}", authenticatedUser.getId());
         User user = findUserById(authenticatedUser.getId());
 
-        if (user.getStatus() != 1L) {
+        // TODO: user.getStatus()가 null이라서 에러 터져서 임시 수정함 MasterCode의 합의가 필요함
+        if (user.getStatus() != null && user.getStatus() != 1L) {
             log.info("RoomServiceImpl_createRoom end");
             throw new AlreadyParticipatingRoomException();
         }
@@ -76,6 +78,12 @@ public class RoomServiceImpl implements RoomService {
         log.info("accessCode = " + accessCode);
 
         user.updateStatus(2L);
+
+        log.info("null이 대체 어디서 터지는거야?");
+        log.info("user = {}, accessCode = {}, ", user, accessCode);
+        log.info("minMember: {}, maxMember: {}, duration: {}", roomInfoReq.getMinMember(),
+            roomInfoReq.getMaxMember(), roomInfoReq.getDuration());
+
         Room room = Room.builder()
             .admin(user)
             .accessCode(accessCode)
@@ -83,11 +91,16 @@ public class RoomServiceImpl implements RoomService {
             .maxMember(roomInfoReq.getMaxMember())
             .duration(roomInfoReq.getDuration())
             .build();
+
         roomRepository.save(room);
+
+        // TODO: 이거 없으면  room_id null들어가서 에러터짐 일단 수정하고 컨펌받기
+        user.updateRoom(room);
 
         Participant participant = Participant.builder()
             .user(user)
             .build();
+
         participantRepository.save(participant);
 
         log.info("RoomServiceImpl_createRoom end: " + room.getAccessCode());
@@ -120,7 +133,8 @@ public class RoomServiceImpl implements RoomService {
         log.info("id: {}", authenticatedUser.getId());
         User user = findUserById(authenticatedUser.getId());
 
-        if (user.getStatus() != 1L) {
+        // TODO: 초창기에 null값이라 nullPointerException 터짐에 유의, 임시적으로 수정함
+        if (user.getStatus() != null && user.getStatus() != 1L) {
             log.info("RoomServiceImpl_joinRoom end");
             throw new AlreadyParticipatingRoomException();
         }
@@ -518,6 +532,16 @@ public class RoomServiceImpl implements RoomService {
         return userRepository.findById(id).orElseThrow(UserNotFoundException::new).getRoom().getAccessCode();
     }
 
+    @Transactional
+    public List<WaitingListRes> getWaitingList(Long userId) {
+        User admin = findUserById(userId);
+        Room room = admin.getRoom();
+        List<User> userList = userRepository.findAllByRoomAndStatus(room, 5L);
+        return WaitingListRes.listOf(userList);
+    }
+
+//    @Transactional
+//    public
     private User findUserById(Long id) {
         return userRepository.findById(id).orElseThrow(UserNotFoundException::new);
     }

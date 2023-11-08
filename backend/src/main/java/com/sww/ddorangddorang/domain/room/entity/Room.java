@@ -45,7 +45,7 @@ public class Room {
     @NotNull
     private Integer accessCode;  //INT
 
-    @NotNull
+    // TODO: NotNull 제약조건때문에 Service단에서 에러 발생해서 임시적으로 제거하였음. 우현이 오면 컨펌받기. DB에서 NotNull 제약 조건도 제낌
     private Integer campus; //INT
 
     //    @Column(name = "min_member")
@@ -71,7 +71,7 @@ public class Room {
     @CreationTimestamp
     private LocalDateTime createdAt = LocalDateTime.now();    //DATETIME
 
-//    @Column(name = "started_at")
+    //    @Column(name = "started_at")
     private LocalDateTime startedAt;    //DATETIME
 
     @NotNull
@@ -119,8 +119,7 @@ public class Room {
 
     @Builder
     public Room(User admin, Integer accessCode, Integer minMember, Integer maxMember,
-        Integer duration,
-        String profileImage) {
+        Integer duration, String profileImage) {
         this.admin = admin;
         this.accessCode = accessCode;
         this.campus = admin.getCampus();
