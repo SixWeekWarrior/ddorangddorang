@@ -5,7 +5,7 @@ import yellowEyeImg from '../../../assets/yellowEyeImg.png';
 import GlobalStyles, {height, width} from '../../../styles/GlobalStyles';
 import BtnBig from '../../atoms/btnBig';
 
-export const MissionToday = ({navigation: {navigate}}): JSX.Element => {
+export const MissionToday = ({navigation}: {navigation: any}): JSX.Element => {
   return (
     <View style={style.container}>
       <MenuTop
@@ -21,7 +21,7 @@ export const MissionToday = ({navigation: {navigate}}): JSX.Element => {
         </Text>
       </View>
       <Image source={yellowEyeImg} style={style.yellowEyeImg} />
-      <BtnBig text="수행하기" onPress={() => navigate('GoMission')} />
+      <BtnBig text="수행하기" onPress={() => navigation('GoMission')} />
     </View>
   );
 };
