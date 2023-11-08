@@ -18,10 +18,6 @@ const postLogin = async (idToken: string) => {
       })
       .post(serverUrl + '/users/login');
 
-    await tokenUtil.setToken(
-      res.data.data.accessToken,
-      res.data.data.refreshToken,
-    );
     return res.data;
   } catch (e) {
     throw new Error('ERROR IN POST_LOGIN');
