@@ -55,7 +55,16 @@ export const BorderedBox = ({
                 title="지역"
                 placeholder="지역을 선택하세요"
                 data={campusList}
-                setValue={data => onInputChange('campus', data)}
+                setValue={data => {
+                  const campusDict = {
+                    서울: 0,
+                    대전: 1,
+                    광주: 2,
+                    구미: 3,
+                    부울경: 4,
+                  };
+                  onInputChange('campus', campusDict[data]);
+                }}
               />
               <InfoRadioInput
                 title="전공"
@@ -165,11 +174,10 @@ const styles = StyleSheet.create({
   },
   skipText: {
     fontFamily: GlobalStyles.section_title.fontFamily,
-    fontSize: 16,
+    fontSize: height * 12,
     color: GlobalStyles.grey_3.color,
     marginTop: 10,
     alignSelf: 'flex-end',
-    width: '100%',
   },
   contentContainer: {
     flex: 1,

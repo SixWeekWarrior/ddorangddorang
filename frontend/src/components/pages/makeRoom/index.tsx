@@ -18,6 +18,7 @@ export const MakeRoom = ({navigation}: {navigation: any}): JSX.Element => {
   const handleMultiSliderChange = (values: number[]) => {
     setMultiSliderValue(values);
   };
+
   const handleSliderChange = (values: number) => {
     setSliderValue(values);
   };
@@ -52,7 +53,7 @@ export const MakeRoom = ({navigation}: {navigation: any}): JSX.Element => {
     <View style={styles.container}>
       <MenuTop
         menu="그룹 만들기"
-        text={`마니또를 함께 할 그룹을 만들고\n친구들을 초대하세요!`}
+        text={`그룹을 만들고\n친구들을 초대하세요!`}
       />
       <RangeSlider
         multiSliderValueProp={multiSliderValue}

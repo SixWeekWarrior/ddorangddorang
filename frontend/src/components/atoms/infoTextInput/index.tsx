@@ -1,7 +1,7 @@
 import {StyleSheet, Text, View, TextInput} from 'react-native';
 
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import GlobalStyles from '../../../styles/GlobalStyles';
+import GlobalStyles, {height} from '../../../styles/GlobalStyles';
 
 const InfoTextInput = ({
   title,
@@ -21,6 +21,7 @@ const InfoTextInput = ({
           <TextInput
             style={styles.input}
             placeholder={placeholder}
+            fontSize={height * 12}
             placeholderTextColor={GlobalStyles.grey_3.color}
             onChangeText={(value: string) => setValue(value)}
           />
