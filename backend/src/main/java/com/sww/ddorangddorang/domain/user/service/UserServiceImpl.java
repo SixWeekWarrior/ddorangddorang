@@ -1,6 +1,7 @@
 package com.sww.ddorangddorang.domain.user.service;
 
 import com.sww.ddorangddorang.domain.mastercode.entity.MasterCode;
+import com.sww.ddorangddorang.domain.mastercode.repository.MasterCodeRepository;
 import com.sww.ddorangddorang.domain.user.dto.UsersMoreinfoPutReq;
 import com.sww.ddorangddorang.domain.user.dto.UsersSignupPostReq;
 import com.sww.ddorangddorang.domain.user.dto.UsersSsafyinfoPutReq;
@@ -28,8 +29,8 @@ import org.springframework.stereotype.Service;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
     private final HintRepository hintRepository;
+    private final MasterCodeRepository masterCodeRepository;
 
     public void signUp(User user) throws Exception {
         if (userRepository.findByEmailAndProviderType(user.getEmail(), user.getProviderType()).isPresent()) {
@@ -47,7 +48,8 @@ public class UserServiceImpl implements UserService {
 
     public void todayInfo(Long userId, UsersTodayinfoPostReq usersTodayinfoPostReq) {
         User user = userRepository.getReferenceById(userId);
-        MasterCode masterCode = usersTodayinfoPostReq.getMasterCode();
+        MasterCode masterCode = masterCodeRepository.getReferenceById(usersTodayinfoPostReq.getId());
+
         Optional<Hint> optionalHint = hintRepository.findByUserAndMasterCode(user, masterCode);
         Hint hint;
         if (optionalHint.isEmpty()) {

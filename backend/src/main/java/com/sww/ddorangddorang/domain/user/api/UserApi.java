@@ -121,9 +121,9 @@ public class UserApi {
     }
 
     @PostMapping("/todayinfo")
-    public CommonResponse<String> todayinfo(@RequestHeader Long userId, @RequestBody UsersTodayinfoPostReq usersTodayinfoPostReq) {
+    public CommonResponse<String> todayinfo(@AuthenticationPrincipal AuthenticatedUser authenticatedUser, @RequestBody UsersTodayinfoPostReq usersTodayinfoPostReq) {
         log.info("UserApi_todayInfo starts");
-        userService.todayInfo(userId, usersTodayinfoPostReq);
+        userService.todayInfo(authenticatedUser.getId(), usersTodayinfoPostReq);
         log.info("UserApi_todayInfo ends");
         return CommonResponse.success(SUCCESS);
     }
