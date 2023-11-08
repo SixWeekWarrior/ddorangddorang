@@ -129,17 +129,17 @@ public class UserApi {
     }
 
     @PutMapping("/ssafyinfo")
-    public CommonResponse<String> ssafyInfo(@RequestHeader Long userId, @RequestBody UsersSsafyinfoPutReq usersSsafyinfoPutReq) {
+    public CommonResponse<String> ssafyInfo(@AuthenticationPrincipal AuthenticatedUser authenticatedUser, @RequestBody UsersSsafyinfoPutReq usersSsafyinfoPutReq) {
         log.info("UserApi_ssafyInfo starts");
-        userService.ssafyInfo(userId, usersSsafyinfoPutReq);
+        userService.ssafyInfo(authenticatedUser.getId(), usersSsafyinfoPutReq);
         log.info("UserApi_ssafyInfo ends");
         return CommonResponse.success(SUCCESS);
     }
 
     @PutMapping("/moreinfo")
-    public CommonResponse<String> moreInfo(@RequestHeader Long userId, @RequestBody UsersMoreinfoPutReq usersMoreinfoPutReq) {
+    public CommonResponse<String> moreInfo(@AuthenticationPrincipal AuthenticatedUser authenticatedUser, @RequestBody UsersMoreinfoPutReq usersMoreinfoPutReq) {
         log.info("UserApi_moreInfo starts");
-        userService.moreInfo(userId, usersMoreinfoPutReq);
+        userService.moreInfo(authenticatedUser.getId(), usersMoreinfoPutReq);
         log.info("UserApi_moreInfo ends");
         return CommonResponse.success(SUCCESS);
     }
