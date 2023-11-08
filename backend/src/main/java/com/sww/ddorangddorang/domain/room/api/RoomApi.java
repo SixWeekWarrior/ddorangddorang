@@ -29,6 +29,14 @@ public class RoomApi {
     private final RoomService roomService;
     private final static String SUCCESS = "SUCCESS";
 
+    @GetMapping
+    public CommonResponse<Integer> getRoom(@AuthenticationPrincipal AuthenticatedUser authenticatedUser) {
+        log.info("RoomApi_getRoom start");
+        Integer accessCode = roomService.getRoom(authenticatedUser.getId());
+        log.info("RoomApi_getRoom end: {}", accessCode);
+        return CommonResponse.success(accessCode);
+    }
+
     @PostMapping
     public CommonResponse<Integer> createRoom(@RequestBody RoomInfoReq roomInfoReq,
         @AuthenticationPrincipal AuthenticatedUser authenticatedUser) {

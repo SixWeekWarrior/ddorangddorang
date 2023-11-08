@@ -25,4 +25,6 @@ public interface RoomService {
     Boolean checkAndRunIfRoomShouldStart(AuthenticatedUser authenticatedUser);
 
     Boolean checkAndStartGame(AuthenticatedUser authenticatedUser);
+
+    Integer getRoom(Long id);
 }

@@ -264,7 +264,9 @@ public class RoomServiceImpl implements RoomService {
                 wishManitoList[i] = List.copyOf(maleList);
             }
 
-            Collections.shuffle(wishManitoList[i]);
+            List<Participant> tmp = new ArrayList<>(wishManitoList[i]);
+            Collections.shuffle(tmp);
+            wishManitoList[i] = tmp;
         }
 
         for (int i = 1; i < size; ++i) {
@@ -510,6 +512,10 @@ public class RoomServiceImpl implements RoomService {
 
         log.info("RoomServiceImpl_checkAndStartGame end: invalid play condition");
         throw new PlayersNotEnoughException();
+    }
+
+    public Integer getRoom(Long id) {
+        return userRepository.findById(id).orElseThrow(UserNotFoundException::new).getRoom().getAccessCode();
     }
 
     private User findUserById(Long id) {
