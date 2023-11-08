@@ -28,15 +28,16 @@ const postLogin = async (idToken: string) => {
 // 회원가입시 정보 입력 API
 const postSignup = async (data: UserInfo) => {
   try {
-    const res = await axios.create({
-      headers: {
-        'Content-Type': 'application/json; charset=UTF-8',
-        Authorization: 'Bearer ' + idToken,
-      },
-    });
+    const idToken = await tokenUtil.getIdToken();
+    const res = await axios
+      .create({
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
+          Authorization: 'Bearer ' + idToken,
+        },
+      })
+      .post(serverUrl + '/users/signup', data);
 
-    client.post('/users/signup', data);
-    console.log(res.data);
     await tokenUtil.setToken(
       res.data.data.accessToken,
       res.data.data.refreshToken,
