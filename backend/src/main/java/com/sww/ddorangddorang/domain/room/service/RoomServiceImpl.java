@@ -273,6 +273,7 @@ public class RoomServiceImpl implements RoomService {
 
         for (int i = 1; i < size; ++i) {
             Participant participant = indexToParticipant.get(i);
+            log.info(i + " " + participant.getUser().getName());
 
             //추후 차단 로직 구현 시 여기서 차단한 사용자는 간선에서 뺴기
             if (participant.getUser().getGender()) {
@@ -286,12 +287,14 @@ public class RoomServiceImpl implements RoomService {
             wishManitoList[i] = tmp;
         }
 
+        Arrays.fill(matchedManito, 0);
         for (int i = 1; i < size; ++i) {
             Arrays.fill(searched, false);
             matchManito(i, searched, matchedManito, wishManitoList[i], participantToIndex);
         }
 
         Boolean[] matched = new Boolean[size];
+        Arrays.fill(matched, false);
 
         for (int i = 1; i < size; ++i) {
             if (matchedManito[i] > 0) {
@@ -301,10 +304,14 @@ public class RoomServiceImpl implements RoomService {
         }
 
         List<Participant> unmatchedList = new ArrayList<>();
+        log.info("initial match");
         //매칭이 되지 않은 회원끼리는 성별과 관계 없이 매칭
         for (int i = 1; i < size; ++i) {
             if (!matched[i]) {
                 unmatchedList.add(indexToParticipant.get(i));
+            } else {
+                log.info(
+                    indexToParticipant.get(i).getUser().getName());
             }
         }
 
@@ -360,10 +367,12 @@ public class RoomServiceImpl implements RoomService {
                     Integer randomNumber = (int) (Math.random() * prefixListSize * suffixListSize);
                     prefixSelected = randomNumber / suffixListSize;
                     suffixSelected = randomNumber % suffixListSize;
-                } while (!nicknameUsage[prefixSelected][suffixSelected]);
+                } while (nicknameUsage[prefixSelected][suffixSelected] != null);
 
+                nicknameUsage[prefixSelected][suffixSelected] = true;
                 participant.allocateNickname(
-                    prefixList.get(prefixSelected) + " " + suffixList.get(suffixSelected));
+                    prefixList.get(prefixSelected).getAdjective() + " " + suffixList.get(
+                        suffixSelected).getAnimal());
 //                해당 사용자들은 게임을 시작한 상태로 변경
                 participant.getUser().updateStatus(4L);
             } else {
@@ -374,7 +383,7 @@ public class RoomServiceImpl implements RoomService {
 
         room.updateHeadCount(count);
         room.startGame();
-        missionPerformService.startGameAndAssignMission(room);
+//        missionPerformService.startGameAndAssignMission(room);
         redisUtil.putAccessCode(room.getAccessCode());
         log.info("RoomServiceImpl_startGame end: " + count + " participants started a game");
     }
@@ -382,9 +391,13 @@ public class RoomServiceImpl implements RoomService {
     private Boolean matchManito(Integer current, Boolean[] searched, Integer[] matchedManito,
         List<Participant> wishManitoList, Map<Participant, Integer> participantToIndex) {
         for (Participant participant : wishManitoList) {
-            Integer next = participantToIndex.get(participant);
+            Integer next = participantToIndex.getOrDefault(participant, -1);
 
             log.info("next: {}", next);
+
+            if (next == -1) {
+                return false;
+            }
 
             if (!searched[next]) {
                 searched[next] = true;
@@ -537,7 +550,8 @@ public class RoomServiceImpl implements RoomService {
     }
 
     public RoomGetRes getRoom(Long id) {
-        RoomGetRes roomGetRes = RoomGetRes.toDto(userRepository.findById(id).orElseThrow(UserNotFoundException::new).getRoom());
+        RoomGetRes roomGetRes = RoomGetRes.toDto(
+            userRepository.findById(id).orElseThrow(UserNotFoundException::new).getRoom());
         log.info("RoomService_getRoom: {}", roomGetRes);
         return roomGetRes;
     }
