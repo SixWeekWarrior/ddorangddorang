@@ -37,6 +37,8 @@ export const UserInfoState = atom<UserInfo>({
     hate: '',
     mbti: '',
     worry: '',
+    mood: '',
+    color: '',
   },
 });
 

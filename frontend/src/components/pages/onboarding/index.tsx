@@ -15,8 +15,12 @@ import {
 import BtnBig from '../../atoms/btnBig';
 import {userApi} from '../../../apis';
 import {tokenUtil} from '../../../utils';
+import {useSetRecoilState} from 'recoil';
+import {userAtom} from '../../../modules';
 
 export const Onboarding = ({navigation}: {navigation: any}): JSX.Element => {
+  const setUserInfo = useSetRecoilState(userAtom.UserInfoState);
+
   useEffect(() => {
     // Google Sign-In 초기화
     GoogleSignin.configure({
@@ -41,6 +45,17 @@ export const Onboarding = ({navigation}: {navigation: any}): JSX.Element => {
     [],
   );
 
+  const getUserInfo = () => {
+    userApi
+      .getUserInfo()
+      .then(data => {
+        setUserInfo(data.data);
+      })
+      .catch(error => {
+        console.log('getUserInfo_Error', error);
+      });
+  };
+
   const handleGoogleSignIn = async () => {
     try {
       await GoogleSignin.hasPlayServices();
@@ -61,7 +76,7 @@ export const Onboarding = ({navigation}: {navigation: any}): JSX.Element => {
             console.log(e);
           });
       }
-    } catch (error: any) {
+    } catch (error) {
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
         // 사용자가 로그인을 취소했을 때 처리
         console.log('Google Sign-In cancelled');

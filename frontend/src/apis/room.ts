@@ -46,10 +46,10 @@ const postRoomStart = async () => {
 // 나의 room 정보 가져오기 API
 const getRoomInfo = async () => {
   try {
-    const res = await client.get('/rooms/start');
+    const res = await client.get('/rooms');
     return res.data;
   } catch (e) {
-    throw new Error('ERROR IN POST_ROOM_START');
+    throw new Error('getRoomInfo');
   }
 };
 
