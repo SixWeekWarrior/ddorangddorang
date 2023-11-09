@@ -51,6 +51,7 @@ public class SecurityConfig {
                 .requestMatchers("/users/login").permitAll()
                 .requestMatchers("/users/signup").permitAll()
                 .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                .requestMatchers("/users/s3-test").permitAll()
                 .anyRequest().authenticated());
 //                .anyRequest().permitAll());
 
