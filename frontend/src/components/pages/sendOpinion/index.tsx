@@ -39,7 +39,6 @@ const SendOpinion = ({navigation}: {navigation: any}) => {
         multiline={true}
         style={styles.inputText}
         onChangeText={handleInputChange}
-        value={value}
         placeholder={'의견을 입력해주세요.'}
         placeholderTextColor={GlobalStyles.grey_3.color}
       />
