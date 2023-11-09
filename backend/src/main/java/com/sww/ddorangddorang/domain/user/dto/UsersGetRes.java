@@ -19,7 +19,7 @@ public class UsersGetRes {
     private Integer classes;
     private Integer floor;
     private String profileImage;
-    private String like;
+    private String likes;
     private String hate;
     private String mbti;
     private String worry;
@@ -31,7 +31,7 @@ public class UsersGetRes {
     @Builder
     public UsersGetRes(String name, String email, Integer generation, Boolean isMajor,
         Boolean gender,
-        Integer campus, Integer classes, Integer floor, String profileImage, String like,
+        Integer campus, Integer classes, Integer floor, String profileImage, String likes,
         String hate,
         String mbti, String worry, Long roomId, Long status, String mood, String color) {
         this.name = name;
@@ -43,7 +43,7 @@ public class UsersGetRes {
         this.classes = classes;
         this.floor = floor;
         this.profileImage = profileImage;
-        this.like = like;
+        this.likes = likes;
         this.hate = hate;
         this.mbti = mbti;
         this.worry = worry;
@@ -64,7 +64,7 @@ public class UsersGetRes {
             .classes(user.getClasses())
             .floor(user.getFloor())
             .profileImage(user.getProfileImage())
-            .like(user.getLikes())
+            .likes(user.getLikes())
             .hate(user.getHate())
             .mbti(user.getMbti())
             .worry(user.getWorry())
