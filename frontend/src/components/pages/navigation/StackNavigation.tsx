@@ -20,7 +20,6 @@ import SendOpinion from '../sendOpinion';
 import MatchStatus from '../matchStatus';
 import MatchGuess from '../matchGuess';
 import MyPage from '../myPage';
-import UploadPic from '../uploadPic';
 import {ProfilePicAdd} from '../profilePicAdd';
 
 const StackNavigation = () => {
