@@ -10,16 +10,17 @@ import {UserInfo, UserSsafyInfo} from '../../../types/user';
 import {useRecoilState} from 'recoil';
 
 export const ReviseSsafy = ({navigation}: {navigation: any}) => {
-  const classList = Array.from({length: 20}, (_, index) => index + 1);
+  const classList = Array.from({length: 22}, (_, index) => index + 1);
   const floorList = Array.from({length: 20}, (_, index) => index + 1);
   const [userInfo, setUserInfo] = useRecoilState(user.UserInfoState);
+  const [defaultClasses, defaultFloor] = [userInfo.classes, userInfo.floor];
   const [inputValues, setInputValues] = useState<UserSsafyInfo>({
-    classes: 0,
-    floor: 0,
+    classes: defaultClasses,
+    floor: defaultFloor,
     profileImage: '',
   });
 
-  const onInputChange = (title: string, value: string) => {
+  const onInputChange = (title: string, value: any) => {
     setInputValues(prevState => ({
       ...prevState,
       [title]: value,
@@ -28,10 +29,10 @@ export const ReviseSsafy = ({navigation}: {navigation: any}) => {
 
   const handleSubmit = async () => {
     try {
-      const updatedUserInfo: UserInfo = {...userInfo, ...inputValues}; // Merge properties of both types
+      const updatedUserInfo: UserInfo = {...userInfo, ...inputValues};
       await userApi.putSsafyInfo(inputValues);
       await setUserInfo(updatedUserInfo);
-      navigation.navigate('Navbar');
+      navigation.navigate('정보');
     } catch (error) {
       console.error(error);
     }
@@ -47,13 +48,13 @@ export const ReviseSsafy = ({navigation}: {navigation: any}) => {
         <View style={[styles.flexColumn, {height: '50%', rowGap: 15}]}>
           <InfoSelectInput
             title="반"
-            placeholder="반을 선택하세요"
+            placeholder={defaultClasses}
             data={classList}
             setValue={data => onInputChange('classes', data)}
           />
           <InfoSelectInput
             title="층"
-            placeholder="층을 선택하세요"
+            placeholder={defaultFloor}
             data={floorList}
             setValue={data => onInputChange('floor', data)}
           />

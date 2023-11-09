@@ -15,10 +15,15 @@ export const TmpUserInfoState = atom<UserInfo>({
     campus: -1,
     classes: 0,
     floor: 0,
+    profileImage: '',
     like: '',
     hate: '',
     mbti: '',
     worry: '',
+    roomId: 0,
+    status: 0,
+    mood: '',
+    color: '',
   },
 });
 
@@ -33,18 +38,23 @@ export const UserInfoState = atom<UserInfo>({
     campus: -1,
     classes: 0,
     floor: 0,
+    profileImage: '',
     like: '',
     hate: '',
     mbti: '',
     worry: '',
+    roomId: 0,
+    status: 0,
+    mood: '',
+    color: '',
   },
 });
 
 export const UserDailyInfoState = atom<UserDailyInfo>({
   key: `${KEY}/dailyinfo`,
   default: {
-    id: 0,
-    content: '',
+    mood: '미설정',
+    color: '미설정',
   },
 });
 

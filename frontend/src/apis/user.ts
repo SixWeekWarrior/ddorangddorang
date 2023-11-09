@@ -94,6 +94,7 @@ const postTodayInfo = async (data: UserDailyInfo) => {
     );
     return res.data;
   } catch (e) {
+    console.log(e);
     throw new Error('ERROR IN POST_TODAY_INFO');
   }
 };

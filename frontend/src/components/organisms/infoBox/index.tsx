@@ -6,10 +6,19 @@ import GlobalStyles, {height} from '../../../styles/GlobalStyles';
 import InfoAtom from '../../atoms/infoAtom';
 import token from '../../../utils/token';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
+import {useRecoilState} from 'recoil';
+import user from '../../../modules/user';
 
 type InfoBoxProps = {
   navigation: any;
   destination: string;
+};
+const campusDict: {[key: number]: string} = {
+  0: '서울',
+  1: '대전',
+  2: '광주',
+  3: '구미',
+  4: '부울경',
 };
 
 const InnerInfo = ({navigation}: {navigation: any}): JSX.Element => {
@@ -33,6 +42,11 @@ const InnerInfo = ({navigation}: {navigation: any}): JSX.Element => {
 };
 
 const InfoBox = ({navigation, destination}: InfoBoxProps): JSX.Element => {
+  const [userInfo, setUserInfo] = useRecoilState(user.UserInfoState);
+  const [userDailyInfo, setUserDailyInfo] = useRecoilState(
+    user.UserDailyInfoState,
+  );
+
   const handlePress = () => {
     switch (destination) {
       case 'MissionToday':
@@ -99,36 +113,44 @@ const InfoBox = ({navigation, destination}: InfoBoxProps): JSX.Element => {
       case 'InfoToday':
         return (
           <View style={[style.flexColumn]}>
-            <InfoAtom title="기분" content="약간 흐림" />
-            <InfoAtom title="입은 옷" content="빨간색" />
+            <InfoAtom title="기분" content={userDailyInfo.mood} />
+            <InfoAtom title="입은 옷" content={userDailyInfo.color} />
           </View>
         );
       case 'InfoSsafy':
         return (
           <View style={[style.flexColumn, {height: '50%'}]}>
-            <InfoAtom title="지역" content="서울" isWhite={true} />
-            <InfoAtom title="전공" content="비전공" isWhite={true} />
-            <InfoAtom title="반" content="2" isWhite={true} />
-            <InfoAtom title="층" content="8" isWhite={true} />
+            <InfoAtom
+              title="지역"
+              content={campusDict[userInfo.campus]}
+              isWhite={true}
+            />
+            <InfoAtom
+              title="전공"
+              content={userInfo.isMajor ? '전공' : '비전공'}
+              isWhite={true}
+            />
+            <InfoAtom title="반" content={userInfo.classes} isWhite={true} />
+            <InfoAtom title="층" content={userInfo.floor} isWhite={true} />
           </View>
         );
       case 'InfoEtc':
         return (
           <View style={style.flexColumn}>
-            <InfoAtom title="MBTI" content="INFJ" isWhite={true} />
+            <InfoAtom title="MBTI" content={userInfo.mbti} isWhite={true} />
             <InfoAtom
               title="요즘 고민"
-              content="체력을 기르고 싶다!"
+              content={userInfo.worry}
               isWhite={true}
             />
             <InfoAtom
               title="좋아하는 것"
-              content="하리보 젤리"
+              content={userInfo.like}
               isWhite={true}
             />
             <InfoAtom
               title="싫어하는 것"
-              content="차가운 음료"
+              content={userInfo.hate}
               isWhite={true}
             />
           </View>
