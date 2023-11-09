@@ -21,6 +21,8 @@ import {userApi} from '../../../apis';
 
 export const Home = ({navigation}: {navigation: any}): JSX.Element => {
   const [userInfo, setUserInfo] = useRecoilState(user.UserInfoState);
+  const [manitoHint, setManitoHint] = useState(['', '']);
+  console.log(manitoHint);
   console.log(userInfo);
   useEffect(() => {
     const fetchData = async () => {
@@ -31,7 +33,16 @@ export const Home = ({navigation}: {navigation: any}): JSX.Element => {
         console.error(error);
       }
     };
+    const fetchHintData = async () => {
+      try {
+        const hintData = await userApi.getManitoHint();
+        await setManitoHint(hintData);
+      } catch (error) {
+        console.error(error);
+      }
+    };
     fetchData();
+    fetchHintData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -81,10 +92,8 @@ export const Home = ({navigation}: {navigation: any}): JSX.Element => {
                 marginLeft: 15,
                 justifyContent: 'center',
               }}>{`오늘 나의 \n마니또는?`}</Text>
-            {/* <Text style={style.miniFont}>입은 옷</Text> */}
-            <Text style={style.bigFont}>옷 | 빨간색</Text>
-            {/* <Text style={style.miniFont}>기분</Text> */}
-            <Text style={style.bigFont}>기분 | 약간 흐림</Text>
+            <Text style={style.bigFont}>옷 | {manitoHint?.['color']}</Text>
+            <Text style={style.bigFont}>기분 | {manitoHint?.['mood']}</Text>
           </Pressable>
           <Image source={yellowEyeImg} style={style.topBottom} />
         </View>
