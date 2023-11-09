@@ -19,12 +19,13 @@ import ReviseEtc from '../reviseEtc';
 import SendOpinion from '../sendOpinion';
 import MatchStatus from '../matchStatus';
 import MatchGuess from '../matchGuess';
+import MyPage from '../myPage';
 
 const StackNavigation = () => {
   const Stack = createStackNavigator();
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Onboarding">
+      <Stack.Navigator initialRouteName="NavBar">
         <Stack.Screen
           name="Onboarding"
           component={Onboarding}
@@ -78,6 +79,11 @@ const StackNavigation = () => {
         <Stack.Screen
           name="ReviseInfo"
           component={ReviseInfo}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="MyPage"
+          component={MyPage}
           options={{headerShown: false}}
         />
         <Stack.Screen

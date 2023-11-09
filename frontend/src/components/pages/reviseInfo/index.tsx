@@ -3,9 +3,21 @@ import MenuTop from '../../molecules/menuTop';
 import GlobalStyles from '../../../styles/GlobalStyles';
 import BtnBig from '../../atoms/btnBig';
 import InfoAtom from '../../atoms/infoAtom';
+import {useRecoilState} from 'recoil';
+import user from '../../../modules/user';
 
 export const ReviseInfo = ({navigation, route}: any): JSX.Element => {
   const {destination} = route.params;
+  const [userInfo, setUserInfo] = useRecoilState(user.UserInfoState);
+  console.log(userInfo);
+
+  const campusDict: {[key: number]: string} = {
+    0: '서울',
+    1: '대전',
+    2: '광주',
+    3: '구미',
+    4: '부울경',
+  };
 
   const renderTitle = () => {
     switch (destination) {
@@ -49,10 +61,13 @@ export const ReviseInfo = ({navigation, route}: any): JSX.Element => {
       case 'InfoSsafy':
         return (
           <View style={[styles.flexColumn, {height: '50%', rowGap: 5}]}>
-            <InfoAtom title="지역" content="서울" />
-            <InfoAtom title="전공" content="비전공" />
-            <InfoAtom title="반" content="2" />
-            <InfoAtom title="층" content="8" />
+            <InfoAtom title="지역" content={campusDict[userInfo.campus]} />
+            <InfoAtom
+              title="전공"
+              content={userInfo.isMajor ? '전공' : '비전공'}
+            />
+            <InfoAtom title="반" content={userInfo.classes} />
+            <InfoAtom title="층" content={userInfo.floor} />
           </View>
         );
       case 'InfoEtc':

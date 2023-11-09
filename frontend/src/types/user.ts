@@ -26,3 +26,8 @@ export type UserSsafyInfo = {
   classes: number;
   floor: number;
 };
+
+export type UserDailyInfo = {
+  id: number;
+  content: string;
+};

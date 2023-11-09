@@ -60,22 +60,21 @@ export const Onboarding = ({navigation}: {navigation: any}): JSX.Element => {
     try {
       await GoogleSignin.hasPlayServices();
       const loginInfo = await GoogleSignin.signIn();
-      console.log(loginInfo.user.name);
-
       if (loginInfo.idToken) {
-        const data = await userApi.postLogin(loginInfo.idToken);
-
-        if (data.success) {
-          await tokenUtil.setToken(
-            data.data.accessToken,
-            data.data.refreshToken,
-          );
-          await getUserInfo();
-          navigation.navigate('Enter');
-        } else {
-          await tokenUtil.setIdToken(loginInfo.idToken);
-          navigation.navigate('BasicInfo');
-        }
+        userApi
+          .postLogin(loginInfo.idToken)
+          .then(data => {
+            data.success
+              ? tokenUtil
+                  .setToken(data.data.accessToken, data.data.refreshToken)
+                  .then(navigation.navigate('Enter', 'login'))
+              : tokenUtil
+                  .setIdToken(loginInfo.idToken as string)
+                  .then(navigation.navigate('BasicInfo'));
+          })
+          .catch(e => {
+            console.log(e);
+          });
       }
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {

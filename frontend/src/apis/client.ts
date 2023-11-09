@@ -12,7 +12,6 @@ function apiInstance(contentType: string = 'application/json;charset=utf-8') {
   client.interceptors.request.use(
     async (config: AxiosRequestConfig) => {
       const accessToken = 'Bearer ' + (await tokenUtil.getAccessToken());
-      console.log(accessToken);
       const Config: InternalAxiosRequestConfig = {
         ...config,
         // @ts-ignore

@@ -16,7 +16,7 @@ LogBox.ignoreLogs([
   'Non-serializable values were found in the navigation state',
 ]);
 
-export const Enter = ({navigation, route}): JSX.Element => {
+export const Enter = ({navigation, route}: any): JSX.Element => {
   const {params} = route;
 
   const [userInfo, setUserInfo] = useRecoilState(user.UserInfoState);
@@ -70,6 +70,13 @@ export const Enter = ({navigation, route}): JSX.Element => {
           destination="EnterWait"
         />
       </View>
+      <Text 
+        style={styles.myInfo}
+        onPress={async () => {
+          navigation.navigate('MyPage', {destination: 'MyPage'})
+        }}>
+        내 정보 수정
+      </Text>
       <Text
         style={styles.logout}
         onPress={async () => {
@@ -80,14 +87,18 @@ export const Enter = ({navigation, route}): JSX.Element => {
         }}>
         로그아웃
       </Text>
-      <BottomSheet
-        ref={bottomSheetRef}
-        snapPoints={snapPoints}
-        index={0}
-        backdropComponent={renderBackdrop}
-        enablePanDownToClose={true}>
-        {congrats()}
-      </BottomSheet>
+      {params === 'login' ? (
+        ''
+      ) : (
+        <BottomSheet
+          ref={bottomSheetRef}
+          snapPoints={snapPoints}
+          index={0}
+          backdropComponent={renderBackdrop}
+          enablePanDownToClose={true}>
+          {congrats()}
+        </BottomSheet>
+      )}
     </View>
   );
 };
@@ -161,10 +172,17 @@ const styles = StyleSheet.create({
     fontSize: 22,
     color: GlobalStyles.black.color,
   },
+  myInfo: {
+    fontFamily: GlobalStyles.section_title.fontFamily,
+    marginLeft: height * 246,
+    marginTop: height * 20,
+    fontSize: height * 10,
+    color: GlobalStyles.grey_3.color,
+  },
   logout: {
     fontFamily: GlobalStyles.section_title.fontFamily,
     marginLeft: height * 260,
-    marginTop: height * 20,
+    marginTop: height * 2,
     fontSize: height * 10,
     color: GlobalStyles.grey_3.color,
   },
