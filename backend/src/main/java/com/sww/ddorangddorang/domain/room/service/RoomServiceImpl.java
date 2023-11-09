@@ -325,7 +325,7 @@ public class RoomServiceImpl implements RoomService {
                 //추후 차단한 사용자는 배제하는 로직 추가
                 //Set을 활용하면 좋을 것 같음
                 for (Participant participant : unmatchedManitiList) {
-                    if (!participant.equals(me)) {
+                    if (participant != null && !me.equals(participant)) {
                         wishManitoList[i].add(participant);
                     }
                 }
