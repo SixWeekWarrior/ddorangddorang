@@ -2,9 +2,10 @@ package com.sww.ddorangddorang.domain.user.service;
 
 import com.sww.ddorangddorang.domain.mastercode.entity.MasterCode;
 import com.sww.ddorangddorang.domain.mastercode.repository.MasterCodeRepository;
+import com.sww.ddorangddorang.domain.participant.entity.Participant;
+import com.sww.ddorangddorang.domain.participant.repository.ParticipantRepository;
 import com.sww.ddorangddorang.domain.user.dto.HintDto;
 import com.sww.ddorangddorang.domain.user.dto.UsersMoreinfoPutReq;
-import com.sww.ddorangddorang.domain.user.dto.UsersSignupPostReq;
 import com.sww.ddorangddorang.domain.user.dto.UsersSsafyinfoPutReq;
 import com.sww.ddorangddorang.domain.user.dto.UsersTodayinfoPostReq;
 import com.sww.ddorangddorang.domain.user.dto.UsersTokenInfo;
@@ -12,6 +13,7 @@ import com.sww.ddorangddorang.domain.user.entity.Hint;
 import com.sww.ddorangddorang.domain.user.entity.User;
 import com.sww.ddorangddorang.domain.user.exception.UserAlreadyExistException;
 import com.sww.ddorangddorang.domain.user.exception.UserNotFoundException;
+import com.sww.ddorangddorang.domain.user.exception.UserNotParticipateGameException;
 import com.sww.ddorangddorang.domain.user.repository.HintRepository;
 import com.sww.ddorangddorang.domain.user.repository.UserRepository;
 import com.sww.ddorangddorang.global.common.exception.UnexpectedException;
@@ -35,6 +37,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final HintRepository hintRepository;
     private final MasterCodeRepository masterCodeRepository;
+    private final ParticipantRepository participantRepository;
 
     public void signUp(User user) throws Exception {
         if (userRepository.findByEmailAndProviderType(user.getEmail(), user.getProviderType()).isPresent()) {
@@ -110,28 +113,36 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public HintDto getHints(Long id) {
-        String color = "";
-        String mood = "";
+        User user = userRepository.findById(id).orElseThrow(UserNotFoundException::new);
+        return getUserHint(user);
+    }
 
+    @Transactional
+    public HintDto getManitoHint(Long id) {
         User user = userRepository.findById(id).orElseThrow(UserNotFoundException::new);
 
-        MasterCode colorCode = masterCodeRepository.findById(1_001L).orElseThrow(UnexpectedException::new);
-        Optional<Hint> colorHint = hintRepository.findByUserAndMasterCode(user, colorCode);
-
-        if (colorHint.isPresent()) {
-            color = colorHint.orElseThrow(UnexpectedException::new).getContent();
+        if (user.getStatus() != 4L) {
+            throw new UserNotParticipateGameException();
         }
+
+        Participant participant = participantRepository.findByUserAndGameCount(user, user.getGameCount())
+            .orElseThrow(UserNotParticipateGameException::new);
+
+        User manito = participant.getManito().getUser();
+
+        return getUserHint(manito);
+    }
+
+    private HintDto getUserHint(User user) {
+        MasterCode colorCode = masterCodeRepository.findById(1_001L).orElseThrow(UnexpectedException::new);
+        Hint colorHint = hintRepository.findByUserAndMasterCode(user, colorCode).orElseThrow(UnexpectedException::new);
 
         MasterCode moodCode = masterCodeRepository.findById(1_002L).orElseThrow(UnexpectedException::new);
-        Optional<Hint>  moodHint = hintRepository.findByUserAndMasterCode(user, moodCode);
-
-        if (moodHint.isPresent()) {
-            mood = moodHint.orElseThrow(UnexpectedException::new).getContent();
-        }
+        Hint moodHint = hintRepository.findByUserAndMasterCode(user, moodCode).orElseThrow(UnexpectedException::new);
 
         return HintDto.builder()
-                        .color(color)
-                        .mood(mood)
+                        .color(colorHint.getContent())
+                        .mood(moodHint.getContent())
                         .build();
     }
 
