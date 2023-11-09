@@ -273,7 +273,6 @@ public class RoomServiceImpl implements RoomService {
 
         for (int i = 1; i < size; ++i) {
             Participant participant = indexToParticipant.get(i);
-            log.info(i + " " + participant.getUser().getName());
 
             //추후 차단 로직 구현 시 여기서 차단한 사용자는 간선에서 뺴기
             if (participant.getUser().getGender()) {
@@ -293,36 +292,39 @@ public class RoomServiceImpl implements RoomService {
             matchManito(i, searched, matchedManito, wishManitoList[i], participantToIndex);
         }
 
-        Boolean[] matched = new Boolean[size];
-        Arrays.fill(matched, false);
+        Boolean[] manitoMatched = new Boolean[size];
+        Boolean[] manitiMatched = new Boolean[size];
+        Arrays.fill(manitoMatched, false);
+        Arrays.fill(manitiMatched, false);
 
         for (int i = 1; i < size; ++i) {
             if (matchedManito[i] > 0) {
-                matched[matchedManito[i]] = true;
-                ++count;
+                manitoMatched[matchedManito[i]] = true;
+                manitiMatched[i] = true;
             }
         }
 
-        List<Participant> unmatchedList = new ArrayList<>();
+        List<Participant> unmatchedManitoList = new ArrayList<>();
+        List<Participant> unmatchedManitiList = new ArrayList<>();
         log.info("initial match");
-        //매칭이 되지 않은 회원끼리는 성별과 관계 없이 매칭
+        //마니또가 매칭이 되지 않은 회원끼리는 성별과 관계 없이 매칭
         for (int i = 1; i < size; ++i) {
-            if (!matched[i]) {
-                unmatchedList.add(indexToParticipant.get(i));
-            } else {
-                log.info(
-                    indexToParticipant.get(i).getUser().getName());
+            if (!manitoMatched[i]) {
+                unmatchedManitoList.add(indexToParticipant.get(i));
+            }
+            if (!manitiMatched[matchedManito[i]]) {
+                unmatchedManitiList.add(indexToParticipant.get(matchedManito[i]));
             }
         }
 
         for (int i = 1; i < size; ++i) {
-            if (!matched[i]) {
+            if (!manitoMatched[i]) {
                 Participant me = indexToParticipant.get(i);
                 wishManitoList[i] = new ArrayList<>();
 
                 //추후 차단한 사용자는 배제하는 로직 추가
                 //Set을 활용하면 좋을 것 같음
-                for (Participant participant : unmatchedList) {
+                for (Participant participant : unmatchedManitiList) {
                     if (!participant.equals(me)) {
                         wishManitoList[i].add(participant);
                     }
@@ -333,16 +335,16 @@ public class RoomServiceImpl implements RoomService {
         }
 
         for (int i = 1; i < size; ++i) {
-            if (!matched[i]) {
+            if (!manitoMatched[i]) {
                 Arrays.fill(searched, false);
                 matchManito(i, searched, matchedManito, wishManitoList[i], participantToIndex);
             }
         }
 
-        count = 0;
         for (int i = 1; i < size; ++i) {
             if (matchedManito[i] > 0) {
-                matched[matchedManito[i]] = true;
+                manitoMatched[matchedManito[i]] = true;
+                manitiMatched[i] = true;
                 ++count;
                 Participant manito = indexToParticipant.get(matchedManito[i]);
                 Participant maniti = indexToParticipant.get(i);
@@ -375,6 +377,9 @@ public class RoomServiceImpl implements RoomService {
                         suffixSelected).getAnimal());
 //                해당 사용자들은 게임을 시작한 상태로 변경
                 participant.getUser().updateStatus(4L);
+                log.info(
+                    participant.getManito().getUser().getName() + " -> " + participant.getUser()
+                        .getName());
             } else {
 //                이 사용자들은 매칭이 되지 않은 관계로 강퇴
                 participant.deleteParticipant();
