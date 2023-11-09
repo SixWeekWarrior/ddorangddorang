@@ -10,6 +10,7 @@ import com.sww.ddorangddorang.domain.user.entity.User;
 import java.util.Optional;
 
 public interface UserService {
+
     void signUp(User user) throws Exception;
 
     Optional<User> findByEmail(String email);
@@ -27,4 +28,6 @@ public interface UserService {
     HintDto getHints(Long id);
 
     HintDto getManitoHint(Long id);
+
+    Long getUserState(Long userId);
 }

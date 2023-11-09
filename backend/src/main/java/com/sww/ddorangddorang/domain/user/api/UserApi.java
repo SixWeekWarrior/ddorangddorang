@@ -170,4 +170,13 @@ public class UserApi {
         log.info("UserApi_getManitoHint ends");
         return CommonResponse.success(hintDto);
     }
+
+    @GetMapping("/state")
+    public CommonResponse<Long> getUserState(
+        @AuthenticationPrincipal AuthenticatedUser authenticatedUser) {
+        log.info("UserApi_getUserState starts");
+        Long userState = userService.getUserState(authenticatedUser.getId());
+        log.info("UserApi_getUserState ends");
+        return CommonResponse.success(userState);
+    }
 }
