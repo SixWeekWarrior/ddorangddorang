@@ -41,13 +41,12 @@ export const BeforeStart = ({navigation}: {navigation: any}) => {
     roomApi
       .getRoomInfo()
       .then(data => {
-        console.log('여기 테스트!!!', data);
         setRoomInfo({
           ...roomInfo,
-          duration: data.duration,
-          minMember: data.minMember,
-          maxMember: data.maxMember,
-          roomKey: data.roomKey,
+          duration: data.data.duration,
+          minMember: data.data.minMember,
+          maxMember: data.data.maxMember,
+          roomKey: data.data.roomKey,
         });
       })
       .catch(error => {

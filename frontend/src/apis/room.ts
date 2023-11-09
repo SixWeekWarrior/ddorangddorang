@@ -53,11 +53,22 @@ const getRoomInfo = async () => {
   }
 };
 
+// 나의 room 정보 가져오기 API
+const getRoomWaiting = async () => {
+  try {
+    const res = await client.get('/rooms/waiting');
+    return res.data;
+  } catch (e) {
+    throw new Error('getRoomInfo');
+  }
+};
+
 const room = {
   postRoom,
   putRoom,
   postRoomStart,
   getRoomInfo,
+  getRoomWaiting,
 };
 
 export default room;

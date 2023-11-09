@@ -26,3 +26,12 @@ export type UserSsafyInfo = {
   classes: number;
   floor: number;
 };
+
+export type UserProfile = {
+  userId: number;
+  name: string;
+  profileImage: string;
+  isMajor: boolean;
+  generation: number;
+  classes: number;
+};
