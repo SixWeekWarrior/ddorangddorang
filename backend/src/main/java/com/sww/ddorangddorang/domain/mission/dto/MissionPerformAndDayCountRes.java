@@ -12,7 +12,9 @@ public class MissionPerformAndDayCountRes {
     private long dayCount;
     private long missionCompleteCount;
 
-    public static MissionPerformAndDayCountRes of(List<MissionPerformsInfoRes> missionPerformsInfoRes, long dayCount, long missionCompleteCount) {
+    public static MissionPerformAndDayCountRes of(
+        List<MissionPerformsInfoRes> missionPerformsInfoRes, long dayCount,
+        long missionCompleteCount) {
         return MissionPerformAndDayCountRes.builder()
             .missionPerformsInfoRes(missionPerformsInfoRes)
             .dayCount(dayCount)

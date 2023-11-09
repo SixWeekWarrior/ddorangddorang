@@ -248,6 +248,9 @@ public class RoomServiceImpl implements RoomService {
         Map<Participant, Integer> participantToIndex = new HashMap<>();
         Integer count = 0;
         Integer size = participantList.size() + 1;
+
+        log.info("size: {}", size); // 사이즈 자체는 정상임
+
         List<Participant> maleList = new ArrayList<>();
         List<Participant> femaleList = new ArrayList<>();
         List<Participant>[] wishManitoList = new List[size];
@@ -381,9 +384,14 @@ public class RoomServiceImpl implements RoomService {
         for (Participant participant : wishManitoList) {
             Integer next = participantToIndex.get(participant);
 
+            log.info("next: {}", next);
+
             if (!searched[next]) {
                 searched[next] = true;
 
+                log.info("matchedManito[next]: {}", matchedManito[next]); // null뜸 왜?
+
+                // TODO: 여기 에러 터짐
                 if (matchedManito[next] == 0) {
                     matchedManito[next] = current;
                     return true;
@@ -542,7 +550,7 @@ public class RoomServiceImpl implements RoomService {
         return WaitingListRes.listOf(userList);
     }
 
-//    @Transactional
+    //    @Transactional
 //    public
     private User findUserById(Long id) {
         return userRepository.findById(id).orElseThrow(UserNotFoundException::new);
