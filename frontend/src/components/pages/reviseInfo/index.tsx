@@ -9,8 +9,6 @@ import user from '../../../modules/user';
 export const ReviseInfo = ({navigation, route}: any): JSX.Element => {
   const {destination} = route.params;
   const [userInfo, setUserInfo] = useRecoilState(user.UserInfoState);
-  console.log(userInfo);
-
   const campusDict: {[key: number]: string} = {
     0: '서울',
     1: '대전',
@@ -54,8 +52,8 @@ export const ReviseInfo = ({navigation, route}: any): JSX.Element => {
       case 'InfoToday':
         return (
           <View style={[styles.flexColumn, {height: '50%', rowGap: 5}]}>
-            <InfoAtom title="기분" content="약간 흐림" />
-            <InfoAtom title="입은 옷" content="빨간색" />
+            <InfoAtom title="기분" content={userInfo.mood} />
+            <InfoAtom title="입은 옷" content={userInfo.color} />
           </View>
         );
       case 'InfoSsafy':
@@ -73,20 +71,46 @@ export const ReviseInfo = ({navigation, route}: any): JSX.Element => {
       case 'InfoEtc':
         return (
           <View style={[styles.flexColumn, {rowGap: 5}]}>
-            <InfoAtom title="MBTI" content="INFJ" />
-            <InfoAtom title="요즘 고민" content="체력을 기르고 싶다!" />
-            <InfoAtom title="좋아하는 것" content="하리보 젤리" />
-            <InfoAtom title="싫어하는 것" content="차가운 음료" />
+            <InfoAtom title="MBTI" content={userInfo.mbti} />
+            <InfoAtom title="요즘 고민" content={userInfo.worry} />
+            <InfoAtom title="좋아하는 것" content={userInfo.likes} />
+            <InfoAtom title="싫어하는 것" content={userInfo.hate} />
           </View>
         );
       default:
-        return <Text>좋아하는 음식 알아내기</Text>;
+        return <Text>default text</Text>;
+    }
+  };
+
+  const renderMenu = () => {
+    switch (destination) {
+      case 'InfoToday':
+        return '오늘의 정보 수정';
+      case 'InfoSsafy':
+        return '기본 정보 수정';
+      case 'InfoEtc':
+        return '추가 정보 수정';
+      default:
+        return '';
+    }
+  };
+
+  const renderMenuText = () => {
+    switch (destination) {
+      case 'InfoToday':
+        return `오늘의 정보를 입력하고\n나를 알려요!`;
+      case 'InfoSsafy':
+        return `SSAFY 교육생으로서\n나의 정보를 입력해주세요.`;
+      case 'InfoEtc':
+        return `나의 마니띠에게 소개할 수 있는\n추가 정보를 입력해주세요.`;
+      default:
+        return '';
     }
   };
 
   return (
     <View style={styles.container}>
-      <MenuTop menu="추가 정보 수정" text={`내 정보를 수정해봐요.`} />
+      <MenuTop menu={renderMenu()} text={renderMenuText()} />
       <View style={styles.innerContainer}>
         <Text style={[styles.titleFont]}>{renderTitle()}</Text>
         {renderContent()}

@@ -6,10 +6,13 @@ export type UserInfo = {
   campus: number;
   classes: number;
   floor: number;
-  like: string;
+  profileImage: string;
+  likes: string;
   hate: string;
   mbti: string;
   worry: string;
+  roomId: number;
+  status: number;
   mood: string;
   color: string;
 };
@@ -28,6 +31,6 @@ export type UserSsafyInfo = {
 };
 
 export type UserDailyInfo = {
-  id: number;
-  content: string;
+  mood: string;
+  color: string;
 };
