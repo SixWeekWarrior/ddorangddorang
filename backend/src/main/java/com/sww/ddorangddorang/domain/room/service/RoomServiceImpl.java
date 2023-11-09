@@ -528,6 +528,7 @@ public class RoomServiceImpl implements RoomService {
         throw new PlayersNotEnoughException();
     }
 
+    @Transactional
     public RoomGetRes getRoom(Long id) {
         RoomGetRes roomGetRes = RoomGetRes.toDto(userRepository.findById(id).orElseThrow(UserNotFoundException::new).getRoom());
         log.info("RoomService_getRoom: {}", roomGetRes);
