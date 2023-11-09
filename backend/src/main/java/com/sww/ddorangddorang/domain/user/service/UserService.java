@@ -25,4 +25,6 @@ public interface UserService {
     User getUserInfo(Long id);
 
     HintDto getHints(Long id);
+
+    HintDto getManitoHint(Long id);
 }

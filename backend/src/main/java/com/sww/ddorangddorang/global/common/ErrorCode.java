@@ -77,6 +77,8 @@ public enum ErrorCode {
 
     UNEXPECTED_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "알 수 없는 오류가 발생하였습니다."),
 
+    USER_NOT_PARTICIPATE_GAME(HttpStatus.FORBIDDEN, "게임에 참여하지 않은 사용자입니다."),
+
     /**
      * 서버 에러 (서버 장애 상황)
      */
