@@ -10,6 +10,4 @@ import lombok.ToString;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class JoinRoomReq {
     private Long userId;
-    private Boolean accepted;
-
 }
