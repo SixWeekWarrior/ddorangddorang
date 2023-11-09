@@ -84,7 +84,6 @@ export const GoMission = ({navigation}: {navigation: any}): JSX.Element => {
           {`좋아하는 음식을 알아냈군요!\n정답을 입력해서 확인 받아볼까요?`}
         </Text>
         <InputTextwithBtn
-          navigation={navigation}
           btnText="입력"
           onPress={handleExpand}
           onChange={handleTextChange}

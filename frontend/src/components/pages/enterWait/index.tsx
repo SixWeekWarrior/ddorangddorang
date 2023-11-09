@@ -7,7 +7,7 @@ export const EnterWait = (): JSX.Element => {
     <View style={styles.container}>
       <Image source={blockImg} style={styles.blockImg} />
       <Text style={styles.content}>시작을 기다리고 있어요.</Text>
-      <Text style={styles.content}>게임이 시작되면 알림을 드릴게요!</Text>
+      <Text style={styles.content}>게임이 곧 시작 될 거에요 😄</Text>
     </View>
   );
 };

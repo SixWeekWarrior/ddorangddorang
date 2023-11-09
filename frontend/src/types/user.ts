@@ -30,6 +30,15 @@ export type UserSsafyInfo = {
   floor: number;
 };
 
+export type UserProfile = {
+  userId: number;
+  name: string;
+  profileImage: string;
+  isMajor: boolean;
+  generation: number;
+  classes: number;
+};
+
 export type UserDailyInfo = {
   mood: string;
   color: string;
