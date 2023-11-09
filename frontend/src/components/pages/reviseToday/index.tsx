@@ -4,14 +4,13 @@ import GlobalStyles from '../../../styles/GlobalStyles';
 import BtnBig from '../../atoms/btnBig';
 import {useState} from 'react';
 import InfoTextInput from '../../atoms/infoTextInput';
-import {useRecoilState, useSetRecoilState} from 'recoil';
+import {useRecoilState} from 'recoil';
 import user from '../../../modules/user';
-import {UserDailyInfo} from '../../../types/user';
+import {UserDailyInfo, UserInfo} from '../../../types/user';
 import {userApi} from '../../../apis';
 
 export const ReviseToday = ({navigation}: {navigation: any}) => {
   const [userInfo, setUserInfo] = useRecoilState(user.UserInfoState);
-  const setUserDailyInfo = useSetRecoilState(user.UserDailyInfoState);
   const [defaultMood, defaultColor] = [userInfo.mood, userInfo.color];
   const [inputValues, setInputValues] = useState<UserDailyInfo>({
     mood: defaultMood,
@@ -26,9 +25,9 @@ export const ReviseToday = ({navigation}: {navigation: any}) => {
 
   const handleSubmit = async () => {
     try {
-      const updatedUserDailyInfo: UserDailyInfo = inputValues;
-      await userApi.postTodayInfo(inputValues);
-      await setUserDailyInfo(updatedUserDailyInfo);
+      const updatedUserInfo: UserInfo = {...userInfo, ...inputValues};
+      await userApi.putTodayInfo(inputValues);
+      await setUserInfo(updatedUserInfo);
       navigation.navigate('정보');
     } catch (error) {
       console.error(error);

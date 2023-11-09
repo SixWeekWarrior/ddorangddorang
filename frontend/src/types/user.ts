@@ -7,7 +7,7 @@ export type UserInfo = {
   classes: number;
   floor: number;
   profileImage: string;
-  like: string;
+  likes: string;
   hate: string;
   mbti: string;
   worry: string;
@@ -19,7 +19,7 @@ export type UserInfo = {
 
 export type UserMoreInfo = {
   mbti: string;
-  like: string;
+  likes: string;
   hate: string;
   worry: string;
 };

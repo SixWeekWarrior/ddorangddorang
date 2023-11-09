@@ -76,26 +76,13 @@ const putSsafyInfo = async (data: UserSsafyInfo) => {
 };
 
 // 데일리 정보 (mood, color) 수정 API
-const postTodayInfo = async (data: UserDailyInfo) => {
+const putTodayInfo = async (data: UserDailyInfo) => {
   try {
-    const idToken = await tokenUtil.getIdToken();
-    const res = await axios
-      .create({
-        headers: {
-          'Content-Type': 'application/json; charset=UTF-8',
-          Authorization: 'Bearer ' + idToken,
-        },
-      })
-      .post(serverUrl + '/users/todayinfo', data);
-
-    await tokenUtil.setToken(
-      res.data.data.accessToken,
-      res.data.data.refreshToken,
-    );
+    const res = await client.put('/users/todayinfo', data);
     return res.data;
   } catch (e) {
     console.log(e);
-    throw new Error('ERROR IN POST_TODAY_INFO');
+    throw new Error('ERROR IN PUT_TODAY_INFO');
   }
 };
 
@@ -105,7 +92,7 @@ const getUser = async () => {
     const res = await client.get('/users');
     return res.data.data;
   } catch (e) {
-    throw new Error('ERROR IN GET_USERS');
+    throw new Error('ERROR IN GET_USER');
   }
 };
 
@@ -114,7 +101,7 @@ const user = {
   postSignup,
   putSsafyInfo,
   putMoreInfo,
-  postTodayInfo,
+  putTodayInfo,
   getUser,
 };
 

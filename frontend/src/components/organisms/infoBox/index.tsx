@@ -43,9 +43,6 @@ const InnerInfo = ({navigation}: {navigation: any}): JSX.Element => {
 
 const InfoBox = ({navigation, destination}: InfoBoxProps): JSX.Element => {
   const [userInfo, setUserInfo] = useRecoilState(user.UserInfoState);
-  const [userDailyInfo, setUserDailyInfo] = useRecoilState(
-    user.UserDailyInfoState,
-  );
 
   const handlePress = () => {
     switch (destination) {
@@ -113,8 +110,8 @@ const InfoBox = ({navigation, destination}: InfoBoxProps): JSX.Element => {
       case 'InfoToday':
         return (
           <View style={[style.flexColumn]}>
-            <InfoAtom title="기분" content={userDailyInfo.mood} />
-            <InfoAtom title="입은 옷" content={userDailyInfo.color} />
+            <InfoAtom title="기분" content={userInfo.mood} />
+            <InfoAtom title="입은 옷" content={userInfo.color} />
           </View>
         );
       case 'InfoSsafy':
@@ -145,7 +142,7 @@ const InfoBox = ({navigation, destination}: InfoBoxProps): JSX.Element => {
             />
             <InfoAtom
               title="좋아하는 것"
-              content={userInfo.like}
+              content={userInfo.likes}
               isWhite={true}
             />
             <InfoAtom

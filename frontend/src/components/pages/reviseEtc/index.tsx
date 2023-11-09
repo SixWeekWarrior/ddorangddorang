@@ -11,16 +11,16 @@ import user from '../../../modules/user';
 
 export const ReviseEtc = ({navigation}: {navigation: any}) => {
   const [userInfo, setUserInfo] = useRecoilState(user.UserInfoState);
-  const [defaultMbti, defaultWorry, defaultLike, defaultHate] = [
+  const [defaultMbti, defaultWorry, defaultLikes, defaultHate] = [
     userInfo.mbti,
     userInfo.worry,
-    userInfo.like,
+    userInfo.likes,
     userInfo.hate,
   ];
   const [inputValues, setInputValues] = useState<UserMoreInfo>({
     mbti: defaultMbti,
     worry: defaultWorry,
-    like: defaultLike,
+    likes: defaultLikes,
     hate: defaultHate,
   });
 
@@ -59,8 +59,8 @@ export const ReviseEtc = ({navigation}: {navigation: any}) => {
           />
           <InfoTextInput
             title="좋아하는 것"
-            placeholder={defaultLike}
-            setValue={data => onInputChange('like', data)}
+            placeholder={defaultLikes}
+            setValue={data => onInputChange('likes', data)}
           />
           <InfoTextInput
             title="싫어하는 것"

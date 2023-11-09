@@ -20,7 +20,7 @@ export const ReviseSsafy = ({navigation}: {navigation: any}) => {
     profileImage: '',
   });
 
-  const onInputChange = (title: string, value: any) => {
+  const onInputChange = (title: string, value: number | string) => {
     setInputValues(prevState => ({
       ...prevState,
       [title]: value,
