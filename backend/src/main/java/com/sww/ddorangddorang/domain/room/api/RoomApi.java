@@ -120,10 +120,10 @@ public class RoomApi {
 
     // 수락시 유저 상태 3으로 바뀌는거 확인하였음. 정상 작동함.
     @PostMapping("/response")
-    public CommonResponse<Boolean> responseJoinRoom(@RequestBody JoinRoomReq joinRoomReq,
+    public CommonResponse<Boolean> responseJoinRoom(@RequestBody List<JoinRoomReq> joinRoomReqList,
         @AuthenticationPrincipal AuthenticatedUser authenticatedUser) {
         log.info("RoomApi_responseJoinRoom start");
-        Boolean joined = roomService.responseJoinRoom(joinRoomReq, authenticatedUser);
+        Boolean joined = roomService.responseJoinRoom(joinRoomReqList, authenticatedUser);
 
         if (joined) {
             roomService.checkAndRunIfRoomShouldStart(authenticatedUser);

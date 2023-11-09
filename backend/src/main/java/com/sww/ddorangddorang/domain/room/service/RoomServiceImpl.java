@@ -447,47 +447,58 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Transactional
-    public Boolean responseJoinRoom(JoinRoomReq joinRoomReq, AuthenticatedUser authenticatedUser) {
+    public Boolean responseJoinRoom(List<JoinRoomReq> joinRoomReqList, AuthenticatedUser authenticatedUser) {
         log.info("RoomServiceImpl_responseJoinRoom start");
         log.info("id: {}", authenticatedUser.getId());
         User admin = findUserById(authenticatedUser.getId());
-        User requestUser = findUserById(joinRoomReq.getUserId());
 
-        if (requestUser.getStatus() != 5L) {
-            log.info("RoomServiceImpl_responseJoinRoom end");
-            throw new OnlyWaitingStateAllowedException();
-        }
-        Room room = requestUser.getRoom();
-
-        if (room == null) {
-            log.info("RoomServiceImpl_responseJoinRoom end");
-            throw new RoomNotFoundException();
+        List<Long> idList = new ArrayList<Long>();
+        for (JoinRoomReq joinRoomReq: joinRoomReqList) {
+            idList.add(joinRoomReq.getUserId());
         }
 
-        if (!room.getAdmin().equals(admin)) {
-            log.info("RoomServiceImpl_responseJoinRoom end");
-            throw new OnlyAdminAllowedException();
+        List<User> requestUserList = userRepository.findAllById(idList);
+//        User requestUser = findUserById(joinRoomReq.getUserId());
+
+        for (User requestUser: requestUserList) {
+            if (requestUser.getStatus() != 5L) {
+                log.info("RoomServiceImpl_responseJoinRoom end");
+                throw new OnlyWaitingStateAllowedException();
+            }
+            Room room = requestUser.getRoom();
+
+            if (room == null) {
+                log.info("RoomServiceImpl_responseJoinRoom end");
+                throw new RoomNotFoundException();
+            }
+
+            if (!room.getAdmin().equals(admin)) {
+                log.info("RoomServiceImpl_responseJoinRoom end");
+                throw new OnlyAdminAllowedException();
+            }
+
+            // TODO: We do not allow refuse yet
+//        if (!joinRoomReq.getAccepted()) {
+//            requestUser.updateRoom(null);
+//            requestUser.updateStatus(1L);
+//            log.info("RoomServiceImpl_responseJoinRoom end");
+//            return false;
+//        } else
+            if (room.getMaxMember() <= room.getHeadCount()) {
+                requestUser.updateRoom(null);
+                requestUser.updateStatus(1L);
+                log.info("RoomServiceImpl_responseJoinRoom end");
+                throw new RoomAlreadyFullException();
+            }
+
+            requestUser.updateStatus(3L);
+            room.joinMember();
+
+            Participant participant = Participant.builder()
+                .user(requestUser)
+                .build();
+            participantRepository.save(participant);
         }
-
-        if (!joinRoomReq.getAccepted()) {
-            requestUser.updateRoom(null);
-            requestUser.updateStatus(1L);
-            log.info("RoomServiceImpl_responseJoinRoom end");
-            return false;
-        } else if (room.getMaxMember() <= room.getHeadCount()) {
-            requestUser.updateRoom(null);
-            requestUser.updateStatus(1L);
-            log.info("RoomServiceImpl_responseJoinRoom end");
-            throw new RoomAlreadyFullException();
-        }
-
-        requestUser.updateStatus(3L);
-        room.joinMember();
-
-        Participant participant = Participant.builder()
-            .user(requestUser)
-            .build();
-        participantRepository.save(participant);
 
         log.info("RoomServiceImpl_responseToJoinRoom end");
         return true;

@@ -22,7 +22,7 @@ public interface RoomService {
 
     List<ShowUsersRes> showUsers(AuthenticatedUser authenticatedUser);
 
-    Boolean responseJoinRoom(JoinRoomReq joinRoomReq, AuthenticatedUser authenticatedUser);
+    Boolean responseJoinRoom(List<JoinRoomReq> joinRoomReqList, AuthenticatedUser authenticatedUser);
 
     Boolean checkAndRunIfRoomShouldStart(AuthenticatedUser authenticatedUser);
 
