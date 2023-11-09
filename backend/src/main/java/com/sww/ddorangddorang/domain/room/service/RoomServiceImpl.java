@@ -529,8 +529,9 @@ public class RoomServiceImpl implements RoomService {
     }
 
     public RoomGetRes getRoom(Long id) {
-        Room room = userRepository.findById(id).orElseThrow(UserNotFoundException::new).getRoom();
-        return RoomGetRes.toDto(room);
+        RoomGetRes roomGetRes = RoomGetRes.toDto(userRepository.findById(id).orElseThrow(UserNotFoundException::new).getRoom());
+        log.info("RoomService_getRoom: {}", roomGetRes);
+        return roomGetRes;
     }
 
     @Transactional
