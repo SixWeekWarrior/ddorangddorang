@@ -2,10 +2,10 @@ package com.sww.ddorangddorang.domain.room.service;
 
 import com.sww.ddorangddorang.auth.dto.AuthenticatedUser;
 import com.sww.ddorangddorang.domain.room.dto.JoinRoomReq;
+import com.sww.ddorangddorang.domain.room.dto.RoomGetRes;
 import com.sww.ddorangddorang.domain.room.dto.RoomInfoReq;
 import com.sww.ddorangddorang.domain.room.dto.ShowUsersRes;
 import com.sww.ddorangddorang.domain.room.dto.WaitingListRes;
-import com.sww.ddorangddorang.domain.room.entity.Room;
 import java.util.List;
 
 public interface RoomService {
@@ -28,7 +28,7 @@ public interface RoomService {
 
     Boolean checkAndStartGame(AuthenticatedUser authenticatedUser);
 
-    Room getRoom(Long id);
+    RoomGetRes getRoom(Long id);
 
     List<WaitingListRes> getWaitingList(Long userId);
 }

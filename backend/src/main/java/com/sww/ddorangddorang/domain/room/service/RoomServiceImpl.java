@@ -10,6 +10,7 @@ import com.sww.ddorangddorang.domain.participant.repository.ParticipantRepositor
 import com.sww.ddorangddorang.domain.participant.repository.PrefixRepository;
 import com.sww.ddorangddorang.domain.participant.repository.SuffixRepository;
 import com.sww.ddorangddorang.domain.room.dto.JoinRoomReq;
+import com.sww.ddorangddorang.domain.room.dto.RoomGetRes;
 import com.sww.ddorangddorang.domain.room.dto.RoomInfoReq;
 import com.sww.ddorangddorang.domain.room.dto.ShowUsersRes;
 import com.sww.ddorangddorang.domain.room.dto.WaitingListRes;
@@ -527,8 +528,9 @@ public class RoomServiceImpl implements RoomService {
         throw new PlayersNotEnoughException();
     }
 
-    public Room getRoom(Long id) {
-        return userRepository.findById(id).orElseThrow(UserNotFoundException::new).getRoom();
+    public RoomGetRes getRoom(Long id) {
+        Room room = userRepository.findById(id).orElseThrow(UserNotFoundException::new).getRoom();
+        return RoomGetRes.toDto(room);
     }
 
     @Transactional
