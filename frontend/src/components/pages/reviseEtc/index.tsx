@@ -4,14 +4,24 @@ import GlobalStyles from '../../../styles/GlobalStyles';
 import BtnBig from '../../atoms/btnBig';
 import {useState} from 'react';
 import InfoTextInput from '../../atoms/infoTextInput';
-import { userApi } from '../../../apis';
+import {userApi} from '../../../apis';
+import {useRecoilState} from 'recoil';
+import {UserInfo, UserMoreInfo} from '../../../types/user';
+import user from '../../../modules/user';
 
 export const ReviseEtc = ({navigation}: {navigation: any}) => {
-  const [inputValues, setInputValues] = useState({
-    mbti: '',
-    worry: '',
-    likes: '',
-    hate: '',
+  const [userInfo, setUserInfo] = useRecoilState(user.UserInfoState);
+  const [defaultMbti, defaultWorry, defaultLikes, defaultHate] = [
+    userInfo.mbti,
+    userInfo.worry,
+    userInfo.likes,
+    userInfo.hate,
+  ];
+  const [inputValues, setInputValues] = useState<UserMoreInfo>({
+    mbti: defaultMbti,
+    worry: defaultWorry,
+    likes: defaultLikes,
+    hate: defaultHate,
   });
 
   const onInputChange = (title: string, value: string) => {
@@ -23,19 +33,12 @@ export const ReviseEtc = ({navigation}: {navigation: any}) => {
 
   const handleSubmit = async () => {
     try {
-      const moreInfoData = {
-        mbti: inputValues.mbti,
-        worry: inputValues.worry,
-        likes: inputValues.likes,
-        hate: inputValues.hate,
-      };
-
-      const response = await userApi.putMoreInfo(moreInfoData);
-      console.log('MoreInfo_updated', response);
-      navigation.navigate('NavBar');
+      const updatedUserInfo: UserInfo = {...userInfo, ...inputValues};
+      await userApi.putMoreInfo(inputValues);
+      await setUserInfo(updatedUserInfo);
+      navigation.navigate('정보');
     } catch (error) {
-      console.error('moreInfo_ERROR', error)
-      navigation.navigate('NavBar');
+      console.error(error);
     }
   };
 
@@ -46,22 +49,22 @@ export const ReviseEtc = ({navigation}: {navigation: any}) => {
         <View style={[styles.flexColumn, {height: '50%', rowGap: 15}]}>
           <InfoTextInput
             title="mbti"
-            placeholder="MBTI를 입력해주세요"
+            placeholder={defaultMbti}
             setValue={data => onInputChange('mbti', data)}
           />
           <InfoTextInput
             title="요즘 고민"
-            placeholder="고민을 입력해주세요"
+            placeholder={defaultWorry}
             setValue={data => onInputChange('worry', data)}
           />
           <InfoTextInput
             title="좋아하는 것"
-            placeholder="좋아하는 것을 입력해주세요"
+            placeholder={defaultLikes}
             setValue={data => onInputChange('likes', data)}
           />
           <InfoTextInput
             title="싫어하는 것"
-            placeholder="싫어하는 것을 입력해주세요"
+            placeholder={defaultHate}
             setValue={data => onInputChange('hate', data)}
           />
         </View>

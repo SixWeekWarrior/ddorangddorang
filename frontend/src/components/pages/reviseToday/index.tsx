@@ -4,11 +4,17 @@ import GlobalStyles from '../../../styles/GlobalStyles';
 import BtnBig from '../../atoms/btnBig';
 import {useState} from 'react';
 import InfoTextInput from '../../atoms/infoTextInput';
+import {useRecoilState} from 'recoil';
+import user from '../../../modules/user';
+import {UserDailyInfo, UserInfo} from '../../../types/user';
+import {userApi} from '../../../apis';
 
 export const ReviseToday = ({navigation}: {navigation: any}) => {
-  const [inputValues, setInputValues] = useState({
-    mood: '',
-    color: '',
+  const [userInfo, setUserInfo] = useRecoilState(user.UserInfoState);
+  const [defaultMood, defaultColor] = [userInfo.mood, userInfo.color];
+  const [inputValues, setInputValues] = useState<UserDailyInfo>({
+    mood: defaultMood,
+    color: defaultColor,
   });
   const onInputChange = (title: string, value: string) => {
     setInputValues(prevState => ({
@@ -17,9 +23,15 @@ export const ReviseToday = ({navigation}: {navigation: any}) => {
     }));
   };
 
-  const handleSubmit = () => {
-    console.log(inputValues);
-    navigation.navigate('NavBar');
+  const handleSubmit = async () => {
+    try {
+      const updatedUserInfo: UserInfo = {...userInfo, ...inputValues};
+      await userApi.putTodayInfo(inputValues);
+      await setUserInfo(updatedUserInfo);
+      navigation.navigate('정보');
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -32,12 +44,12 @@ export const ReviseToday = ({navigation}: {navigation: any}) => {
         <View style={[styles.flexColumn, {height: '50%', rowGap: 15}]}>
           <InfoTextInput
             title="기분"
-            placeholder="오늘 기분을 알려주세요"
+            placeholder={defaultMood}
             setValue={data => onInputChange('mood', data)}
           />
           <InfoTextInput
             title="입은 옷"
-            placeholder="옷 색깔을 알려주세요"
+            placeholder={defaultColor}
             setValue={data => onInputChange('color', data)}
           />
         </View>

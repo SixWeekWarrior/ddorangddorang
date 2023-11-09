@@ -15,12 +15,13 @@ import InfoBox from '../../organisms/infoBox';
 import Modal from 'react-native-modal';
 import CloseImg from '../../../assets/closeImg.png';
 import {useState, useEffect} from 'react';
-import {useSetRecoilState} from 'recoil';
+import {useRecoilState} from 'recoil';
 import user from '../../../modules/user';
 import {userApi} from '../../../apis';
 
-const Home = ({navigation}: {navigation: any}): JSX.Element => {
-  const setUserInfo = useSetRecoilState(user.UserInfoState);
+export const Home = ({navigation}: {navigation: any}): JSX.Element => {
+  const [userInfo, setUserInfo] = useRecoilState(user.UserInfoState);
+  console.log(userInfo);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -30,7 +31,13 @@ const Home = ({navigation}: {navigation: any}): JSX.Element => {
         console.error(error);
       }
     };
+    // const fetchHintData = async () => {
+    //   try {
+    //     const hintData = await
+    //   }
+    // }
     fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const [isModalVisible, setModalVisible] = useState(false);
@@ -84,9 +91,9 @@ const Home = ({navigation}: {navigation: any}): JSX.Element => {
             {/* <Text style={style.miniFont}>기분</Text> */}
             <Text style={style.bigFont}>기분 | 약간 흐림</Text>
           </Pressable>
-          <Image source={yellowEyeImg} style={style.topBottom}></Image>
+          <Image source={yellowEyeImg} style={style.topBottom} />
         </View>
-        <View style={style.topMiddle}></View>
+        <View style={style.topMiddle} />
         <View style={style.topRight}>
           <View style={style.innerTop}>
             <Text
@@ -175,8 +182,8 @@ const Home = ({navigation}: {navigation: any}): JSX.Element => {
             />
           </Pressable>
         </View>
-        <View style={style.bottomMiddle}></View>
-        <Image source={greenEyeImg} style={style.bottomRight}></Image>
+        <View style={style.bottomMiddle} />
+        <Image source={greenEyeImg} style={style.bottomRight} />
       </View>
       <View style={style.modalContainer}>{modal()}</View>
     </ScrollView>

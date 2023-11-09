@@ -9,7 +9,7 @@ export const InfoSelectInput = ({
   setValue,
 }: {
   title: string;
-  placeholder: string;
+  placeholder: any;
   data: any[];
   setValue: (value: any) => void;
 }) => {
