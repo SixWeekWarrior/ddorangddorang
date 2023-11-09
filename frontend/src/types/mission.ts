@@ -12,6 +12,4 @@ export type TodayMissionInfo = {
   content: string,
   isComplete: boolean,
   missionType: number,
-  dayCount: number,
-  missionCompleteCount: number,
 }

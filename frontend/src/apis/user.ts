@@ -1,6 +1,7 @@
 import apiInstance from './client';
 import axios from 'axios';
 import {
+  Opinion,
   UserDailyInfo,
   UserInfo,
   UserMoreInfo,
@@ -96,6 +97,15 @@ const getUser = async () => {
   }
 };
 
+const postOpinion = async (data: Opinion) => {
+  try {
+    const res = await client.post('/opinions', data);
+    return res.data;
+  } catch (e) {
+    throw new Error('ERROR IN POST_OPINION');
+  }
+}
+
 const user = {
   postLogin,
   postSignup,
@@ -103,6 +113,7 @@ const user = {
   putMoreInfo,
   putTodayInfo,
   getUser,
+  postOpinion,
 };
 
 export default user;

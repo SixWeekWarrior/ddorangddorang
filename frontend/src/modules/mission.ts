@@ -32,8 +32,6 @@ const MissionTodayInfoState = atom<TodayMissionInfo>({
     content: '',
     isComplete: false,
     missionType: 0,
-    dayCount: 0,
-    missionCompleteCount: 0,
   }
 })
 

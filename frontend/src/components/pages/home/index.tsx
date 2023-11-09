@@ -87,9 +87,9 @@ export const Home = ({navigation}: {navigation: any}): JSX.Element => {
                 justifyContent: 'center',
               }}>{`오늘 나의 \n마니또는?`}</Text>
             {/* <Text style={style.miniFont}>입은 옷</Text> */}
-            <Text style={style.bigFont}>옷 | 빨간색</Text>
+            <Text style={style.bigFont}>옷 | {userInfo.color}</Text>
             {/* <Text style={style.miniFont}>기분</Text> */}
-            <Text style={style.bigFont}>기분 | 약간 흐림</Text>
+            <Text style={style.bigFont}>기분 | {userInfo.mood}</Text>
           </Pressable>
           <Image source={yellowEyeImg} style={style.topBottom} />
         </View>

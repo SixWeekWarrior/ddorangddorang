@@ -15,8 +15,9 @@ const MissionToday = ({navigation}: {navigation: any}): JSX.Element => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const title = await missionApi.getMission();
-        setMissionInfo(title);
+        const missionAll = await missionApi.getMission();
+        const missionData = missionAll[0]
+        setMissionInfo(missionData);
       } catch (error) {
         console.error('미션 데이터 불러오기 실패', error);
       }
