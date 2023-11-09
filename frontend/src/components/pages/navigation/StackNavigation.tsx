@@ -20,12 +20,13 @@ import SendOpinion from '../sendOpinion';
 import MatchStatus from '../matchStatus';
 import MatchGuess from '../matchGuess';
 import MyPage from '../myPage';
+import {ProfilePicAdd} from '../profilePicAdd';
 
 const StackNavigation = () => {
   const Stack = createStackNavigator();
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="NavBar">
+      <Stack.Navigator initialRouteName="Onboarding">
         <Stack.Screen
           name="Onboarding"
           component={Onboarding}
@@ -84,6 +85,11 @@ const StackNavigation = () => {
         <Stack.Screen
           name="MyPage"
           component={MyPage}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="ProfilePicAdd"
+          component={ProfilePicAdd}
           options={{headerShown: false}}
         />
         <Stack.Screen

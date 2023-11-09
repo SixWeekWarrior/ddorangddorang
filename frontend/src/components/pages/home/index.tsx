@@ -31,11 +31,6 @@ export const Home = ({navigation}: {navigation: any}): JSX.Element => {
         console.error(error);
       }
     };
-    // const fetchHintData = async () => {
-    //   try {
-    //     const hintData = await
-    //   }
-    // }
     fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
