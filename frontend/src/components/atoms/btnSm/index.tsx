@@ -3,7 +3,7 @@ import {StyleSheet, Pressable, Text} from 'react-native';
 import GlobalStyles from '../../../styles/GlobalStyles';
 
 type BtnSmProps = {
-  onPress: () => void;
+  onPress: any;
   text: string;
 };
 

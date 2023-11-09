@@ -5,8 +5,8 @@ import {useState} from 'react';
 
 type InputTextwithBtnProps = {
   btnText: string;
+  onChange?: any;
   onPress?: () => void;
-  onChange?: (text: string) => void;
 };
 
 export const InputTextwithBtn = ({
@@ -23,16 +23,10 @@ export const InputTextwithBtn = ({
     }
   };
 
-  const handlePress = () => {
-    if (onPress) {
-      onPress();
-    }
-  };
-
   return (
     <View style={styles.container}>
       <InputText value={enteredText} onChangeText={handleInputChange} />
-      <BtnSm text={btnText} onPress={handlePress} />
+      <BtnSm text={btnText} onPress={onPress} />
     </View>
   );
 };

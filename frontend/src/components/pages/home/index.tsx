@@ -21,7 +21,7 @@ import {userApi} from '../../../apis';
 
 export const Home = ({navigation}: {navigation: any}): JSX.Element => {
   const [userInfo, setUserInfo] = useRecoilState(user.UserInfoState);
-  const [manitoHint, setManitoHint] = useState(['', '']);
+  const [manitoHint, setManitoHint] = useState<string[]>(['', '']);
   console.log(manitoHint);
   console.log(userInfo);
   useEffect(() => {
@@ -92,8 +92,14 @@ export const Home = ({navigation}: {navigation: any}): JSX.Element => {
                 marginLeft: 15,
                 justifyContent: 'center',
               }}>{`오늘 나의 \n마니또는?`}</Text>
-            <Text style={style.bigFont}>옷 | {manitoHint?.['color']}</Text>
-            <Text style={style.bigFont}>기분 | {manitoHint?.['mood']}</Text>
+            {manitoHint ? (
+              <View>
+                <Text style={style.bigFont}>옷 | {manitoHint?.[0]}</Text>
+                <Text style={style.bigFont}>기분 | {manitoHint?.[1]}</Text>
+              </View>
+            ) : (
+              ''
+            )}
           </Pressable>
           <Image source={yellowEyeImg} style={style.topBottom} />
         </View>
