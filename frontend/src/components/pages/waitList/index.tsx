@@ -33,6 +33,17 @@ export const WaitList = ({
     getRoomWaiting();
   }, []);
 
+  const postRoomResponse = () => {
+    try {
+      const data = selectedList.map((item: number) => ({userId: item}));
+      roomApi
+        .postRoomResponse(data)
+        .then(() => navigation.navigate('BeforeStart'));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   // useEffect(() => {
   //   try {
   //     isAllChecked?
@@ -47,7 +58,7 @@ export const WaitList = ({
     } else if (selectedCount > maxMember) {
       alert(`최대 선택인원 ${maxMember}명을 초과하였습니다.`);
     } else {
-      navigation.navigate('BeforeStart');
+      postRoomResponse();
     }
   };
 

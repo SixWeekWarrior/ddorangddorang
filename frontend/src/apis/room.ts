@@ -1,6 +1,5 @@
 import {RoomInfo} from '../types/room';
 import apiInstance from './client';
-// import axios from 'axios';
 
 const client = apiInstance();
 
@@ -33,16 +32,6 @@ const putRoom = async (data: RoomInfo) => {
   }
 };
 
-// 게임 시작 API
-const postRoomStart = async () => {
-  try {
-    const res = await client.post('/rooms/start');
-    return res.data;
-  } catch (e) {
-    throw new Error('ERROR IN POST_ROOM_START');
-  }
-};
-
 // 나의 room 정보 가져오기 API
 const getRoomInfo = async () => {
   try {
@@ -53,22 +42,57 @@ const getRoomInfo = async () => {
   }
 };
 
-// 나의 room 정보 가져오기 API
+// 대기하는 사람 리스트 가져오기 API
 const getRoomWaiting = async () => {
   try {
     const res = await client.get('/rooms/waiting');
     return res.data;
   } catch (e) {
-    throw new Error('getRoomInfo');
+    throw new Error('getRoomWaiting');
+  }
+};
+
+// 대기하는 사람 승인하는 API
+const postRoomResponse = async (data: {userId: number}[]) => {
+  try {
+    console.log('postRoomResponseAPI', data);
+    const res = await client.post('/rooms/response', data);
+    return res.data;
+  } catch (e) {
+    throw new Error('postRoomResponse');
+  }
+};
+
+// 게임을 시작하는  API
+const postRoomStart = async () => {
+  try {
+    const res = await client.post('/rooms/start');
+    return res.data;
+  } catch (e) {
+    throw new Error('postRoomResponse');
+  }
+};
+
+// 게임에 들어오는 API
+const postRoomJoin = async (data: number) => {
+  try {
+    const res = await client.post('/rooms/join', {
+      accessCode: data,
+    });
+    return res.data;
+  } catch (e) {
+    throw new Error('postRoomJoin');
   }
 };
 
 const room = {
   postRoom,
   putRoom,
-  postRoomStart,
   getRoomInfo,
   getRoomWaiting,
+  postRoomResponse,
+  postRoomStart,
+  postRoomJoin,
 };
 
 export default room;

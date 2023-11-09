@@ -4,17 +4,13 @@ import BtnSm from '../../atoms/btnSm';
 import {useState} from 'react';
 
 type InputTextwithBtnProps = {
-  navigation: any;
   btnText: string;
-  destination?: string;
   onPress?: () => void;
   onChange?: (text: string) => void;
 };
 
 export const InputTextwithBtn = ({
-  navigation,
   btnText,
-  destination,
   onPress,
   onChange,
 }: InputTextwithBtnProps): JSX.Element => {
@@ -28,9 +24,6 @@ export const InputTextwithBtn = ({
   };
 
   const handlePress = () => {
-    if (destination) {
-      navigation.navigate(destination);
-    }
     if (onPress) {
       onPress();
     }
