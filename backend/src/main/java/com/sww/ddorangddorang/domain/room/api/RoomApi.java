@@ -37,7 +37,7 @@ public class RoomApi {
     public CommonResponse<RoomGetRes> getRoom(@AuthenticationPrincipal AuthenticatedUser authenticatedUser) {
         log.info("RoomApi_getRoom start");
         Room room = roomService.getRoom(authenticatedUser.getId());
-        log.info("RoomApi_getRoom end: {}", room);
+        log.info("RoomApi_getRoom end: Room id - {}", room.getId());
         return CommonResponse.success(RoomGetRes.toDto(room));
     }
 
