@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 public class UsersMoreinfoPutReq {
 
     private String mbti;
-    private String likes;
+    private String like;
     private String hate;
     private String worry;
 
