@@ -136,7 +136,6 @@ public class MissionPerformServiceImpl implements MissionPerformService {
             handleUncompletedMission(lastMissionPerfrom);
         }
 
-
         // 참가자가 수행한 미션들의 id를 Set로 저장함.
         Set<Long> performedMissions = missionPerforms.stream().map(MissionPerform::getMission)
             .map(Mission::getId).collect(Collectors.toSet());
@@ -211,6 +210,7 @@ public class MissionPerformServiceImpl implements MissionPerformService {
             throw new MissionNotFoundException();
         }
     }
+
     private User findUserById(Long id) {
         return userRepository.findById(id).orElseThrow(UserNotFoundException::new);
     }

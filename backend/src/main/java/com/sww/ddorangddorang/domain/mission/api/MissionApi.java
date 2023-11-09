@@ -27,7 +27,8 @@ public class MissionApi {
 
     // 유저가 가지고 있는 미션들을 조회하는 메소드
     @GetMapping
-    public CommonResponse<MissionPerformAndDayCountRes> findMissionByUser(@AuthenticationPrincipal AuthenticatedUser authenticatedUser) {
+    public CommonResponse<MissionPerformAndDayCountRes> findMissionByUser(
+        @AuthenticationPrincipal AuthenticatedUser authenticatedUser) {
         log.info("findMissionByUser Controller 진입");
         return CommonResponse.success(missionPerformService.findMissionByUser(authenticatedUser));
     }
@@ -35,7 +36,9 @@ public class MissionApi {
 
     // 유저가 미션을 완료했을 때 호출되는 메소드
     @PostMapping
-    public CommonResponse<String> missionComplete(@RequestBody MissionCompleteReq missionCompleteReq, @AuthenticationPrincipal AuthenticatedUser authenticatedUser) {
+    public CommonResponse<String> missionComplete(
+        @RequestBody MissionCompleteReq missionCompleteReq,
+        @AuthenticationPrincipal AuthenticatedUser authenticatedUser) {
         log.info("missionComplete Controller 진입");
         missionPerformService.missionComplete(missionCompleteReq, authenticatedUser);
         return CommonResponse.success(SUCCESS);
@@ -43,7 +46,8 @@ public class MissionApi {
 
     // 미션 변경 요청
     @PutMapping
-    public CommonResponse<String> changeMission(@RequestBody MissionChangeReq missionChangeReq, @AuthenticationPrincipal AuthenticatedUser authenticatedUser) {
+    public CommonResponse<String> changeMission(@RequestBody MissionChangeReq missionChangeReq,
+        @AuthenticationPrincipal AuthenticatedUser authenticatedUser) {
         log.info("changeMission Controller 진입");
         missionPerformService.changeMission(missionChangeReq, authenticatedUser);
         return CommonResponse.success(SUCCESS);

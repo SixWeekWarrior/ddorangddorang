@@ -14,11 +14,13 @@ public class WaitingListRes {
     private String profileImage;
     private Integer generation;
     private Integer classes;
+    private Boolean isMajor;
 
     public static WaitingListRes of(User user) {
         return WaitingListRes.builder().userId(user.getId()).name(user.getName())
             .profileImage(user.getProfileImage()).generation(user.getGeneration())
-            .classes(user.getClasses()).build();
+            .classes(user.getClasses())
+            .isMajor(user.getIsMajor()).build();
     }
 
     public static List<WaitingListRes> listOf(List<User> userList) {

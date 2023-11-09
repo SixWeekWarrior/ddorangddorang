@@ -16,7 +16,7 @@ public class UsersSignupPostReq {
     private Integer campus;             // INT
     private Integer classes;            // INT
     private Integer floor;              // INT
-    private String like;                // VARCHAR(255)
+    private String likes;                // VARCHAR(255)
     private String hate;                // VARCHAR(255)
     private String mbti;                // VARCHAR(255)
     private String worry;               // TEXT
@@ -30,7 +30,7 @@ public class UsersSignupPostReq {
             .campus(this.campus)
             .classes(this.classes)
             .floor(this.floor)
-            .likes(this.like)
+            .likes(this.likes)
             .hate(this.hate)
             .mbti(this.mbti)
             .worry(this.worry)
