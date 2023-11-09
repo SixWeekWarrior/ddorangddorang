@@ -1,5 +1,5 @@
 import {View, Text, StyleSheet} from 'react-native';
-import GlobalStyles from '../../../styles/GlobalStyles';
+import GlobalStyles, {height} from '../../../styles/GlobalStyles';
 import RangeForm from '../rangeForm';
 
 type GroupSummaryProps = {
@@ -19,14 +19,16 @@ export const GroupSummary = ({
       <View style={styles.textLeft}>
         <Text style={styles.titleBig}>현재 인원</Text>
         <Text style={styles.titleSmall}>(명)</Text>
+        {parseInt(selectedCount, 10) < Number(min) ? (
+          <View style={styles.warning}>
+            <Text style={styles.warningText}>
+              최소 인원보다 많은 인원을 선택해주세요.
+            </Text>
+          </View>
+        ) : (
+          <></>
+        )}
       </View>
-      {parseInt(selectedCount, 10) < Number(min) ? (
-        <View style={styles.warning}>
-          <Text style={styles.warningText}>최소 인원을 확인해주세요!</Text>
-        </View>
-      ) : (
-        <></>
-      )}
 
       <View style={styles.textCenter}>
         <RangeForm min={min} max={max} cur={selectedCount} />
@@ -86,7 +88,8 @@ const styles = StyleSheet.create({
   },
   warningText: {
     fontFamily: GlobalStyles.section_title.fontFamily,
-    fontSize: 15,
+    fontSize: height * 11,
+    marginTop: height * 2,
     color: GlobalStyles.orange.color,
   },
 });

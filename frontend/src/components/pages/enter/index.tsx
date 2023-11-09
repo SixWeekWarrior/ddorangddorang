@@ -5,12 +5,13 @@ import BtnMid from '../../atoms/btnMid';
 import {LogBox} from 'react-native';
 import BottomSheet, {BottomSheetBackdrop} from '@gorhom/bottom-sheet';
 import InputTextwithBtn from '../../molecules/inputTextwithBtn';
-import {useCallback, useRef, useMemo} from 'react';
+import {useCallback, useRef, useMemo, useState} from 'react';
 import congratsImg from '../../../assets/congratsImg.png';
 import token from '../../../utils/token';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
-import {useRecoilState} from 'recoil';
+import {useRecoilValue} from 'recoil';
 import user from '../../../modules/user';
+import {roomApi} from '../../../apis';
 
 LogBox.ignoreLogs([
   'Non-serializable values were found in the navigation state',
@@ -18,10 +19,21 @@ LogBox.ignoreLogs([
 
 export const Enter = ({navigation, route}: any): JSX.Element => {
   const {params} = route;
-
-  const [userInfo, setUserInfo] = useRecoilState(user.UserInfoState);
+  const userInfo = useRecoilValue(user.UserInfoState);
+  const [accessCode, setAccessCode] = useState<number>(0);
   const bottomSheetRef = useRef<BottomSheet>(null);
   const snapPoints = useMemo(() => ['50%', '20%', '50%'], []);
+
+  const postRoomJoin = () => {
+    try {
+      roomApi
+        .postRoomJoin(accessCode)
+        .then(() => navigation.navigate('EnterWait'));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const renderBackdrop = useCallback(
     (props: any) => (
       <BottomSheetBackdrop
@@ -65,15 +77,15 @@ export const Enter = ({navigation, route}: any): JSX.Element => {
           }}
         />
         <InputTextwithBtn
-          navigation={navigation}
           btnText="입장"
-          destination="EnterWait"
+          onChange={() => setAccessCode}
+          onPress={() => postRoomJoin()}
         />
       </View>
-      <Text 
+      <Text
         style={styles.myInfo}
         onPress={async () => {
-          navigation.navigate('MyPage', {destination: 'MyPage'})
+          navigation.navigate('MyPage', {destination: 'MyPage'});
         }}>
         내 정보 수정
       </Text>
