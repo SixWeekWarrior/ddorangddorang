@@ -123,7 +123,7 @@ public class UserApi {
         return "jwtTest 요청 성공";
     }
 
-    @PostMapping("/todayinfo")
+    @PutMapping("/todayinfo")
     public CommonResponse<String> todayinfo(@AuthenticationPrincipal AuthenticatedUser authenticatedUser, @RequestBody UsersTodayinfoPostReq usersTodayinfoPostReq) {
         log.info("UserApi_todayInfo starts");
         userService.todayInfo(authenticatedUser.getId(), usersTodayinfoPostReq);
