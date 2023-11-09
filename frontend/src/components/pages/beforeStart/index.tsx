@@ -26,6 +26,14 @@ export const BeforeStart = ({navigation}: {navigation: any}) => {
     roomKey: 0,
   });
 
+  const startGame = () => {
+    try {
+      roomApi.postRoomStart().then(() => navigation.navigate('NavBar'));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const renderBackdrop = useCallback(
     (props: any) => (
       <BottomSheetBackdrop
@@ -41,13 +49,12 @@ export const BeforeStart = ({navigation}: {navigation: any}) => {
     roomApi
       .getRoomInfo()
       .then(data => {
-        console.log('여기 테스트!!!', data);
         setRoomInfo({
           ...roomInfo,
-          duration: data.duration,
-          minMember: data.minMember,
-          maxMember: data.maxMember,
-          roomKey: data.roomKey,
+          duration: data.data.duration,
+          minMember: data.data.minMember,
+          maxMember: data.data.maxMember,
+          roomKey: data.data.roomKey,
         });
       })
       .catch(error => {
@@ -93,9 +100,7 @@ export const BeforeStart = ({navigation}: {navigation: any}) => {
           disabled={false}
         />
         <BtnReg
-          onPress={() => {
-            navigation.navigate('NavBar');
-          }}
+          onPress={() => startGame()}
           text="시작"
           color={GlobalStyles.green.color}
           disabled={isbtnActive}
