@@ -24,14 +24,18 @@ export const Enter = ({navigation, route}: any): JSX.Element => {
   const bottomSheetRef = useRef<BottomSheet>(null);
   const snapPoints = useMemo(() => ['50%', '20%', '50%'], []);
 
-  const postRoomJoin = () => {
-    try {
-      roomApi
-        .postRoomJoin(accessCode)
-        .then(() => navigation.navigate('EnterWait'));
-    } catch (error) {
-      console.log(error);
-    }
+  // const postRoomJoin = () => {
+  //   try {
+  //     roomApi
+  //       .postRoomJoin(accessCode)
+  //       .then(() => navigation.navigate('EnterWait'));
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+
+  const testPrint = () => {
+    console.log(accessCode);
   };
 
   const renderBackdrop = useCallback(
@@ -78,8 +82,8 @@ export const Enter = ({navigation, route}: any): JSX.Element => {
         />
         <InputTextwithBtn
           btnText="입장"
-          onChange={() => setAccessCode}
-          onPress={() => postRoomJoin()}
+          onChange={setAccessCode}
+          onPress={testPrint}
         />
       </View>
       <Text

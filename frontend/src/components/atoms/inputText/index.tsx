@@ -3,7 +3,7 @@ import GlobalStyles from '../../../styles/GlobalStyles';
 
 interface InputTextProps {
   onChangeText: (text: string) => void;
-  value: string;
+  value: any;
   placeholder?: string;
 }
 

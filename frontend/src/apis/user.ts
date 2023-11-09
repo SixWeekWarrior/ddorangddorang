@@ -96,6 +96,16 @@ const getUser = async () => {
   }
 };
 
+// 마니또 Hint 정보 조회 API
+const getManitoHint = async () => {
+  try {
+    const res = await client.get('/users/manitohint');
+    return res.data.data;
+  } catch (e) {
+    throw new Error('ERROR IN GET_MANITO_HINT');
+  }
+};
+
 const user = {
   postLogin,
   postSignup,
@@ -103,6 +113,7 @@ const user = {
   putMoreInfo,
   putTodayInfo,
   getUser,
+  getManitoHint,
 };
 
 export default user;
