@@ -1,5 +1,5 @@
 import {atom} from 'recoil';
-import {UserInfo} from '../types/user';
+import {UserDailyInfo, UserInfo} from '../types/user';
 
 const KEY = 'USER';
 
@@ -42,6 +42,14 @@ export const UserInfoState = atom<UserInfo>({
   },
 });
 
-const user = {UserInfoState, TmpUserInfoState};
+export const UserDailyInfoState = atom<UserDailyInfo>({
+  key: `${KEY}/dailyinfo`,
+  default: {
+    id: 0,
+    content: '',
+  },
+});
+
+const user = {UserInfoState, TmpUserInfoState, UserDailyInfoState};
 
 export default user;

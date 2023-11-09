@@ -3,7 +3,7 @@ import GlobalStyles from '../../../styles/GlobalStyles';
 
 type InfoAtomProps = {
   title: string;
-  content: string;
+  content: any;
   isWhite?: boolean;
 };
 export const InfoAtom = ({title, content, isWhite}: InfoAtomProps) => {

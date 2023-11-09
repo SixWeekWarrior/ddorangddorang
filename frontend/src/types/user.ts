@@ -35,3 +35,8 @@ export type UserProfile = {
   generation: number;
   classes: number;
 };
+
+export type UserDailyInfo = {
+  id: number;
+  content: string;
+};

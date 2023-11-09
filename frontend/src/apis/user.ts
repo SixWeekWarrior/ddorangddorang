@@ -1,6 +1,11 @@
 import apiInstance from './client';
 import axios from 'axios';
-import {UserInfo, UserMoreInfo, UserSsafyInfo} from '../types/user';
+import {
+  UserDailyInfo,
+  UserInfo,
+  UserMoreInfo,
+  UserSsafyInfo,
+} from '../types/user';
 import {tokenUtil} from '../utils';
 
 const client = apiInstance();
@@ -65,17 +70,41 @@ const putSsafyInfo = async (data: UserSsafyInfo) => {
     const res = await client.put('/users/ssafyinfo', data);
     return res.data;
   } catch (e) {
+    console.log(e);
     throw new Error('ERROR IN PUT_SSAFY_INFO');
   }
 };
 
-// 싸피 정보 수정 API
-const getUserInfo = async () => {
+// 데일리 정보 (mood, color) 수정 API
+const postTodayInfo = async (data: UserDailyInfo) => {
   try {
-    const res = await client.get('/users');
+    const idToken = await tokenUtil.getIdToken();
+    const res = await axios
+      .create({
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
+          Authorization: 'Bearer ' + idToken,
+        },
+      })
+      .post(serverUrl + '/users/todayinfo', data);
+
+    await tokenUtil.setToken(
+      res.data.data.accessToken,
+      res.data.data.refreshToken,
+    );
     return res.data;
   } catch (e) {
-    throw new Error('ERROR IN GetUserInfo');
+    throw new Error('ERROR IN POST_TODAY_INFO');
+  }
+};
+
+// User 정보 조회 API
+const getUser = async () => {
+  try {
+    const res = await client.get('/users');
+    return res.data.data;
+  } catch (e) {
+    throw new Error('ERROR IN GET_USERS');
   }
 };
 
@@ -84,7 +113,8 @@ const user = {
   postSignup,
   putSsafyInfo,
   putMoreInfo,
-  getUserInfo,
+  postTodayInfo,
+  getUser,
 };
 
 export default user;
