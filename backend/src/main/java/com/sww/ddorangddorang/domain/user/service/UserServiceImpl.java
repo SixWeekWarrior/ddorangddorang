@@ -51,6 +51,7 @@ public class UserServiceImpl implements UserService {
 
 
     public void todayInfo(Long userId, UsersTodayinfoPostReq usersTodayinfoPostReq) {
+        log.info("UserService_todayInfo start: {}", usersTodayinfoPostReq);
         User user = userRepository.getReferenceById(userId);
 
         List<Hint> hintList = new ArrayList<Hint>();
@@ -75,11 +76,14 @@ public class UserServiceImpl implements UserService {
         for (Hint hint : hintList) {
             Optional<Hint> optionalHint = hintRepository.findByUserAndMasterCode(user, hint.getMasterCode());
             if (optionalHint.isEmpty()) {
+                log.info("UserService_save new hint: {}", hint);
                 hintRepository.save(hint);
             } else {
                 optionalHint.orElseThrow(UnexpectedException::new).updateContent(hint.getContent());
+                log.info("UserService_update hint: {}", optionalHint);
             }
         }
+        log.info("UserService_todayInfo end");
     }
 
     public void ssafyInfo(Long userId, UsersSsafyinfoPutReq usersSsafyinfoPutReq) {
