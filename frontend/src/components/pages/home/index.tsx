@@ -19,13 +19,13 @@ import {useSetRecoilState} from 'recoil';
 import user from '../../../modules/user';
 import {userApi} from '../../../apis';
 
-export const Home = ({navigation}: {navigation: any}): JSX.Element => {
+const Home = ({navigation}: {navigation: any}): JSX.Element => {
   const setUserInfo = useSetRecoilState(user.UserInfoState);
   useEffect(() => {
     const fetchData = async () => {
       try {
         const data = await userApi.getUser();
-        await setUserInfo(data);
+        setUserInfo(data);
       } catch (error) {
         console.error(error);
       }

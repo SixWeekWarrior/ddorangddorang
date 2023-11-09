@@ -28,7 +28,7 @@ const MatchGuess = ({
       if (item.id === id) {
         item.selected = !item.selected;
         setSelectedProfile(item.selected ? id : null);
-      } else {
+      } else { 
         item.selected = false;
       }
       return item;
