@@ -15,13 +15,15 @@ public class RoomGetRes {
     Integer minMember;
     Integer maxMember;
     Integer roomKey;
+    Integer memberCount;
 
     @Builder
-    public RoomGetRes(Integer duration, Integer minMember, Integer maxMember, Integer roomKey) {
+    public RoomGetRes(Integer duration, Integer minMember, Integer maxMember, Integer roomKey, Integer memberCount) {
         this.duration = duration;
         this.minMember = minMember;
         this.maxMember = maxMember;
         this.roomKey = roomKey;
+        this.memberCount = memberCount;
     }
 
     public static RoomGetRes toDto(Room room) {
@@ -30,6 +32,7 @@ public class RoomGetRes {
             .minMember(room.getMinMember())
             .maxMember(room.getMaxMember())
             .roomKey(room.getAccessCode())
+            .memberCount(room.getHeadCount())
             .build();
     }
 }
