@@ -149,19 +149,28 @@ public class UserServiceImpl implements UserService {
     }
 
     private HintDto getUserHint(User user) {
+        String color = "";
+        String mood = "";
+
         MasterCode colorCode = masterCodeRepository.findById(1_001L)
             .orElseThrow(UnexpectedException::new);
-        Hint colorHint = hintRepository.findByUserAndMasterCode(user, colorCode)
-            .orElseThrow(UnexpectedException::new);
+        Optional<Hint> colorHint = hintRepository.findByUserAndMasterCode(user, colorCode);
+
+        if (colorHint.isPresent()) {
+            color = colorHint.orElseThrow(UnexpectedException::new).getContent();
+        }
 
         MasterCode moodCode = masterCodeRepository.findById(1_002L)
             .orElseThrow(UnexpectedException::new);
-        Hint moodHint = hintRepository.findByUserAndMasterCode(user, moodCode)
-            .orElseThrow(UnexpectedException::new);
+        Optional<Hint> moodHint = hintRepository.findByUserAndMasterCode(user, moodCode);
+
+        if (moodHint.isPresent()) {
+            mood = moodHint.orElseThrow(UnexpectedException::new).getContent();
+        }
 
         return HintDto.builder()
-            .color(colorHint.getContent())
-            .mood(moodHint.getContent())
+            .color(color)
+            .mood(mood)
             .build();
     }
 
