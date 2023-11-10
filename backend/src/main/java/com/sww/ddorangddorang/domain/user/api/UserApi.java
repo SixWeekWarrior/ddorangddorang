@@ -77,8 +77,9 @@ public class UserApi {
     @PostMapping(value = "/signup", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
     public CommonResponse<UsersSignupPostRes> signUp(
         @RequestHeader("Authorization") String authorizationHeader,
-        @RequestPart("signupInfo") UsersSignupPostReq usersSignupPostReq,
-        @RequestPart("profile") MultipartFile profile) throws Exception {
+        @RequestPart("profile") MultipartFile profile,
+        @RequestPart("signupInfo") UsersSignupPostReq usersSignupPostReq
+        ) throws Exception {
         log.info("UserApi_signup starts");
 
         log.info("UserApi_signup, header: {}", authorizationHeader.substring(7));
