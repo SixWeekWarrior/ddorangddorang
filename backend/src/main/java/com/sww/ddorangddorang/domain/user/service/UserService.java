@@ -11,6 +11,7 @@ import java.util.Optional;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface UserService {
+
     void signUp(User user) throws Exception;
 
     Optional<User> findByEmail(String email);
@@ -28,4 +29,8 @@ public interface UserService {
     HintDto getHints(Long id);
 
     String upload(MultipartFile profile);
+
+    HintDto getManitoHint(Long id);
+
+    Long getUserState(Long userId);
 }
