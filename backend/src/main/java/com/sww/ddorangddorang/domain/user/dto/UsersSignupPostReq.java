@@ -4,6 +4,7 @@ import com.sww.ddorangddorang.domain.user.entity.User;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -20,6 +21,7 @@ public class UsersSignupPostReq {
     private String hate;                // VARCHAR(255)
     private String mbti;                // VARCHAR(255)
     private String worry;               // TEXT
+    private MultipartFile profile;
 
     public User toUser(){
         return User.signup()
