@@ -24,6 +24,7 @@ export const TmpUserInfoState = atom<UserInfo>({
     status: 0,
     mood: '',
     color: '',
+    profile: '',
   },
 });
 
@@ -47,6 +48,7 @@ export const UserInfoState = atom<UserInfo>({
     status: 0,
     mood: '',
     color: '',
+    profile: '',
   },
 });
 
