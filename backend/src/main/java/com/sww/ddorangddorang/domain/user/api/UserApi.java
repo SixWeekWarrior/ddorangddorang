@@ -21,6 +21,7 @@ import com.sww.ddorangddorang.global.util.S3UploaderUtil;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
@@ -73,7 +74,7 @@ public class UserApi {
         );
     }
 
-    @PostMapping(value = "/users/signup", consumes = "multipart/form-data")
+    @PostMapping(value = "/signup", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public CommonResponse<UsersSignupPostRes> signUp(
         @RequestHeader("Authorization") String authorizationHeader,
         @RequestParam("usersSignupPostReq") UsersSignupPostReq usersSignupPostReq,
@@ -136,15 +137,15 @@ public class UserApi {
 //        return "jwtTest 요청 성공";
 //    }
 
-//    @PostMapping("/s3-test")
-//    public CommonResponse<String> uploadFile(@RequestParam("profile") MultipartFile profile) {
-//        log.info(profile.getContentType());
-//        log.info(profile.getOriginalFilename());
-//        log.info(profile.getName());
-//        log.info(String.valueOf(profile.getSize()));
-//        userService.upload(2L, profile);
-//        return CommonResponse.success("Success");
-//    }
+    @PostMapping("/s3-test")
+    public CommonResponse<String> uploadFile(@RequestParam("profile") MultipartFile profile) {
+        log.info(profile.getContentType());
+        log.info(profile.getOriginalFilename());
+        log.info(profile.getName());
+        log.info(String.valueOf(profile.getSize()));
+        userService.upload(2L, profile);
+        return CommonResponse.success("Success");
+    }
 
     @PutMapping("/todayinfo")
     public CommonResponse<String> todayinfo(
