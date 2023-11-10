@@ -15,6 +15,7 @@ export type UserInfo = {
   status: number;
   mood: string;
   color: string;
+  profile: string;
 };
 
 export type UserMoreInfo = {

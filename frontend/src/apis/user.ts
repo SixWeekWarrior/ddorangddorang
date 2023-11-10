@@ -7,8 +7,6 @@ import {
   UserSsafyInfo,
 } from '../types/user';
 import {tokenUtil} from '../utils';
-import {ProfileInfo} from '../types/user';
-
 const client = apiInstance();
 const serverUrl = 'https://k9a210.p.ssafy.io/api/v1';
 

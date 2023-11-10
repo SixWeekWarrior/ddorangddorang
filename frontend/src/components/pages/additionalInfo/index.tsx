@@ -1,5 +1,5 @@
 import {StyleSheet, View} from 'react-native';
-import {BorderedBox} from '../../molecules/borderedBox';
+import {BorderedBox} from '../../molecules/BorderedBox';
 import BtnBig from '../../atoms/btnBig';
 import {userApi} from '../../../apis';
 import {useRecoilState, useSetRecoilState} from 'recoil';
