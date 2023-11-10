@@ -9,6 +9,7 @@ import com.sww.ddorangddorang.domain.participant.exception.ParticipantNotFoundEx
 import com.sww.ddorangddorang.domain.participant.repository.ParticipantRepository;
 import com.sww.ddorangddorang.domain.participant.repository.PrefixRepository;
 import com.sww.ddorangddorang.domain.participant.repository.SuffixRepository;
+import com.sww.ddorangddorang.domain.room.dto.EndDayInfoRes;
 import com.sww.ddorangddorang.domain.room.dto.JoinRoomReq;
 import com.sww.ddorangddorang.domain.room.dto.RoomGetRes;
 import com.sww.ddorangddorang.domain.room.dto.RoomInfoReq;
@@ -465,20 +466,21 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Transactional
-    public Boolean responseJoinRoom(List<JoinRoomReq> joinRoomReqList, AuthenticatedUser authenticatedUser) {
+    public Boolean responseJoinRoom(List<JoinRoomReq> joinRoomReqList,
+        AuthenticatedUser authenticatedUser) {
         log.info("RoomServiceImpl_responseJoinRoom start");
         log.info("id: {}", authenticatedUser.getId());
         User admin = findUserById(authenticatedUser.getId());
 
         List<Long> idList = new ArrayList<Long>();
-        for (JoinRoomReq joinRoomReq: joinRoomReqList) {
+        for (JoinRoomReq joinRoomReq : joinRoomReqList) {
             idList.add(joinRoomReq.getUserId());
         }
 
         List<User> requestUserList = userRepository.findAllById(idList);
 //        User requestUser = findUserById(joinRoomReq.getUserId());
 
-        for (User requestUser: requestUserList) {
+        for (User requestUser : requestUserList) {
             if (requestUser.getStatus() != 5L) {
                 log.info("RoomServiceImpl_responseJoinRoom end");
                 throw new OnlyWaitingStateAllowedException();
@@ -587,4 +589,23 @@ public class RoomServiceImpl implements RoomService {
         return userRepository.findById(id).orElseThrow(UserNotFoundException::new);
     }
 
+    public EndDayInfoRes getEndDayInfo(Long userId) {
+        User user = findUserById(userId);
+
+        if (user.getStatus() != 4L) {
+            throw new NoParticipatingRoomException();
+        }
+
+        Room room = user.getRoom();
+
+        if (room == null) {
+            throw new RoomNotFoundException();
+        }
+
+        EndDayInfoRes endDayInfoRes = EndDayInfoRes.builder()
+            .startDate(room.getStartedAt())
+            .endDate(room.getStartedAt().plusDays(room.getDuration())).build();
+
+        return endDayInfoRes;
+    }
 }

@@ -2,6 +2,7 @@ package com.sww.ddorangddorang.domain.room.api;
 
 import com.sww.ddorangddorang.auth.dto.AuthenticatedUser;
 import com.sww.ddorangddorang.domain.room.dto.AccessCodeReq;
+import com.sww.ddorangddorang.domain.room.dto.EndDayInfoRes;
 import com.sww.ddorangddorang.domain.room.dto.JoinRoomReq;
 import com.sww.ddorangddorang.domain.room.dto.RoomGetRes;
 import com.sww.ddorangddorang.domain.room.dto.RoomInfoReq;
@@ -144,5 +145,12 @@ public class RoomApi {
         return CommonResponse.success(waitingListResList);
     }
 
+    @GetMapping("/end")
+    public CommonResponse<EndDayInfoRes> getEndDayInfo(@AuthenticationPrincipal AuthenticatedUser authenticatedUser) {
+        log.info("RoomApi_getEndDayInfo start");
+        EndDayInfoRes endDayInfoRes = roomService.getEndDayInfo(authenticatedUser.getId());
+        log.info("RoomApi_getEndDayInfo end");
+        return CommonResponse.success(endDayInfoRes);
+    }
 
 }
