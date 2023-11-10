@@ -22,6 +22,7 @@ export const ProfilePicAdd = ({navigation}: {navigation: any}): JSX.Element => {
       ...prevUserInfo,
       profile: selectedImageUri || '',
     }));
+    navigation.navigate('BasicInfo');
   };
 
   // const handleSubmit = async () => {

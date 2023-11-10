@@ -33,22 +33,39 @@ const postLogin = async (idToken: string) => {
 const postSignup = async (data: UserInfo) => {
   try {
     const idToken = await tokenUtil.getIdToken();
+
+    const formData = new FormData();
+    if (data.profile) {
+      const file = {
+        uri: data.profile,
+        type: 'image/jpeg',
+        name: '프로필 사진.jpg',
+      };
+      formData.append('profile', file);
+    }
+
+    formData.append('signupInfo', {
+      string: JSON.stringify(data),
+      type: 'application/json',
+    });
+
     const res = await axios
       .create({
         headers: {
-          'Content-Type': 'application/json; charset=UTF-8',
+          // 'Content-Type': 'application/json; charset=UTF-8',
+          'Content-Type': 'multipart/form-data',
           Authorization: 'Bearer ' + idToken,
         },
       })
-      .post(serverUrl + '/users/signup', data);
+      .post(serverUrl + '/users/signup', formData);
 
     await tokenUtil.setToken(
       res.data.data.accessToken,
       res.data.data.refreshToken,
     );
     return res.data;
-  } catch (e) {
-    console.log(e);
+  } catch (e: any) {
+    console.log(e.request);
     throw new Error('ERROR IN POST_SIGN_UP');
   }
 };
