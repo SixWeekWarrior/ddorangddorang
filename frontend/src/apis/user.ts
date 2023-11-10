@@ -25,7 +25,6 @@ const postLogin = async (idToken: string) => {
 
     return res.data;
   } catch (e) {
-    // console.log(e);
     throw new Error('ERROR IN POST_LOGIN');
   }
 };
@@ -49,7 +48,6 @@ const postSignup = async (data: UserInfo) => {
     );
     return res.data;
   } catch (e) {
-    console.log(e);
     throw new Error('ERROR IN POST_SIGN_UP');
   }
 };
@@ -70,7 +68,6 @@ const putSsafyInfo = async (data: UserSsafyInfo) => {
     const res = await client.put('/users/ssafyinfo', data);
     return res.data;
   } catch (e) {
-    console.log(e);
     throw new Error('ERROR IN PUT_SSAFY_INFO');
   }
 };
@@ -81,7 +78,6 @@ const putTodayInfo = async (data: UserDailyInfo) => {
     const res = await client.put('/users/todayinfo', data);
     return res.data;
   } catch (e) {
-    console.log(e);
     throw new Error('ERROR IN PUT_TODAY_INFO');
   }
 };
