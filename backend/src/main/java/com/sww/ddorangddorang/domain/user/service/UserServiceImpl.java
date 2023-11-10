@@ -114,8 +114,6 @@ public class UserServiceImpl implements UserService {
         user.updateRefreshToken(usersTokenInfo.getRefreshToken());
     }
 
-    ;
-
     public User getUserInfo(Long id) {
         return userRepository.findById(id).orElseThrow(UserNotFoundException::new);
     }
@@ -131,6 +129,7 @@ public class UserServiceImpl implements UserService {
     public String upload(MultipartFile profile) {
         FileDto fileDto = fileUploader.fileUpload(profile, "profile");
         return fileDto.getPath();
+    }
 
     @Transactional
     public HintDto getManitoHint(Long id) {
