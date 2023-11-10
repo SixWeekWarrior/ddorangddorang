@@ -73,10 +73,10 @@ public class UserApi {
         );
     }
 
-    @PostMapping("/signup")
+    @PostMapping(value = "/users/signup", consumes = "multipart/form-data")
     public CommonResponse<UsersSignupPostRes> signUp(
         @RequestHeader("Authorization") String authorizationHeader,
-        @RequestBody UsersSignupPostReq usersSignupPostReq,
+        @RequestParam("usersSignupPostReq") UsersSignupPostReq usersSignupPostReq,
         @RequestParam("profile") MultipartFile profile) throws Exception {
         log.info("UserApi_signup starts");
 
@@ -142,8 +142,8 @@ public class UserApi {
 //        log.info(profile.getOriginalFilename());
 //        log.info(profile.getName());
 //        log.info(String.valueOf(profile.getSize()));
-//        String result = userService.upload(profile);
-//        return CommonResponse.success(result);
+//        userService.upload(2L, profile);
+//        return CommonResponse.success("Success");
 //    }
 
     @PutMapping("/todayinfo")
