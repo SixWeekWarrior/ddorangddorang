@@ -119,6 +119,7 @@ public class User {
         this.status = status;
     }
 
+    public void updateProfileImage(String profileImage) { this.profileImage = profileImage; }
     public void withdrawRoom() {
         this.room = null;
         this.status = 1L;
