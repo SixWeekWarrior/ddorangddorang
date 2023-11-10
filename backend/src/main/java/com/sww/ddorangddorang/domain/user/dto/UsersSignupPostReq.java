@@ -21,7 +21,6 @@ public class UsersSignupPostReq {
     private String hate;                // VARCHAR(255)
     private String mbti;                // VARCHAR(255)
     private String worry;               // TEXT
-    private MultipartFile profile;
 
     public User toUser(){
         return User.signup()
