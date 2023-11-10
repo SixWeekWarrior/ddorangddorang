@@ -20,7 +20,7 @@ public class EndDayInfoRes {
         this.endDate = EndDateRes.builder()
             .endDate(endDate).build();
         LocalDateTime today = LocalDateTime.now();
-        this.daysLeft = ChronoUnit.DAYS.between(today, endDate);
+        this.daysLeft = ChronoUnit.DAYS.between(today, endDate) + 1;
         this.currentDays = ChronoUnit.DAYS.between(startDate, today) + 1;
     }
 
