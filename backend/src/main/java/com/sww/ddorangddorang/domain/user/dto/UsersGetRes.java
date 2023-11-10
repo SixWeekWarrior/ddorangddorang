@@ -68,7 +68,7 @@ public class UsersGetRes {
             .hate(user.getHate())
             .mbti(user.getMbti())
             .worry(user.getWorry())
-            .roomId(user.getRoom().getId())
+            .roomId(user.getRoom() == null ? null : user.getRoom().getId())
             .status(user.getStatus())
             .mood(hintDto.getMood())
             .color(hintDto.getColor())
