@@ -6,8 +6,6 @@ const client = apiInstance();
 // 방 생성 API
 const postRoom = async (data: RoomInfo) => {
   try {
-    console.log('postRoomAPi_data', data);
-
     const res = await client.post('/rooms', {
       isOpen: data.isOpen,
       minMember: data.minMember,
@@ -17,7 +15,6 @@ const postRoom = async (data: RoomInfo) => {
 
     return res.data;
   } catch (e) {
-    console.log(e);
     throw new Error('ERROR IN POST_ROOM');
   }
 };
@@ -55,7 +52,6 @@ const getRoomWaiting = async () => {
 // 대기하는 사람 승인하는 API
 const postRoomResponse = async (data: {userId: number}[]) => {
   try {
-    console.log('postRoomResponseAPI_data', data);
     const res = await client.post('/rooms/response', data);
     return res.data;
   } catch (e) {

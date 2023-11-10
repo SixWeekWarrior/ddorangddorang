@@ -1,6 +1,6 @@
-import {View, StyleSheet, Text, Pressable} from 'react-native';
+import {View, StyleSheet, Image, Text, TouchableOpacity} from 'react-native';
 import {UserProfile} from '../../../types/user';
-import GlobalStyles from '../../../styles/GlobalStyles';
+import GlobalStyles, {height} from '../../../styles/GlobalStyles';
 import {useEffect, useState} from 'react';
 
 type ProfileProps = {
@@ -26,7 +26,8 @@ export const Profile = ({
 
   useEffect(() => {
     if (isAllChecked) {
-      setSelectedList([userId, ...selectedList]);
+      !selectedList.includes(userId) &&
+        setSelectedList([userId, ...selectedList]);
     } else {
       const newSelectedList = selectedList.filter((data: number) => {
         return data !== userId;
@@ -38,8 +39,7 @@ export const Profile = ({
 
   return (
     <View style={styles.profileContainer}>
-      <Pressable
-        style={[styles.profilepic, isSelected && styles.selectedProfile]}
+      <TouchableOpacity
         onPress={() => {
           if (isSelected) {
             // 삭제
@@ -51,14 +51,17 @@ export const Profile = ({
             // 추가
             setSelectedList([userId, ...selectedList]);
           }
-          setIsSelected(pre => !pre);
-        }}
-      />
-      {/* <Image source={profileImage} /> */}
+          setIsSelected(prev => !prev);
+        }}>
+        <Image
+          source={{uri: profileImage}}
+          style={[styles.profilepic, isSelected && styles.selectedProfile]}
+        />
+      </TouchableOpacity>
       <Text style={styles.profilename}>{name}</Text>
-      <Text style={styles.profiledetail}>{generation}</Text>
-      <Text style={styles.profiledetail}>{isMajor}</Text>
-      <Text style={styles.profiledetail}>{classes}</Text>
+      <Text style={styles.profiledetail}>
+        {isMajor ? '전공' : '비전공'} | {classes}반
+      </Text>
     </View>
   );
 };
@@ -71,21 +74,21 @@ const styles = StyleSheet.create({
   },
 
   profilepic: {
-    width: 70,
-    height: 70,
-    backgroundColor: GlobalStyles.grey_4.color,
+    width: 60,
+    height: 60,
     borderRadius: 100,
   },
   profilename: {
     fontFamily: GlobalStyles.section_title.fontFamily,
-    fontSize: GlobalStyles.sub_title.fontSize,
+    fontSize: height * 12,
     color: GlobalStyles.grey_2.color,
+    marginTop: -8,
   },
   profiledetail: {
     fontFamily: GlobalStyles.sub_title.fontFamily,
-    fontSize: GlobalStyles.sub_title.fontSize,
+    fontSize: height * 10,
     color: GlobalStyles.grey_2.color,
-    marginTop: -15,
+    marginTop: -20,
   },
 
   selectedProfile: {
