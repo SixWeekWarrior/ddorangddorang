@@ -86,23 +86,25 @@ export const Enter = ({navigation, route}: any): JSX.Element => {
           onPress={testPrint}
         />
       </View>
-      <Text
-        style={styles.myInfo}
-        onPress={async () => {
-          navigation.navigate('MyPage', {destination: 'MyPage'});
-        }}>
-        내 정보 수정
-      </Text>
-      <Text
-        style={styles.logout}
-        onPress={async () => {
-          await token.removeToken();
-          await GoogleSignin.revokeAccess();
-          await GoogleSignin.signOut();
-          navigation.navigate('Onboarding', {destination: 'Onboarding'});
-        }}>
-        로그아웃
-      </Text>
+      <View style={styles.textRowContainer}>
+        <Text
+          style={styles.myInfo}
+          onPress={async () => {
+            navigation.navigate('MyPage', {destination: 'MyPage'});
+          }}>
+          내 정보 수정
+        </Text>
+        <Text
+          style={styles.logout}
+          onPress={async () => {
+            await token.removeToken();
+            await GoogleSignin.revokeAccess();
+            await GoogleSignin.signOut();
+            navigation.navigate('Onboarding', {destination: 'Onboarding'});
+          }}>
+          로그아웃
+        </Text>
+      </View>
       {params === 'login' ? (
         ''
       ) : (
@@ -140,7 +142,6 @@ const styles = StyleSheet.create({
   innerContainer: {
     alignSelf: 'center',
   },
-
   contentContainer: {
     flex: 1,
     alignItems: 'center',
@@ -162,6 +163,10 @@ const styles = StyleSheet.create({
     marginTop: -25,
     justifyContent: 'center',
     alignItems: 'flex-end',
+  },
+  textRowContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
   },
   noticeShare: {
     flex: 1,
@@ -190,16 +195,16 @@ const styles = StyleSheet.create({
   },
   myInfo: {
     fontFamily: GlobalStyles.section_title.fontFamily,
-    marginLeft: height * 246,
+    // marginLeft: height * 246,
     marginTop: height * 20,
-    fontSize: height * 10,
-    color: GlobalStyles.grey_3.color,
+    fontSize: height * 12,
+    color: GlobalStyles.green.color,
   },
   logout: {
     fontFamily: GlobalStyles.section_title.fontFamily,
-    marginLeft: height * 260,
-    marginTop: height * 2,
-    fontSize: height * 10,
+    // marginLeft: height * 260,
+    marginTop: height * 20,
+    fontSize: height * 12,
     color: GlobalStyles.grey_3.color,
   },
 });
