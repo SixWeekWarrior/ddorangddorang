@@ -76,7 +76,8 @@ public class UserApi {
     @PostMapping("/signup")
     public CommonResponse<UsersSignupPostRes> signUp(
         @RequestHeader("Authorization") String authorizationHeader,
-        @RequestBody UsersSignupPostReq usersSignupPostReq) throws Exception {
+        @RequestBody UsersSignupPostReq usersSignupPostReq,
+        @RequestParam("profile") MultipartFile profile) throws Exception {
         log.info("UserApi_signup starts");
 
         log.info("UserApi_signup, header: {}", authorizationHeader.substring(7));
@@ -104,6 +105,8 @@ public class UserApi {
             .refreshToken(refreshToken)
             .build());
 
+        userService.upload(user.getId(), profile);
+
         log.info("UserApi_signup ends");
         return CommonResponse.success(
             UsersSignupPostRes.builder()
@@ -119,29 +122,29 @@ public class UserApi {
         return CommonResponse.success(userService.getUserInfo(authenticatedUser.getId()));
     }
 
-    @GetMapping("/jwt-test")
-    public String jwtTest(@AuthenticationPrincipal AuthenticatedUser authenticatedUser) {
-        log.info("jwt-test start: {}", authenticatedUser);
-        log.info("id: {}", authenticatedUser.getId());
-        log.info("providerType: {}", authenticatedUser.getProviderType());
-        log.info("email: {}", authenticatedUser.getEmail());
-        log.info("username: {}", authenticatedUser.getUsername());
-        log.info("role: {}", authenticatedUser.getRole());
-        log.info("authorities: {}", authenticatedUser.getAuthorities());
-        log.info("password: {}", authenticatedUser.getPassword());
+//    @GetMapping("/jwt-test")
+//    public String jwtTest(@AuthenticationPrincipal AuthenticatedUser authenticatedUser) {
+//        log.info("jwt-test start: {}", authenticatedUser);
+//        log.info("id: {}", authenticatedUser.getId());
+//        log.info("providerType: {}", authenticatedUser.getProviderType());
+//        log.info("email: {}", authenticatedUser.getEmail());
+//        log.info("username: {}", authenticatedUser.getUsername());
+//        log.info("role: {}", authenticatedUser.getRole());
+//        log.info("authorities: {}", authenticatedUser.getAuthorities());
+//        log.info("password: {}", authenticatedUser.getPassword());
+//
+//        return "jwtTest 요청 성공";
+//    }
 
-        return "jwtTest 요청 성공";
-    }
-
-    @PostMapping("/s3-test")
-    public CommonResponse<String> uploadFile(@RequestParam("profile") MultipartFile profile) {
-        log.info(profile.getContentType());
-        log.info(profile.getOriginalFilename());
-        log.info(profile.getName());
-        log.info(String.valueOf(profile.getSize()));
-        String result = userService.upload(profile);
-        return CommonResponse.success(result);
-    }
+//    @PostMapping("/s3-test")
+//    public CommonResponse<String> uploadFile(@RequestParam("profile") MultipartFile profile) {
+//        log.info(profile.getContentType());
+//        log.info(profile.getOriginalFilename());
+//        log.info(profile.getName());
+//        log.info(String.valueOf(profile.getSize()));
+//        String result = userService.upload(profile);
+//        return CommonResponse.success(result);
+//    }
 
     @PutMapping("/todayinfo")
     public CommonResponse<String> todayinfo(

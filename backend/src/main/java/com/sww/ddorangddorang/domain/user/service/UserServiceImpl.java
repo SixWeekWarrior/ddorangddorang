@@ -128,10 +128,12 @@ public class UserServiceImpl implements UserService {
         return getUserHint(user);
     }
 
+    @Transactional
     @Override
-    public String upload(MultipartFile profile) {
+    public void upload(Long id, MultipartFile profile) {
         FileDto fileDto = fileUploader.fileUpload(profile, "profile");
-        return fileDto.getPath();
+        User user = userRepository.findById(id).orElseThrow(UserNotFoundException::new);
+        user.updateProfileImage(fileDto.getPath());
     }
 
     @Transactional

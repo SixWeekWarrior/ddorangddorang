@@ -29,7 +29,7 @@ public interface UserService {
 
     HintDto getHints(Long id);
 
-    String upload(MultipartFile profile);
+    void upload(Long id, MultipartFile profile);
 
     HintDto getManitoHint(Long id);
 
