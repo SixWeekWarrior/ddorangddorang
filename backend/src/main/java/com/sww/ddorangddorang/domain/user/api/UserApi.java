@@ -134,7 +134,7 @@ public class UserApi {
     }
 
     @PostMapping("/s3-test")
-    public CommonResponse<String> uploadFile(MultipartFile profile) {
+    public CommonResponse<String> uploadFile(@RequestParam("profile") MultipartFile profile) {
         log.info(profile.getContentType());
         log.info(profile.getOriginalFilename());
         log.info(profile.getName());
@@ -187,7 +187,7 @@ public class UserApi {
         @AuthenticationPrincipal AuthenticatedUser authenticatedUser) {
         log.info("UserApi_getUserState starts");
         Long userState = userService.getUserState(authenticatedUser.getId());
-        log.info("UserApi_getUserState ends");
+        log.info("UserApi_getUserState ends: userState - {}", userState);
         return CommonResponse.success(userState);
     }
 }
