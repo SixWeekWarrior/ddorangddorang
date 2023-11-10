@@ -16,7 +16,10 @@ import com.sww.ddorangddorang.domain.user.exception.UserNotFoundException;
 import com.sww.ddorangddorang.domain.user.exception.UserNotParticipateGameException;
 import com.sww.ddorangddorang.domain.user.repository.HintRepository;
 import com.sww.ddorangddorang.domain.user.repository.UserRepository;
+import com.sww.ddorangddorang.global.common.FileDto;
 import com.sww.ddorangddorang.global.common.exception.UnexpectedException;
+import com.sww.ddorangddorang.global.util.FileUploader;
+import com.sww.ddorangddorang.global.util.S3UploaderUtil;
 import jakarta.transaction.Transactional;
 
 import java.util.ArrayList;
@@ -27,6 +30,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
 @Transactional
@@ -37,6 +41,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final HintRepository hintRepository;
     private final MasterCodeRepository masterCodeRepository;
+    private final FileUploader fileUploader;
     private final ParticipantRepository participantRepository;
 
     public void signUp(User user) throws Exception {
@@ -109,8 +114,6 @@ public class UserServiceImpl implements UserService {
         user.updateRefreshToken(usersTokenInfo.getRefreshToken());
     }
 
-    ;
-
     public User getUserInfo(Long id) {
         return userRepository.findById(id).orElseThrow(UserNotFoundException::new);
     }
@@ -120,6 +123,12 @@ public class UserServiceImpl implements UserService {
     public HintDto getHints(Long id) {
         User user = userRepository.findById(id).orElseThrow(UserNotFoundException::new);
         return getUserHint(user);
+    }
+
+    @Override
+    public String upload(MultipartFile profile) {
+        FileDto fileDto = fileUploader.fileUpload(profile, "profile");
+        return fileDto.getPath();
     }
 
     @Transactional

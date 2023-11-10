@@ -16,6 +16,8 @@ import com.sww.ddorangddorang.domain.user.entity.User;
 import com.sww.ddorangddorang.domain.user.exception.UserNotFoundException;
 import com.sww.ddorangddorang.domain.user.service.UserService;
 import com.sww.ddorangddorang.global.common.CommonResponse;
+import com.sww.ddorangddorang.global.common.FileDto;
+import com.sww.ddorangddorang.global.util.S3UploaderUtil;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +25,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
 @RestController
@@ -130,6 +133,16 @@ public class UserApi {
         log.info("password: {}", authenticatedUser.getPassword());
 
         return "jwtTest 요청 성공";
+    }
+
+    @PostMapping("/s3-test")
+    public CommonResponse<String> uploadFile(MultipartFile profile) {
+        log.info(profile.getContentType());
+        log.info(profile.getOriginalFilename());
+        log.info(profile.getName());
+        log.info(String.valueOf(profile.getSize()));
+        String result = userService.upload(profile);
+        return CommonResponse.success(result);
     }
 
     @PutMapping("/todayinfo")

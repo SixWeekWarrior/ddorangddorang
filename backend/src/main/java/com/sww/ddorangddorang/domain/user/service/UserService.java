@@ -8,6 +8,7 @@ import com.sww.ddorangddorang.domain.user.dto.UsersTodayinfoPostReq;
 import com.sww.ddorangddorang.domain.user.dto.UsersTokenInfo;
 import com.sww.ddorangddorang.domain.user.entity.User;
 import java.util.Optional;
+import org.springframework.web.multipart.MultipartFile;
 
 public interface UserService {
 
@@ -26,6 +27,8 @@ public interface UserService {
     User getUserInfo(Long id);
 
     HintDto getHints(Long id);
+
+    String upload(MultipartFile profile);
 
     HintDto getManitoHint(Long id);
 

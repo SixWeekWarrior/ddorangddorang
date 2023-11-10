@@ -84,7 +84,8 @@ public enum ErrorCode {
      */
     COMMON_SYSTEM_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "시스템 오류입니다. 잠시 후 다시 이용해주세요."),
 
-    FILE_IO_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "파일 입출력 오류입니다.");
+    FILE_IO_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "파일 입출력 오류입니다."),
+    NO_DATA_ERROR(HttpStatus.BAD_REQUEST, "파일 데이터가 없습니다.");
 
     private final HttpStatus httpStatus;
     private final String message;
