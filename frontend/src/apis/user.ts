@@ -106,6 +106,16 @@ const getManitoHint = async () => {
   }
 };
 
+// 내 state 조회
+const getUserState = async () => {
+  try {
+    const res = await client.get('/users/state');
+    return res.data.data;
+  } catch (e) {
+    throw new Error('ERROR IN getUserState');
+  }
+};
+
 const user = {
   postLogin,
   postSignup,
@@ -114,6 +124,7 @@ const user = {
   putTodayInfo,
   getUser,
   getManitoHint,
+  getUserState,
 };
 
 export default user;
