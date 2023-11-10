@@ -78,7 +78,7 @@ public class UserApi {
     public CommonResponse<UsersSignupPostRes> signUp(
         @RequestHeader("Authorization") String authorizationHeader,
         @RequestPart("profile") MultipartFile profile,
-        @RequestPart UsersSignupPostReq usersSignupPostReq
+        @RequestBody UsersSignupPostReq usersSignupPostReq
         ) throws Exception {
         log.info("UserApi_signup starts");
 
