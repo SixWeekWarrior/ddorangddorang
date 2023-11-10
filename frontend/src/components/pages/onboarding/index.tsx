@@ -77,7 +77,7 @@ export const Onboarding = ({navigation}: {navigation: any}): JSX.Element => {
     <View style={styles.contentContainer}>
       <View style={styles.titleContainer}>
         <TitleAtom
-          menu={'로그인'}
+          menu={'시작하기'}
           text={'로그인하고 지금 바로 또랑또랑을 시작해보세요!'}
           menuColor={GlobalStyles.green.color}
           textColor={GlobalStyles.grey_3.color}

@@ -90,7 +90,7 @@ export const Enter = ({navigation, route}: any): JSX.Element => {
         <Text
           style={styles.myInfo}
           onPress={async () => {
-            navigation.navigate('MyPage', {destination: 'MyPage'});
+            navigation.navigate('MyPage', 'enter');
           }}>
           내 정보 수정
         </Text>

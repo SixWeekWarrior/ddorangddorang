@@ -20,14 +20,14 @@ export const BtnBig = ({onPress, text, disabled}: BtnBigProps) => {
 };
 const styles = StyleSheet.create({
   btnContainer: {
-    width: height * 326,
+    width: height * 300,
     height: height * 48,
     justifyContent: 'center',
     alignSelf: 'center',
     backgroundColor: GlobalStyles.green.color,
     borderRadius: 20,
     position: 'absolute',
-    bottom: '5%',
+    bottom: '10%',
   },
   btn: {
     fontFamily: GlobalStyles.btn.fontFamily,
