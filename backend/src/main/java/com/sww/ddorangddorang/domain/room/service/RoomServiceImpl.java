@@ -9,6 +9,7 @@ import com.sww.ddorangddorang.domain.participant.exception.ParticipantNotFoundEx
 import com.sww.ddorangddorang.domain.participant.repository.ParticipantRepository;
 import com.sww.ddorangddorang.domain.participant.repository.PrefixRepository;
 import com.sww.ddorangddorang.domain.participant.repository.SuffixRepository;
+import com.sww.ddorangddorang.domain.room.dto.EndDayInfoRes;
 import com.sww.ddorangddorang.domain.room.dto.JoinRoomReq;
 import com.sww.ddorangddorang.domain.room.dto.RoomGetRes;
 import com.sww.ddorangddorang.domain.room.dto.RoomInfoReq;
@@ -64,7 +65,7 @@ public class RoomServiceImpl implements RoomService {
         User user = findUserById(authenticatedUser.getId());
 
         // TODO: user.getStatus()가 null이라서 에러 터져서 임시 수정함 MasterCode의 합의가 필요함
-        if (user.getStatus() != null && user.getStatus() != 1L) {
+        if (user.getStatus() != null && !user.getStatus().equals(1L)) {
             log.info("RoomServiceImpl_createRoom end");
             throw new AlreadyParticipatingRoomException();
         }
@@ -112,7 +113,7 @@ public class RoomServiceImpl implements RoomService {
         log.info("RoomServiceImpl_generateAccessCode start");
         Integer accessCode = redisUtil.getAccessCode();
 
-        if (accessCode == -1) {
+        if (accessCode.equals(-1)) {
             Boolean[] accessCodeStatusList = new Boolean[10000];
             List<Room> roomList = roomRepository.findAllByStartedAtIsNullAndDeletedAtIsNull();
 
@@ -134,7 +135,7 @@ public class RoomServiceImpl implements RoomService {
         User user = findUserById(authenticatedUser.getId());
 
         // TODO: 초창기에 null값이라 nullPointerException 터짐에 유의, 임시적으로 수정함
-        if (user.getStatus() != null && user.getStatus() != 1L) {
+        if (user.getStatus() != null && !user.getStatus().equals(1L)) {
             log.info("RoomServiceImpl_joinRoom end");
             throw new AlreadyParticipatingRoomException();
         }
@@ -161,7 +162,7 @@ public class RoomServiceImpl implements RoomService {
         log.info("id: {}", authenticatedUser.getId());
         User user = findUserById(authenticatedUser.getId());
 
-        if (user.getStatus() != 2L) {
+        if (!user.getStatus().equals(2L)) {
             log.info("RoomServiceImpl_updateRoom end");
             throw new OnlyAdminAllowedException();
         }
@@ -194,7 +195,7 @@ public class RoomServiceImpl implements RoomService {
         log.info("id: {}", authenticatedUser.getId());
         User admin = findUserById(authenticatedUser.getId());
 
-        if (admin.getStatus() != 2L) {
+        if (!admin.getStatus().equals(2L)) {
             log.info("RoomServiceImpl_deleteGame end");
             throw new OnlyAdminAllowedException();
         }
@@ -218,12 +219,12 @@ public class RoomServiceImpl implements RoomService {
         log.info("id: {}", authenticatedUser.getId());
         User user = findUserById(authenticatedUser.getId());
 
-        if (user.getStatus() != 3L && user.getStatus() != 5L) {
+        if (!user.getStatus().equals(3L) && !user.getStatus().equals(5L)) {
             log.info("RoomServiceImpl_withdrawalRoom end");
             throw new OnlyUserAllowedException();
         }
 
-        if (user.getStatus() == 3L) {
+        if (user.getStatus().equals(3L)) {
             Participant participant = participantRepository.findByUserAndGameCount(user,
                 user.getGameCount()).orElseThrow(ParticipantNotFoundException::new);
             participant.deleteParticipant();
@@ -400,7 +401,7 @@ public class RoomServiceImpl implements RoomService {
 
             log.info("next: {}", next);
 
-            if (next == -1) {
+            if (next.equals(-1)) {
                 return false;
             }
 
@@ -410,12 +411,12 @@ public class RoomServiceImpl implements RoomService {
                 log.info("matchedManito[next]: {}", matchedManito[next]); // null뜸 왜?
 
                 // TODO: 여기 에러 터짐
-                if (matchedManito[next] == 0) {
+                if (matchedManito[next].equals(0)) {
                     matchedManito[next] = current;
                     return true;
                 } else if (
                     matchManito(next, searched, matchedManito, wishManitoList, participantToIndex)
-                        && matchedManito[current] != next) {
+                        && !matchedManito[current].equals(next)) {
                     matchedManito[next] = current;
                     return true;
                 }
@@ -432,7 +433,7 @@ public class RoomServiceImpl implements RoomService {
         User user = findUserById(authenticatedUser.getId());
         List<ShowUsersRes> showUsersResList = new ArrayList<>();
 
-        if (user.getStatus() == 1L) {
+        if (user.getStatus().equals(1L)) {
             log.info("RoomServiceImpl_showUsers end");
             throw new NoParticipatingRoomException();
         }
@@ -465,21 +466,22 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Transactional
-    public Boolean responseJoinRoom(List<JoinRoomReq> joinRoomReqList, AuthenticatedUser authenticatedUser) {
+    public Boolean responseJoinRoom(List<JoinRoomReq> joinRoomReqList,
+        AuthenticatedUser authenticatedUser) {
         log.info("RoomServiceImpl_responseJoinRoom start");
         log.info("id: {}", authenticatedUser.getId());
         User admin = findUserById(authenticatedUser.getId());
 
         List<Long> idList = new ArrayList<Long>();
-        for (JoinRoomReq joinRoomReq: joinRoomReqList) {
+        for (JoinRoomReq joinRoomReq : joinRoomReqList) {
             idList.add(joinRoomReq.getUserId());
         }
 
         List<User> requestUserList = userRepository.findAllById(idList);
 //        User requestUser = findUserById(joinRoomReq.getUserId());
 
-        for (User requestUser: requestUserList) {
-            if (requestUser.getStatus() != 5L) {
+        for (User requestUser : requestUserList) {
+            if (!requestUser.getStatus().equals(5L)) {
                 log.info("RoomServiceImpl_responseJoinRoom end");
                 throw new OnlyWaitingStateAllowedException();
             }
@@ -530,7 +532,7 @@ public class RoomServiceImpl implements RoomService {
 
         Room room = user.getRoom();
 
-        if (room.getHeadCount() == room.getMaxMember()) {
+        if (room.getHeadCount().equals(room.getMaxMember())) {
             startGame(room);
             log.info("RoomServiceImpl_checkAndRunIfRoomShouldStart end");
             return true;
@@ -587,4 +589,22 @@ public class RoomServiceImpl implements RoomService {
         return userRepository.findById(id).orElseThrow(UserNotFoundException::new);
     }
 
+    @Transactional
+    public EndDayInfoRes getEndDayInfo(Long userId) {
+        User user = findUserById(userId);
+
+        if (!user.getStatus().equals(4L)) {
+            return EndDayInfoRes.noRoom().build();
+        }
+
+        Room room = user.getRoom();
+
+        if (room == null) {
+            return EndDayInfoRes.noRoom().build();
+        }
+
+        return EndDayInfoRes.participatingRoom()
+            .startDate(room.getStartedAt())
+            .endDate(room.getStartedAt().plusDays(room.getDuration())).build();
+    }
 }

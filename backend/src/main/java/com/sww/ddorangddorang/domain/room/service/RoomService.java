@@ -1,6 +1,7 @@
 package com.sww.ddorangddorang.domain.room.service;
 
 import com.sww.ddorangddorang.auth.dto.AuthenticatedUser;
+import com.sww.ddorangddorang.domain.room.dto.EndDayInfoRes;
 import com.sww.ddorangddorang.domain.room.dto.JoinRoomReq;
 import com.sww.ddorangddorang.domain.room.dto.RoomGetRes;
 import com.sww.ddorangddorang.domain.room.dto.RoomInfoReq;
@@ -31,4 +32,6 @@ public interface RoomService {
     RoomGetRes getRoom(Long id);
 
     List<WaitingListRes> getWaitingList(Long userId);
+
+    EndDayInfoRes getEndDayInfo(Long userId);
 }

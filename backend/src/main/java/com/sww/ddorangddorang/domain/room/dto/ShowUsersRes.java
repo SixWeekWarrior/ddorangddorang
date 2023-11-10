@@ -10,6 +10,7 @@ import lombok.ToString;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ShowUsersRes {
+
     private String name;
     private String profileImage;
     private Integer generation;
