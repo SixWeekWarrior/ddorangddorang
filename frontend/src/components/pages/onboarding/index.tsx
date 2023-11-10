@@ -1,4 +1,4 @@
-import {useEffect} from 'react';
+import {useEffect, useState} from 'react';
 import {View, Image, StyleSheet, TouchableOpacity, Text} from 'react-native';
 import GlobalStyles, {height} from '../../../styles/GlobalStyles';
 import blockImg from '../../../assets/blockImg.png';
@@ -7,7 +7,7 @@ import TitleAtom from '../../atoms/titleAtom';
 import googleLoginImg from '../../../assets/googleLoginImg.png';
 import {useMemo, useRef, useCallback} from 'react';
 import BottomSheet, {BottomSheetBackdrop} from '@gorhom/bottom-sheet';
-import {JSX} from 'react/jsx-runtime';
+
 import {
   GoogleSignin,
   statusCodes,
@@ -15,8 +15,13 @@ import {
 import BtnBig from '../../atoms/btnBig';
 import {userApi} from '../../../apis';
 import {tokenUtil} from '../../../utils';
+import {useRecoilState} from 'recoil';
+import {userAtom} from '../../../modules';
 
-export const Onboarding = ({navigation}: {navigation: any}): JSX.Element => {
+export const Onboarding = ({navigation}: {navigation: any}) => {
+  const [userInfo, setUserInfo] = useRecoilState(userAtom.UserInfoState);
+  const [userState, setUserState] = useState<number | null>(-1);
+
   useEffect(() => {
     // Google Sign-In 초기화
     GoogleSignin.configure({
@@ -41,6 +46,67 @@ export const Onboarding = ({navigation}: {navigation: any}): JSX.Element => {
     [],
   );
 
+  const getUserInfo = async () => {
+    try {
+      const data = await userApi.getUser();
+      if (data !== null) {
+        console.log('getUserInfo:', data);
+        setUserInfo(data);
+        await getState();
+      }
+    } catch (error) {
+      console.error('getUserInfo 에러:', error);
+    }
+  };
+
+  const getState = async () => {
+    try {
+      const data = await userApi.getUserState();
+      console.log('getUserStateRes:', data);
+      setUserState(data);
+    } catch (error) {
+      console.error('getUserState 에러:', error);
+    }
+  };
+
+  useEffect(() => {
+    if (userState) {
+      switch (userState) {
+        case 1:
+          console.log('case1 - 아무것도 안한 사람');
+          navigation.navigate('Enter');
+          break;
+        case 2:
+          console.log('case2 - 시작을 대기 중 && 방장');
+          navigation.navigate('BeforeStart');
+          break;
+        case 3:
+          console.log('case3 - 수락됨 && 시작을 대기 중인 참가자');
+          navigation.navigate('EnterWait');
+          break;
+        case 4:
+          console.log('case4 - 게임 진행 중');
+          navigation.navigate('NavBar');
+          break;
+        case 5:
+          // TODO 자신이 뺴고 게임이 시작된 상황임을 알리는 API 및 VIEW로 변경 되어야함
+          console.log('case 5- 수락 요청을 보내고 수락 되길 바라는 참가자');
+          navigation.navigate('Enter');
+          break;
+        default:
+          console.log('에러 상황 : userState - null');
+      }
+    }
+  }, [userState]);
+
+  const successLogin = async () => {
+    try {
+      await getUserInfo();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const handleGoogleSignIn = async () => {
     try {
       await GoogleSignin.hasPlayServices();
@@ -52,7 +118,7 @@ export const Onboarding = ({navigation}: {navigation: any}): JSX.Element => {
             data.success
               ? tokenUtil
                   .setToken(data.data.accessToken, data.data.refreshToken)
-                  .then(navigation.navigate('Enter', 'login'))
+                  .then(() => successLogin())
               : tokenUtil
                   .setIdToken(loginInfo.idToken as string)
                   .then(navigation.navigate('ProfilePicAdd'));
