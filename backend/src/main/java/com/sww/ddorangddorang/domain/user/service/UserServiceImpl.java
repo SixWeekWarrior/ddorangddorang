@@ -5,6 +5,7 @@ import com.sww.ddorangddorang.domain.mastercode.repository.MasterCodeRepository;
 import com.sww.ddorangddorang.domain.participant.entity.Participant;
 import com.sww.ddorangddorang.domain.participant.repository.ParticipantRepository;
 import com.sww.ddorangddorang.domain.user.dto.HintDto;
+import com.sww.ddorangddorang.domain.user.dto.UsersGetRes;
 import com.sww.ddorangddorang.domain.user.dto.UsersMoreinfoPutReq;
 import com.sww.ddorangddorang.domain.user.dto.UsersSsafyinfoPutReq;
 import com.sww.ddorangddorang.domain.user.dto.UsersTodayinfoPostReq;
@@ -114,8 +115,10 @@ public class UserServiceImpl implements UserService {
         user.updateRefreshToken(usersTokenInfo.getRefreshToken());
     }
 
-    public User getUserInfo(Long id) {
-        return userRepository.findById(id).orElseThrow(UserNotFoundException::new);
+    @Transactional
+    public UsersGetRes getUserInfo(Long id) {
+        return UsersGetRes.userToDto(userRepository.findById(id).orElseThrow(UserNotFoundException::new),
+            getUserHint(userRepository.findById(id).orElseThrow(UserNotFoundException::new)));
     }
 
     @Transactional

@@ -116,9 +116,7 @@ public class UserApi {
     @GetMapping
     public CommonResponse<UsersGetRes> getUserInfo(
         @AuthenticationPrincipal AuthenticatedUser authenticatedUser) {
-        HintDto hintDto = userService.getHints(authenticatedUser.getId());
-        return CommonResponse.success(
-            UsersGetRes.userToDto(userService.getUserInfo(authenticatedUser.getId()), hintDto));
+        return CommonResponse.success(userService.getUserInfo(authenticatedUser.getId()));
     }
 
     @GetMapping("/jwt-test")

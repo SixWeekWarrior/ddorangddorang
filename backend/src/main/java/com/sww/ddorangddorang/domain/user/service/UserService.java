@@ -2,6 +2,7 @@ package com.sww.ddorangddorang.domain.user.service;
 
 
 import com.sww.ddorangddorang.domain.user.dto.HintDto;
+import com.sww.ddorangddorang.domain.user.dto.UsersGetRes;
 import com.sww.ddorangddorang.domain.user.dto.UsersMoreinfoPutReq;
 import com.sww.ddorangddorang.domain.user.dto.UsersSsafyinfoPutReq;
 import com.sww.ddorangddorang.domain.user.dto.UsersTodayinfoPostReq;
@@ -24,7 +25,7 @@ public interface UserService {
 
     void saveRefreshToken(UsersTokenInfo build);
 
-    User getUserInfo(Long id);
+    UsersGetRes getUserInfo(Long id);
 
     HintDto getHints(Long id);
 
