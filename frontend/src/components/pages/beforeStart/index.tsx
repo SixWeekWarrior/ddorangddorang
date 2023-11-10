@@ -14,9 +14,9 @@ export const BeforeStart = ({navigation}: {navigation: any}) => {
     minMember: number;
     maxMember: number;
     roomKey: number;
+    memberCount: number;
   };
   const bottomSheetRef = useRef<BottomSheet>(null);
-  const [selectedCount, setSelectedCount] = useState<number>(0);
   const [isbtnActive, setIsBtnActive] = useState<boolean>(false);
   const snapPoints = useMemo(() => ['40%', '40%', '40%'], []);
   const [roomInfo, setRoomInfo] = useState<RoomInfo>({
@@ -24,6 +24,7 @@ export const BeforeStart = ({navigation}: {navigation: any}) => {
     minMember: 0,
     maxMember: 0,
     roomKey: 0,
+    memberCount: 0,
   });
 
   const startGame = () => {
@@ -55,6 +56,7 @@ export const BeforeStart = ({navigation}: {navigation: any}) => {
           minMember: data.data.minMember,
           maxMember: data.data.maxMember,
           roomKey: data.data.roomKey,
+          memberCount: data.data.memberCount,
         });
       })
       .catch(error => {
@@ -64,8 +66,8 @@ export const BeforeStart = ({navigation}: {navigation: any}) => {
 
   useEffect(() => {
     setIsBtnActive(
-      roomInfo.minMember <= selectedCount &&
-        selectedCount <= roomInfo.maxMember,
+      roomInfo.minMember <= roomInfo.memberCount &&
+        roomInfo.memberCount <= roomInfo.maxMember,
     );
   }, [roomInfo.maxMember, roomInfo.minMember, selectedCount]);
 
@@ -80,7 +82,7 @@ export const BeforeStart = ({navigation}: {navigation: any}) => {
           period={roomInfo.duration}
           min={roomInfo.minMember}
           max={roomInfo.maxMember}
-          selectedCount={selectedCount}
+          selectedCount={roomInfo.memberCount}
         />
         <Text style={styles.code}>초대코드</Text>
         <CodeForm code={roomInfo.roomKey} />
@@ -91,8 +93,7 @@ export const BeforeStart = ({navigation}: {navigation: any}) => {
             navigation.navigate('WaitList', {
               minMember: roomInfo.minMember,
               maxMember: roomInfo.maxMember,
-              selectedCount: selectedCount,
-              setSelectedCount: setSelectedCount,
+              memberCount: roomInfo.memberCount,
             });
           }}
           text="대기 목록"

@@ -14,7 +14,7 @@ export const WaitList = ({
   navigation: any;
   route: any;
 }): JSX.Element => {
-  const {minMember, maxMember, selectedCount, setSelectedCount} = route.params;
+  const {minMember, maxMember, memberCount} = route.params;
   const [isAllChecked, setisAllChecked] = useState<boolean>(false);
   const [selectedList, setSelectedList] = useState<number[]>([]);
   const [waitingList, setWaitingList] = useState<UserProfile[]>([]);
@@ -23,7 +23,6 @@ export const WaitList = ({
     const getRoomWaiting = () => {
       try {
         roomApi.getRoomWaiting().then(data => {
-          console.log('getRoomWaiting', data.data);
           setWaitingList(data.data);
         });
       } catch (error) {
@@ -32,6 +31,10 @@ export const WaitList = ({
     };
     getRoomWaiting();
   }, []);
+
+  useEffect(() => {
+    console.log('승인에 선택된 사람 id', selectedList);
+  }, [selectedList]);
 
   const postRoomResponse = () => {
     try {
@@ -44,19 +47,13 @@ export const WaitList = ({
     }
   };
 
-  // useEffect(() => {
-  //   try {
-  //     isAllChecked?
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // }, [isAllChecked]);
-
   const onApprove = () => {
-    if (selectedCount < minMember) {
-      alert(`최소 선택인원은 ${minMember}명입니다.`);
-    } else if (selectedCount > maxMember) {
-      alert(`최대 선택인원 ${maxMember}명을 초과하였습니다.`);
+    if (selectedList.length > maxMember - memberCount) {
+      alert(
+        `최대 선택할 수 있는 인원 ${
+          maxMember - memberCount
+        }명을 초과하였습니다.`,
+      );
     } else {
       postRoomResponse();
     }
@@ -69,19 +66,28 @@ export const WaitList = ({
         text={`대기 중인 친구입니다.\n승인할 찬구를 추가하세요.`}
       />
       <View style={styles.firstView}>
-        <Text style={styles.titleText}>50명이 대기중입니다.</Text>
+        <Text style={styles.titleText}>
+          {waitingList.length}명이 대기중입니다.
+        </Text>
         <Text style={styles.miniText}>
-          최소 <Text style={styles.numberText}>{minMember}</Text>명 최대{' '}
-          <Text style={styles.numberText}>{maxMember}</Text>명을 선택해주세요
+          최소{' '}
+          <Text style={styles.numberText}>
+            {minMember - memberCount < 0 ? 0 : minMember - memberCount}
+          </Text>
+          명 최대
+          <Text style={styles.numberText}>{maxMember - memberCount}</Text>명을
+          선택해주세요
         </Text>
       </View>
       <View style={styles.secondView}>
         <Pressable onPress={() => setisAllChecked(pre => !pre)}>
           <Text style={styles.selectText}>
-            {isAllChecked ? '전체 선택' : '전체 선택 해제'}
+            {!isAllChecked ? '전체 선택' : '전체 선택 해제'}
           </Text>
         </Pressable>
-        <Text style={styles.selectText}>선택 인원 : {selectedCount}명</Text>
+        <Text style={styles.selectText}>
+          선택 인원 : {selectedList.length}명
+        </Text>
       </View>
       <View style={styles.thirdView}>
         {waitingList.map((item: UserProfile) => (
@@ -150,11 +156,6 @@ const styles = StyleSheet.create({
     color: GlobalStyles.blue.color,
     fontSize: height * 13,
   },
-  selectBtn: {
-    width: 100,
-    height: 100,
-    color: GlobalStyles.blue.color,
-  },
 
   firstView: {
     flex: 0.2,
@@ -171,8 +172,9 @@ const styles = StyleSheet.create({
 
   thirdView: {
     flex: 0.5,
-    justifyContent: 'center',
-    alignItems: 'center',
+    paddingLeft: 30,
+    paddingRight: 30,
+    alignItems: 'flex-start',
   },
 });
 
