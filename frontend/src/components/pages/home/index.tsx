@@ -21,8 +21,8 @@ import {userApi} from '../../../apis';
 
 export const Home = ({navigation}: {navigation: any}): JSX.Element => {
   const [userInfo, setUserInfo] = useRecoilState(user.UserInfoState);
+  const [hasManito, setHasManito] = useState(false);
   const [manitoHint, setManitoHint] = useState<string[]>(['', '']);
-  console.log(manitoHint);
   console.log(userInfo);
   useEffect(() => {
     const fetchData = async () => {
@@ -36,7 +36,12 @@ export const Home = ({navigation}: {navigation: any}): JSX.Element => {
     const fetchHintData = async () => {
       try {
         const hintData = await userApi.getManitoHint();
-        await setManitoHint(hintData);
+        setHasManito(hintData[0]);
+        {
+          hasManito
+            ? await setManitoHint(hintData[1])
+            : console.log('마니또가 아직 없네요 :(');
+        }
       } catch (error) {
         console.error(error);
       }
@@ -92,7 +97,7 @@ export const Home = ({navigation}: {navigation: any}): JSX.Element => {
                 marginLeft: 15,
                 justifyContent: 'center',
               }}>{`오늘 나의 \n마니또는?`}</Text>
-            {manitoHint ? (
+            {hasManito ? (
               <View>
                 <Text style={style.bigFont}>옷 | {manitoHint?.[0]}</Text>
                 <Text style={style.bigFont}>기분 | {manitoHint?.[1]}</Text>

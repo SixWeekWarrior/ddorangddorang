@@ -32,7 +32,11 @@ export const ReviseSsafy = ({navigation}: {navigation: any}) => {
       const updatedUserInfo: UserInfo = {...userInfo, ...inputValues};
       await userApi.putSsafyInfo(inputValues);
       await setUserInfo(updatedUserInfo);
-      navigation.navigate('정보');
+      try {
+        navigation.navigate('정보');
+      } catch {
+        navigation.navigate('MyPage');
+      }
     } catch (error) {
       console.error(error);
     }

@@ -1,6 +1,6 @@
 import {StyleSheet, View} from 'react-native';
 import BtnBig from '../../atoms/btnBig';
-import BorderedBox from '../../molecules/BorderedBox';
+import BorderedBox from '../../molecules/borderedBox';
 import user from '../../../modules/user';
 import {useRecoilState} from 'recoil';
 

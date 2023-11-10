@@ -34,7 +34,7 @@ export const Onboarding = ({navigation}: {navigation: any}) => {
   }, []);
 
   const bottomSheetRef = useRef<BottomSheet>(null);
-  const snapPoints = useMemo(() => ['35%', '35%'], []);
+  const snapPoints = useMemo(() => ['25%', '25%'], []);
   const renderBackdrop = useCallback(
     (props: any) => (
       <BottomSheetBackdrop
@@ -143,20 +143,16 @@ export const Onboarding = ({navigation}: {navigation: any}) => {
     <View style={styles.contentContainer}>
       <View style={styles.titleContainer}>
         <TitleAtom
-          menu={'로그인'}
+          menu={'시작하기'}
           text={'로그인하고 지금 바로 또랑또랑을 시작해보세요!'}
           menuColor={GlobalStyles.green.color}
           textColor={GlobalStyles.grey_3.color}
         />
       </View>
-      <View style={styles.loginContainer}>
+      <View style={styles.imgContainer}>
         <TouchableOpacity onPress={handleGoogleSignIn}>
           <Image source={googleLoginImg} style={styles.googleLoginImg} />
         </TouchableOpacity>
-      </View>
-      <View style={styles.signupContainer}>
-        <Text style={styles.text}>회원이 아니신가요?</Text>
-        <Text style={styles.menu}>회원가입</Text>
       </View>
     </View>
   );
@@ -203,22 +199,14 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   contentContainer: {
-    flex: 1,
-    marginLeft: '10%',
+    alignItems: 'center',
   },
   titleContainer: {
-    flex: 1,
-    alignSelf: 'flex-start',
+    width: height * 280,
   },
-  loginContainer: {
-    flex: 1,
+  imgContainer: {
     justifyContent: 'center',
-  },
-  signupContainer: {
-    marginRight: '10%',
-    flex: 1,
-    alignSelf: 'flex-end',
-    rowGap: -13,
+    marginTop: '-5%',
   },
   menu: {
     fontFamily: GlobalStyles.section_title.fontFamily,
@@ -233,7 +221,7 @@ const styles = StyleSheet.create({
     textAlign: 'right',
   },
   googleLoginImg: {
-    width: height * 280,
+    width: height * 200,
     objectFit: 'contain',
   },
   blockImg: {

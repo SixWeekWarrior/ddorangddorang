@@ -7,6 +7,7 @@ import {
   UserSsafyInfo,
 } from '../types/user';
 import {tokenUtil} from '../utils';
+import {ProfileInfo} from '../types/user';
 
 const client = apiInstance();
 const serverUrl = 'https://k9a210.p.ssafy.io/api/v1';
@@ -100,9 +101,10 @@ const getUser = async () => {
 const getManitoHint = async () => {
   try {
     const res = await client.get('/users/manitohint');
-    return res.data.data;
+    return [true, res.data.data];
   } catch (e) {
-    throw new Error('ERROR IN GET_MANITO_HINT');
+    return [false, null];
+    // throw new Error('ERROR IN GET_MANITO_HINT');
   }
 };
 

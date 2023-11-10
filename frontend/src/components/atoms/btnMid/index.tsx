@@ -18,12 +18,13 @@ export const BtnMid = ({onPress, text}: BtnMidProps) => {
 const styles = StyleSheet.create({
   btnContainer: {
     width: width * 236,
-    height: height * 40,
+    height: height * 36,
     backgroundColor: GlobalStyles.blue.color,
     borderRadius: 20,
     marginTop: 30,
     flexDirection: 'row',
     alignSelf: 'center',
+    alignItems: 'center',
     paddingLeft: '7%',
     paddingRight: '4%',
     justifyContent: 'space-between',
@@ -39,7 +40,6 @@ const styles = StyleSheet.create({
     width: 15,
     height: 13,
     objectFit: 'scale-down',
-    marginTop: 13,
   },
 });
 
