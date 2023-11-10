@@ -7,18 +7,22 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+//@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class EndDateRes {
 
-    private Integer year;
-    private Integer month;
-    private Integer date;
+    private Integer year = null;
+    private Integer month = null;
+    private Integer date = null;
 
-    @Builder
+    @Builder(builderMethodName = "havingEndDate", builderClassName = "HavingEndDate")
     public EndDateRes(LocalDateTime endDate) {
         this.year = endDate.getYear();
         this.month = endDate.getMonth().getValue();
         this.date = endDate.getDayOfMonth();
     }
 
+    @Builder(builderMethodName = "noEndDate", builderClassName = "NoEndDate")
+    public EndDateRes() {
+        this.year=this.month=this.date=null;
+    }
 }
