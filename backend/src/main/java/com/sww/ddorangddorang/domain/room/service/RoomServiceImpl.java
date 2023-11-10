@@ -286,37 +286,46 @@ public class RoomServiceImpl implements RoomService {
             wishManitoList[i] = tmp;
         }
 
+        Arrays.fill(matchedManito, 0);
         for (int i = 1; i < size; ++i) {
             Arrays.fill(searched, false);
             matchManito(i, searched, matchedManito, wishManitoList[i], participantToIndex);
         }
 
-        Boolean[] matched = new Boolean[size];
+        Boolean[] manitoMatched = new Boolean[size];
+        Boolean[] manitiMatched = new Boolean[size];
+        Arrays.fill(manitoMatched, false);
+        Arrays.fill(manitiMatched, false);
 
         for (int i = 1; i < size; ++i) {
             if (matchedManito[i] > 0) {
-                matched[matchedManito[i]] = true;
-                ++count;
+                manitoMatched[matchedManito[i]] = true;
+                manitiMatched[i] = true;
             }
         }
 
-        List<Participant> unmatchedList = new ArrayList<>();
-        //매칭이 되지 않은 회원끼리는 성별과 관계 없이 매칭
+        List<Participant> unmatchedManitoList = new ArrayList<>();
+        List<Participant> unmatchedManitiList = new ArrayList<>();
+        log.info("initial match");
+        //마니또가 매칭이 되지 않은 회원끼리는 성별과 관계 없이 매칭
         for (int i = 1; i < size; ++i) {
-            if (!matched[i]) {
-                unmatchedList.add(indexToParticipant.get(i));
+            if (!manitoMatched[i]) {
+                unmatchedManitoList.add(indexToParticipant.get(i));
+            }
+            if (!manitiMatched[matchedManito[i]]) {
+                unmatchedManitiList.add(indexToParticipant.get(matchedManito[i]));
             }
         }
 
         for (int i = 1; i < size; ++i) {
-            if (!matched[i]) {
+            if (!manitoMatched[i]) {
                 Participant me = indexToParticipant.get(i);
                 wishManitoList[i] = new ArrayList<>();
 
                 //추후 차단한 사용자는 배제하는 로직 추가
                 //Set을 활용하면 좋을 것 같음
-                for (Participant participant : unmatchedList) {
-                    if (!participant.equals(me)) {
+                for (Participant participant : unmatchedManitiList) {
+                    if (participant != null && !me.equals(participant)) {
                         wishManitoList[i].add(participant);
                     }
                 }
@@ -326,16 +335,16 @@ public class RoomServiceImpl implements RoomService {
         }
 
         for (int i = 1; i < size; ++i) {
-            if (!matched[i]) {
+            if (!manitoMatched[i]) {
                 Arrays.fill(searched, false);
                 matchManito(i, searched, matchedManito, wishManitoList[i], participantToIndex);
             }
         }
 
-        count = 0;
         for (int i = 1; i < size; ++i) {
             if (matchedManito[i] > 0) {
-                matched[matchedManito[i]] = true;
+                manitoMatched[matchedManito[i]] = true;
+                manitiMatched[i] = true;
                 ++count;
                 Participant manito = indexToParticipant.get(matchedManito[i]);
                 Participant maniti = indexToParticipant.get(i);
@@ -360,12 +369,17 @@ public class RoomServiceImpl implements RoomService {
                     Integer randomNumber = (int) (Math.random() * prefixListSize * suffixListSize);
                     prefixSelected = randomNumber / suffixListSize;
                     suffixSelected = randomNumber % suffixListSize;
-                } while (!nicknameUsage[prefixSelected][suffixSelected]);
+                } while (nicknameUsage[prefixSelected][suffixSelected] != null);
 
+                nicknameUsage[prefixSelected][suffixSelected] = true;
                 participant.allocateNickname(
-                    prefixList.get(prefixSelected) + " " + suffixList.get(suffixSelected));
+                    prefixList.get(prefixSelected).getAdjective() + " " + suffixList.get(
+                        suffixSelected).getAnimal());
 //                해당 사용자들은 게임을 시작한 상태로 변경
                 participant.getUser().updateStatus(4L);
+                log.info(
+                    participant.getManito().getUser().getName() + " -> " + participant.getUser()
+                        .getName());
             } else {
 //                이 사용자들은 매칭이 되지 않은 관계로 강퇴
                 participant.deleteParticipant();
@@ -374,7 +388,7 @@ public class RoomServiceImpl implements RoomService {
 
         room.updateHeadCount(count);
         room.startGame();
-        missionPerformService.startGameAndAssignMission(room);
+//        missionPerformService.startGameAndAssignMission(room);
         redisUtil.putAccessCode(room.getAccessCode());
         log.info("RoomServiceImpl_startGame end: " + count + " participants started a game");
     }
@@ -382,9 +396,13 @@ public class RoomServiceImpl implements RoomService {
     private Boolean matchManito(Integer current, Boolean[] searched, Integer[] matchedManito,
         List<Participant> wishManitoList, Map<Participant, Integer> participantToIndex) {
         for (Participant participant : wishManitoList) {
-            Integer next = participantToIndex.get(participant);
+            Integer next = participantToIndex.getOrDefault(participant, -1);
 
             log.info("next: {}", next);
+
+            if (next == -1) {
+                return false;
+            }
 
             if (!searched[next]) {
                 searched[next] = true;
@@ -549,7 +567,8 @@ public class RoomServiceImpl implements RoomService {
 
     @Transactional
     public RoomGetRes getRoom(Long id) {
-        RoomGetRes roomGetRes = RoomGetRes.toDto(userRepository.findById(id).orElseThrow(UserNotFoundException::new).getRoom());
+        RoomGetRes roomGetRes = RoomGetRes.toDto(
+            userRepository.findById(id).orElseThrow(UserNotFoundException::new).getRoom());
         log.info("RoomService_getRoom: {}", roomGetRes);
         return roomGetRes;
     }

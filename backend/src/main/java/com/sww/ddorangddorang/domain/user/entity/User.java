@@ -51,7 +51,7 @@ public class User {
     @JoinColumn(name = "participate")
     @ManyToOne(fetch = FetchType.LAZY)
     private Room room;           // BIGINT - FK(ROOM)
-    private Long status;                // BIGINT - FK(MASTER_CODE)
+    private Long status = 1L;                // BIGINT - FK(MASTER_CODE)
     private LocalDateTime deletedAt;    // TIMESTAMP
     private Integer gameCount = 0;
     private String mood;
