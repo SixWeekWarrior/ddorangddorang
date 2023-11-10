@@ -74,10 +74,11 @@ public class UserApi {
         );
     }
 
-    @PostMapping(value = "/signup")
+    @PostMapping(value = "/signup", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public CommonResponse<UsersSignupPostRes> signUp(
         @RequestHeader("Authorization") String authorizationHeader,
-        @RequestBody UsersSignupPostReq usersSignupPostReq) throws Exception {
+        @RequestPart UsersSignupPostReq usersSignupPostReq,
+        @RequestPart MultipartFile profile) throws Exception {
         log.info("UserApi_signup starts");
 
         log.info("UserApi_signup, header: {}", authorizationHeader.substring(7));
@@ -105,7 +106,7 @@ public class UserApi {
             .refreshToken(refreshToken)
             .build());
 
-        userService.upload(user.getId(), usersSignupPostReq.getProfile());
+        userService.upload(user.getId(), profile);
 
         log.info("UserApi_signup ends");
         return CommonResponse.success(
