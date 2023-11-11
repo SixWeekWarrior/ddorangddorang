@@ -9,5 +9,5 @@ import java.util.Optional;
 
 public interface HintRepository extends JpaRepository<Hint, Long> {
 
-    Optional<Hint> findByUserAndMasterCode(User user, MasterCode masterCode);
+    Optional<Hint> findByUserAndMasterCode(User user, Long masterCode);
 }

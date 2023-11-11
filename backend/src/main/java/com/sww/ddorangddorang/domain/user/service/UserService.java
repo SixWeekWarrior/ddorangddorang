@@ -3,6 +3,7 @@ package com.sww.ddorangddorang.domain.user.service;
 
 import com.sww.ddorangddorang.domain.user.dto.HintDto;
 import com.sww.ddorangddorang.domain.user.dto.UsersGetRes;
+import com.sww.ddorangddorang.domain.user.dto.UsersHomeInfoGetRes;
 import com.sww.ddorangddorang.domain.user.dto.UsersMoreinfoPutReq;
 import com.sww.ddorangddorang.domain.user.dto.UsersSsafyinfoPutReq;
 import com.sww.ddorangddorang.domain.user.dto.UsersTodayinfoPostReq;
@@ -34,4 +35,6 @@ public interface UserService {
     HintDto getManitoHint(Long id);
 
     Long getUserState(Long userId);
+
+    UsersHomeInfoGetRes getHomeInfo(Long userId);
 }

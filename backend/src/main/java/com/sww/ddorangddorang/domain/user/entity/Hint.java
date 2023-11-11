@@ -22,9 +22,9 @@ public class Hint {
     @JoinColumn(name = "user_id")
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
-    @JoinColumn(name = "master_code_id")
-    @ManyToOne(fetch = FetchType.LAZY)
-    private MasterCode masterCode;
+    @Column(name = "master_code_id")
+//    @ManyToOne(fetch = FetchType.LAZY)
+    private Long masterCode;
 
 
     public void updateContent(String content) {
@@ -32,7 +32,7 @@ public class Hint {
     }
 
     @Builder
-    public Hint(String content, User user, MasterCode masterCode) {
+    public Hint(String content, User user, Long masterCode) {
         this.content = content;
         this.user = user;
         this.masterCode = masterCode;

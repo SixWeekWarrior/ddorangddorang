@@ -5,6 +5,7 @@ import com.sww.ddorangddorang.auth.dto.TokenClaims;
 import com.sww.ddorangddorang.auth.service.JwtService;
 import com.sww.ddorangddorang.domain.user.dto.HintDto;
 import com.sww.ddorangddorang.domain.user.dto.UsersGetRes;
+import com.sww.ddorangddorang.domain.user.dto.UsersHomeInfoGetRes;
 import com.sww.ddorangddorang.domain.user.dto.UsersLoginPostRes;
 import com.sww.ddorangddorang.domain.user.dto.UsersMoreinfoPutReq;
 import com.sww.ddorangddorang.domain.user.dto.UsersSignupPostReq;
@@ -194,5 +195,13 @@ public class UserApi {
         Long userState = userService.getUserState(authenticatedUser.getId());
         log.info("UserApi_getUserState ends: userState - {}", userState);
         return CommonResponse.success(userState);
+    }
+
+    @GetMapping("/home")
+    public CommonResponse<UsersHomeInfoGetRes> getHomeInfo(@AuthenticationPrincipal AuthenticatedUser authenticatedUser) {
+        log.info("RoomApi_getHomeInfo start");
+        UsersHomeInfoGetRes usersHomeInfoGetRes = userService.getHomeInfo(authenticatedUser.getId());
+        log.info("RoomApi_getHomeInfo end");
+        return CommonResponse.success(usersHomeInfoGetRes);
     }
 }
