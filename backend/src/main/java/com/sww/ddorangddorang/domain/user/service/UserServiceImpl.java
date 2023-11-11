@@ -2,10 +2,15 @@ package com.sww.ddorangddorang.domain.user.service;
 
 import com.sww.ddorangddorang.domain.mastercode.entity.MasterCode;
 import com.sww.ddorangddorang.domain.mastercode.repository.MasterCodeRepository;
+import com.sww.ddorangddorang.domain.mission.entity.Mission;
+import com.sww.ddorangddorang.domain.mission.entity.MissionPerform;
+import com.sww.ddorangddorang.domain.mission.repository.MissionPerformRepository;
 import com.sww.ddorangddorang.domain.participant.entity.Participant;
 import com.sww.ddorangddorang.domain.participant.repository.ParticipantRepository;
+import com.sww.ddorangddorang.domain.room.entity.Room;
 import com.sww.ddorangddorang.domain.user.dto.HintDto;
 import com.sww.ddorangddorang.domain.user.dto.UsersGetRes;
+import com.sww.ddorangddorang.domain.user.dto.UsersHomeInfoGetRes;
 import com.sww.ddorangddorang.domain.user.dto.UsersMoreinfoPutReq;
 import com.sww.ddorangddorang.domain.user.dto.UsersSsafyinfoPutReq;
 import com.sww.ddorangddorang.domain.user.dto.UsersTodayinfoPostReq;
@@ -20,16 +25,15 @@ import com.sww.ddorangddorang.domain.user.repository.UserRepository;
 import com.sww.ddorangddorang.global.common.FileDto;
 import com.sww.ddorangddorang.global.common.exception.UnexpectedException;
 import com.sww.ddorangddorang.global.util.FileUploader;
-import com.sww.ddorangddorang.global.util.S3UploaderUtil;
 import jakarta.transaction.Transactional;
-
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -41,9 +45,9 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final HintRepository hintRepository;
-    private final MasterCodeRepository masterCodeRepository;
     private final FileUploader fileUploader;
     private final ParticipantRepository participantRepository;
+    private final MissionPerformRepository missionPerformRepository;
 
     public void signUp(User user) throws Exception {
         if (userRepository.findByEmailAndProviderType(user.getEmail(), user.getProviderType())
@@ -67,19 +71,17 @@ public class UserServiceImpl implements UserService {
 
         List<Hint> hintList = new ArrayList<Hint>();
         if (usersTodayinfoPostReq.getColor() != null) {
-            MasterCode colorCode = masterCodeRepository.getReferenceById(1_001L);
             hintList.add(Hint.builder()
                 .user(user)
-                .masterCode(colorCode)
+                .masterCode(1_001L)
                 .content(usersTodayinfoPostReq.getColor())
                 .build());
         }
 
         if (usersTodayinfoPostReq.getMood() != null) {
-            MasterCode moodCode = masterCodeRepository.getReferenceById(1_002L);
             hintList.add(Hint.builder()
                 .user(user)
-                .masterCode(moodCode)
+                .masterCode(1_002L)
                 .content(usersTodayinfoPostReq.getMood())
                 .build());
         }
@@ -117,7 +119,8 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     public UsersGetRes getUserInfo(Long id) {
-        return UsersGetRes.userToDto(userRepository.findById(id).orElseThrow(UserNotFoundException::new),
+        return UsersGetRes.userToDto(
+            userRepository.findById(id).orElseThrow(UserNotFoundException::new),
             getUserHint(userRepository.findById(id).orElseThrow(UserNotFoundException::new)));
     }
 
@@ -157,17 +160,13 @@ public class UserServiceImpl implements UserService {
         String color = "";
         String mood = "";
 
-        MasterCode colorCode = masterCodeRepository.findById(1_001L)
-            .orElseThrow(UnexpectedException::new);
-        Optional<Hint> colorHint = hintRepository.findByUserAndMasterCode(user, colorCode);
+        Optional<Hint> colorHint = hintRepository.findByUserAndMasterCode(user, 1_001L);
 
         if (colorHint.isPresent()) {
             color = colorHint.orElseThrow(UnexpectedException::new).getContent();
         }
 
-        MasterCode moodCode = masterCodeRepository.findById(1_002L)
-            .orElseThrow(UnexpectedException::new);
-        Optional<Hint> moodHint = hintRepository.findByUserAndMasterCode(user, moodCode);
+        Optional<Hint> moodHint = hintRepository.findByUserAndMasterCode(user, 1_002L);
 
         if (moodHint.isPresent()) {
             mood = moodHint.orElseThrow(UnexpectedException::new).getContent();
@@ -179,8 +178,78 @@ public class UserServiceImpl implements UserService {
             .build();
     }
 
+    @Transactional
     public Long getUserState(Long userId) {
         User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
         return user.getStatus();
+    }
+
+    @Transactional
+    public UsersHomeInfoGetRes getHomeInfo(Long userId) {
+        User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
+
+        if (!user.getStatus().equals(4L)) {
+//            return UsersHomeInfoGetRes.noGame().build();
+            return UsersHomeInfoGetRes.builder().build();
+        }
+        Room room = user.getRoom();
+
+        if (room == null || room.isEnded())
+            return UsersHomeInfoGetRes.builder().build();
+
+        Optional<Participant> participant = participantRepository.findByUserAndGameCount(user,
+            user.getGameCount());
+
+        if (!participant.isPresent())
+            return UsersHomeInfoGetRes.builder().build();
+
+        String color = null;
+        String mood = null;
+        Long dday = null;
+        Boolean isMissionDone = null;
+        String missionTitle = null;
+        Long missionId = null;
+        Long missionPerformId = null;
+        Participant manito = participant.get().getManito();
+
+        if(manito == null)
+            return UsersHomeInfoGetRes.builder().build();
+
+        User manitoUser = manito.getUser();
+
+        Optional<Hint> colorHint = hintRepository.findByUserAndMasterCode(manitoUser, 1_001L);
+        if (colorHint.isPresent()) {
+            color = colorHint.orElseThrow(UnexpectedException::new).getContent();
+        }
+
+        Optional<Hint> moodHint = hintRepository.findByUserAndMasterCode(manitoUser, 1_002L);
+        if (moodHint.isPresent()) {
+            mood = moodHint.orElseThrow(UnexpectedException::new).getContent();
+        }
+
+        dday = ChronoUnit.DAYS.between(LocalDateTime.now(),
+            room.getStartedAt().plusDays(room.getDuration())) + 1;
+
+        List<MissionPerform> missionPerformList = missionPerformRepository.findAllByPlayer(participant.get());
+
+        if(!missionPerformList.isEmpty()) {
+            missionPerformList.sort(Comparator.comparing(MissionPerform::getReceivedAt).reversed());
+            MissionPerform missionPerform = missionPerformList.get(0);
+            isMissionDone = missionPerform.isCompleted();
+            Mission mission = missionPerform.getMission();
+            missionTitle = mission.getTitle();
+            missionId = mission.getId();
+            missionPerformId = missionPerform.getId();
+        }
+
+        return UsersHomeInfoGetRes.builder()
+            .color(color)
+            .mood(mood)
+            .dday(dday)
+            .isMissionDone(isMissionDone)
+            .missionTitle(missionTitle)
+            .missionId(missionId)
+            .missionPerformId(missionPerformId)
+            .build();
     }
 }

@@ -2,21 +2,24 @@ package com.sww.ddorangddorang.domain.room.dto;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicInsert;
 
 @Getter
+@DynamicInsert
 //@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class EndDayInfoRes {
 
-    private final EndDateRes endDate;
-    private final Long daysLeft;
-    private final Long currentDays;
+    private EndDateRes endDate;
+    private Long daysLeft = null;
+    private Long currentDays = null;
 
-    @Builder(builderMethodName = "participatingRoom", builderClassName = "ParticipatingRoom")
+    @Builder
     public EndDayInfoRes(LocalDateTime startDate, LocalDateTime endDate) {
-        this.endDate = EndDateRes.havingEndDate()
-            .endDate(endDate).build();
+        this.endDate = EndDateRes.builder().endDate(endDate).build();
         LocalDateTime today = LocalDateTime.now();
         this.daysLeft = ChronoUnit.DAYS.between(today, endDate) + 1;
         this.currentDays = ChronoUnit.DAYS.between(startDate, today) + 1;

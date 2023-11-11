@@ -152,5 +152,4 @@ public class RoomApi {
         log.info("RoomApi_getEndDayInfo end");
         return CommonResponse.success(endDayInfoRes);
     }
-
 }

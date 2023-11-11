@@ -603,7 +603,7 @@ public class RoomServiceImpl implements RoomService {
             return EndDayInfoRes.noRoom().build();
         }
 
-        return EndDayInfoRes.participatingRoom()
+        return EndDayInfoRes.builder()
             .startDate(room.getStartedAt())
             .endDate(room.getStartedAt().plusDays(room.getDuration())).build();
     }

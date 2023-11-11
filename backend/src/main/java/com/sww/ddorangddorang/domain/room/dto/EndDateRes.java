@@ -5,8 +5,10 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicInsert;
 
 @Getter
+@DynamicInsert
 //@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class EndDateRes {
 
@@ -14,7 +16,7 @@ public class EndDateRes {
     private Integer month = null;
     private Integer date = null;
 
-    @Builder(builderMethodName = "havingEndDate", builderClassName = "HavingEndDate")
+    @Builder
     public EndDateRes(LocalDateTime endDate) {
         this.year = endDate.getYear();
         this.month = endDate.getMonth().getValue();
