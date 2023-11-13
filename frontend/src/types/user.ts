@@ -44,3 +44,7 @@ export type UserDailyInfo = {
   mood: string;
   color: string;
 };
+
+export type Opinion = {
+  content: string;
+};
