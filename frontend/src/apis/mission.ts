@@ -6,7 +6,8 @@ const client = apiInstance();
 const getMission = async () => {
   try {
     const res = await client.get('/missions');
-    return res.data;
+    console.log(res.data);
+    return [res.data.MissionPerformInfoRes, res.data.dayCount, res.data.missionCompleteCount];
   } catch (e) {
     throw new Error('ERROR IN GET_MISSIONS');
   }

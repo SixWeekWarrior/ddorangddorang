@@ -4,17 +4,29 @@ import BtnBig from '../../atoms/btnBig';
 import GlobalStyles, {height} from '../../../styles/GlobalStyles';
 import {TextInput} from 'react-native-gesture-handler';
 import {useState} from 'react';
+import { Opinion } from '../../../types/user';
+import { userApi } from '../../../apis';
 
-export const SendOpinion = ({navigation}: {navigation: any}) => {
-  const [value, setValue] = useState('');
+const SendOpinion = ({navigation}: {navigation: any}) => {
+  const [value, setValue] = useState<Opinion>({
+    content: '',
+  });
 
   const handleInputChange = (text: string) => {
-    setValue(text);
+    setValue(prevState => ({
+      ...prevState,
+    }))
   };
 
-  const handlePress = () => {
-    console.log(value);
-    navigation.navigate('NavBar');
+  const handlePress = async () => {
+    try {
+      const creatOpinion: Opinion = {...value};
+      await userApi.postOpinion(value);
+      await setValue(creatOpinion);
+      navigation.navigate('NavBar');
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -27,7 +39,6 @@ export const SendOpinion = ({navigation}: {navigation: any}) => {
         multiline={true}
         style={styles.inputText}
         onChangeText={handleInputChange}
-        value={value}
         placeholder={'의견을 입력해주세요.'}
         placeholderTextColor={GlobalStyles.grey_3.color}
       />
