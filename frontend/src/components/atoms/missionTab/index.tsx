@@ -11,8 +11,8 @@ const MissionTab = ({day, content, done}: MissionTabProps) => {
     <Pressable style={style.bottomTop}>
       <Text style={style.titleFont}>{day}</Text>
       <Text style={style.miniFont}>{content}</Text>
-      <Pressable style={style.circle}>
-        <Text style={style.midBoldFont}>{done ? 'CLEAR' : 'FAIL'}</Text>
+      <Pressable style={done ? style.circleDone : style.circle}>
+        <Text style={style.midBoldFont}>{done ? '완료' : '미완료'}</Text>
       </Pressable>
     </Pressable>
   );
@@ -27,7 +27,7 @@ const style = StyleSheet.create({
     borderRadius: 20,
     borderColor: GlobalStyles.grey_3.color,
   },
-  circle: {
+  circleDone: {
     backgroundColor: GlobalStyles.orange.color,
     width: 60,
     height: 60,
@@ -38,6 +38,19 @@ const style = StyleSheet.create({
     marginHorizontal: 15,
     marginBottom: 10,
   },
+
+  circle: {
+    backgroundColor: GlobalStyles.grey_4.color,
+    width: 60,
+    height: 60,
+    borderRadius: 100,
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'center',
+    marginHorizontal: 15,
+    marginBottom: 10,
+  },
+
   midBoldFont: {
     fontFamily: 'NotoSansKR-Bold',
     color: GlobalStyles.white_2.color,

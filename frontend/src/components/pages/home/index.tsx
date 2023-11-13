@@ -60,27 +60,29 @@ export const Home = ({navigation}: {navigation: any}): JSX.Element => {
         <TouchableWithoutFeedback onPress={toggleModal}>
           <Image source={CloseImg} style={style.closeImg} />
         </TouchableWithoutFeedback>
-        <Text
-          // eslint-disable-next-line react-native/no-inline-styles
-          style={{
-            ...style.titleFont,
-            color: GlobalStyles.green.color,
-            alignSelf: 'center',
-            top: 10,
-          }}>
-          아직 볼 수 없어요 😥
-        </Text>
-        <Text
-          // eslint-disable-next-line react-native/no-inline-styles
-          style={{
-            ...style.midBoldFont,
-            top: '-5%',
-            justifyContent: 'center',
-            textAlign: 'center',
-            color: GlobalStyles.black.color,
-          }}>
-          {'진행 현황은\n종료 3일 전부터 확인 가능합니다.'}
-        </Text>
+        <View>
+          <Text
+            // eslint-disable-next-line react-native/no-inline-styles
+            style={{
+              fontFamily: GlobalStyles.boldest.fontFamily,
+              fontSize: height * 20,
+              color: GlobalStyles.green.color,
+              alignSelf: 'center',
+            }}>
+            아직 볼 수 없어요 😥
+          </Text>
+          <Text
+            // eslint-disable-next-line react-native/no-inline-styles
+            style={{
+              fontFamily: GlobalStyles.nomal.fontFamily,
+              fontSize: height * 14,
+              justifyContent: 'center',
+              textAlign: 'center',
+              color: GlobalStyles.black.color,
+            }}>
+            {'종료 3일 전부터 확인 가능합니다.'}
+          </Text>
+        </View>
       </View>
     </Modal>
   );
@@ -181,7 +183,6 @@ export const Home = ({navigation}: {navigation: any}): JSX.Element => {
                 ...style.titleFont,
                 color: GlobalStyles.pink.color,
                 marginLeft: 15,
-                marginTop: 10,
               }}>
               미션 현황
             </Text>
