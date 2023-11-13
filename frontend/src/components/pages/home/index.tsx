@@ -262,6 +262,7 @@ const style = StyleSheet.create({
   },
 
   containerMid: {
+    marginTop: height * 24,
     flex: 0.4,
   },
   modalContainer: {
