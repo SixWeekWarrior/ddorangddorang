@@ -18,10 +18,11 @@ public class UsersHomeInfoGetRes {
     private String missionTitle;
     private Long missionId;
     private Long missionPerformId;
+    private Long dayCount;
 
     @Builder
     public UsersHomeInfoGetRes(String color, String mood, Long dday, Boolean isMissionDone,
-        String missionTitle, Long missionId, Long missionPerformId) {
+        String missionTitle, Long missionId, Long missionPerformId, Long dayCount) {
         this.color = color;
         this.mood = mood;
         this.dday = dday;
@@ -29,5 +30,6 @@ public class UsersHomeInfoGetRes {
         this.missionTitle = missionTitle;
         this.missionId = missionId;
         this.missionPerformId = missionPerformId;
+        this.dayCount = dayCount;
     }
 }
