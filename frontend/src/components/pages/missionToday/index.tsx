@@ -5,23 +5,25 @@ import yellowEyeImg from '../../../assets/yellowEyeImg.png';
 import GlobalStyles, {height} from '../../../styles/GlobalStyles';
 import BtnBig from '../../atoms/btnBig';
 import {useState, useEffect} from 'react';
-// import {missionApi} from '../../../apis';
+import {missionApi} from '../../../apis';
+import { useRecoilState } from 'recoil';
+import mission from '../../../modules/mission';
 
-function MissionToday({navigation}: {navigation: any}): JSX.Element {
-  const [missionComplete, setMissionComplete] = useState<boolean>(false);
-  // const [missionTitle, setMissionTitle] = useState<string>('');
+const MissionToday = ({navigation}: {navigation: any}): JSX.Element => {
+  const [missionInfo, setMissionInfo] = useRecoilState(mission.MissionTodayInfoState);
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const title = await missionApi.getMission();
-  //       setMissionTitle(title);
-  //     } catch (error) {
-  //       console.error('미션 데이터 불러오기 실패', error);
-  //     }
-  //   };
-  //   fetchData();
-  // }, []);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const missionAll = await missionApi.getMission();
+        const missionData = missionAll[0]
+        setMissionInfo(missionData);
+      } catch (error) {
+        console.error('미션 데이터 불러오기 실패', error);
+      }
+    };
+    fetchData();
+  }, []);
 
   return (
     <View style={style.container}>
@@ -33,8 +35,8 @@ function MissionToday({navigation}: {navigation: any}): JSX.Element {
       <View style={style.innerContainer}>
         <Text style={style.titleText}>미션 소개</Text>
         <View style={style.row}>
-          <Text style={style.missionText}>아침 인사하기</Text>
-          {missionComplete ? (
+          <Text style={style.missionText}>{missionInfo.title}</Text>
+          {missionInfo.isComplete ? (
             <View style={style.complete}>
               <Text style={style.miniText}>완료</Text>
             </View>
@@ -43,7 +45,7 @@ function MissionToday({navigation}: {navigation: any}): JSX.Element {
           )}
         </View>
         <Text style={style.contentText}>
-          {/* {missionTitle} */}
+          {missionInfo.title}
           {`,\n빠르게 친해질 수 있는 방법 중 하나이죠!\n오늘도 미션 도장을 찍어봐요!`}
         </Text>
       </View>
@@ -51,7 +53,7 @@ function MissionToday({navigation}: {navigation: any}): JSX.Element {
       <BtnBig
         text="수행하기"
         onPress={() => navigation.navigate('GoMission')}
-        disabled={missionComplete}
+        disabled={missionInfo.isComplete}
       />
     </View>
   );

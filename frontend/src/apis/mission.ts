@@ -8,7 +8,7 @@ const getMission = async () => {
   try {
     const res = await client.get('/missions');
     console.log(res.data);
-    return res.data;
+    return [res.data.MissionPerformInfoRes, res.data.dayCount, res.data.missionCompleteCount];
   } catch (e) {
     throw new Error('ERROR IN GET_MISSIONS');
   }

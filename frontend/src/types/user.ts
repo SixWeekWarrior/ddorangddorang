@@ -54,3 +54,17 @@ export type HomeInfo = {
   missionId: number;
   missionPerformId: number;
 };
+
+export type HomeInfo = {
+  color: string;
+  mood: string;
+  dday: number;
+  isMissionDone: boolean;
+  missionTitle: string;
+  missionId: number;
+  missionPerformId: number;
+};
+
+export type Opinion = {
+  content: string;
+};

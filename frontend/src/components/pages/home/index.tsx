@@ -30,7 +30,7 @@ export const Home = ({navigation}: {navigation: any}): JSX.Element => {
     const fetchData = async () => {
       try {
         const data = await userApi.getUser();
-        await setUserInfo(data);
+        setUserInfo(data);
       } catch (error) {
         console.error(error);
       }
