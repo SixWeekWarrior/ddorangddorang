@@ -1,4 +1,3 @@
-import {MissionIdInfo, MissionPerformIdInfo} from '../types/mission';
 import apiInstance from './client';
 
 const client = apiInstance();
@@ -14,7 +13,7 @@ const getMission = async () => {
 };
 
 // mission 변경 API
-const putMissionChange = async (data: MissionPerformIdInfo) => {
+const putMissionChange = async (data: number) => {
   try {
     const res = await client.put('/missions', data);
     return res.data;
@@ -24,7 +23,7 @@ const putMissionChange = async (data: MissionPerformIdInfo) => {
 };
 
 // mission 완료 API
-const postMissionComplete = async (data: MissionIdInfo) => {
+const postMissionComplete = async (data: number) => {
   try {
     const res = await client.post('/missions', data);
     return res.data;
