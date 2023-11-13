@@ -1,6 +1,5 @@
 package com.sww.ddorangddorang.domain.opinion.service;
 
-import com.sww.ddorangddorang.auth.dto.AuthenticatedUser;
 import com.sww.ddorangddorang.domain.user.exception.UserNotFoundException;
 import com.sww.ddorangddorang.domain.opinion.dto.OpinionCreateReq;
 import com.sww.ddorangddorang.domain.opinion.entity.Opinion;
@@ -21,11 +20,10 @@ public class OpinionServiceImpl implements OpinionService {
     private final OpinionRepository opinionRepository;
     private final UserRepository userRepository;
 
-    public void createOpinion(OpinionCreateReq opinionCreateReq, AuthenticatedUser authenticatedUser) {
-        log.info("email: {}", authenticatedUser.getEmail());
-        log.info("id: {}", authenticatedUser.getId());
+    public void createOpinion(OpinionCreateReq opinionCreateReq, Long userId) {
+        log.info("id: {}", userId);
         log.info("opinion: {}", opinionCreateReq.getContent());
-        User user = findUserById(authenticatedUser.getId());
+        User user = findUserById(userId);
 
         Opinion opinion = Opinion.builder()
             .user(user)

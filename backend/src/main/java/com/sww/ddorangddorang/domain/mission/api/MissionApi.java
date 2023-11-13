@@ -31,7 +31,8 @@ public class MissionApi {
     public CommonResponse<MissionPerformAndDayCountRes> findMissionByUser(
         @AuthenticationPrincipal AuthenticatedUser authenticatedUser) {
         log.info("findMissionByUser Controller 진입");
-        return CommonResponse.success(missionPerformService.findMissionByUser(authenticatedUser));
+        return CommonResponse.success(missionPerformService.findMissionByUser(
+            authenticatedUser.getId()));
     }
 
 
@@ -41,7 +42,7 @@ public class MissionApi {
         @RequestBody MissionCompleteReq missionCompleteReq,
         @AuthenticationPrincipal AuthenticatedUser authenticatedUser) {
         log.info("missionComplete Controller 진입");
-        missionPerformService.missionComplete(missionCompleteReq, authenticatedUser);
+        missionPerformService.missionComplete(missionCompleteReq, authenticatedUser.getId());
         return CommonResponse.success(SUCCESS);
     }
 
@@ -51,7 +52,7 @@ public class MissionApi {
     public CommonResponse<String> changeMission(@RequestBody MissionChangeReq missionChangeReq,
         @AuthenticationPrincipal AuthenticatedUser authenticatedUser) {
         log.info("changeMission Controller 진입");
-        missionPerformService.changeMission(missionChangeReq, authenticatedUser);
+        missionPerformService.changeMission(missionChangeReq, authenticatedUser.getId());
         return CommonResponse.success(SUCCESS);
     }
 

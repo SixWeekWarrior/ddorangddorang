@@ -26,7 +26,7 @@ public class OpinionApi {
     public CommonResponse<String> createOpinion(@RequestBody OpinionCreateReq opinionCreateReq,
         @AuthenticationPrincipal AuthenticatedUser authenticatedUser) {
         log.info("createOpinion Controller 진입");
-        opinionService.createOpinion(opinionCreateReq, authenticatedUser);
+        opinionService.createOpinion(opinionCreateReq, authenticatedUser.getId());
         return CommonResponse.success(SUCCESS);
     }
 

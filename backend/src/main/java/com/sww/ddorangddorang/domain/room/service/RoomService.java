@@ -1,6 +1,5 @@
 package com.sww.ddorangddorang.domain.room.service;
 
-import com.sww.ddorangddorang.auth.dto.AuthenticatedUser;
 import com.sww.ddorangddorang.domain.room.dto.EndDayInfoRes;
 import com.sww.ddorangddorang.domain.room.dto.JoinRoomReq;
 import com.sww.ddorangddorang.domain.room.dto.RoomGetRes;
@@ -11,23 +10,23 @@ import java.util.List;
 
 public interface RoomService {
 
-    Integer createRoom(RoomInfoReq roomInfoReq, AuthenticatedUser authenticatedUser);
+    Integer createRoom(RoomInfoReq roomInfoReq, Long userId);
 
-    void joinRoom(Integer accessCode, AuthenticatedUser authenticatedUser);
+    void joinRoom(Integer accessCode, Long userId);
 
-    void updateRoom(RoomInfoReq roomInfoReq, AuthenticatedUser authenticatedUser);
+    void updateRoom(RoomInfoReq roomInfoReq, Long userId);
 
-    void deleteGame(AuthenticatedUser authenticatedUser);
+    void deleteGame(Long userId);
 
-    void withdrawalRoom(AuthenticatedUser authenticatedUser);
+    void withdrawalRoom(Long userId);
 
-    List<ShowUsersRes> showUsers(AuthenticatedUser authenticatedUser);
+    List<ShowUsersRes> showUsers(Long userId);
 
-    Boolean responseJoinRoom(List<JoinRoomReq> joinRoomReqList, AuthenticatedUser authenticatedUser);
+    Boolean responseJoinRoom(List<JoinRoomReq> joinRoomReqList, Long userId);
 
-    Boolean checkAndRunIfRoomShouldStart(AuthenticatedUser authenticatedUser);
+    Boolean checkAndRunIfRoomShouldStart(Long userId);
 
-    Boolean checkAndStartGame(AuthenticatedUser authenticatedUser);
+    Boolean checkAndStartGame(Long userId);
 
     RoomGetRes getRoom(Long id);
 

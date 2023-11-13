@@ -1,6 +1,5 @@
 package com.sww.ddorangddorang.domain.note.service;
 
-import com.sww.ddorangddorang.auth.dto.AuthenticatedUser;
 import com.sww.ddorangddorang.domain.mission.entity.MissionPerform;
 import com.sww.ddorangddorang.domain.note.dto.NoteViewRes;
 import com.sww.ddorangddorang.domain.note.exception.NoteAccessDeniedError;
@@ -32,11 +31,11 @@ public class NoteServiceImpl implements NoteService {
     private final ParticipantRepository participantRepository;
     private final MissionPerformRepository missionPerformRepository;
 
-    public List<NoteViewRes> getNotes(AuthenticatedUser authenticatedUser) {
+    public List<NoteViewRes> getNotes(Long userId) {
         log.info("getNotes Service 진입");
-        log.info("id: {}", authenticatedUser.getId());
+        log.info("id: {}", userId);
 
-        User user = findUserById(authenticatedUser.getId());
+        User user = findUserById(userId);
 
         Participant receiver = participantRepository.findByUserAndGameCount(user,
             user.getGameCount()).orElseThrow(ParticipantNotFoundException::new);
@@ -47,14 +46,14 @@ public class NoteServiceImpl implements NoteService {
     }
 
 
-    public NoteViewRes getNote(Long id, AuthenticatedUser authenticatedUser) {
+    public NoteViewRes getNote(Long id, Long userId) {
         log.info("getNote Service 진입");
-        log.info("id: {}", authenticatedUser.getId());
+        log.info("id: {}", userId);
 
         Note note = noteRepository.findById(id).orElseThrow(
             ParticipantNotFoundException::new);
 
-        User user = findUserById(authenticatedUser.getId());
+        User user = findUserById(userId);
 
         Participant participant = participantRepository.findByUserAndGameCount(user,
             user.getGameCount()).orElseThrow(ParticipantNotFoundException::new);
@@ -68,10 +67,10 @@ public class NoteServiceImpl implements NoteService {
         return NoteViewRes.of(note);
     }
 
-    public void createNote(NoteCreateReq noteCreateReq, AuthenticatedUser authenticatedUser) {
+    public void createNote(NoteCreateReq noteCreateReq, Long userId) {
         log.info("createNote Service 진입");
-        log.info("id: {}", authenticatedUser.getId());
-        User user = findUserById(authenticatedUser.getId());
+        log.info("id: {}", userId);
+        User user = findUserById(userId);
 
         Participant sender = participantRepository.findByUserAndGameCount(user, user.getGameCount())
             .orElseThrow(ParticipantNotFoundException::new);
