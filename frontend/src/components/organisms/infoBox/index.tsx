@@ -11,6 +11,7 @@ import user from '../../../modules/user';
 import {useEffect, useState} from 'react';
 import {MissionInfo, PerfomrsInfo} from '../../../types/mission';
 import {missionApi, roomApi} from '../../../apis';
+import {RoomEndInfo} from '../../../types/room';
 
 type InfoBoxProps = {
   navigation: any;
@@ -25,18 +26,11 @@ const campusDict: {[key: number]: string} = {
   4: '부울경',
 };
 
-type RoomInfo = {
-  duration: number;
-  minMember: number;
-  maxMember: number;
-  roomKey: number;
-  memberCount: number;
-};
-
 const InfoBox = ({navigation, destination}: InfoBoxProps): JSX.Element => {
   const [userInfo, setUserInfo] = useRecoilState(user.UserInfoState);
   const [misstionList, setMisstionList] = useState<MissionInfo[]>([]);
   const [perfomrsInfo, setPerfomrsInfo] = useState<PerfomrsInfo>();
+  const [endInfo, setEndInfo] = useState<RoomEndInfo>();
 
   const getMissionInfo = () => {
     try {
@@ -49,8 +43,20 @@ const InfoBox = ({navigation, destination}: InfoBoxProps): JSX.Element => {
     }
   };
 
+  const getEndInfo = () => {
+    try {
+      roomApi.getRoomEnd().then(data => {
+        console.log('여기?', data.data);
+        setEndInfo(data.data);
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     getMissionInfo();
+    getEndInfo();
   }, []);
 
   const handlePress = () => {
@@ -122,7 +128,9 @@ const InfoBox = ({navigation, destination}: InfoBoxProps): JSX.Element => {
         return (
           <View style={style.innerInfoContainer}>
             <View style={style.top}>
-              <Text style={style.coloredFont}>종료까지 D-5</Text>
+              <Text style={style.coloredFont}>
+                종료까지 D-{endInfo?.daysLeft}
+              </Text>
             </View>
             <View style={style.middle}>
               <Text style={style.bigFont}>{perfomrsInfo?.dayCount}일차</Text>
