@@ -1,13 +1,5 @@
 import {useState} from 'react';
-import {
-  Alert,
-  Image,
-  ImageURISource,
-  Pressable,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
+import {Alert, Image, Pressable, StyleSheet, Text, View} from 'react-native';
 import {
   launchCamera,
   launchImageLibrary,

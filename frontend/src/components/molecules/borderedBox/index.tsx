@@ -29,8 +29,6 @@ export const BorderedBox = ({
   const classList = Array.from({length: 20}, (_, index) => index + 1);
   const floorList = Array.from({length: 20}, (_, index) => index + 1);
 
-  // const handleSubmit = () => {};
-
   const renderContent = (menu: string) => {
     switch (menu) {
       case '기본 정보':

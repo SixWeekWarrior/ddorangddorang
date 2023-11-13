@@ -1,4 +1,4 @@
-import {MissionInfo, MissionPerformInfo} from '../types/mission';
+import {MissionIdInfo, MissionPerformIdInfo} from '../types/mission';
 import apiInstance from './client';
 
 const client = apiInstance();
@@ -7,15 +7,14 @@ const client = apiInstance();
 const getMission = async () => {
   try {
     const res = await client.get('/missions');
-    console.log(res.data);
-    return [res.data.MissionPerformInfoRes, res.data.dayCount, res.data.missionCompleteCount];
+    return res.data;
   } catch (e) {
     throw new Error('ERROR IN GET_MISSIONS');
   }
 };
 
 // mission 변경 API
-const putMissionChange = async (data: MissionPerformInfo) => {
+const putMissionChange = async (data: MissionPerformIdInfo) => {
   try {
     const res = await client.put('/missions', data);
     return res.data;
@@ -25,7 +24,7 @@ const putMissionChange = async (data: MissionPerformInfo) => {
 };
 
 // mission 완료 API
-const postMissionComplete = async (data: MissionInfo) => {
+const postMissionComplete = async (data: MissionIdInfo) => {
   try {
     const res = await client.post('/missions', data);
     return res.data;

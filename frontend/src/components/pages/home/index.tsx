@@ -196,13 +196,21 @@ export const Home = ({navigation}: {navigation: any}): JSX.Element => {
               }}>
               5일차
             </Text>
-            <Pressable
-              style={style.circle}
-              onPress={() => {
-                console.log('미션 완료');
-              }}>
-              <Text style={style.midBoldFont}>완료</Text>
-            </Pressable>
+            <View style={style.alignCenter}>
+              {homeInfo.isMissionDone === true ? (
+                <View style={style.circle}>
+                  <Text style={style.midBoldFont}>완료</Text>
+                </View>
+              ) : (
+                <View
+                  style={{
+                    ...style.circle,
+                    backgroundColor: GlobalStyles.grey_3.color,
+                  }}>
+                  <Text style={style.midBoldFont}>미완료</Text>
+                </View>
+              )}
+            </View>
           </Pressable>
 
           <Pressable
@@ -361,6 +369,7 @@ const style = StyleSheet.create({
     top: 0,
     right: 24,
   },
+
   circle: {
     backgroundColor: GlobalStyles.orange.color,
     width: height * 70,
@@ -368,8 +377,11 @@ const style = StyleSheet.create({
     borderRadius: 100,
     justifyContent: 'center',
     alignItems: 'center',
-    marginLeft: height * 28,
-    marginTop: height * 2,
+    marginTop: height * 10,
+  },
+  alignCenter: {
+    width: '100%',
+    alignItems: 'center',
   },
   titleFont: {
     fontFamily: GlobalStyles.home_title.fontFamily,

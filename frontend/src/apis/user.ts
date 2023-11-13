@@ -110,6 +110,7 @@ const getUser = async () => {
   }
 };
 
+//
 const postOpinion = async (data: Opinion) => {
   try {
     const res = await client.post('/opinions', data);
