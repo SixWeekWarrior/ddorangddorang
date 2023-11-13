@@ -77,6 +77,11 @@ public class MissionPerformServiceImpl implements MissionPerformService {
         missionPerformRepository.saveAll(missionPerformList);
     }
 
+    public void testAssignMission(Long roomId) {
+        Room room = roomRepository.findById(roomId).orElseThrow();
+        startGameAndAssignMission(room);
+    }
+
     // 원하지 않는 미션을 변경하는 메서드
     public void changeMission(MissionChangeReq missionChangeReq,
         AuthenticatedUser authenticatedUser) {
@@ -96,6 +101,9 @@ public class MissionPerformServiceImpl implements MissionPerformService {
         validateMissionChangeCount(participant);
 
         reassignMission(participant);
+
+        // 호출한 유저의 미션 변견 횟수를 1 증가 시킴
+        participant.changeMission();
     }
 
     private List<MissionPerform> allocateNewMissions(List<Room> rooms, List<Long> missionIdList) {
@@ -228,7 +236,7 @@ public class MissionPerformServiceImpl implements MissionPerformService {
             user.getGameCount()).orElseThrow(ParticipantNotFoundException::new);
         log.info("user: {}", user);
 
-        List<MissionPerform> missionPerforms = missionPerformRepository.findAllByPlayer(
+        List<MissionPerform> missionPerforms = missionPerformRepository.findAllByPlayerAndDiscardFalse(
             participant);
         log.info("missionPerforms: {}", missionPerforms);
 

@@ -8,6 +8,8 @@ import com.sww.ddorangddorang.domain.room.entity.Room;
 
 public interface MissionPerformService {
 
+    void changeMissionAt9Am();
+
     MissionPerformAndDayCountRes findMissionByUser(AuthenticatedUser authenticatedUser);
 
     void missionComplete(MissionCompleteReq missionCompleteReq,
@@ -16,4 +18,6 @@ public interface MissionPerformService {
     void changeMission(MissionChangeReq missionChangeReq, AuthenticatedUser authenticatedUser);
 
     void startGameAndAssignMission(Room room);
+
+    void testAssignMission(Long roomId);
 }

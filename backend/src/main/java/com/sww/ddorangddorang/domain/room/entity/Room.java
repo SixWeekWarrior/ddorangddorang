@@ -69,7 +69,7 @@ public class Room {
 //    @Column(name = "created_at")
     @NotNull
     @CreationTimestamp
-    private LocalDateTime createdAt = LocalDateTime.now();    //DATETIME
+    private LocalDateTime createdAt;    //DATETIME
 
     //    @Column(name = "started_at")
     private LocalDateTime startedAt;    //DATETIME

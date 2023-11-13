@@ -389,7 +389,8 @@ public class RoomServiceImpl implements RoomService {
 
         room.updateHeadCount(count);
         room.startGame();
-//        missionPerformService.startGameAndAssignMission(room);
+        // TODO: 게임 시작 되는지 다시 점검할 필요성
+        missionPerformService.startGameAndAssignMission(room);
         redisUtil.putAccessCode(room.getAccessCode());
         log.info("RoomServiceImpl_startGame end: " + count + " participants started a game");
     }
