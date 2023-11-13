@@ -25,7 +25,7 @@ const putMissionChange = async (data: number) => {
 // mission 완료 API
 const postMissionComplete = async (data: number) => {
   try {
-    const res = await client.post('/missions', data);
+    const res = await client.post('/missions', {missionId: data});
     return res.data;
   } catch (e) {
     throw new Error('ERROR IN POST_MISSIONS');

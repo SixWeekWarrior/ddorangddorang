@@ -4,15 +4,27 @@ import pinkEyeImg from '../../../assets/pinkEyeImg.png';
 import yellowEyeImg from '../../../assets/yellowEyeImg.png';
 import GlobalStyles, {height} from '../../../styles/GlobalStyles';
 import BtnBig from '../../atoms/btnBig';
-import {useEffect} from 'react';
+import {useEffect, useState} from 'react';
 import {missionApi} from '../../../apis';
 import {useRecoilState} from 'recoil';
 import mission from '../../../modules/mission';
+import {MissionInfo} from '../../../types/mission';
 
 const MissionToday = ({navigation}: {navigation: any}): JSX.Element => {
   const [missionInfo, setMissionInfo] = useRecoilState(
     mission.TodayMissionInfoState,
   );
+  const [missionList, setMissionList] = useState<MissionInfo[]>([]);
+
+  const getMissionInfo = () => {
+    try {
+      missionApi.getMission().then(data => {
+        setMissionList(data.data.missionPerformsInfoRes);
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -25,6 +37,7 @@ const MissionToday = ({navigation}: {navigation: any}): JSX.Element => {
       }
     };
     fetchData();
+    getMissionInfo();
   }, []);
 
   return (
@@ -37,13 +50,13 @@ const MissionToday = ({navigation}: {navigation: any}): JSX.Element => {
       <View style={style.innerContainer}>
         <Text style={style.titleText}>미션 소개</Text>
         <View style={style.row}>
-          <Text style={style.missionText}>{missionInfo.title}</Text>
-          {missionInfo.isComplete ? (
+          <Text style={style.missionText}>
+            {missionList[missionList.length - 1]?.title}
+          </Text>
+          {missionList[missionList.length - 1]?.isComplete && (
             <View style={style.complete}>
               <Text style={style.miniText}>완료</Text>
             </View>
-          ) : (
-            ''
           )}
         </View>
         <Text style={style.contentText}>
@@ -51,13 +64,17 @@ const MissionToday = ({navigation}: {navigation: any}): JSX.Element => {
           {
             ',\n빠르게 친해질 수 있는 방법 중 하나이죠!\n오늘도 미션 도장을 찍어봐요!'
           }
+          {missionList[missionList.length - 1]?.title},
+          {
+            '\n빠르게 친해질 수 있는 방법 중 하나이죠!\n오늘도 미션 도장을 찍어봐요!'
+          }
         </Text>
       </View>
       <Image source={yellowEyeImg} style={style.yellowEyeImg} />
       <BtnBig
         text="수행하기"
         onPress={() => navigation.navigate('GoMission')}
-        disabled={missionInfo.isComplete}
+        disabled={missionList[missionList.length - 1]?.isComplete}
       />
     </View>
   );
@@ -92,14 +109,17 @@ const style = StyleSheet.create({
     paddingLeft: 24,
     borderRadius: 25,
   },
+
   complete: {
     backgroundColor: GlobalStyles.green.color,
-    width: 47,
-    height: 18,
+    width: height * 40,
+    height: height * 20,
     borderRadius: 10,
-    marginLeft: 10,
-    marginTop: -5,
+    justifyContent: 'center',
+    alignContent: 'center',
+    alignItems: 'center',
   },
+
   miniText: {
     fontFamily: GlobalStyles.home_title.fontFamily,
     fontSize: 11,

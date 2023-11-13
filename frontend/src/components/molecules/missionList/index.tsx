@@ -34,7 +34,7 @@ const MissionList = () => {
         data={misstionList}
         renderItem={({item, index}) => (
           <MissionTab
-            day={index + 1}
+            day={index + 1 + '일차'}
             content={item.title}
             done={item.isComplete}
           />

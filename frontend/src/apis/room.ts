@@ -81,6 +81,15 @@ const postRoomJoin = async (data: number) => {
   }
 };
 
+const getRoomEnd = async () => {
+  try {
+    const res = await client.get('/rooms/end');
+    return res.data;
+  } catch (e) {
+    throw new Error('getRoomEnd');
+  }
+};
+
 const room = {
   postRoom,
   putRoom,
@@ -89,6 +98,7 @@ const room = {
   postRoomResponse,
   postRoomStart,
   postRoomJoin,
+  getRoomEnd,
 };
 
 export default room;
