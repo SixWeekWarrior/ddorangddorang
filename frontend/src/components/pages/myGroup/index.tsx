@@ -1,17 +1,43 @@
 import {View, StyleSheet, Text, FlatList} from 'react-native';
 import MenuTop from '../../molecules/menuTop';
 import GlobalStyles from '../../../styles/GlobalStyles';
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
+import {roomApi} from '../../../apis';
 
 export const MyGroup = (): JSX.Element => {
-  const [data, setData] = useState(
-    new Array(50).fill(null).map((_, index) => ({
-      id: index.toString(),
-      name: '홍재연',
-      detail: '전공 / 7반',
-      selected: false,
-    })),
-  );
+  type RoomInfo = {
+    duration: number;
+    minMember: number;
+    maxMember: number;
+    roomKey: number;
+    memberCount: number;
+  };
+
+  const [roomInfo, setRoomInfo] = useState<RoomInfo>({
+    duration: 0,
+    minMember: 0,
+    maxMember: 0,
+    roomKey: 0,
+    memberCount: 0,
+  });
+
+  useEffect(() => {
+    roomApi
+      .getRoomInfo()
+      .then(data => {
+        setRoomInfo({
+          ...roomInfo,
+          duration: data.data.duration,
+          minMember: data.data.minMember,
+          maxMember: data.data.maxMember,
+          roomKey: data.data.roomKey,
+          memberCount: data.data.memberCount,
+        });
+      })
+      .catch(error => {
+        console.log('error', error);
+      });
+  }, []);
 
   const renderItem = ({item}: any) => (
     <View style={styles.profileContainer}>
@@ -28,19 +54,12 @@ export const MyGroup = (): JSX.Element => {
         text={`현재  그룹에서 활동하고 있는\n친구들을 볼 수 있어요!`}
       />
       <View style={styles.noticeContainer}>
-        <Text style={styles.titleText}>50명과 함께하고 있어요.</Text>
+        <Text style={styles.titleText}>
+          {roomInfo.memberCount}명과 함께하고 있어요.
+        </Text>
         <Text style={styles.miniText}>2023년 12월 11일 종료</Text>
       </View>
-      <View style={styles.listContainer}>
-        <FlatList
-          data={data}
-          renderItem={renderItem}
-          keyExtractor={item => item.id}
-          // contentContainerStyle={styles.listContainer}
-          numColumns={4}
-          style={{flexGrow: 0}}
-        />
-      </View>
+      <View style={styles.listContainer}></View>
       <View style={styles.emptyContainer}></View>
     </View>
   );

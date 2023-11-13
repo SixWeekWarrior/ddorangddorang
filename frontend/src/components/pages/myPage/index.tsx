@@ -9,7 +9,6 @@ import user from '../../../modules/user';
 
 export const MyPage = ({navigation}: {navigation: any}): JSX.Element => {
   const [userInfo, setUserInfo] = useRecoilState(user.UserInfoState);
-  console.log(userInfo);
   useEffect(() => {
     const fetchData = async () => {
       try {

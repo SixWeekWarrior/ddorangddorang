@@ -26,7 +26,6 @@ export const BasicInfo = ({navigation}: {navigation: any}): JSX.Element => {
   };
 
   const handleSubmit = async () => {
-    console.log(tmpUserInfo);
     navigation.navigate('AdditionalInfo');
   };
 

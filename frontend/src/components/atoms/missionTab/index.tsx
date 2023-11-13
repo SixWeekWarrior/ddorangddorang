@@ -2,7 +2,7 @@ import {Pressable, StyleSheet, Text} from 'react-native';
 import GlobalStyles from '../../../styles/GlobalStyles';
 
 type MissionTabProps = {
-  day: string;
+  day: number;
   content: string;
   done: boolean;
 };
