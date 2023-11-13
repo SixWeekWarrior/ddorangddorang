@@ -102,4 +102,8 @@ public class Participant {
     public void allocateNickname(String nickname) {
         this.nickname = nickname;
     }
+
+    public void changeMission() {
+        this.change++;
+    }
 }

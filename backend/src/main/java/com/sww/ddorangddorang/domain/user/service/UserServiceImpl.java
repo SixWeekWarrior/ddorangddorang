@@ -1,7 +1,5 @@
 package com.sww.ddorangddorang.domain.user.service;
 
-import com.sww.ddorangddorang.domain.mastercode.entity.MasterCode;
-import com.sww.ddorangddorang.domain.mastercode.repository.MasterCodeRepository;
 import com.sww.ddorangddorang.domain.mission.entity.Mission;
 import com.sww.ddorangddorang.domain.mission.entity.MissionPerform;
 import com.sww.ddorangddorang.domain.mission.repository.MissionPerformRepository;
@@ -233,7 +231,7 @@ public class UserServiceImpl implements UserService {
             room.getStartedAt().plusDays(room.getDuration())) + 1;
         dayCount = ChronoUnit.DAYS.between(room.getStartedAt(), today) + 1;
 
-        List<MissionPerform> missionPerformList = missionPerformRepository.findAllByPlayer(participant.get());
+        List<MissionPerform> missionPerformList = missionPerformRepository.findAllByPlayerAndDiscardFalse(participant.get());
 
         if(!missionPerformList.isEmpty()) {
             missionPerformList.sort(Comparator.comparing(MissionPerform::getReceivedAt).reversed());

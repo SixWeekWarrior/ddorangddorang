@@ -16,7 +16,7 @@ public interface RoomRepository extends JpaRepository<Room, Long> {
 
     Optional<Room> findByAdminAndStartedAtIsNullAndDeletedAtIsNull(User admin);
 
-    @EntityGraph(attributePaths = {"participants", "participants.missionPerform", "participants.missionPerform.mission"})
+    @EntityGraph(attributePaths = {"participants"})
     List<Room> findByStartedAtBeforeAndDeletedAtIsNull(LocalDateTime time);
 
 }
