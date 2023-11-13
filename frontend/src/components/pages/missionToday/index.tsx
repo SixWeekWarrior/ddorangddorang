@@ -6,14 +6,9 @@ import GlobalStyles, {height} from '../../../styles/GlobalStyles';
 import BtnBig from '../../atoms/btnBig';
 import {useEffect, useState} from 'react';
 import {missionApi} from '../../../apis';
-import {useRecoilState} from 'recoil';
-import mission from '../../../modules/mission';
 import {MissionInfo} from '../../../types/mission';
 
 const MissionToday = ({navigation}: {navigation: any}): JSX.Element => {
-  const [missionInfo, setMissionInfo] = useRecoilState(
-    mission.TodayMissionInfoState,
-  );
   const [missionList, setMissionList] = useState<MissionInfo[]>([]);
 
   const getMissionInfo = () => {
@@ -27,16 +22,6 @@ const MissionToday = ({navigation}: {navigation: any}): JSX.Element => {
   };
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const missionAll = await missionApi.getMission();
-        const missionData = missionAll[0];
-        setMissionInfo(missionData);
-      } catch (error) {
-        console.error('미션 데이터 불러오기 실패', error);
-      }
-    };
-    fetchData();
     getMissionInfo();
   }, []);
 
@@ -60,14 +45,9 @@ const MissionToday = ({navigation}: {navigation: any}): JSX.Element => {
           )}
         </View>
         <Text style={style.contentText}>
-          {missionInfo.title}
-          {
-            ',\n빠르게 친해질 수 있는 방법 중 하나이죠!\n오늘도 미션 도장을 찍어봐요!'
-          }
-          {missionList[missionList.length - 1]?.title},
-          {
-            '\n빠르게 친해질 수 있는 방법 중 하나이죠!\n오늘도 미션 도장을 찍어봐요!'
-          }
+          {missionList[missionList.length - 1]?.title +
+            '는' +
+            '\n빠르게 친해질 수 있는 방법 중 하나이죠!\n오늘도 미션 도장을 찍어봐요!'}
         </Text>
       </View>
       <Image source={yellowEyeImg} style={style.yellowEyeImg} />
