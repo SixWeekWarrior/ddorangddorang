@@ -21,9 +21,11 @@ import {userApi} from '../../../apis';
 
 export const Home = ({navigation}: {navigation: any}): JSX.Element => {
   const [userInfo, setUserInfo] = useRecoilState(user.UserInfoState);
-  const [hasManito, setHasManito] = useState(false);
-  const [manitoHint, setManitoHint] = useState<string[]>(['', '']);
-  console.log(userInfo);
+  const [homeInfo, setHomeInfo] = useRecoilState(user.HomeInfoState);
+
+  console.log('UserInfo:', userInfo);
+  console.log('homeInfo:', homeInfo);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -33,21 +35,17 @@ export const Home = ({navigation}: {navigation: any}): JSX.Element => {
         console.error(error);
       }
     };
-    const fetchHintData = async () => {
+
+    const fetchHomeData = async () => {
       try {
-        const hintData = await userApi.getManitoHint();
-        setHasManito(hintData[0]);
-        {
-          hasManito
-            ? await setManitoHint(hintData[1])
-            : console.log('마니또가 아직 없네요 :(');
-        }
+        const homeData = await userApi.getHomeInfo();
+        setHomeInfo(homeData);
       } catch (error) {
         console.error(error);
       }
     };
     fetchData();
-    fetchHintData();
+    fetchHomeData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -63,19 +61,25 @@ export const Home = ({navigation}: {navigation: any}): JSX.Element => {
           <Image source={CloseImg} style={style.closeImg} />
         </TouchableWithoutFeedback>
         <Text
+          // eslint-disable-next-line react-native/no-inline-styles
           style={{
             ...style.titleFont,
             color: GlobalStyles.green.color,
             alignSelf: 'center',
+            top: 10,
           }}>
           아직 볼 수 없어요 😥
         </Text>
         <Text
+          // eslint-disable-next-line react-native/no-inline-styles
           style={{
             ...style.midBoldFont,
-            alignSelf: 'center',
+            top: '-5%',
+            justifyContent: 'center',
+            textAlign: 'center',
+            color: GlobalStyles.black.color,
           }}>
-          진행 현황은 3일 전부터 확인 가능합니다.
+          {'진행 현황은\n종료 3일 전부터 확인 가능합니다.'}
         </Text>
       </View>
     </Modal>
@@ -91,20 +95,41 @@ export const Home = ({navigation}: {navigation: any}): JSX.Element => {
             }}
             style={style.topTop}>
             <Text
+              // eslint-disable-next-line react-native/no-inline-styles
               style={{
                 ...style.titleFont,
                 color: GlobalStyles.yellow.color,
                 marginLeft: 15,
                 justifyContent: 'center',
-              }}>{`오늘 나의 \n마니또는?`}</Text>
-            {hasManito ? (
-              <View>
-                <Text style={style.bigFont}>옷 | {manitoHint?.[0]}</Text>
-                <Text style={style.bigFont}>기분 | {manitoHint?.[1]}</Text>
-              </View>
-            ) : (
-              ''
-            )}
+              }}>
+              {'오늘 나의 \n마니또는?'}
+            </Text>
+            <View>
+              {homeInfo.color === null && homeInfo.mood === null ? (
+                <Text style={style.bigFont}>
+                  {'데이터가 아직\n입력되지 않았어요.'}
+                </Text>
+              ) : homeInfo.color === null ? (
+                <>
+                  <Text style={style.bigFont}>
+                    옷 | {'데이터가 아직\n입력되지 않았어요.'}
+                  </Text>
+                  <Text style={style.bigFont}>기분 | {homeInfo.mood}</Text>
+                </>
+              ) : homeInfo.mood === null ? (
+                <>
+                  <Text style={style.bigFont}>옷 | {homeInfo.color}</Text>
+                  <Text style={style.bigFont}>
+                    기분 | {'데이터가 아직\n입력되지 않았어요.'}
+                  </Text>
+                </>
+              ) : (
+                <>
+                  <Text style={style.bigFont}>옷 | {homeInfo.color}</Text>
+                  <Text style={style.bigFont}>기분 | {homeInfo.mood}</Text>
+                </>
+              )}
+            </View>
           </Pressable>
           <Image source={yellowEyeImg} style={style.topBottom} />
         </View>
@@ -112,6 +137,7 @@ export const Home = ({navigation}: {navigation: any}): JSX.Element => {
         <View style={style.topRight}>
           <View style={style.innerTop}>
             <Text
+              // eslint-disable-next-line react-native/no-inline-styles
               style={{
                 ...style.titleFont,
                 color: GlobalStyles.white_1.color,
@@ -120,6 +146,7 @@ export const Home = ({navigation}: {navigation: any}): JSX.Element => {
               종료까지
             </Text>
             <Text
+              // eslint-disable-next-line react-native/no-inline-styles
               style={{...style.tiniFont, marginTop: -17, textAlign: 'center'}}>
               종료일까지 많은 미션을 해봐요!
             </Text>
@@ -131,7 +158,7 @@ export const Home = ({navigation}: {navigation: any}): JSX.Element => {
                 ...style.numberFont,
                 color: GlobalStyles.blue.color,
               }}>
-              7
+              {homeInfo.dday ? homeInfo.dday : '?'}
             </Text>
           </View>
         </View>
@@ -145,13 +172,11 @@ export const Home = ({navigation}: {navigation: any}): JSX.Element => {
         <View>
           <Pressable
             style={style.bottomTop}
-            onPress={toggleModal}
-            //   () => {
-            //   navigation.navigate('미션');
-            // }
-            // }
-          >
+            onPress={() => {
+              navigation.navigate('미션');
+            }}>
             <Text
+              // eslint-disable-next-line react-native/no-inline-styles
               style={{
                 ...style.titleFont,
                 color: GlobalStyles.pink.color,
@@ -161,6 +186,7 @@ export const Home = ({navigation}: {navigation: any}): JSX.Element => {
               미션 현황
             </Text>
             <Text
+              // eslint-disable-next-line react-native/no-inline-styles
               style={{
                 ...style.miniFont,
                 fontWeight: 700,
@@ -182,9 +208,12 @@ export const Home = ({navigation}: {navigation: any}): JSX.Element => {
           <Pressable
             style={style.bottomBottom}
             onPress={() => {
-              navigation.navigate('MatchStatus');
+              homeInfo.dday !== null && homeInfo.dday <= 3
+                ? navigation.navigate('MatchStatus')
+                : toggleModal();
             }}>
             <Text
+              // eslint-disable-next-line react-native/no-inline-styles
               style={{
                 ...style.midBoldFont,
                 marginLeft: 15,
@@ -193,6 +222,7 @@ export const Home = ({navigation}: {navigation: any}): JSX.Element => {
             </Text>
             <Image
               source={arrowRightImg}
+              // eslint-disable-next-line react-native/no-inline-styles
               style={{marginTop: 20, width: 6, height: 11, marginLeft: 10}}
             />
           </Pressable>

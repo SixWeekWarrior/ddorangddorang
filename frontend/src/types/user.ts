@@ -44,3 +44,13 @@ export type UserDailyInfo = {
   mood: string;
   color: string;
 };
+
+export type HomeInfo = {
+  color: string;
+  mood: string;
+  dday: number;
+  isMissionDone: boolean;
+  missionTitle: string;
+  missionId: number;
+  missionPerformId: number;
+};

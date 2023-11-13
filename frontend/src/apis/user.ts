@@ -109,17 +109,6 @@ const getUser = async () => {
   }
 };
 
-// 마니또 Hint 정보 조회 API
-const getManitoHint = async () => {
-  try {
-    const res = await client.get('/users/manitohint');
-    return [true, res.data.data];
-  } catch (e) {
-    return [false, null];
-    // throw new Error('ERROR IN GET_MANITO_HINT');
-  }
-};
-
 // 내 state 조회
 const getUserState = async () => {
   try {
@@ -130,6 +119,16 @@ const getUserState = async () => {
   }
 };
 
+// Home 출력 정보 조회
+const getHomeInfo = async () => {
+  try {
+    const res = await client.get('users/home');
+    return res.data.data;
+  } catch (e) {
+    throw new Error('ERROR IN getHomeInfo');
+  }
+};
+
 const user = {
   postLogin,
   postSignup,
@@ -137,8 +136,8 @@ const user = {
   putMoreInfo,
   putTodayInfo,
   getUser,
-  getManitoHint,
   getUserState,
+  getHomeInfo,
 };
 
 export default user;

@@ -43,6 +43,8 @@ const InnerInfo = ({navigation}: {navigation: any}): JSX.Element => {
 
 const InfoBox = ({navigation, destination}: InfoBoxProps): JSX.Element => {
   const [userInfo, setUserInfo] = useRecoilState(user.UserInfoState);
+  const [homeInfo, setHomeInfo] = useRecoilState(user.HomeInfoState);
+  const [missionInfo, setMissionInfo] = useRecoilState(user.HomeInfoState);
 
   const handlePress = () => {
     switch (destination) {
@@ -104,7 +106,13 @@ const InfoBox = ({navigation, destination}: InfoBoxProps): JSX.Element => {
   const renderContent = () => {
     switch (destination) {
       case 'MissionToday':
-        return <Text style={style.midFont}>좋아하는 음식 알아내기</Text>;
+        return (
+          <Text style={style.midFont}>
+            {homeInfo.missionTitle
+              ? homeInfo.missionTitle
+              : '미션 데이터가 없습니다.'}
+          </Text>
+        );
       case 'BasicInfo':
         return <InnerInfo navigation={navigation} />;
       case 'InfoToday':
@@ -116,6 +124,7 @@ const InfoBox = ({navigation, destination}: InfoBoxProps): JSX.Element => {
         );
       case 'InfoSsafy':
         return (
+          // eslint-disable-next-line react-native/no-inline-styles
           <View style={[style.flexColumn, {height: '50%'}]}>
             <InfoAtom
               title="지역"
