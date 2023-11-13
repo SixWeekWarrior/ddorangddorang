@@ -10,6 +10,6 @@ public interface MissionPerformRepository extends JpaRepository<MissionPerform, 
 
     // discard가 false인 것만 리턴하고 싶음
     @EntityGraph(attributePaths = {"mission"})
-    List<MissionPerform> findAllByPlayerAndDiscardFalse(Participant player);
+    List<MissionPerform> findAllByPlayerAndDeletedAtIsNull(Participant player);
 
 }

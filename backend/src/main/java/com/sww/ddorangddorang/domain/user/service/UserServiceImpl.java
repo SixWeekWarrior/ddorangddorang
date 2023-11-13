@@ -231,7 +231,7 @@ public class UserServiceImpl implements UserService {
             room.getStartedAt().plusDays(room.getDuration())) + 1;
         dayCount = ChronoUnit.DAYS.between(room.getStartedAt(), today) + 1;
 
-        List<MissionPerform> missionPerformList = missionPerformRepository.findAllByPlayerAndDiscardFalse(participant.get());
+        List<MissionPerform> missionPerformList = missionPerformRepository.findAllByPlayerAndDeletedAtIsNull(participant.get());
 
         if(!missionPerformList.isEmpty()) {
             missionPerformList.sort(Comparator.comparing(MissionPerform::getReceivedAt).reversed());
