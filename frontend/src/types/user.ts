@@ -56,6 +56,6 @@ export type HomeInfo = {
   dayCount: number;
 };
 
-export type Opinion = {
+export type OpinionInfo = {
   content: string;
 };

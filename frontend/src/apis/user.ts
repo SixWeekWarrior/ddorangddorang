@@ -1,7 +1,7 @@
 import apiInstance from './client';
 import axios from 'axios';
 import {
-  Opinion,
+  OpinionInfo,
   UserDailyInfo,
   UserInfo,
   UserMoreInfo,
@@ -110,8 +110,8 @@ const getUser = async () => {
   }
 };
 
-//
-const postOpinion = async (data: Opinion) => {
+// 개발자 의견보내기 API
+const postOpinion = async (data: OpinionInfo) => {
   try {
     const res = await client.post('/opinions', data);
     return res.data;
@@ -161,6 +161,7 @@ const user = {
   getManitoHint,
   getUserState,
   getHomeInfo,
+  postOpinion,
 };
 
 export default user;
