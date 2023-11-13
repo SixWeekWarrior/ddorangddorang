@@ -63,11 +63,6 @@ public class Room {
     @NotNull
     private Integer maxMember = Integer.MAX_VALUE;  //INT
 
-    /**
-     * DB에서 DEFAULT_VALUE = CURRENT_TIMESTAMP로 설정
-     */
-//    @Column(name = "created_at")
-    @NotNull
     @CreationTimestamp
     private LocalDateTime createdAt;    //DATETIME
 
