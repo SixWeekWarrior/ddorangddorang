@@ -331,7 +331,7 @@ const style = StyleSheet.create({
     columnGap: height * 1.4,
   },
   titleFont: {
-    fontFamily: GlobalStyles.bold.fontFamily,
+    fontFamily: GlobalStyles.boldest.fontFamily,
     fontSize: height * 16,
     letterSpacing: -1,
     marginLeft: 15,

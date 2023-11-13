@@ -48,7 +48,6 @@ const MissionList = () => {
 
 const styles = StyleSheet.create({
   listContainer: {
-    alignSelf: 'center',
     flex: 0.8,
     marginBottom: 20,
   },

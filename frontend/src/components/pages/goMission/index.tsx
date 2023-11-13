@@ -113,7 +113,7 @@ export const GoMission = ({navigation}: {navigation: any}): JSX.Element => {
           {misstionList[misstionList.length - 1]?.title}
         </Text>
         <Text style={style.contentText}>
-          {misstionList[misstionList.length - 1]?.content + '를 완료했나요?'}
+          {misstionList[misstionList.length - 1]?.content + ', 완료했나요?'}
         </Text>
       </View>
       <BtnBig text="수행완료" onPress={postMissionComplete} />
