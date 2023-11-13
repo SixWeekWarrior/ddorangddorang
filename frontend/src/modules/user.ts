@@ -62,6 +62,7 @@ export const HomeInfoState = atom<HomeInfo>({
     missionTitle: '',
     missionId: 0,
     missionPerformId: 0,
+    dayCount: 0,
   },
 });
 

@@ -107,7 +107,9 @@ const InfoBox = ({navigation, destination}: InfoBoxProps): JSX.Element => {
       case 'MissionToday':
         return (
           <Text style={style.midFont}>
-            {missionList[missionList.length - 1]?.title}
+            {missionList[missionList.length - 1]?.title
+              ? missionList[missionList.length - 1]?.title
+              : '데이터가 없습니다.'}
           </Text>
         );
       case 'BasicInfo':

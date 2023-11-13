@@ -194,7 +194,7 @@ export const Home = ({navigation}: {navigation: any}): JSX.Element => {
                 marginTop: -15,
                 marginLeft: 15,
               }}>
-              5일차
+              {homeInfo.dayCount ? homeInfo.dayCount : '?'}일차
             </Text>
             <View style={style.alignCenter}>
               {homeInfo.isMissionDone === true ? (

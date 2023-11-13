@@ -4,19 +4,21 @@ import pinkEyeImg from '../../../assets/pinkEyeImg.png';
 import yellowEyeImg from '../../../assets/yellowEyeImg.png';
 import GlobalStyles, {height} from '../../../styles/GlobalStyles';
 import BtnBig from '../../atoms/btnBig';
-import {useState, useEffect} from 'react';
+import {useEffect} from 'react';
 import {missionApi} from '../../../apis';
-import { useRecoilState } from 'recoil';
+import {useRecoilState} from 'recoil';
 import mission from '../../../modules/mission';
 
 const MissionToday = ({navigation}: {navigation: any}): JSX.Element => {
-  const [missionInfo, setMissionInfo] = useRecoilState(mission.MissionTodayInfoState);
+  const [missionInfo, setMissionInfo] = useRecoilState(
+    mission.TodayMissionInfoState,
+  );
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const missionAll = await missionApi.getMission();
-        const missionData = missionAll[0]
+        const missionData = missionAll[0];
         setMissionInfo(missionData);
       } catch (error) {
         console.error('미션 데이터 불러오기 실패', error);
@@ -29,7 +31,7 @@ const MissionToday = ({navigation}: {navigation: any}): JSX.Element => {
     <View style={style.container}>
       <MenuTop
         menu="오늘의 미션"
-        text={`오늘의 미션을 완수하고\n미션 도장을 찍어봐요!`}
+        text={'오늘의 미션을 완수하고\n미션 도장을 찍어봐요!'}
       />
       <Image source={pinkEyeImg} style={style.pinkEyeImg} />
       <View style={style.innerContainer}>
@@ -46,7 +48,9 @@ const MissionToday = ({navigation}: {navigation: any}): JSX.Element => {
         </View>
         <Text style={style.contentText}>
           {missionInfo.title}
-          {`,\n빠르게 친해질 수 있는 방법 중 하나이죠!\n오늘도 미션 도장을 찍어봐요!`}
+          {
+            ',\n빠르게 친해질 수 있는 방법 중 하나이죠!\n오늘도 미션 도장을 찍어봐요!'
+          }
         </Text>
       </View>
       <Image source={yellowEyeImg} style={style.yellowEyeImg} />
@@ -57,7 +61,7 @@ const MissionToday = ({navigation}: {navigation: any}): JSX.Element => {
       />
     </View>
   );
-}
+};
 
 const style = StyleSheet.create({
   container: {

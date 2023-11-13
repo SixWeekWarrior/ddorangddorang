@@ -53,16 +53,7 @@ export type HomeInfo = {
   missionTitle: string;
   missionId: number;
   missionPerformId: number;
-};
-
-export type HomeInfo = {
-  color: string;
-  mood: string;
-  dday: number;
-  isMissionDone: boolean;
-  missionTitle: string;
-  missionId: number;
-  missionPerformId: number;
+  dayCount: number;
 };
 
 export type Opinion = {
