@@ -2,13 +2,13 @@ import {View, StyleSheet, ScrollView} from 'react-native';
 import MenuTop from '../../molecules/menuTop';
 import GlobalStyles from '../../../styles/GlobalStyles';
 import InfoBox from '../../organisms/infoBox';
-import {useRecoilState} from 'recoil';
+import {useSetRecoilState} from 'recoil';
 import {useEffect} from 'react';
 import {userApi} from '../../../apis';
 import user from '../../../modules/user';
 
 export const MyPage = ({navigation}: {navigation: any}): JSX.Element => {
-  const [userInfo, setUserInfo] = useRecoilState(user.UserInfoState);
+  const setUserInfo = useSetRecoilState(user.UserInfoState);
   useEffect(() => {
     const fetchData = async () => {
       try {

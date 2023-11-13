@@ -1,16 +1,46 @@
-import {StyleSheet, View, Image, Text, Keyboard} from 'react-native';
+import {StyleSheet, View, Image, Text, Pressable} from 'react-native';
 import MenuTop from '../../molecules/menuTop';
 import pinkEyeImg from '../../../assets/pinkEyeImg.png';
 import yellowEyeImg from '../../../assets/yellowEyeImg.png';
-import GlobalStyles from '../../../styles/GlobalStyles';
-import InputTextwithBtn from '../../molecules/inputTextwithBtn';
+import GlobalStyles, {height} from '../../../styles/GlobalStyles';
+// import InputTextwithBtn from '../../molecules/inputTextwithBtn';
 import BtnBig from '../../atoms/btnBig';
 import BottomSheet, {BottomSheetBackdrop} from '@gorhom/bottom-sheet';
-import {useRef, useMemo, useState, useCallback} from 'react';
+import {useRef, useMemo, useState, useCallback, useEffect} from 'react';
 import rightImg from '../../../assets/missionRightImg.png';
 import wrongImg from '../../../assets/missionWrongImg.png';
+import {MissionInfo} from '../../../types/mission';
+import {missionApi} from '../../../apis';
 
 export const GoMission = ({navigation}: {navigation: any}): JSX.Element => {
+  const [misstionList, setMisstionList] = useState<MissionInfo[]>([]);
+
+  const getMissionInfo = () => {
+    try {
+      missionApi.getMission().then(data => {
+        setMisstionList(data.data.missionPerformsInfoRes);
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const postMissionComplete = () => {
+    try {
+      missionApi
+        .postMissionComplete(misstionList[misstionList.length - 1]?.missionId)
+        .then(() => {
+          navigation.navigate('미션');
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getMissionInfo();
+  }, []);
+
   const bottomSheetRef = useRef<BottomSheet>(null);
   const snapPoints = useMemo(() => ['70%', '20%', '70%'], []);
   const renderBackdrop = useCallback(
@@ -24,10 +54,10 @@ export const GoMission = ({navigation}: {navigation: any}): JSX.Element => {
     [],
   );
 
-  const [enteredText, setEnteredText] = useState('');
-  const handleTextChange = (text: string) => {
-    setEnteredText(text); // Set the entered text in GoMission
-  };
+  // const [enteredText, setEnteredText] = useState('');
+  // const handleTextChange = (text: string) => {
+  //   setEnteredText(text); // Set the entered text in GoMission
+  // };
   const [answerRight, setAnswerRight] = useState(false);
 
   const renderContent = () => (
@@ -60,15 +90,15 @@ export const GoMission = ({navigation}: {navigation: any}): JSX.Element => {
     </View>
   );
 
-  const handleExpand = () => {
-    Keyboard.dismiss();
-    if (bottomSheetRef.current && enteredText === '햄버거') {
-      setAnswerRight(true);
-      bottomSheetRef.current.expand();
-    } else if (bottomSheetRef.current) {
-      bottomSheetRef.current.expand();
-    }
-  };
+  // const handleExpand = () => {
+  //   Keyboard.dismiss();
+  //   if (bottomSheetRef.current && enteredText === '햄버거') {
+  //     setAnswerRight(true);
+  //     bottomSheetRef.current.expand();
+  //   } else if (bottomSheetRef.current) {
+  //     bottomSheetRef.current.expand();
+  //   }
+  // };
 
   return (
     <View style={style.container}>
@@ -79,15 +109,22 @@ export const GoMission = ({navigation}: {navigation: any}): JSX.Element => {
       <Image source={pinkEyeImg} style={style.pinkEyeImg} />
       <View style={style.innerContainer}>
         <Text style={style.titleText}>미션 소개</Text>
-        <Text style={style.missionText}>좋아하는 음식 알아내기</Text>
-        <Text style={style.contentText}>
-          {`좋아하는 음식을 알아냈군요!\n정답을 입력해서 확인 받아볼까요?`}
+        <Text style={style.missionText}>
+          {misstionList[misstionList.length - 1]?.title}
         </Text>
-        <InputTextwithBtn
+        <Text style={style.contentText}>
+          {misstionList[misstionList.length - 1]?.content + '를 완료했나요?'}
+        </Text>
+
+        <Pressable style={style.btnContainer} onPress={postMissionComplete}>
+          <Text style={style.btn}>수행 완료</Text>
+        </Pressable>
+
+        {/* <InputTextwithBtn
           btnText="입력"
           onPress={handleExpand}
           onChange={handleTextChange}
-        />
+        /> */}
       </View>
       <Image source={yellowEyeImg} style={style.yellowEyeImg} />
       <BottomSheet
@@ -106,6 +143,24 @@ export const GoMission = ({navigation}: {navigation: any}): JSX.Element => {
 };
 
 const style = StyleSheet.create({
+  btnContainer: {
+    width: height * 300,
+    height: height * 48,
+    justifyContent: 'center',
+    alignSelf: 'center',
+    backgroundColor: GlobalStyles.green.color,
+    borderRadius: 20,
+    position: 'absolute',
+    bottom: '10%',
+  },
+
+  btn: {
+    fontFamily: GlobalStyles.nomal.fontFamily,
+    fontSize: height * 13,
+    color: GlobalStyles.white_2.color,
+    textAlign: 'center',
+  },
+
   container: {
     flex: 1,
   },
