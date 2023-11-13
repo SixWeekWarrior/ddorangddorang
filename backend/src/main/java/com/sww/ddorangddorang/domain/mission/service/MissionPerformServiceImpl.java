@@ -69,6 +69,9 @@ public class MissionPerformServiceImpl implements MissionPerformService {
         List<MissionPerform> missionPerformList = new ArrayList<>();
 
         for (Participant participant : participants) {
+            if (participant.getDeletedAt() != null) {
+                continue;
+            }
             MissionPerform missionPerform = assignMission(participant, missionIdList);
             missionPerformList.add(missionPerform);
         }

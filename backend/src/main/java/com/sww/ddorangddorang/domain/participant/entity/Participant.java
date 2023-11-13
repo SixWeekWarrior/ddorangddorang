@@ -106,4 +106,8 @@ public class Participant {
     public void changeMission() {
         this.change++;
     }
+
+    public void guessManito(User guessUser) {
+        this.isCorrect = this.manito.getUser().equals(guessUser);
+    }
 }
