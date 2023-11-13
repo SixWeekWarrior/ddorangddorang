@@ -85,7 +85,6 @@ const InfoBox = ({navigation, destination}: InfoBoxProps): JSX.Element => {
           } catch (error) {
             console.log('Error in Logout', error);
           }
-
           navigation.navigate('Onboarding', {destination: 'Onboarding'});
         })();
 
@@ -294,9 +293,20 @@ const InfoBox = ({navigation, destination}: InfoBoxProps): JSX.Element => {
         {borderWidth: renderBorderStyle()},
       ]}
       onPress={handlePress}>
-      <Text style={[style.titleFont, {color: renderTitleColor()}]}>
-        {renderTitle()}
-      </Text>
+      {missionList[missionList.length - 1]?.isComplete ? (
+        <View style={style.row}>
+          <Text style={[style.titleFont, {color: renderTitleColor()}]}>
+            {renderTitle()}
+          </Text>
+          <View style={style.complete}>
+            <Text style={style.miniText}>완료</Text>
+          </View>
+        </View>
+      ) : (
+        <Text style={[style.titleFont, {color: renderTitleColor()}]}>
+          {renderTitle()}
+        </Text>
+      )}
       {renderContent()}
       {renderArrowColor()}
     </Pressable>
@@ -368,6 +378,25 @@ const style = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-end',
+  },
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  complete: {
+    backgroundColor: GlobalStyles.green.color,
+    width: height * 40,
+    height: height * 20,
+    borderRadius: 10,
+    marginLeft: 10,
+    alignItems: 'center',
+    marginTop: 5,
+  },
+  miniText: {
+    fontFamily: GlobalStyles.home_title.fontFamily,
+    color: GlobalStyles.white_1.color,
+    fontSize: 12,
+    lineHeight: 30,
   },
   coloredFont: {
     fontFamily: GlobalStyles.section_title.fontFamily,

@@ -1,4 +1,4 @@
-import {View, StyleSheet, Text, FlatList} from 'react-native';
+import {View, StyleSheet, Text} from 'react-native';
 import MenuTop from '../../molecules/menuTop';
 import GlobalStyles from '../../../styles/GlobalStyles';
 import {useEffect, useState} from 'react';
@@ -41,7 +41,7 @@ export const MyGroup = (): JSX.Element => {
 
   const renderItem = ({item}: any) => (
     <View style={styles.profileContainer}>
-      <View style={styles.profilepic}></View>
+      <View style={styles.profilepic} />
       <Text style={styles.profilename}>{item.name}</Text>
       <Text style={styles.profiledetail}>{item.detail}</Text>
     </View>
@@ -51,7 +51,7 @@ export const MyGroup = (): JSX.Element => {
     <View style={styles.container}>
       <MenuTop
         menu="내 그룹 정보"
-        text={`현재  그룹에서 활동하고 있는\n친구들을 볼 수 있어요!`}
+        text={'현재  그룹에서 활동하고 있는\n친구들을 볼 수 있어요!'}
       />
       <View style={styles.noticeContainer}>
         <Text style={styles.titleText}>
@@ -59,8 +59,8 @@ export const MyGroup = (): JSX.Element => {
         </Text>
         <Text style={styles.miniText}>2023년 12월 11일 종료</Text>
       </View>
-      <View style={styles.listContainer}></View>
-      <View style={styles.emptyContainer}></View>
+      <View style={styles.listContainer} />
+      <View style={styles.emptyContainer} />
     </View>
   );
 };
