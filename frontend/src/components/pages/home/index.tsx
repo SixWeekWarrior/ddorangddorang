@@ -23,7 +23,6 @@ export const Home = ({navigation}: {navigation: any}): JSX.Element => {
   const [userInfo, setUserInfo] = useRecoilState(user.UserInfoState);
   const [hasManito, setHasManito] = useState(false);
   const [manitoHint, setManitoHint] = useState<string[]>(['', '']);
-  console.log(userInfo);
   useEffect(() => {
     const fetchData = async () => {
       try {

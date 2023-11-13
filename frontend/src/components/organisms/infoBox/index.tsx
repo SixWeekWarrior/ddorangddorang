@@ -8,11 +8,15 @@ import token from '../../../utils/token';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import {useRecoilState} from 'recoil';
 import user from '../../../modules/user';
+import {useEffect, useState} from 'react';
+import {MissionInfo, PerfomrsInfo} from '../../../types/mission';
+import {missionApi, roomApi} from '../../../apis';
 
 type InfoBoxProps = {
   navigation: any;
   destination: string;
 };
+
 const campusDict: {[key: number]: string} = {
   0: '서울',
   1: '대전',
@@ -21,28 +25,33 @@ const campusDict: {[key: number]: string} = {
   4: '부울경',
 };
 
-const InnerInfo = ({navigation}: {navigation: any}): JSX.Element => {
-  return (
-    <View style={style.innerInfoContainer}>
-      <View style={style.top}>
-        <Text style={style.coloredFont}>종료까지 D-7</Text>
-      </View>
-      <View style={style.middle}>
-        <Text style={style.bigFont}>8일차</Text>
-        <Text style={style.regFont}>지금까지 6개 수행 😀</Text>
-      </View>
-      <Pressable
-        onPress={() => navigation.navigate('MyGroup')}
-        style={style.bottom}>
-        <Text style={[style.smFont]}>내 그룹 보러가기</Text>
-        <Image source={whiteArrowRightImg} style={style.arrowImg} />
-      </Pressable>
-    </View>
-  );
+type RoomInfo = {
+  duration: number;
+  minMember: number;
+  maxMember: number;
+  roomKey: number;
+  memberCount: number;
 };
 
 const InfoBox = ({navigation, destination}: InfoBoxProps): JSX.Element => {
   const [userInfo, setUserInfo] = useRecoilState(user.UserInfoState);
+  const [misstionList, setMisstionList] = useState<MissionInfo[]>([]);
+  const [perfomrsInfo, setPerfomrsInfo] = useState<PerfomrsInfo>();
+
+  const getMissionInfo = () => {
+    try {
+      missionApi.getMission().then(data => {
+        setPerfomrsInfo(data.data);
+        setMisstionList(data.data.missionPerformsInfoRes);
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getMissionInfo();
+  }, []);
 
   const handlePress = () => {
     switch (destination) {
@@ -104,9 +113,26 @@ const InfoBox = ({navigation, destination}: InfoBoxProps): JSX.Element => {
   const renderContent = () => {
     switch (destination) {
       case 'MissionToday':
-        return <Text style={style.midFont}>좋아하는 음식 알아내기</Text>;
+        return (
+          <Text style={style.midFont}>
+            {misstionList[misstionList.length - 1]?.title}
+          </Text>
+        );
       case 'BasicInfo':
-        return <InnerInfo navigation={navigation} />;
+        return (
+          <View style={style.innerInfoContainer}>
+            <View style={style.top}>
+              <Text style={style.coloredFont}>종료까지 D-5</Text>
+            </View>
+            <View style={style.middle}>
+              <Text style={style.bigFont}>{perfomrsInfo?.dayCount}일차</Text>
+              <Text style={style.regFont}>
+                지금까지 {perfomrsInfo?.missionCompleteCount}개 수행 😀
+              </Text>
+            </View>
+          </View>
+        );
+
       case 'InfoToday':
         return (
           <View style={[style.flexColumn]}>
@@ -310,6 +336,7 @@ const style = StyleSheet.create({
   innerInfoContainer: {
     flex: 1,
     marginLeft: 24,
+    marginBottom: 20,
   },
   top: {
     alignSelf: 'flex-end',
