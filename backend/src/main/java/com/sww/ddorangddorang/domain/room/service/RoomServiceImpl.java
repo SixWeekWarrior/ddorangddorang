@@ -1,6 +1,5 @@
 package com.sww.ddorangddorang.domain.room.service;
 
-import com.sww.ddorangddorang.auth.dto.AuthenticatedUser;
 import com.sww.ddorangddorang.domain.mission.service.MissionPerformService;
 import com.sww.ddorangddorang.domain.participant.entity.Participant;
 import com.sww.ddorangddorang.domain.participant.entity.Prefix;
@@ -56,13 +55,13 @@ public class RoomServiceImpl implements RoomService {
     private final MissionPerformService missionPerformService;
 
     @Transactional
-    public Integer createRoom(RoomInfoReq roomInfoReq, AuthenticatedUser authenticatedUser) {
+    public Integer createRoom(RoomInfoReq roomInfoReq, Long userId) {
         //사용자가 현재 참여중인 방이 있는지
         //선택하지 않은 옵션
         //정상
         log.info("RoomServiceImpl_createRoom start");
-        log.info("id: {}", authenticatedUser.getId());
-        User user = findUserById(authenticatedUser.getId());
+        log.info("id: {}", userId);
+        User user = findUserById(userId);
 
         // TODO: user.getStatus()가 null이라서 에러 터져서 임시 수정함 MasterCode의 합의가 필요함
         if (user.getStatus() != null && !user.getStatus().equals(1L)) {
@@ -129,10 +128,10 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Transactional
-    public void joinRoom(Integer accessCode, AuthenticatedUser authenticatedUser) {
+    public void joinRoom(Integer accessCode, Long userId) {
         log.info("RoomServiceImpl_joinRoom start");
-        log.info("id: {}", authenticatedUser.getId());
-        User user = findUserById(authenticatedUser.getId());
+        log.info("id: {}", userId);
+        User user = findUserById(userId);
 
         // TODO: 초창기에 null값이라 nullPointerException 터짐에 유의, 임시적으로 수정함
         if (user.getStatus() != null && !user.getStatus().equals(1L)) {
@@ -157,10 +156,10 @@ public class RoomServiceImpl implements RoomService {
 
     // 어드민 유저의 방 정보 수정 요청
     @Transactional
-    public void updateRoom(RoomInfoReq roomInfoReq, AuthenticatedUser authenticatedUser) {
+    public void updateRoom(RoomInfoReq roomInfoReq, Long userId) {
         log.info("RoomServiceImpl_updateRoom start");
-        log.info("id: {}", authenticatedUser.getId());
-        User user = findUserById(authenticatedUser.getId());
+        log.info("id: {}", userId);
+        User user = findUserById(userId);
 
         if (!user.getStatus().equals(2L)) {
             log.info("RoomServiceImpl_updateRoom end");
@@ -190,10 +189,10 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Transactional
-    public void deleteGame(AuthenticatedUser authenticatedUser) {
+    public void deleteGame(Long userId) {
         log.info("RoomServiceImpl_deleteGame start");
-        log.info("id: {}", authenticatedUser.getId());
-        User admin = findUserById(authenticatedUser.getId());
+        log.info("id: {}", userId);
+        User admin = findUserById(userId);
 
         if (!admin.getStatus().equals(2L)) {
             log.info("RoomServiceImpl_deleteGame end");
@@ -214,10 +213,10 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Transactional
-    public void withdrawalRoom(AuthenticatedUser authenticatedUser) {
+    public void withdrawalRoom(Long userId) {
         log.info("RoomServiceImpl_withdrawalRoom start");
-        log.info("id: {}", authenticatedUser.getId());
-        User user = findUserById(authenticatedUser.getId());
+        log.info("id: {}", userId);
+        User user = findUserById(userId);
 
         if (!user.getStatus().equals(3L) && !user.getStatus().equals(5L)) {
             log.info("RoomServiceImpl_withdrawalRoom end");
@@ -427,11 +426,11 @@ public class RoomServiceImpl implements RoomService {
         return false;
     }
 
-    public List<ShowUsersRes> showUsers(AuthenticatedUser authenticatedUser) {
+    public List<ShowUsersRes> showUsers(Long userId) {
         log.info("RoomServiceImpl_showUsers start");
-        log.info("id: {}", authenticatedUser.getId());
+        log.info("id: {}", userId);
 
-        User user = findUserById(authenticatedUser.getId());
+        User user = findUserById(userId);
         List<ShowUsersRes> showUsersResList = new ArrayList<>();
 
         if (user.getStatus().equals(1L)) {
@@ -468,10 +467,10 @@ public class RoomServiceImpl implements RoomService {
 
     @Transactional
     public Boolean responseJoinRoom(List<JoinRoomReq> joinRoomReqList,
-        AuthenticatedUser authenticatedUser) {
+        Long userId) {
         log.info("RoomServiceImpl_responseJoinRoom start");
-        log.info("id: {}", authenticatedUser.getId());
-        User admin = findUserById(authenticatedUser.getId());
+        log.info("id: {}", userId);
+        User admin = findUserById(userId);
 
         List<Long> idList = new ArrayList<Long>();
         for (JoinRoomReq joinRoomReq : joinRoomReqList) {
@@ -526,10 +525,10 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Transactional
-    public Boolean checkAndRunIfRoomShouldStart(AuthenticatedUser authenticatedUser) {
+    public Boolean checkAndRunIfRoomShouldStart(Long userId) {
         log.info("RoomServiceImpl_checkAndRunIfRoomShouldStart start");
-        log.info("id: {}", authenticatedUser.getId());
-        User user = findUserById(authenticatedUser.getId());
+        log.info("id: {}", userId);
+        User user = findUserById(userId);
 
         Room room = user.getRoom();
 
@@ -544,12 +543,11 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Transactional
-    public Boolean checkAndStartGame(AuthenticatedUser authenticatedUser) {
+    public Boolean checkAndStartGame(Long userId) {
         log.info("RoomServiceImpl_checkAndStartGame start");
-        log.info("id: {}", authenticatedUser.getId());
+        log.info("id: {}", userId);
 
-        User user = findUserById(authenticatedUser.getId());
-
+        User user = findUserById(userId);
         Room room = user.getRoom();
 
         if (!user.equals(room.getAdmin())) {

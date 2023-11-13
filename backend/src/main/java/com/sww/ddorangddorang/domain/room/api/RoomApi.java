@@ -8,7 +8,6 @@ import com.sww.ddorangddorang.domain.room.dto.RoomGetRes;
 import com.sww.ddorangddorang.domain.room.dto.RoomInfoReq;
 import com.sww.ddorangddorang.domain.room.dto.ShowUsersRes;
 import com.sww.ddorangddorang.domain.room.dto.WaitingListRes;
-import com.sww.ddorangddorang.domain.room.entity.Room;
 import com.sww.ddorangddorang.domain.room.service.RoomService;
 import com.sww.ddorangddorang.global.common.CommonResponse;
 import java.util.List;
@@ -35,7 +34,8 @@ public class RoomApi {
     private final static String SUCCESS = "SUCCESS";
 
     @GetMapping
-    public CommonResponse<RoomGetRes> getRoom(@AuthenticationPrincipal AuthenticatedUser authenticatedUser) {
+    public CommonResponse<RoomGetRes> getRoom(
+        @AuthenticationPrincipal AuthenticatedUser authenticatedUser) {
         log.info("RoomApi_getRoom start");
         RoomGetRes roomGetRes = roomService.getRoom(authenticatedUser.getId());
         log.info("RoomApi_getRoom end: Room id - {}", roomGetRes);
@@ -46,7 +46,7 @@ public class RoomApi {
     public CommonResponse<Integer> createRoom(@RequestBody RoomInfoReq roomInfoReq,
         @AuthenticationPrincipal AuthenticatedUser authenticatedUser) {
         log.info("RoomApi_createRoom start");
-        Integer accessCode = roomService.createRoom(roomInfoReq, authenticatedUser);
+        Integer accessCode = roomService.createRoom(roomInfoReq, authenticatedUser.getId());
         log.info("RoomApi_createRoom end: " + accessCode);
         return CommonResponse.success(accessCode);
     }
@@ -56,7 +56,7 @@ public class RoomApi {
     public CommonResponse<String> joinRoom(@RequestBody AccessCodeReq accessCodeReq,
         @AuthenticationPrincipal AuthenticatedUser authenticatedUser) {
         log.info("RoomApi_joinRoom start");
-        roomService.joinRoom(accessCodeReq.getAccessCode(), authenticatedUser);
+        roomService.joinRoom(accessCodeReq.getAccessCode(), authenticatedUser.getId());
         log.info("RoomApi_joinRoom end");
         return CommonResponse.success(SUCCESS);
     }
@@ -66,8 +66,8 @@ public class RoomApi {
     public CommonResponse<String> updateRoom(@RequestBody RoomInfoReq roomInfoReq,
         @AuthenticationPrincipal AuthenticatedUser authenticatedUser) {
         log.info("RoomApi_updateRoom start");
-        roomService.updateRoom(roomInfoReq, authenticatedUser);
-        roomService.checkAndRunIfRoomShouldStart(authenticatedUser);
+        roomService.updateRoom(roomInfoReq, authenticatedUser.getId());
+        roomService.checkAndRunIfRoomShouldStart(authenticatedUser.getId());
         log.info("RoomApi_updateRoom end");
         return CommonResponse.success(SUCCESS);
     }
@@ -81,7 +81,7 @@ public class RoomApi {
     public CommonResponse<String> deleteRoom(
         @AuthenticationPrincipal AuthenticatedUser authenticatedUser) {
         log.info("RoomApi_deleteRoom start");
-        roomService.deleteGame(authenticatedUser);
+        roomService.deleteGame(authenticatedUser.getId());
         log.info("RoomApi_deleteRoom end");
         return CommonResponse.success(SUCCESS);
     }
@@ -94,7 +94,7 @@ public class RoomApi {
     public CommonResponse<String> withdrawalRoom(
         @AuthenticationPrincipal AuthenticatedUser authenticatedUser) {
         log.info("RoomApi_withdrawalRoom start");
-        roomService.withdrawalRoom(authenticatedUser);
+        roomService.withdrawalRoom(authenticatedUser.getId());
         log.info("RoomApi_withdrawalRoom end");
         return CommonResponse.success(SUCCESS);
     }
@@ -104,7 +104,7 @@ public class RoomApi {
     public CommonResponse<String> startGame(
         @AuthenticationPrincipal AuthenticatedUser authenticatedUser) {
         log.info("RoomApi_startGame start");
-        roomService.checkAndStartGame(authenticatedUser);
+        roomService.checkAndStartGame(authenticatedUser.getId());
         log.info("RoomApi_startGame end");
         return CommonResponse.success(SUCCESS);
     }
@@ -114,7 +114,7 @@ public class RoomApi {
     public CommonResponse<List<ShowUsersRes>> showUsers(@PathVariable Long roomId,
         @AuthenticationPrincipal AuthenticatedUser authenticatedUser) {
         log.info("RoomApi_showUsers start");
-        List<ShowUsersRes> showUsersResList = roomService.showUsers(authenticatedUser);
+        List<ShowUsersRes> showUsersResList = roomService.showUsers(authenticatedUser.getId());
         log.info("RoomApi_showUsers end");
         return CommonResponse.success(showUsersResList);
     }
@@ -124,10 +124,10 @@ public class RoomApi {
     public CommonResponse<Boolean> responseJoinRoom(@RequestBody List<JoinRoomReq> joinRoomReqList,
         @AuthenticationPrincipal AuthenticatedUser authenticatedUser) {
         log.info("RoomApi_responseJoinRoom start");
-        Boolean joined = roomService.responseJoinRoom(joinRoomReqList, authenticatedUser);
+        Boolean joined = roomService.responseJoinRoom(joinRoomReqList, authenticatedUser.getId());
 
         if (joined) {
-            roomService.checkAndRunIfRoomShouldStart(authenticatedUser);
+            roomService.checkAndRunIfRoomShouldStart(authenticatedUser.getId());
         }
 
         log.info("RoomApi_responseJoinRoom end");
@@ -146,7 +146,8 @@ public class RoomApi {
     }
 
     @GetMapping("/end")
-    public CommonResponse<EndDayInfoRes> getEndDayInfo(@AuthenticationPrincipal AuthenticatedUser authenticatedUser) {
+    public CommonResponse<EndDayInfoRes> getEndDayInfo(
+        @AuthenticationPrincipal AuthenticatedUser authenticatedUser) {
         log.info("RoomApi_getEndDayInfo start");
         EndDayInfoRes endDayInfoRes = roomService.getEndDayInfo(authenticatedUser.getId());
         log.info("RoomApi_getEndDayInfo end");

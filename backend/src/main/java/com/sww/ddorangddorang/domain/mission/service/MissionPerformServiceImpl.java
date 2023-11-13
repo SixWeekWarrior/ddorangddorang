@@ -1,6 +1,5 @@
 package com.sww.ddorangddorang.domain.mission.service;
 
-import com.sww.ddorangddorang.auth.dto.AuthenticatedUser;
 import com.sww.ddorangddorang.domain.mission.dto.MissionChangeReq;
 import com.sww.ddorangddorang.domain.mission.dto.MissionCompleteReq;
 import com.sww.ddorangddorang.domain.mission.dto.MissionPerformAndDayCountRes;
@@ -84,10 +83,9 @@ public class MissionPerformServiceImpl implements MissionPerformService {
 
     // 원하지 않는 미션을 변경하는 메서드
     public void changeMission(MissionChangeReq missionChangeReq,
-        AuthenticatedUser authenticatedUser) {
-        log.info("email: {}", authenticatedUser.getEmail());
-        log.info("id: {}", authenticatedUser.getId());
-        User user = findUserById(authenticatedUser.getId());
+        Long userId) {
+        log.info("id: {}", userId);
+        User user = findUserById(userId);
 
         // 유저가 참가한 방에서 현재 게임이 진행중인지 판단함
         validateRoom(user);
@@ -225,9 +223,9 @@ public class MissionPerformServiceImpl implements MissionPerformService {
 
 
     // 특정 유저의 수행중인 미션을 조회하고, 시작부터 지난 날짜와 완료한 미션의 개수를 반환하는 메소드
-    public MissionPerformAndDayCountRes findMissionByUser(AuthenticatedUser authenticatedUser) {
-        log.info("id: {}", authenticatedUser.getId());
-        User user = findUserById(authenticatedUser.getId());
+    public MissionPerformAndDayCountRes findMissionByUser(Long userId) {
+        log.info("id: {}", userId);
+        User user = findUserById(userId);
 
         Room room = user.getRoom();
         log.info("room_id: {}", room.getId());
@@ -253,10 +251,9 @@ public class MissionPerformServiceImpl implements MissionPerformService {
 
     // 유저의 미션 완료 요청이 왔을 때 수행되는 메소드
     public void missionComplete(MissionCompleteReq missionCompleteReq,
-        AuthenticatedUser authenticatedUser) {
-        log.info("email: {}", authenticatedUser.getEmail());
-        log.info("id: {}", authenticatedUser.getId());
-        User user = findUserById(authenticatedUser.getId());
+        Long userId) {
+        log.info("id: {}", userId);
+        User user = findUserById(userId);
         MissionPerform missionPerform = missionPerformRepository.findById(
             missionCompleteReq.getMissionId()).orElseThrow(MissionNotFoundException::new);
 

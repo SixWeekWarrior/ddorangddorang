@@ -1,6 +1,5 @@
 package com.sww.ddorangddorang.domain.mission.service;
 
-import com.sww.ddorangddorang.auth.dto.AuthenticatedUser;
 import com.sww.ddorangddorang.domain.mission.dto.MissionChangeReq;
 import com.sww.ddorangddorang.domain.mission.dto.MissionCompleteReq;
 import com.sww.ddorangddorang.domain.mission.dto.MissionPerformAndDayCountRes;
@@ -10,12 +9,12 @@ public interface MissionPerformService {
 
     void changeMissionAt9Am();
 
-    MissionPerformAndDayCountRes findMissionByUser(AuthenticatedUser authenticatedUser);
+    MissionPerformAndDayCountRes findMissionByUser(Long userId);
 
     void missionComplete(MissionCompleteReq missionCompleteReq,
-        AuthenticatedUser authenticatedUser);
+        Long userId);
 
-    void changeMission(MissionChangeReq missionChangeReq, AuthenticatedUser authenticatedUser);
+    void changeMission(MissionChangeReq missionChangeReq, Long userId);
 
     void startGameAndAssignMission(Room room);
 
