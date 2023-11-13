@@ -4,6 +4,7 @@ import BtnBig from '../../atoms/btnBig';
 import {userApi} from '../../../apis';
 import {useRecoilState, useSetRecoilState} from 'recoil';
 import user from '../../../modules/user';
+import {UserInfo} from '../../../types/user';
 
 export const AdditionalInfo = ({
   navigation,
@@ -22,6 +23,7 @@ export const AdditionalInfo = ({
 
   const handleSkip = async () => {
     try {
+      // 기존 값을 복사하여 업데이트
       await setTmpUserInfo(prevUserInfo => ({
         ...prevUserInfo,
         mbti: '',
@@ -29,16 +31,26 @@ export const AdditionalInfo = ({
         hate: '',
         worry: '',
       }));
-      await handleSignup();
+
+      // await setTmpUserInfo 이후에 직접 tmpUserInfo 값을 참조하여 사용
+      const updatedUserInfo = {
+        ...tmpUserInfo,
+        mbti: '',
+        like: '',
+        hate: '',
+        worry: '',
+      };
+
+      await handleSignup(updatedUserInfo);
     } catch (error) {
       console.error(error);
     }
   };
 
-  const handleSignup = async () => {
+  const handleSignup = async (userInfo: UserInfo) => {
     try {
-      await userApi.postSignup(tmpUserInfo);
-      await setUserInfo(tmpUserInfo);
+      await userApi.postSignup(userInfo);
+      await setUserInfo(userInfo);
       navigation.navigate('Enter', 'signup');
     } catch (error) {
       navigation.navigate('Onboarding');
@@ -53,7 +65,7 @@ export const AdditionalInfo = ({
         onInputChange={handleInputChange}
         onSkip={handleSkip}
       />
-      <BtnBig text="회원가입" onPress={handleSignup} />
+      <BtnBig text="회원가입" onPress={() => handleSignup(tmpUserInfo)} />
     </View>
   );
 };

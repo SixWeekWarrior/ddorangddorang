@@ -8,6 +8,7 @@ import token from '../../../utils/token';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import {useRecoilState} from 'recoil';
 import user from '../../../modules/user';
+import mission from '../../../modules/mission';
 
 type InfoBoxProps = {
   navigation: any;
@@ -44,7 +45,9 @@ const InnerInfo = ({navigation}: {navigation: any}): JSX.Element => {
 const InfoBox = ({navigation, destination}: InfoBoxProps): JSX.Element => {
   const [userInfo, setUserInfo] = useRecoilState(user.UserInfoState);
   const [homeInfo, setHomeInfo] = useRecoilState(user.HomeInfoState);
-  const [missionInfo, setMissionInfo] = useRecoilState(user.HomeInfoState);
+  const [missionInfo, setMissionInfo] = useRecoilState(
+    mission.MissionInfoState,
+  );
 
   const handlePress = () => {
     switch (destination) {
@@ -118,8 +121,14 @@ const InfoBox = ({navigation, destination}: InfoBoxProps): JSX.Element => {
       case 'InfoToday':
         return (
           <View style={[style.flexColumn]}>
-            <InfoAtom title="기분" content={userInfo.mood} />
-            <InfoAtom title="입은 옷" content={userInfo.color} />
+            <InfoAtom
+              title="기분"
+              content={userInfo.mood ? userInfo.mood : '미설정'}
+            />
+            <InfoAtom
+              title="입은 옷"
+              content={userInfo.color ? userInfo.color : '미설정'}
+            />
           </View>
         );
       case 'InfoSsafy':

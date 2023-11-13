@@ -1,15 +1,17 @@
-export type MissionInfo = {
+export type MissionIdInfo = {
   missionId: number;
 };
 
-export type MissionPerformInfo = {
+export type MissionPerformIdInfo = {
   missionPerformId: number;
 };
 
-export type TodayMissionInfo = {
-  missionId: number,
-  title: string,
-  content: string,
-  isComplete: boolean,
-  missionType: number,
-}
+export type MissionInfo = {
+  missionId: number;
+  title: string;
+  content: string;
+  isComplete: boolean;
+  missionType: number;
+  dayCount: number;
+  missionCompleteCount: number;
+};
