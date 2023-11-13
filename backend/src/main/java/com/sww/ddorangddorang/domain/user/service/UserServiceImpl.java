@@ -210,7 +210,9 @@ public class UserServiceImpl implements UserService {
         String missionTitle = null;
         Long missionId = null;
         Long missionPerformId = null;
+        Long dayCount = null;
         Participant manito = participant.get().getManito();
+        LocalDateTime today = LocalDateTime.now();
 
         if(manito == null)
             return UsersHomeInfoGetRes.builder().build();
@@ -227,8 +229,9 @@ public class UserServiceImpl implements UserService {
             mood = moodHint.orElseThrow(UnexpectedException::new).getContent();
         }
 
-        dday = ChronoUnit.DAYS.between(LocalDateTime.now(),
+        dday = ChronoUnit.DAYS.between(today,
             room.getStartedAt().plusDays(room.getDuration())) + 1;
+        dayCount = ChronoUnit.DAYS.between(room.getStartedAt(), today) + 1;
 
         List<MissionPerform> missionPerformList = missionPerformRepository.findAllByPlayer(participant.get());
 
@@ -250,6 +253,7 @@ public class UserServiceImpl implements UserService {
             .missionTitle(missionTitle)
             .missionId(missionId)
             .missionPerformId(missionPerformId)
+            .dayCount(dayCount)
             .build();
     }
 }
