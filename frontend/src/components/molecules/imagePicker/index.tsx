@@ -1,13 +1,5 @@
 import {useState} from 'react';
-import {
-  Alert,
-  Image,
-  ImageURISource,
-  Pressable,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
+import {Alert, Image, Pressable, StyleSheet, Text, View} from 'react-native';
 import {
   launchCamera,
   launchImageLibrary,
@@ -17,15 +9,14 @@ import {
   Asset,
 } from 'react-native-image-picker';
 import GlobalStyles from '../../../styles/GlobalStyles';
+import userImg from '../../../assets/userImg.png';
 
 type ImagePickerProps = {
   onImageSelect: (imageUri: string) => void;
 };
 
 const ImagePicker = ({onImageSelect}: ImagePickerProps) => {
-  const [img, setImg] = useState<ImageURISource>({
-    uri: 'https://cdn.pixabay.com/photo/2020/03/31/19/20/dog-4988985_640.jpg',
-  });
+  const [img, setImg] = useState(userImg);
 
   const handleImageSelect = (uri: string | undefined) => {
     setImg({uri: uri || ''});

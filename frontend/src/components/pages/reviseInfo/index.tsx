@@ -51,14 +51,20 @@ export const ReviseInfo = ({navigation, route}: any): JSX.Element => {
     switch (destination) {
       case 'InfoToday':
         return (
-          <View style={[styles.flexColumn, {height: '50%', rowGap: 5}]}>
-            <InfoAtom title="기분" content={userInfo.mood} />
-            <InfoAtom title="입은 옷" content={userInfo.color} />
+          <View style={[styles.flexColumn, {height: '50%', rowGap: 10}]}>
+            <InfoAtom
+              title="기분"
+              content={userInfo.mood ? userInfo.mood : '미설정'}
+            />
+            <InfoAtom
+              title="입은 옷"
+              content={userInfo.color ? userInfo.color : '미설정'}
+            />
           </View>
         );
       case 'InfoSsafy':
         return (
-          <View style={[styles.flexColumn, {height: '50%', rowGap: 5}]}>
+          <View style={[styles.flexColumn, {height: '50%', rowGap: 10}]}>
             <InfoAtom title="지역" content={campusDict[userInfo.campus]} />
             <InfoAtom
               title="전공"
@@ -70,11 +76,23 @@ export const ReviseInfo = ({navigation, route}: any): JSX.Element => {
         );
       case 'InfoEtc':
         return (
-          <View style={[styles.flexColumn, {rowGap: 5}]}>
-            <InfoAtom title="MBTI" content={userInfo.mbti} />
-            <InfoAtom title="요즘 고민" content={userInfo.worry} />
-            <InfoAtom title="좋아하는 것" content={userInfo.likes} />
-            <InfoAtom title="싫어하는 것" content={userInfo.hate} />
+          <View style={[styles.flexColumn, {rowGap: 10}]}>
+            <InfoAtom
+              title="MBTI"
+              content={userInfo.mbti ? userInfo.mbti : '미설정'}
+            />
+            <InfoAtom
+              title="요즘 고민"
+              content={userInfo.worry ? userInfo.worry : '미설정'}
+            />
+            <InfoAtom
+              title="좋아하는 것"
+              content={userInfo.likes ? userInfo.likes : '미설정'}
+            />
+            <InfoAtom
+              title="싫어하는 것"
+              content={userInfo.hate ? userInfo.hate : '미설정'}
+            />
           </View>
         );
       default:

@@ -3,15 +3,15 @@ import {FlatList, StyleSheet, View} from 'react-native';
 import GlobalStyles from '../../../styles/GlobalStyles';
 import MissionTab from '../../atoms/missionTab';
 import {missionApi} from '../../../apis';
-import {MissionInfo, PerfomrsInfo} from '../../../types/mission';
+import {MissionInfo, PerformsInfo} from '../../../types/mission';
 
 const MissionList = () => {
   const [misstionList, setMisstionList] = useState<MissionInfo[]>([]);
-  const [perfomrsInfo, setPerfomrsInfo] = useState<PerfomrsInfo>();
+  const [performsInfo, setPerformsInfo] = useState<PerformsInfo>();
   const getMissionInfo = () => {
     try {
       missionApi.getMission().then(data => {
-        setPerfomrsInfo(data.data);
+        setPerformsInfo(data.data);
         setMisstionList(data.data.missionPerformsInfoRes);
       });
     } catch (error) {
@@ -25,8 +25,8 @@ const MissionList = () => {
 
   // 디버깅 코드
   useEffect(() => {
-    console.log(misstionList, perfomrsInfo);
-  }, [misstionList, perfomrsInfo]);
+    console.log(misstionList, performsInfo);
+  }, [misstionList, performsInfo]);
 
   return (
     <View style={styles.listContainer}>

@@ -6,7 +6,7 @@ export type MissionInfo = {
   missionType: number;
 };
 
-export type PerfomrsInfo = {
+export type PerformsInfo = {
   missionPerformsInfoRes: MissionInfo[];
   dayCount: number;
   missionCompleteCount: number;

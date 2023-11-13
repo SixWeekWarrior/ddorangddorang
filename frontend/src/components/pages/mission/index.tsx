@@ -9,7 +9,7 @@ export const Misson = ({navigation}: {navigation: any}): JSX.Element => {
     <ScrollView style={styles.container}>
       <MenuTop
         menu="미션"
-        text={`오늘의 미션을 완수하고\n미션 도장을 찍어봐요!`}
+        text={'오늘의 미션을 완수하고\n미션 도장을 찍어봐요!'}
       />
       <View style={styles.topContainer}>
         <InfoBox navigation={navigation} destination="MissionToday" />

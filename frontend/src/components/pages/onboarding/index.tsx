@@ -15,11 +15,11 @@ import {
 import BtnBig from '../../atoms/btnBig';
 import {userApi} from '../../../apis';
 import {tokenUtil} from '../../../utils';
-import {useRecoilState} from 'recoil';
+import {useSetRecoilState} from 'recoil';
 import {userAtom} from '../../../modules';
 
 export const Onboarding = ({navigation}: {navigation: any}) => {
-  const [userInfo, setUserInfo] = useRecoilState(userAtom.UserInfoState);
+  const setUserInfo = useSetRecoilState(userAtom.UserInfoState);
   const [userState, setUserState] = useState<number | null>(-1);
 
   useEffect(() => {

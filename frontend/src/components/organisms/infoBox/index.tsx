@@ -9,7 +9,7 @@ import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import {useRecoilState} from 'recoil';
 import user from '../../../modules/user';
 import {useEffect, useState} from 'react';
-import {MissionInfo, PerfomrsInfo} from '../../../types/mission';
+import {MissionInfo, PerformsInfo} from '../../../types/mission';
 import {missionApi, roomApi} from '../../../apis';
 import {RoomEndInfo} from '../../../types/room';
 
@@ -28,15 +28,15 @@ const campusDict: {[key: number]: string} = {
 
 const InfoBox = ({navigation, destination}: InfoBoxProps): JSX.Element => {
   const [userInfo, setUserInfo] = useRecoilState(user.UserInfoState);
-  const [misstionList, setMisstionList] = useState<MissionInfo[]>([]);
-  const [perfomrsInfo, setPerfomrsInfo] = useState<PerfomrsInfo>();
+  const [missionList, setMissionList] = useState<MissionInfo[]>([]);
+  const [performsInfo, setPerformsInfo] = useState<PerformsInfo>();
   const [endInfo, setEndInfo] = useState<RoomEndInfo>();
 
   const getMissionInfo = () => {
     try {
       missionApi.getMission().then(data => {
-        setPerfomrsInfo(data.data);
-        setMisstionList(data.data.missionPerformsInfoRes);
+        setPerformsInfo(data.data);
+        setMissionList(data.data.missionPerformsInfoRes);
       });
     } catch (error) {
       console.log(error);
@@ -121,7 +121,9 @@ const InfoBox = ({navigation, destination}: InfoBoxProps): JSX.Element => {
       case 'MissionToday':
         return (
           <Text style={style.midFont}>
-            {misstionList[misstionList.length - 1]?.title}
+            {missionList[missionList.length - 1]?.title
+              ? missionList[missionList.length - 1]?.title
+              : '데이터가 없습니다.'}
           </Text>
         );
       case 'BasicInfo':
@@ -133,9 +135,9 @@ const InfoBox = ({navigation, destination}: InfoBoxProps): JSX.Element => {
               </Text>
             </View>
             <View style={style.middle}>
-              <Text style={style.bigFont}>{perfomrsInfo?.dayCount}일차</Text>
+              <Text style={style.bigFont}>{performsInfo?.dayCount}일차</Text>
               <Text style={style.regFont}>
-                지금까지 {perfomrsInfo?.missionCompleteCount}개 수행 😀
+                지금까지 {performsInfo?.missionCompleteCount}개 수행 😀
               </Text>
             </View>
           </View>
@@ -144,12 +146,19 @@ const InfoBox = ({navigation, destination}: InfoBoxProps): JSX.Element => {
       case 'InfoToday':
         return (
           <View style={[style.flexColumn]}>
-            <InfoAtom title="기분" content={userInfo.mood} />
-            <InfoAtom title="입은 옷" content={userInfo.color} />
+            <InfoAtom
+              title="기분"
+              content={userInfo.mood ? userInfo.mood : '미설정'}
+            />
+            <InfoAtom
+              title="입은 옷"
+              content={userInfo.color ? userInfo.color : '미설정'}
+            />
           </View>
         );
       case 'InfoSsafy':
         return (
+          // eslint-disable-next-line react-native/no-inline-styles
           <View style={[style.flexColumn, {height: '50%'}]}>
             <InfoAtom
               title="지역"

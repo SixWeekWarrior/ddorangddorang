@@ -4,23 +4,24 @@ import BtnBig from '../../atoms/btnBig';
 import GlobalStyles, {height} from '../../../styles/GlobalStyles';
 import {TextInput} from 'react-native-gesture-handler';
 import {useState} from 'react';
-import { Opinion } from '../../../types/user';
-import { userApi } from '../../../apis';
+import {OpinionInfo} from '../../../types/user';
+import {userApi} from '../../../apis';
 
 const SendOpinion = ({navigation}: {navigation: any}) => {
-  const [value, setValue] = useState<Opinion>({
+  const [value, setValue] = useState<OpinionInfo>({
     content: '',
   });
 
   const handleInputChange = (text: string) => {
-    setValue(prevState => ({
-      ...prevState,
-    }))
+    setValue(prevValue => ({
+      ...prevValue,
+      content: text,
+    }));
   };
 
   const handlePress = async () => {
     try {
-      const creatOpinion: Opinion = {...value};
+      const creatOpinion: OpinionInfo = {...value};
       await userApi.postOpinion(value);
       await setValue(creatOpinion);
       navigation.navigate('NavBar');

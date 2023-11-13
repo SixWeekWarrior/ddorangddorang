@@ -1,7 +1,7 @@
 import apiInstance from './client';
 import axios from 'axios';
 import {
-  Opinion,
+  OpinionInfo,
   UserDailyInfo,
   UserInfo,
   UserMoreInfo,
@@ -110,14 +110,16 @@ const getUser = async () => {
   }
 };
 
-const postOpinion = async (data: Opinion) => {
+// 개발자 의견보내기 API
+const postOpinion = async (data: OpinionInfo) => {
   try {
     const res = await client.post('/opinions', data);
     return res.data;
   } catch (e) {
     throw new Error('ERROR IN POST_OPINION');
   }
-}
+};
+
 // 마니또 Hint 정보 조회 API
 const getManitoHint = async () => {
   try {
@@ -139,6 +141,16 @@ const getUserState = async () => {
   }
 };
 
+// Home 출력 정보 조회
+const getHomeInfo = async () => {
+  try {
+    const res = await client.get('users/home');
+    return res.data.data;
+  } catch (e) {
+    throw new Error('ERROR IN getHomeInfo');
+  }
+};
+
 const user = {
   postLogin,
   postSignup,
@@ -146,9 +158,10 @@ const user = {
   putMoreInfo,
   putTodayInfo,
   getUser,
-  postOpinion,
   getManitoHint,
   getUserState,
+  getHomeInfo,
+  postOpinion,
 };
 
 export default user;

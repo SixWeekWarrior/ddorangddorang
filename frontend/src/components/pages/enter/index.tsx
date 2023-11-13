@@ -101,9 +101,7 @@ export const Enter = ({navigation, route}: any): JSX.Element => {
           로그아웃
         </Text>
       </View>
-      {params === 'login' ? (
-        ''
-      ) : (
+      {params === 'signup' ? (
         <BottomSheet
           ref={bottomSheetRef}
           snapPoints={snapPoints}
@@ -112,6 +110,8 @@ export const Enter = ({navigation, route}: any): JSX.Element => {
           enablePanDownToClose={true}>
           {congrats()}
         </BottomSheet>
+      ) : (
+        ''
       )}
     </View>
   );

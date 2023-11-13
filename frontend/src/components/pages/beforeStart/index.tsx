@@ -69,7 +69,7 @@ export const BeforeStart = ({navigation}: {navigation: any}) => {
       roomInfo.minMember <= roomInfo.memberCount &&
         roomInfo.memberCount <= roomInfo.maxMember,
     );
-  }, [roomInfo.maxMember, roomInfo.minMember, selectedCount]);
+  }, [roomInfo.maxMember, roomInfo.minMember, roomInfo.memberCount]);
 
   return (
     <ScrollView style={styles.container}>

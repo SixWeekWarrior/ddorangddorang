@@ -45,6 +45,17 @@ export type UserDailyInfo = {
   color: string;
 };
 
-export type Opinion = {
+export type HomeInfo = {
+  color: string;
+  mood: string;
+  dday: number;
+  isMissionDone: boolean;
+  missionTitle: string;
+  missionId: number;
+  missionPerformId: number;
+  dayCount: number;
+};
+
+export type OpinionInfo = {
   content: string;
 };
