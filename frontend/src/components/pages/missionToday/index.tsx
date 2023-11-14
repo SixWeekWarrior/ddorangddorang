@@ -1,4 +1,5 @@
-import {StyleSheet, View, Image, Text} from 'react-native';
+import {StyleSheet, View, Image, Text, Pressable} from 'react-native';
+import Modal from 'react-native-modal';
 import MenuTop from '../../molecules/menuTop';
 import pinkEyeImg from '../../../assets/pinkEyeImg.png';
 import yellowEyeImg from '../../../assets/yellowEyeImg.png';
@@ -11,6 +12,11 @@ import missionAgainImg from '../../../assets/missionAgainImg.png';
 
 const MissionToday = ({navigation}: {navigation: any}): JSX.Element => {
   const [missionList, setMissionList] = useState<MissionInfo[]>([]);
+  const [isModalVisible, setModalVisible] = useState(false);
+
+  const toggleModal = () => {
+    setModalVisible(!isModalVisible);
+  };
 
   const getMissionInfo = () => {
     try {
@@ -21,6 +27,16 @@ const MissionToday = ({navigation}: {navigation: any}): JSX.Element => {
       console.log(error);
     }
   };
+
+  // const changeMission = () => {
+  //   try {
+  //     missionApi.putMissionChange().then(data => {
+  //       setMissionList(data.data.missionPerformsInfoRes);
+  //     });
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   useEffect(() => {
     getMissionInfo();
@@ -46,7 +62,9 @@ const MissionToday = ({navigation}: {navigation: any}): JSX.Element => {
           </Text>
         </View>
         {!missionList[missionList.length - 1]?.isComplete && (
-          <Image source={missionAgainImg} style={style.missionAgainImg} />
+          <Pressable style={style.rolltheDice} onPress={toggleModal}>
+            <Image source={missionAgainImg} style={style.missionAgainImg} />
+          </Pressable>
         )}
         <Text style={style.contentText}>
           {missionList[missionList.length - 1]?.title +
@@ -59,6 +77,15 @@ const MissionToday = ({navigation}: {navigation: any}): JSX.Element => {
         disabled={missionList[missionList.length - 1]?.isComplete}
       />
       <Image source={yellowEyeImg} style={style.yellowEyeImg} />
+      <Modal isVisible={isModalVisible}>
+        <View style={{flex: 1}}>
+          <Text style={style.titleText}>Hello!</Text>
+
+          <Pressable style={style.btn} onPress={toggleModal}>
+            <Text style={style.titleText}>닫기</Text>
+          </Pressable>
+        </View>
+      </Modal>
     </View>
   );
 };
@@ -85,12 +112,14 @@ const style = StyleSheet.create({
     objectFit: 'scale-down',
   },
   missionAgainImg: {
-    position: 'absolute',
-    right: height * 15,
-    top: height * 15,
     height: 40,
     width: 40,
     objectFit: 'scale-down',
+  },
+  rolltheDice: {
+    position: 'absolute',
+    right: height * 15,
+    top: height * 15,
   },
   innerContainer: {
     backgroundColor: 'rgba(255, 255, 255, 0.8)', // Adjust the opacity to your preference
