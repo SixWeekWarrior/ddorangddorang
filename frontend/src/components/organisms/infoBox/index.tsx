@@ -107,7 +107,7 @@ const InfoBox = ({navigation, destination}: InfoBoxProps): JSX.Element => {
       case 'InfoEtc':
         return '추가 정보';
       case 'SendOpinion':
-        return '의견 보내기';
+        return '개발자 의견 보내기';
       case 'Logout':
         return '로그아웃';
       default:
@@ -298,9 +298,11 @@ const InfoBox = ({navigation, destination}: InfoBoxProps): JSX.Element => {
           <Text style={[style.titleFont, {color: renderTitleColor()}]}>
             {renderTitle()}
           </Text>
-          <View style={style.complete}>
-            <Text style={style.miniText}>완료</Text>
-          </View>
+          {destination === 'MissionToday' && (
+            <View style={style.complete}>
+              <Text style={style.miniText}>완료</Text>
+            </View>
+          )}
         </View>
       ) : (
         <Text style={[style.titleFont, {color: renderTitleColor()}]}>
