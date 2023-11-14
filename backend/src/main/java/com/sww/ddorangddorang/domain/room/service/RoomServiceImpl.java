@@ -236,7 +236,6 @@ public class RoomServiceImpl implements RoomService {
     }
 
 
-    // TODO: 미션 부여는 아직 안 됨
     // 미션 부여 코드 한 줄 추가했습니다
     @Transactional
     public void startGame(Room room) {

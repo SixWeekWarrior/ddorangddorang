@@ -45,7 +45,6 @@ public class Room {
     @NotNull
     private Integer accessCode;  //INT
 
-    // TODO: NotNull 제약조건때문에 Service단에서 에러 발생해서 임시적으로 제거하였음. 우현이 오면 컨펌받기. DB에서 NotNull 제약 조건도 제낌
     private Integer campus; //INT
 
     //    @Column(name = "min_member")

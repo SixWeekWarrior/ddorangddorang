@@ -66,4 +66,8 @@ public class MissionPerform {
         return this.performedAt != null;
     }
 
+    public void missionChanged() {
+        this.deletedAt = LocalDateTime.now();
+    }
+
 }
