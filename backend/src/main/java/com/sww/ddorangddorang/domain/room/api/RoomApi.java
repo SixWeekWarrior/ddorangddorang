@@ -72,9 +72,6 @@ public class RoomApi {
         return CommonResponse.success(SUCCESS);
     }
 
-    // TODO: 프론트엔드에서 현재 내가 방장인지 아닌지를 판단해서 다른 API를 호출하는 것 보다는 백엔드에서 authenticatedUser 까서 방장 여부 판단하는 것이 더 나을 수도 있을거라는 생각이 듦
-    // TODO: User가 어떤 방에 참가하지 않은 상황에는 Status가 1인지? 우현이한테 물어보기 User 초기는 Status가 null이고 참가했다 나가면 Status가 1로 변환된 것을 확인하였음
-    // TODO: 일단 테스트가 완료되었으며 추후 주석을 삭제할 것임
     //방장이 방을 삭제하는 API
     //방장을 포함한 전원이 탈퇴
     @DeleteMapping("/admin")
@@ -99,7 +96,6 @@ public class RoomApi {
         return CommonResponse.success(SUCCESS);
     }
 
-    // TODO: 최소인원, 최대인원 예외 터지는 것 까지만 테스트 완료함. 게임 시작까지 하고 추가 테스트 진행해야 함
     @PostMapping("/start")
     public CommonResponse<String> startGame(
         @AuthenticationPrincipal AuthenticatedUser authenticatedUser) {

@@ -106,6 +106,7 @@ public class MissionPerformServiceImpl implements MissionPerformService {
 
         // 호출한 유저의 미션 변견 횟수를 1 증가 시킴
         participant.changeMission();
+        missionPerform.missionChanged();
     }
 
     private List<MissionPerform> allocateNewMissions(List<Room> rooms, List<Long> missionIdList) {
@@ -238,7 +239,7 @@ public class MissionPerformServiceImpl implements MissionPerformService {
             user.getGameCount()).orElseThrow(ParticipantNotFoundException::new);
         log.info("user: {}", user);
 
-        List<MissionPerform> missionPerforms = missionPerformRepository.findAllByPlayerAndDiscardFalse(
+        List<MissionPerform> missionPerforms = missionPerformRepository.findAllByPlayerAndDeletedAtIsNull(
             participant);
         log.info("missionPerforms: {}", missionPerforms);
 
