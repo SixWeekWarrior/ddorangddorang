@@ -18,6 +18,4 @@ public interface RoomRepository extends JpaRepository<Room, Long> {
 
     @EntityGraph(attributePaths = {"participants"})
     List<Room> findByStartedAtBeforeAndDeletedAtIsNull(LocalDateTime time);
-
-    Optional<Room> findByAccessCode(Integer accessCode);
 }

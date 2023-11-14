@@ -61,7 +61,7 @@ public class RoomNotificationServiceImpl implements RoomNotificationService {
     @Transactional
     @Override
     public void notifyJoin(Integer accessCode, Long id) {
-        Long adminId = roomRepository.findByAccessCode(accessCode).orElseThrow(
+        Long adminId = roomRepository.findByAccessCodeAndStartedAtIsNullAndDeletedAtIsNull(accessCode).orElseThrow(
             RoomNotFoundException::new).getAdmin().getId();
 
         User newUser = userRepository.findById(id).orElseThrow(UserNotFoundException::new);
