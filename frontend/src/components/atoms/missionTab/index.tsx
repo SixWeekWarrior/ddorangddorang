@@ -40,7 +40,7 @@ const style = StyleSheet.create({
   },
 
   circle: {
-    backgroundColor: GlobalStyles.grey_4.color,
+    backgroundColor: GlobalStyles.grey_2.color,
     width: 60,
     height: 60,
     borderRadius: 100,

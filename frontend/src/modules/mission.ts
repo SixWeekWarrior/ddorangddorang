@@ -1,5 +1,5 @@
 import {atom} from 'recoil';
-import {MissionInfo, PerformsInfo, TodayMissionInfo} from '../types/mission';
+import {MissionInfo, PerformsInfo} from '../types/mission';
 
 const KEY = 'MISSION';
 
@@ -23,21 +23,9 @@ const MissionPerformsInfoState = atom<PerformsInfo>({
   },
 });
 
-const TodayMissionInfoState = atom<TodayMissionInfo>({
-  key: `${KEY}/todayinfo`,
-  default: {
-    missionId: 0,
-    title: '',
-    content: '',
-    isComplete: true,
-    missionType: 0,
-  },
-});
-
 const mission = {
   MissionInfoState,
   MissionPerformsInfoState,
-  TodayMissionInfoState,
 };
 
 export default mission;

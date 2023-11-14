@@ -7,7 +7,7 @@ export const Chatting = (): JSX.Element => {
     <View style={styles.container}>
       <MenuTop
         menu="채팅"
-        text={`오늘의 미션을 완수하고\n미션 도장을 찍어봐요!`}
+        text={'오늘의 미션을 완수하고\n미션 도장을 찍어봐요!'}
       />
     </View>
   );

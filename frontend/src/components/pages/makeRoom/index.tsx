@@ -48,7 +48,7 @@ export const MakeRoom = ({navigation}: {navigation: any}): JSX.Element => {
     <View style={styles.container}>
       <MenuTop
         menu="그룹 만들기"
-        text={`그룹을 만들고\n친구들을 초대하세요!`}
+        text={'그룹을 만들고\n친구들을 초대하세요!'}
       />
       <RangeSlider
         multiSliderValueProp={multiSliderValue}

@@ -51,6 +51,7 @@ const getRoomWaiting = async () => {
 
 // 대기하는 사람 승인하는 API
 const postRoomResponse = async (data: {userId: number}[]) => {
+  console.log('data test:', data);
   try {
     const res = await client.post('/rooms/response', data);
     return res.data;

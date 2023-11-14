@@ -77,6 +77,8 @@ const styles = StyleSheet.create({
     width: 60,
     height: 60,
     borderRadius: 100,
+    borderWidth: 0.5,
+    borderColor: GlobalStyles.grey_4.color,
   },
   profilename: {
     fontFamily: GlobalStyles.section_title.fontFamily,

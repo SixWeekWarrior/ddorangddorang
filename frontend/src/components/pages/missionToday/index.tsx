@@ -46,16 +46,15 @@ const MissionToday = ({navigation}: {navigation: any}): JSX.Element => {
         </View>
         <Text style={style.contentText}>
           {missionList[missionList.length - 1]?.title +
-            '는' +
-            '\n빠르게 친해질 수 있는 방법 중 하나이죠!\n오늘도 미션 도장을 찍어봐요!'}
+            ',\n빠르게 친해질 수 있는 방법 중 하나이죠!\n오늘도 미션 도장을 찍어봐요!'}
         </Text>
       </View>
-      <Image source={yellowEyeImg} style={style.yellowEyeImg} />
       <BtnBig
         text="수행하기"
         onPress={() => navigation.navigate('GoMission')}
         disabled={missionList[missionList.length - 1]?.isComplete}
       />
+      <Image source={yellowEyeImg} style={style.yellowEyeImg} />
     </View>
   );
 };
@@ -66,6 +65,8 @@ const style = StyleSheet.create({
   },
   row: {
     flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: -15,
   },
   pinkEyeImg: {
     top: -100,
@@ -75,9 +76,10 @@ const style = StyleSheet.create({
   },
 
   yellowEyeImg: {
-    width: height * 10,
-    height: height * 5,
-    resizeMode: 'cover',
+    top: -410,
+    left: '7%',
+    width: 70,
+    objectFit: 'scale-down',
   },
 
   innerContainer: {
@@ -95,17 +97,17 @@ const style = StyleSheet.create({
     width: height * 40,
     height: height * 20,
     borderRadius: 10,
-    justifyContent: 'center',
-    alignContent: 'center',
+    marginLeft: 10,
     alignItems: 'center',
   },
 
   miniText: {
     fontFamily: GlobalStyles.home_title.fontFamily,
-    fontSize: 11,
-    marginTop: -5,
-    alignSelf: 'center',
+    color: GlobalStyles.white_1.color,
+    fontSize: 12,
+    lineHeight: 30,
   },
+
   titleText: {
     fontFamily: GlobalStyles.home_title.fontFamily,
     fontSize: GlobalStyles.home_title.fontSize,
@@ -116,13 +118,11 @@ const style = StyleSheet.create({
     fontFamily: GlobalStyles.home_title.fontFamily,
     fontSize: height * 16,
     color: GlobalStyles.black.color,
-    marginTop: -20,
   },
   contentText: {
     fontFamily: GlobalStyles.content.fontFamily,
     fontSize: 16,
     color: GlobalStyles.black.color,
-    marginTop: 10,
   },
 });
 

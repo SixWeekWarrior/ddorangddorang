@@ -34,7 +34,7 @@ const SendOpinion = ({navigation}: {navigation: any}) => {
     <View style={styles.container}>
       <MenuTop
         menu="의견 보내기"
-        text={`또랑또랑에 대한\n의견을 보내주세요.`}
+        text={'또랑또랑에 대한\n의견을 보내주세요.'}
       />
       <TextInput
         multiline={true}

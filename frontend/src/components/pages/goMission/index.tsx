@@ -104,7 +104,7 @@ export const GoMission = ({navigation}: {navigation: any}): JSX.Element => {
     <View style={style.container}>
       <MenuTop
         menu="오늘의 미션"
-        text={`오늘의 미션을 완수하고\n미션 도장을 찍어봐요!`}
+        text={'오늘의 미션을 완수하고\n미션 도장을 찍어봐요!'}
       />
       <Image source={pinkEyeImg} style={style.pinkEyeImg} />
       <View style={style.innerContainer}>
@@ -115,17 +115,8 @@ export const GoMission = ({navigation}: {navigation: any}): JSX.Element => {
         <Text style={style.contentText}>
           {misstionList[misstionList.length - 1]?.content + ', 완료했나요?'}
         </Text>
-
-        <Pressable style={style.btnContainer} onPress={postMissionComplete}>
-          <Text style={style.btn}>수행 완료</Text>
-        </Pressable>
-
-        {/* <InputTextwithBtn
-          btnText="입력"
-          onPress={handleExpand}
-          onChange={handleTextChange}
-        /> */}
       </View>
+      <BtnBig text="수행완료" onPress={postMissionComplete} />
       <Image source={yellowEyeImg} style={style.yellowEyeImg} />
       <BottomSheet
         ref={bottomSheetRef}
@@ -143,24 +134,6 @@ export const GoMission = ({navigation}: {navigation: any}): JSX.Element => {
 };
 
 const style = StyleSheet.create({
-  btnContainer: {
-    width: height * 300,
-    height: height * 48,
-    justifyContent: 'center',
-    alignSelf: 'center',
-    backgroundColor: GlobalStyles.green.color,
-    borderRadius: 20,
-    position: 'absolute',
-    bottom: '10%',
-  },
-
-  btn: {
-    fontFamily: GlobalStyles.nomal.fontFamily,
-    fontSize: height * 13,
-    color: GlobalStyles.white_2.color,
-    textAlign: 'center',
-  },
-
   container: {
     flex: 1,
   },
@@ -183,7 +156,7 @@ const style = StyleSheet.create({
     objectFit: 'scale-down',
   },
   yellowEyeImg: {
-    top: -310,
+    top: -410,
     left: '7%',
     width: 70,
     objectFit: 'scale-down',
@@ -194,7 +167,7 @@ const style = StyleSheet.create({
     objectFit: 'scale-down',
   },
   innerContainer: {
-    backgroundColor: 'rgba(255, 255, 255, 0.8)', // Adjust the opacity to your preference
+    backgroundColor: 'rgba(255, 255, 255, 0.8)',
     width: '80%',
     height: 250,
     alignSelf: 'center',

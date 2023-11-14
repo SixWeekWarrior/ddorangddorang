@@ -33,7 +33,7 @@ export const BasicInfo = ({navigation}: {navigation: any}): JSX.Element => {
     <View style={styles.container}>
       <BorderedBox
         menu={'기본 정보'}
-        text={`SSAFY 교육생으로서\n나의 정보를 입력해주세요.`}
+        text={'SSAFY 교육생으로서\n나의 정보를 입력해주세요.'}
         onInputChange={handleInputChange}
       />
       <BtnBig

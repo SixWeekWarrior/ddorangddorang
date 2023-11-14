@@ -71,7 +71,7 @@ const MatchStatus = ({navigation, route}): JSX.Element => {
     <View style={styles.container}>
       <MenuTop
         menu="진행 현황"
-        text={`매일 아침 9시 갱신됩니다.\n내 마니또가 나를 맞췄나요?`}
+        text={'매일 아침 9시 갱신됩니다.\n내 마니또가 나를 맞췄나요?'}
       />
       <View style={styles.innerContainer}>
         <View style={styles.titleContainer}>
