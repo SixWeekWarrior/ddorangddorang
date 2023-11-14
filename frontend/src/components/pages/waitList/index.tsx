@@ -102,6 +102,7 @@ export const WaitList = ({
             profileImage={item.profileImage}
             selectedList={selectedList}
             setSelectedList={setSelectedList}
+            toggle={false}
           />
         ))}
       </View>
@@ -171,6 +172,7 @@ const styles = StyleSheet.create({
   },
 
   thirdView: {
+    flexDirection: 'row',
     flex: 0.5,
     paddingLeft: 30,
     paddingRight: 30,

@@ -55,7 +55,7 @@ export const Profile = ({
       setSelectedList(selectedList.filter((data: number) => data !== userId));
     } else {
       // 선택되지 않은 경우, 다른 선택 해제 후 현재 선택
-      setSelectedList([userId]);
+      setSelectedList([userId, ...selectedList]);
     }
     setIsSelected(!isSelected);
   };

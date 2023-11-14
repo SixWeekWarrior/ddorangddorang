@@ -1,4 +1,11 @@
-import {StyleSheet, View, Image, Text, Pressable} from 'react-native';
+import {
+  StyleSheet,
+  View,
+  Image,
+  Text,
+  Pressable,
+  ScrollView,
+} from 'react-native';
 import Modal from 'react-native-modal';
 import MenuTop from '../../molecules/menuTop';
 import GlobalStyles, {height} from '../../../styles/GlobalStyles';
@@ -65,7 +72,6 @@ const MissionToday = ({navigation}: {navigation: any}): JSX.Element => {
               <Text style={style.miniText}>완료</Text>
             </View>
           )}
-          <Text style={style.missionText}>{todayMission?.title}</Text>
         </View>
         {!todayMission?.isComplete && (
           <Pressable style={style.rolltheDice} onPress={toggleModal}>
@@ -106,13 +112,13 @@ const style = StyleSheet.create({
     marginTop: 15,
   },
   pinkEyeImg: {
-    top: -100,
+    top: height * -90,
     left: '62%',
     width: 90,
     objectFit: 'scale-down',
   },
   yellowEyeImg: {
-    top: -410,
+    top: height * -390,
     left: '7%',
     width: 70,
     objectFit: 'scale-down',
@@ -130,12 +136,13 @@ const style = StyleSheet.create({
   innerContainer: {
     backgroundColor: 'rgba(255, 255, 255, 0.8)', // Adjust the opacity to your preference
     width: '80%',
-    height: 300,
+    height: height * 250,
+    top: height * -280,
     alignSelf: 'center',
     justifyContent: 'center',
     paddingLeft: 24,
     borderRadius: 25,
-    marginTop: height * 40,
+    marginTop: height * 45,
   },
   btn: {},
   complete: {

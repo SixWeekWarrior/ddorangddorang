@@ -7,6 +7,7 @@ import CodeForm from '../../atoms/codeForm';
 import BottomSheet, {BottomSheetBackdrop} from '@gorhom/bottom-sheet';
 import {useCallback, useRef, useMemo, useState, useEffect} from 'react';
 import {roomApi} from '../../../apis';
+import {useIsFocused} from '@react-navigation/native';
 
 export const BeforeStart = ({navigation}: {navigation: any}) => {
   type RoomInfo = {
@@ -26,6 +27,7 @@ export const BeforeStart = ({navigation}: {navigation: any}) => {
     roomKey: 0,
     memberCount: 0,
   });
+  const isFocused = useIsFocused();
 
   const startGame = () => {
     try {
@@ -51,18 +53,17 @@ export const BeforeStart = ({navigation}: {navigation: any}) => {
       .getRoomInfo()
       .then(data => {
         setRoomInfo({
-          ...roomInfo,
-          duration: data.data.duration,
-          minMember: data.data.minMember,
-          maxMember: data.data.maxMember,
-          roomKey: data.data.roomKey,
-          memberCount: data.data.memberCount,
+          duration: data.duration,
+          minMember: data.minMember,
+          maxMember: data.maxMember,
+          roomKey: data.roomKey,
+          memberCount: data.memberCount,
         });
       })
       .catch(error => {
         console.log('error', error);
       });
-  }, []);
+  }, [isFocused]);
 
   useEffect(() => {
     setIsBtnActive(
@@ -104,7 +105,7 @@ export const BeforeStart = ({navigation}: {navigation: any}) => {
           onPress={() => startGame()}
           text="시작"
           color={GlobalStyles.green.color}
-          disabled={isbtnActive}
+          disabled={!isbtnActive}
         />
       </View>
       <BottomSheet
