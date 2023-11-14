@@ -7,6 +7,7 @@ import BtnBig from '../../atoms/btnBig';
 import {useEffect, useState} from 'react';
 import {missionApi} from '../../../apis';
 import {MissionInfo} from '../../../types/mission';
+import missionAgainImg from '../../../assets/missionAgainImg.png';
 
 const MissionToday = ({navigation}: {navigation: any}): JSX.Element => {
   const [missionList, setMissionList] = useState<MissionInfo[]>([]);
@@ -33,17 +34,20 @@ const MissionToday = ({navigation}: {navigation: any}): JSX.Element => {
       />
       <Image source={pinkEyeImg} style={style.pinkEyeImg} />
       <View style={style.innerContainer}>
-        <Text style={style.titleText}>미션 소개</Text>
         <View style={style.row}>
-          <Text style={style.missionText}>
-            {missionList[missionList.length - 1]?.title}
-          </Text>
+          <Text style={style.titleText}>미션 소개</Text>
           {missionList[missionList.length - 1]?.isComplete && (
             <View style={style.complete}>
               <Text style={style.miniText}>완료</Text>
             </View>
           )}
+          <Text style={style.missionText}>
+            {missionList[missionList.length - 1]?.title}
+          </Text>
         </View>
+        {!missionList[missionList.length - 1]?.isComplete && (
+          <Image source={missionAgainImg} style={style.missionAgainImg} />
+        )}
         <Text style={style.contentText}>
           {missionList[missionList.length - 1]?.title +
             ',\n빠르게 친해질 수 있는 방법 중 하나이죠!\n오늘도 미션 도장을 찍어봐요!'}
@@ -66,7 +70,7 @@ const style = StyleSheet.create({
   row: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: -15,
+    marginTop: 15,
   },
   pinkEyeImg: {
     top: -100,
@@ -74,14 +78,20 @@ const style = StyleSheet.create({
     width: 90,
     objectFit: 'scale-down',
   },
-
   yellowEyeImg: {
     top: -410,
     left: '7%',
     width: 70,
     objectFit: 'scale-down',
   },
-
+  missionAgainImg: {
+    position: 'absolute',
+    right: height * 15,
+    top: height * 15,
+    height: 40,
+    width: 40,
+    objectFit: 'scale-down',
+  },
   innerContainer: {
     backgroundColor: 'rgba(255, 255, 255, 0.8)', // Adjust the opacity to your preference
     width: '80%',
@@ -112,7 +122,6 @@ const style = StyleSheet.create({
     fontFamily: GlobalStyles.home_title.fontFamily,
     fontSize: GlobalStyles.home_title.fontSize,
     color: GlobalStyles.grey_3.color,
-    marginTop: 24,
   },
   missionText: {
     fontFamily: GlobalStyles.home_title.fontFamily,
