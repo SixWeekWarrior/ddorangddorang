@@ -29,8 +29,8 @@ public class Opinion {
     private User user;
     private String content;
 
-    @CreationTimestamp
-    private LocalDateTime createdAt;
+//    @CreationTimestamp
+    private LocalDateTime createdAt = LocalDateTime.now().plusHours(9L);
     private LocalDateTime deletedAt;
 
     @Builder

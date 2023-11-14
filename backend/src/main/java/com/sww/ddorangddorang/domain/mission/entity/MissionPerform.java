@@ -33,8 +33,8 @@ public class MissionPerform {
     @JoinColumn(name = "mission_id")
     private Mission mission;            // BIGINT "미션 아이디"
 
-    @CreationTimestamp
-    private LocalDateTime receivedAt;   // TIMESTAMP "생성 시간"
+//    @CreationTimestamp
+    private LocalDateTime receivedAt = LocalDateTime.now().plusHours(9L);   // TIMESTAMP "생성 시간"
 
     private LocalDateTime performedAt;  // TIMESTAMP "완료 시간"
     private Long reaction;              // BIGINT "반응"
@@ -49,13 +49,13 @@ public class MissionPerform {
     }
 
     public void missionComplete(Long reaction, String proof) {
-        this.performedAt = LocalDateTime.now();
+        this.performedAt = LocalDateTime.now().plusHours(9L);
         this.reaction = reaction;
         this.proof = proof;
     }
 
     public void missionComplete() {
-        this.performedAt = LocalDateTime.now();
+        this.performedAt = LocalDateTime.now().plusHours(9L);
     }
 
     public void missionGiveup() {
@@ -67,7 +67,7 @@ public class MissionPerform {
     }
 
     public void missionChanged() {
-        this.deletedAt = LocalDateTime.now();
+        this.deletedAt = LocalDateTime.now().plusHours(9L);
     }
 
 }

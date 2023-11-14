@@ -47,6 +47,8 @@ public class UserServiceImpl implements UserService {
     private final ParticipantRepository participantRepository;
     private final MissionPerformRepository missionPerformRepository;
 
+    private static final Long UTC_TO_KST = 9L;
+
     public void signUp(User user) throws Exception {
         if (userRepository.findByEmailAndProviderType(user.getEmail(), user.getProviderType())
             .isPresent()) {
@@ -212,7 +214,7 @@ public class UserServiceImpl implements UserService {
         Long missionPerformId = null;
         Long dayCount = null;
         Participant manito = participant.get().getManito();
-        LocalDateTime today = LocalDateTime.now().plusHours(9L);
+        LocalDateTime today = LocalDateTime.now().plusHours(UTC_TO_KST);
 
         if (manito == null) {
             return UsersHomeInfoGetRes.builder().build();
@@ -231,9 +233,9 @@ public class UserServiceImpl implements UserService {
         }
 
         dday = ChronoUnit.DAYS.between(today.toLocalDate(),
-            room.getStartedAt().plusHours(9L).plusDays(room.getDuration()).toLocalDate()) + 1;
-        dayCount = ChronoUnit.DAYS.between(room.getStartedAt().plusHours(9L).toLocalDate(),
-            today.toLocalDate()) + 1;
+            room.getStartedAt().plusDays(room.getDuration()).toLocalDate()) + 1;
+        dayCount =
+            ChronoUnit.DAYS.between(room.getStartedAt().toLocalDate(), today.toLocalDate()) + 1;
 
         List<MissionPerform> missionPerformList = missionPerformRepository.findAllByPlayerAndDiscardFalse(
             participant.get());

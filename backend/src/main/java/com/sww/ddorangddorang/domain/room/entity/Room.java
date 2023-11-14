@@ -62,8 +62,8 @@ public class Room {
     @NotNull
     private Integer maxMember = Integer.MAX_VALUE;  //INT
 
-    @CreationTimestamp
-    private LocalDateTime createdAt;    //DATETIME
+//    @CreationTimestamp
+    private LocalDateTime createdAt = LocalDateTime.now().plusHours(9L);    //DATETIME
 
     //    @Column(name = "started_at")
     private LocalDateTime startedAt;    //DATETIME
@@ -81,11 +81,11 @@ public class Room {
     private List<Participant> participants;
 
     public void startGame() {
-        this.startedAt = LocalDateTime.now();
+        this.startedAt = LocalDateTime.now().plusHours(9L);
     }
 
     public void deleteRoom() {
-        this.deletedAt = LocalDateTime.now();
+        this.deletedAt = LocalDateTime.now().plusHours(9L);
     }
 
     public void joinMember() {
@@ -108,7 +108,7 @@ public class Room {
     }
 
     public Boolean isEnded() {
-        return LocalDateTime.now().isAfter(this.startedAt.plusDays(this.duration));
+        return LocalDateTime.now().plusHours(9L).isAfter(this.startedAt.plusDays(this.duration));
     }
 
     @Builder

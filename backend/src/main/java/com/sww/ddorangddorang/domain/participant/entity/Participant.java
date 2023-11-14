@@ -94,7 +94,7 @@ public class Participant {
     }
 
     public void deleteParticipant() {
-        this.deletedAt = LocalDateTime.now();
+        this.deletedAt = LocalDateTime.now().plusHours(9L);
         this.getUser().withdrawRoom();
         this.getRoom().removeMember();
     }

@@ -52,8 +52,8 @@ public class Note {
     @Column(name = "is_read")
     private Boolean isRead = false;
 
-    @CreationTimestamp
-    private LocalDateTime createdAt;
+//    @CreationTimestamp
+    private LocalDateTime createdAt = LocalDateTime.now().plusHours(9L);
     private LocalDateTime deletedAt;
 
     @Builder
