@@ -1,7 +1,13 @@
 package com.sww.ddorangddorang.domain.guess.service;
 
-import com.sww.ddorangddorang.domain.guess.dto.GuessUserPostRes;
+import com.sww.ddorangddorang.domain.guess.dto.GuessStatus;
+import com.sww.ddorangddorang.domain.guess.dto.Profile;
+import java.util.List;
 
 public interface GuessService {
-    public GuessUserPostRes guessManito(Long userId, Long manitoId);
+    public Profile guessManito(Long userId, Long manitoId);
+
+    public GuessStatus getMyGuessStatus(Long userId);
+
+    public List<GuessStatus> getAllGuessStatus(Long userId);
 }

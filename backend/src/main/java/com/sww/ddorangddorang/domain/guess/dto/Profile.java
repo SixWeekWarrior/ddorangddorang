@@ -9,17 +9,21 @@ import org.hibernate.annotations.DynamicInsert;
 @Getter
 @DynamicInsert
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class GuessUserPostRes {
+public class Profile {
+
     private Long userId;
     private String name;
     private Boolean isMajor;
     private Integer classes;
+    private String profileImage;
 
     @Builder
-    public GuessUserPostRes(Long userId, String name, Boolean isMajor, Integer classes) {
+    public Profile(Long userId, String name, Boolean isMajor, Integer classes,
+        String profileImage) {
         this.userId = userId;
         this.name = name;
         this.isMajor = isMajor;
         this.classes = classes;
+        this.profileImage = profileImage;
     }
 }
