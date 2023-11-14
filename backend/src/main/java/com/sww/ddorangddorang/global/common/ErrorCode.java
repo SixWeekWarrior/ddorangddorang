@@ -79,6 +79,12 @@ public enum ErrorCode {
 
     USER_NOT_PARTICIPATE_GAME(HttpStatus.FORBIDDEN, "게임에 참여하지 않은 사용자입니다."),
 
+    NOT_IN_SAME_GAME(HttpStatus.CONFLICT, "같은 게임에 참여하고 있지 않습니다."),
+
+    NOT_GUESSABLE(HttpStatus.CONFLICT, "마니또 추측이 불가능한 기간입니다."),
+
+    CANNOT_GUESS_MYSELF(HttpStatus.CONFLICT, "자기 자신이 마니또가 될 수 없습니다."),
+
     /**
      * 서버 에러 (서버 장애 상황)
      */
