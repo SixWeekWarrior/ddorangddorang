@@ -18,24 +18,14 @@ import {useState, useEffect} from 'react';
 import {useRecoilState} from 'recoil';
 import user from '../../../modules/user';
 import {userApi} from '../../../apis';
+import {useIsFocused} from '@react-navigation/native';
 
 export const Home = ({navigation}: {navigation: any}): JSX.Element => {
-  const [userInfo, setUserInfo] = useRecoilState(user.UserInfoState);
   const [homeInfo, setHomeInfo] = useRecoilState(user.HomeInfoState);
 
-  console.log('UserInfo:', userInfo);
-  console.log('homeInfo:', homeInfo);
+  const isFocused = useIsFocused();
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const data = await userApi.getUser();
-        setUserInfo(data);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
     const fetchHomeData = async () => {
       try {
         const homeData = await userApi.getHomeInfo();
@@ -44,10 +34,9 @@ export const Home = ({navigation}: {navigation: any}): JSX.Element => {
         console.error(error);
       }
     };
-    fetchData();
     fetchHomeData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [isFocused]);
 
   const [isModalVisible, setModalVisible] = useState(false);
   const toggleModal = () => {

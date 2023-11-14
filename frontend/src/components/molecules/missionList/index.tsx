@@ -23,11 +23,6 @@ const MissionList = () => {
     getMissionInfo();
   }, []);
 
-  // 디버깅 코드
-  useEffect(() => {
-    console.log(misstionList, performsInfo);
-  }, [misstionList, performsInfo]);
-
   return (
     <View style={styles.listContainer}>
       <FlatList
