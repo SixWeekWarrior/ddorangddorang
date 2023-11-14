@@ -37,7 +37,7 @@ const MissionList = () => {
   return (
     <View style={styles.listContainer}>
       <FlatList
-        data={performsInfo.missionPerformsInfoRes}
+        data={missionList}
         renderItem={({item, index}) => (
           <MissionTab
             day={performsInfo.dayCount + '일차'}
