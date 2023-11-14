@@ -1,11 +1,4 @@
-import {
-  StyleSheet,
-  View,
-  Image,
-  Text,
-  Pressable,
-  ScrollView,
-} from 'react-native';
+import {StyleSheet, View, Image, Text, Pressable} from 'react-native';
 import Modal from 'react-native-modal';
 import MenuTop from '../../molecules/menuTop';
 import GlobalStyles, {height} from '../../../styles/GlobalStyles';
@@ -16,6 +9,9 @@ import {MissionInfo} from '../../../types/mission';
 import missionAgainImg from '../../../assets/missionAgainImg.png';
 import pinkEyeImg from '../../../assets/pinkEyeImg.png';
 import yellowEyeImg from '../../../assets/yellowEyeImg.png';
+import BtnSm from '../../atoms/btnSm';
+import closeImg from '../../../assets/closeImg.png';
+import {useIsFocused} from '@react-navigation/native';
 
 const MissionToday = ({navigation}: {navigation: any}): JSX.Element => {
   const [todayMission, setTodayMission] = useState<MissionInfo>({
@@ -26,7 +22,8 @@ const MissionToday = ({navigation}: {navigation: any}): JSX.Element => {
     missionType: 0,
   });
   const [isModalVisible, setModalVisible] = useState(false);
-
+  const isFocused = useIsFocused();
+  const [changeAvailable, setChangeAvailable] = useState(true);
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
   };
@@ -42,15 +39,26 @@ const MissionToday = ({navigation}: {navigation: any}): JSX.Element => {
     }
   };
 
-  // const changeMission = () => {
-  //   try {
-  //     missionApi.putMissionChange().then(data => {
-  //       setMissionList(data.data.missionPerformsInfoRes);
-  //     });
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
+  useEffect(() => {
+    getMissionInfo();
+  }, [isFocused]);
+
+  const changeMission = () => {
+    try {
+      missionApi.putMissionChange(todayMission.missionId).then(data => {
+        console.log('성공 :', data);
+        getMissionInfo();
+        if (data.success) {
+          setChangeAvailable(true);
+          toggleModal();
+        } else {
+          setChangeAvailable(false);
+        }
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
     getMissionInfo();
@@ -65,6 +73,7 @@ const MissionToday = ({navigation}: {navigation: any}): JSX.Element => {
       <Image source={pinkEyeImg} style={style.pinkEyeImg} />
 
       <View style={style.innerContainer}>
+        <Text style={style.titleText}>미션 소개</Text>
         <View style={style.row}>
           <Text style={style.missionText}>{todayMission.title}</Text>
           {todayMission.isComplete && (
@@ -90,12 +99,45 @@ const MissionToday = ({navigation}: {navigation: any}): JSX.Element => {
         disabled={todayMission.isComplete}
       />
       <Image source={yellowEyeImg} style={style.yellowEyeImg} />
-      <Modal isVisible={isModalVisible}>
-        <View style={{flex: 1}}>
-          <Text style={style.titleText}>Hello!</Text>
-          <Pressable style={style.btn} onPress={toggleModal}>
-            <Text style={style.titleText}>닫기</Text>
-          </Pressable>
+      <Modal
+        isVisible={isModalVisible}
+        onBackdropPress={() => setModalVisible(false)}>
+        <View style={{flex: 1, justifyContent: 'center'}}>
+          <View style={style.modalContainer}>
+            <Pressable style={style.close} onPress={toggleModal}>
+              <Image source={closeImg} style={style.closeImg} />
+            </Pressable>
+            {changeAvailable ? (
+              <View style={style.noticeContainer}>
+                <Text
+                  // eslint-disable-next-line react-native/no-inline-styles
+                  style={{
+                    ...style.noticeText,
+                    alignSelf: 'center',
+                    textAlign: 'center',
+                  }}>
+                  {'미션을 변경하시겠어요?\n미션 변경 기회는 최대 2회입니다.'}
+                </Text>
+                <View style={style.btnContainer}>
+                  <BtnSm text="미션변경" onPress={changeMission} />
+                </View>
+              </View>
+            ) : (
+              <View style={style.noticeContainer}>
+                <Text
+                  // eslint-disable-next-line react-native/no-inline-styles
+                  style={{
+                    ...style.noticeText,
+                    alignSelf: 'center',
+                    textAlign: 'center',
+                  }}>
+                  {
+                    '미션 변경 기회를 모두 사용하셨습니다.\n\n이번 미션은 꼭 수행해주세요!'
+                  }
+                </Text>
+              </View>
+            )}
+          </View>
         </View>
       </Modal>
     </View>
@@ -109,6 +151,21 @@ const style = StyleSheet.create({
   row: {
     flexDirection: 'row',
     alignItems: 'center',
+    marginTop: -15,
+  },
+  modalContainer: {
+    backgroundColor: GlobalStyles.white_2.color,
+    borderRadius: 30,
+    width: '90%',
+    height: 200,
+    alignSelf: 'center',
+    verticalAlign: 'middle',
+  },
+  noticeContainer: {
+    height: '100%',
+    justifyContent: 'center',
+  },
+  btnContainer: {
     marginTop: 15,
   },
   pinkEyeImg: {
@@ -128,18 +185,26 @@ const style = StyleSheet.create({
     width: 40,
     objectFit: 'scale-down',
   },
+  close: {
+    right: height * 20,
+    position: 'absolute',
+  },
+  closeImg: {
+    width: 15,
+    objectFit: 'scale-down',
+  },
   rolltheDice: {
     position: 'absolute',
     right: height * 15,
     top: height * 15,
   },
   innerContainer: {
-    backgroundColor: 'rgba(255, 255, 255, 0.8)', // Adjust the opacity to your preference
+    backgroundColor: 'rgba(255, 255, 255, 0.8)',
     width: '80%',
     height: height * 250,
     top: height * -280,
     alignSelf: 'center',
-    justifyContent: 'center',
+    paddingTop: height * 20,
     paddingLeft: 24,
     borderRadius: 25,
     marginTop: height * 45,
@@ -174,6 +239,11 @@ const style = StyleSheet.create({
   contentText: {
     fontFamily: GlobalStyles.content.fontFamily,
     fontSize: height * 13,
+    color: GlobalStyles.black.color,
+  },
+  noticeText: {
+    fontFamily: GlobalStyles.content.fontFamily,
+    fontSize: height * 15,
     color: GlobalStyles.black.color,
   },
 });

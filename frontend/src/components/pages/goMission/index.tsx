@@ -1,9 +1,8 @@
-import {StyleSheet, View, Image, Text, Pressable} from 'react-native';
+import {StyleSheet, View, Image, Text} from 'react-native';
 import MenuTop from '../../molecules/menuTop';
 import pinkEyeImg from '../../../assets/pinkEyeImg.png';
 import yellowEyeImg from '../../../assets/yellowEyeImg.png';
 import GlobalStyles, {height} from '../../../styles/GlobalStyles';
-// import InputTextwithBtn from '../../molecules/inputTextwithBtn';
 import BtnBig from '../../atoms/btnBig';
 import BottomSheet, {BottomSheetBackdrop} from '@gorhom/bottom-sheet';
 import {useRef, useMemo, useState, useCallback, useEffect} from 'react';
@@ -161,7 +160,7 @@ const style = StyleSheet.create({
     height: height * 250,
     top: height * -280,
     alignSelf: 'center',
-    justifyContent: 'center',
+    paddingTop: height * 20,
     paddingLeft: 24,
     borderRadius: 25,
     marginTop: height * 45,
@@ -175,6 +174,7 @@ const style = StyleSheet.create({
     fontFamily: GlobalStyles.home_title.fontFamily,
     fontSize: height * 18,
     color: GlobalStyles.black.color,
+    marginTop: -15,
   },
   contentText: {
     fontFamily: GlobalStyles.content.fontFamily,
