@@ -20,9 +20,9 @@ public class EndDayInfoRes {
     @Builder
     public EndDayInfoRes(LocalDateTime startDate, LocalDateTime endDate) {
         this.endDate = EndDateRes.builder().endDate(endDate).build();
-        LocalDateTime today = LocalDateTime.now();
-        this.daysLeft = ChronoUnit.DAYS.between(today, endDate) + 1;
-        this.currentDays = ChronoUnit.DAYS.between(startDate, today) + 1;
+        LocalDateTime today = LocalDateTime.now().plusHours(9L);
+        this.daysLeft = ChronoUnit.DAYS.between(today.toLocalDate(), endDate.toLocalDate()) + 1;
+        this.currentDays = ChronoUnit.DAYS.between(startDate.toLocalDate(), today.toLocalDate()) + 1;
     }
 
     @Builder(builderMethodName = "noRoom", builderClassName = "NoRoom")

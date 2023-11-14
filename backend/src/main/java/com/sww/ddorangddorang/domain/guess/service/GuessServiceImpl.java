@@ -15,7 +15,7 @@ import com.sww.ddorangddorang.domain.user.exception.UserNotFoundException;
 import com.sww.ddorangddorang.domain.user.exception.UserNotParticipateGameException;
 import com.sww.ddorangddorang.domain.user.repository.UserRepository;
 import jakarta.transaction.Transactional;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -31,6 +31,7 @@ public class GuessServiceImpl implements GuessService {
 
     private final UserRepository userRepository;
     private final ParticipantRepository participantRepository;
+    private static final Long UTC_TO_KST = 9L;
 
     public Participant getParticipantInfo(Long userId) {
         User user = userRepository.getReferenceById(userId);
@@ -56,8 +57,8 @@ public class GuessServiceImpl implements GuessService {
             throw new RoomNotFoundException();
         }
 
-        if(room.getStartedAt().plusDays(room.getDuration()).minusDays(3L).toLocalDate().isBefore(
-            LocalDate.now())) {
+        if(room.getStartedAt().plusDays(room.getDuration()-3L).toLocalDate().isBefore(
+            LocalDateTime.now().plusHours(UTC_TO_KST).toLocalDate())) {
             throw new NotGuessableException();
         }
 
@@ -101,8 +102,8 @@ public class GuessServiceImpl implements GuessService {
             throw new RoomNotFoundException();
         }
 
-        if(room.getStartedAt().plusDays(room.getDuration()).minusDays(3L).toLocalDate().isBefore(
-            LocalDate.now())) {
+        if(room.getStartedAt().plusDays(room.getDuration()-3L).toLocalDate().isBefore(
+            LocalDateTime.now().plusHours(UTC_TO_KST).toLocalDate())) {
             throw new NotGuessableException();
         }
 
@@ -170,8 +171,8 @@ public class GuessServiceImpl implements GuessService {
             throw new RoomNotFoundException();
         }
 
-        if(room.getStartedAt().plusDays(room.getDuration()).minusDays(3L).toLocalDate().isBefore(
-            LocalDate.now())) {
+        if(room.getStartedAt().plusDays(room.getDuration()-3L).toLocalDate().isBefore(
+            LocalDateTime.now().plusHours(UTC_TO_KST).toLocalDate())) {
             throw new NotGuessableException();
         }
 

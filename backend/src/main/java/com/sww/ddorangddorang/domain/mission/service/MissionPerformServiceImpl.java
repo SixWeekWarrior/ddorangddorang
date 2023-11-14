@@ -41,6 +41,7 @@ public class MissionPerformServiceImpl implements MissionPerformService {
 
     private static final int MAX_MISSION_CHANGE_COUNT = 2;
     private static final int HOURS_DIFFERENCE = 15;
+    private static final Long UTC_TO_KST = 9L;
 
     private final MissionRepository missionRepository;
     private final MissionPerformRepository missionPerformRepository;
@@ -50,7 +51,7 @@ public class MissionPerformServiceImpl implements MissionPerformService {
 
     // 매일 아침 9시 새로운 미션을 할당하는 메소드
     // 기존의 완료되지 않은 미션은 완료하지 못함 처리를 진행해야 함
-    @Scheduled(cron = "0 0 9 * * *")
+    @Scheduled(cron = "0 0 0 * * *")
     public void changeMissionAt9Am() {
         log.info("Allocating new missions at 9 AM.");
 
@@ -126,7 +127,7 @@ public class MissionPerformServiceImpl implements MissionPerformService {
 
     private List<Room> findEligibleRooms() {
         return roomRepository.findByStartedAtBeforeAndDeletedAtIsNull(
-            LocalDateTime.now().minusHours(HOURS_DIFFERENCE));
+            LocalDateTime.now().plusHours(UTC_TO_KST).minusHours(HOURS_DIFFERENCE));
     }
 
     private List<Long> fetchMissionIds() {
@@ -248,8 +249,8 @@ public class MissionPerformServiceImpl implements MissionPerformService {
             .count();
         log.info("missionCompleteCount: {}", missionCompleteCount);
 
-        long dayCount = ChronoUnit.DAYS.between(room.getStartedAt().plusHours(9L).toLocalDate(),
-            LocalDateTime.now().plusHours(9L).toLocalDate()) + 1;
+        long dayCount = ChronoUnit.DAYS.between(room.getStartedAt().toLocalDate(),
+            LocalDateTime.now().plusHours(UTC_TO_KST).toLocalDate()) + 1;
         log.info("dayCount: {}", dayCount);
 
         return MissionPerformAndDayCountRes.of(MissionPerformsInfoRes.listOf(missionPerforms),
