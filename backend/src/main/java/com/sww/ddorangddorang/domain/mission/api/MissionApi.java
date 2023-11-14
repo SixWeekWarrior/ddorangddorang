@@ -1,6 +1,7 @@
 package com.sww.ddorangddorang.domain.mission.api;
 
 import com.sww.ddorangddorang.auth.dto.AuthenticatedUser;
+import com.sww.ddorangddorang.domain.mission.dto.GetManitiInfoRes;
 import com.sww.ddorangddorang.domain.mission.dto.MissionChangeReq;
 import com.sww.ddorangddorang.domain.mission.dto.MissionCompleteReq;
 import com.sww.ddorangddorang.domain.mission.dto.MissionPerformAndDayCountRes;
@@ -70,6 +71,15 @@ public class MissionApi {
         log.info("testAllMissionReassign Controller 진입");
         missionPerformService.changeMissionAt9Am();
         return CommonResponse.success(SUCCESS);
+    }
+
+    @GetMapping("/maniti")
+    public CommonResponse<GetManitiInfoRes> getManitiInfo(
+        @AuthenticationPrincipal AuthenticatedUser authenticatedUser) {
+        log.info("MissionApi_getManitiInfo start");
+        GetManitiInfoRes getManitiInfoRes = missionPerformService.getManitiInfo(authenticatedUser.getId());
+        log.info("MissionApi_getManitiInfo end");
+        return CommonResponse.success(getManitiInfoRes);
     }
 
 }
