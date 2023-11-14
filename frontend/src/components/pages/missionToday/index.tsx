@@ -1,17 +1,23 @@
 import {StyleSheet, View, Image, Text, Pressable} from 'react-native';
 import Modal from 'react-native-modal';
 import MenuTop from '../../molecules/menuTop';
-import pinkEyeImg from '../../../assets/pinkEyeImg.png';
-import yellowEyeImg from '../../../assets/yellowEyeImg.png';
 import GlobalStyles, {height} from '../../../styles/GlobalStyles';
 import BtnBig from '../../atoms/btnBig';
 import {useEffect, useState} from 'react';
 import {missionApi} from '../../../apis';
 import {MissionInfo} from '../../../types/mission';
 import missionAgainImg from '../../../assets/missionAgainImg.png';
+import pinkEyeImg from '../../../assets/pinkEyeImg.png';
+import yellowEyeImg from '../../../assets/yellowEyeImg.png';
 
 const MissionToday = ({navigation}: {navigation: any}): JSX.Element => {
-  const [missionList, setMissionList] = useState<MissionInfo[]>([]);
+  const [todayMission, setTodayMission] = useState<MissionInfo>({
+    missionId: 0,
+    title: '',
+    content: '',
+    isComplete: false,
+    missionType: 0,
+  });
   const [isModalVisible, setModalVisible] = useState(false);
 
   const toggleModal = () => {
@@ -21,7 +27,8 @@ const MissionToday = ({navigation}: {navigation: any}): JSX.Element => {
   const getMissionInfo = () => {
     try {
       missionApi.getMission().then(data => {
-        setMissionList(data.data.missionPerformsInfoRes);
+        const missionList = data.data.missionPerformsInfoRes;
+        setTodayMission(missionList[missionList.length - 1]);
       });
     } catch (error) {
       console.log(error);
@@ -49,38 +56,37 @@ const MissionToday = ({navigation}: {navigation: any}): JSX.Element => {
         text={'오늘의 미션을 완수하고\n미션 도장을 찍어봐요!'}
       />
       <Image source={pinkEyeImg} style={style.pinkEyeImg} />
+
       <View style={style.innerContainer}>
         <View style={style.row}>
-          <Text style={style.titleText}>미션 소개</Text>
-          {missionList[missionList.length - 1]?.isComplete && (
+          <Text style={style.missionText}>{todayMission.title}</Text>
+          {todayMission.isComplete && (
             <View style={style.complete}>
               <Text style={style.miniText}>완료</Text>
             </View>
           )}
-          <Text style={style.missionText}>
-            {missionList[missionList.length - 1]?.title}
-          </Text>
+          <Text style={style.missionText}>{todayMission?.title}</Text>
         </View>
-        {!missionList[missionList.length - 1]?.isComplete && (
+        {!todayMission?.isComplete && (
           <Pressable style={style.rolltheDice} onPress={toggleModal}>
             <Image source={missionAgainImg} style={style.missionAgainImg} />
           </Pressable>
         )}
         <Text style={style.contentText}>
-          {missionList[missionList.length - 1]?.title +
-            ',\n빠르게 친해질 수 있는 방법 중 하나이죠!\n오늘도 미션 도장을 찍어봐요!'}
+          {todayMission.title +
+            '는' +
+            '\n빠르게 친해질 수 있는 방법 중 하나이죠!\n오늘도 미션 도장을 찍어봐요!'}
         </Text>
       </View>
       <BtnBig
         text="수행하기"
         onPress={() => navigation.navigate('GoMission')}
-        disabled={missionList[missionList.length - 1]?.isComplete}
+        disabled={todayMission.isComplete}
       />
       <Image source={yellowEyeImg} style={style.yellowEyeImg} />
       <Modal isVisible={isModalVisible}>
         <View style={{flex: 1}}>
           <Text style={style.titleText}>Hello!</Text>
-
           <Pressable style={style.btn} onPress={toggleModal}>
             <Text style={style.titleText}>닫기</Text>
           </Pressable>
@@ -124,13 +130,14 @@ const style = StyleSheet.create({
   innerContainer: {
     backgroundColor: 'rgba(255, 255, 255, 0.8)', // Adjust the opacity to your preference
     width: '80%',
-    height: 250,
+    height: 300,
     alignSelf: 'center',
-    top: -280,
+    justifyContent: 'center',
     paddingLeft: 24,
     borderRadius: 25,
+    marginTop: height * 40,
   },
-
+  btn: {},
   complete: {
     backgroundColor: GlobalStyles.green.color,
     width: height * 40,
@@ -154,12 +161,12 @@ const style = StyleSheet.create({
   },
   missionText: {
     fontFamily: GlobalStyles.home_title.fontFamily,
-    fontSize: height * 16,
+    fontSize: height * 18,
     color: GlobalStyles.black.color,
   },
   contentText: {
     fontFamily: GlobalStyles.content.fontFamily,
-    fontSize: 16,
+    fontSize: height * 13,
     color: GlobalStyles.black.color,
   },
 });
