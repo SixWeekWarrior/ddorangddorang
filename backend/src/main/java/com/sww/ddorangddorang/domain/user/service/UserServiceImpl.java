@@ -192,14 +192,16 @@ public class UserServiceImpl implements UserService {
         }
         Room room = user.getRoom();
 
-        if (room == null || room.isEnded())
+        if (room == null || room.isEnded()) {
             return UsersHomeInfoGetRes.builder().build();
+        }
 
         Optional<Participant> participant = participantRepository.findByUserAndGameCount(user,
             user.getGameCount());
 
-        if (!participant.isPresent())
+        if (!participant.isPresent()) {
             return UsersHomeInfoGetRes.builder().build();
+        }
 
         String color = null;
         String mood = null;
@@ -210,10 +212,11 @@ public class UserServiceImpl implements UserService {
         Long missionPerformId = null;
         Long dayCount = null;
         Participant manito = participant.get().getManito();
-        LocalDateTime today = LocalDateTime.now();
+        LocalDateTime today = LocalDateTime.now().plusHours(9L);
 
-        if(manito == null)
+        if (manito == null) {
             return UsersHomeInfoGetRes.builder().build();
+        }
 
         User manitoUser = manito.getUser();
 
@@ -227,13 +230,15 @@ public class UserServiceImpl implements UserService {
             mood = moodHint.orElseThrow(UnexpectedException::new).getContent();
         }
 
-        dday = ChronoUnit.DAYS.between(today,
-            room.getStartedAt().plusDays(room.getDuration())) + 1;
-        dayCount = ChronoUnit.DAYS.between(room.getStartedAt(), today) + 1;
+        dday = ChronoUnit.DAYS.between(today.toLocalDate(),
+            room.getStartedAt().plusHours(9L).plusDays(room.getDuration()).toLocalDate()) + 1;
+        dayCount = ChronoUnit.DAYS.between(room.getStartedAt().plusHours(9L).toLocalDate(),
+            today.toLocalDate()) + 1;
 
-        List<MissionPerform> missionPerformList = missionPerformRepository.findAllByPlayerAndDiscardFalse(participant.get());
+        List<MissionPerform> missionPerformList = missionPerformRepository.findAllByPlayerAndDiscardFalse(
+            participant.get());
 
-        if(!missionPerformList.isEmpty()) {
+        if (!missionPerformList.isEmpty()) {
             missionPerformList.sort(Comparator.comparing(MissionPerform::getReceivedAt).reversed());
             MissionPerform missionPerform = missionPerformList.get(0);
             isMissionDone = missionPerform.isCompleted();

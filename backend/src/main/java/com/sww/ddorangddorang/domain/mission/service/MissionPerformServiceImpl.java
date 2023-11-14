@@ -1,5 +1,6 @@
 package com.sww.ddorangddorang.domain.mission.service;
 
+import com.sww.ddorangddorang.domain.mission.dto.GetManitiInfoRes;
 import com.sww.ddorangddorang.domain.mission.dto.MissionChangeReq;
 import com.sww.ddorangddorang.domain.mission.dto.MissionCompleteReq;
 import com.sww.ddorangddorang.domain.mission.dto.MissionPerformAndDayCountRes;
@@ -270,4 +271,26 @@ public class MissionPerformServiceImpl implements MissionPerformService {
         }
     }
 
+    public GetManitiInfoRes getManitiInfo(Long userId) {
+        User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
+        Participant participant = participantRepository.findByUserAndGameCount(user,
+            user.getGameCount()).orElseThrow(ParticipantNotFoundException::new);
+
+        Participant maniti = participant.getManiti();
+        if (maniti == null) {
+            return GetManitiInfoRes.builder().build();
+        }
+
+        User manitiUser = maniti.getUser();
+
+        if (manitiUser == null) {
+            return GetManitiInfoRes.builder().build();
+        }
+
+        return GetManitiInfoRes.builder()
+            .name(manitiUser.getName())
+            .isMajor(manitiUser.getIsMajor())
+            .classes(manitiUser.getClasses())
+            .build();
+    }
 }
