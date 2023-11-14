@@ -19,6 +19,7 @@ import com.sww.ddorangddorang.domain.user.entity.User;
 import com.sww.ddorangddorang.domain.user.exception.UserNotFoundException;
 import com.sww.ddorangddorang.domain.user.repository.UserRepository;
 import jakarta.transaction.Transactional;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -245,7 +246,8 @@ public class MissionPerformServiceImpl implements MissionPerformService {
             .count();
         log.info("missionCompleteCount: {}", missionCompleteCount);
 
-        long dayCount = ChronoUnit.DAYS.between(room.getStartedAt(), LocalDateTime.now()) + 1;
+        long dayCount = ChronoUnit.DAYS.between(room.getStartedAt().plusHours(9L).toLocalDate(),
+            LocalDateTime.now().plusHours(9L).toLocalDate()) + 1;
         log.info("dayCount: {}", dayCount);
 
         return MissionPerformAndDayCountRes.of(MissionPerformsInfoRes.listOf(missionPerforms),
