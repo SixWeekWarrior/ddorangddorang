@@ -13,12 +13,19 @@ import {MissionInfo} from '../../../types/mission';
 import {missionApi} from '../../../apis';
 
 export const GoMission = ({navigation}: {navigation: any}): JSX.Element => {
-  const [misstionList, setMisstionList] = useState<MissionInfo[]>([]);
+  const [todayMission, setTodayMission] = useState<MissionInfo>({
+    missionId: 0,
+    title: '',
+    content: '',
+    isComplete: false,
+    missionType: 0,
+  });
 
   const getMissionInfo = () => {
     try {
       missionApi.getMission().then(data => {
-        setMisstionList(data.data.missionPerformsInfoRes);
+        const missionList = data.data.missionPerformsInfoRes;
+        setTodayMission(missionList[missionList.length - 1]);
       });
     } catch (error) {
       console.log(error);
@@ -27,11 +34,9 @@ export const GoMission = ({navigation}: {navigation: any}): JSX.Element => {
 
   const postMissionComplete = () => {
     try {
-      missionApi
-        .postMissionComplete(misstionList[misstionList.length - 1]?.missionId)
-        .then(() => {
-          navigation.navigate('미션');
-        });
+      missionApi.postMissionComplete(todayMission.missionId).then(() => {
+        navigation.navigate('미션');
+      });
     } catch (error) {
       console.log(error);
     }
@@ -54,10 +59,6 @@ export const GoMission = ({navigation}: {navigation: any}): JSX.Element => {
     [],
   );
 
-  // const [enteredText, setEnteredText] = useState('');
-  // const handleTextChange = (text: string) => {
-  //   setEnteredText(text); // Set the entered text in GoMission
-  // };
   const [answerRight, setAnswerRight] = useState(false);
 
   const renderContent = () => (
@@ -90,16 +91,6 @@ export const GoMission = ({navigation}: {navigation: any}): JSX.Element => {
     </View>
   );
 
-  // const handleExpand = () => {
-  //   Keyboard.dismiss();
-  //   if (bottomSheetRef.current && enteredText === '햄버거') {
-  //     setAnswerRight(true);
-  //     bottomSheetRef.current.expand();
-  //   } else if (bottomSheetRef.current) {
-  //     bottomSheetRef.current.expand();
-  //   }
-  // };
-
   return (
     <View style={style.container}>
       <MenuTop
@@ -109,11 +100,9 @@ export const GoMission = ({navigation}: {navigation: any}): JSX.Element => {
       <Image source={pinkEyeImg} style={style.pinkEyeImg} />
       <View style={style.innerContainer}>
         <Text style={style.titleText}>미션 소개</Text>
-        <Text style={style.missionText}>
-          {misstionList[misstionList.length - 1]?.title}
-        </Text>
+        <Text style={style.missionText}>{todayMission.title}</Text>
         <Text style={style.contentText}>
-          {misstionList[misstionList.length - 1]?.content + ', 완료했나요?'}
+          {todayMission.content + ', 완료했나요?'}
         </Text>
       </View>
       <BtnBig text="수행완료" onPress={postMissionComplete} />
