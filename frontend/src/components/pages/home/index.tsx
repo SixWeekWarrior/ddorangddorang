@@ -195,7 +195,7 @@ export const Home = ({navigation}: {navigation: any}): JSX.Element => {
                 <View
                   style={{
                     ...style.circle,
-                    backgroundColor: GlobalStyles.grey_3.color,
+                    backgroundColor: GlobalStyles.grey_2.color,
                   }}>
                   <Text style={style.midBoldFont}>미완료</Text>
                 </View>
@@ -216,12 +216,18 @@ export const Home = ({navigation}: {navigation: any}): JSX.Element => {
                 ...style.midBoldFont,
                 marginLeft: 15,
               }}>
-              진행 현황 보기
+              마니또 맞추기
             </Text>
             <Image
               source={arrowRightImg}
               // eslint-disable-next-line react-native/no-inline-styles
-              style={{marginTop: 20, width: 6, height: 11, marginLeft: 10}}
+              style={{
+                width: 6,
+                height: 11,
+                marginLeft: 8,
+                objectFit: 'scale-down',
+                alignSelf: 'center',
+              }}
             />
           </Pressable>
         </View>
@@ -402,14 +408,14 @@ const style = StyleSheet.create({
     fontFamily: 'NotoSansKR-Bold',
     fontSize: 12,
     color: GlobalStyles.white_2.color,
-    marginTop: -20,
+    marginTop: -15,
     marginLeft: 15,
   },
   numberFont: {
     fontFamily: 'NotoSansKR-Black',
     color: GlobalStyles.black.color,
     fontSize: 30,
-    letterSpacing: 5,
+    letterSpacing: 3,
   },
 });
 

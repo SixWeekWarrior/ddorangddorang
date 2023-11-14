@@ -61,7 +61,7 @@ export const AdditionalInfo = ({
     <View style={styles.container}>
       <BorderedBox
         menu={'추가 정보'}
-        text={`나의 마니띠에게 소개할 수 있는\n추가 정보를 입력해주세요.`}
+        text={'나의 마니띠에게 소개할 수 있는\n추가 정보를 입력해주세요.'}
         onInputChange={handleInputChange}
         onSkip={handleSkip}
       />

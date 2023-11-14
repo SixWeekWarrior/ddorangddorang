@@ -6,13 +6,18 @@ import {missionApi} from '../../../apis';
 import {MissionInfo, PerformsInfo} from '../../../types/mission';
 
 const MissionList = () => {
-  const [misstionList, setMisstionList] = useState<MissionInfo[]>([]);
-  const [performsInfo, setPerformsInfo] = useState<PerformsInfo>();
+  const [missionList, setMissionList] = useState<MissionInfo[]>([]);
+  const [performsInfo, setPerformsInfo] = useState<PerformsInfo>({
+    missionPerformsInfoRes: [],
+    dayCount: 0,
+    missionCompleteCount: 0,
+  });
+
   const getMissionInfo = () => {
     try {
       missionApi.getMission().then(data => {
         setPerformsInfo(data.data);
-        setMisstionList(data.data.missionPerformsInfoRes);
+        setMissionList(data.data.missionPerformsInfoRes);
       });
     } catch (error) {
       console.log(error);
@@ -26,10 +31,10 @@ const MissionList = () => {
   return (
     <View style={styles.listContainer}>
       <FlatList
-        data={misstionList}
+        data={missionList}
         renderItem={({item, index}) => (
           <MissionTab
-            day={index + 1 + '일차'}
+            day={performsInfo.dayCount + '일차'}
             content={item.title}
             done={item.isComplete}
           />

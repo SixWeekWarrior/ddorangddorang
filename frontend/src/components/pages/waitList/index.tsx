@@ -63,14 +63,14 @@ export const WaitList = ({
     <View style={styles.container}>
       <MenuTop
         menu="대기목록"
-        text={`대기 중인 친구입니다.\n승인할 찬구를 추가하세요.`}
+        text={'대기 중인 친구입니다.\n승인할 친구를 추가하세요.'}
       />
       <View style={styles.firstView}>
         <Text style={styles.titleText}>
           {waitingList.length}명이 대기중입니다.
         </Text>
         <Text style={styles.miniText}>
-          최소{' '}
+          최소
           <Text style={styles.numberText}>
             {minMember - memberCount < 0 ? 0 : minMember - memberCount}
           </Text>

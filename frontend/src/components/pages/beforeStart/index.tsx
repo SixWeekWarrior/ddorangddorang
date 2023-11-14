@@ -75,7 +75,7 @@ export const BeforeStart = ({navigation}: {navigation: any}) => {
     <ScrollView style={styles.container}>
       <MenuTop
         menu="그룹 정보"
-        text={`어서 친구들을 초대하고\n마니또를 즐겨요!`}
+        text={'어서 친구들을 초대하고\n마니또를 즐겨요!'}
       />
       <View style={styles.sumContainer}>
         <GroupSummary
