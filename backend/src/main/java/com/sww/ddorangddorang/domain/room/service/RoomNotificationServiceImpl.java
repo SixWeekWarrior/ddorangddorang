@@ -85,6 +85,7 @@ public class RoomNotificationServiceImpl implements RoomNotificationService {
                 .id(eventId)
                 .name("message")
                 .data(data));
+            log.info("sse send: {}, {}, {}", eventId, "message", data);
         } catch (IOException ioException) {
             emitterRepository.delete(emitterId);
         }
