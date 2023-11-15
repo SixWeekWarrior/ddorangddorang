@@ -1,5 +1,5 @@
 import {Pressable, StyleSheet, Text} from 'react-native';
-import GlobalStyles from '../../../styles/GlobalStyles';
+import GlobalStyles, {height} from '../../../styles/GlobalStyles';
 
 type MissionTabProps = {
   day: string;
@@ -20,11 +20,11 @@ const MissionTab = ({day, content, done}: MissionTabProps) => {
 
 const style = StyleSheet.create({
   bottomTop: {
-    marginTop: 24,
-    marginLeft: 24,
     borderWidth: 0.5,
+    width: 105,
     borderStyle: 'solid',
     borderRadius: 20,
+    marginRight: height * 10,
     borderColor: GlobalStyles.grey_3.color,
   },
   circleDone: {
@@ -38,7 +38,6 @@ const style = StyleSheet.create({
     marginHorizontal: 15,
     marginBottom: 10,
   },
-
   circle: {
     backgroundColor: GlobalStyles.grey_2.color,
     width: 60,
@@ -61,8 +60,12 @@ const style = StyleSheet.create({
     fontFamily: GlobalStyles.home_title.fontFamily,
     color: GlobalStyles.grey_3.color,
     fontSize: 10,
-    marginLeft: 15,
+    paddingHorizontal: 15,
     marginTop: -15,
+    flexGrow: 1,
+    flexShrink: 1,
+    flexBasis: '0%',
+    flexWrap: 'wrap',
   },
   titleFont: {
     fontFamily: GlobalStyles.home_title.fontFamily,

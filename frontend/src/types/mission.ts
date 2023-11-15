@@ -4,6 +4,7 @@ export type MissionInfo = {
   content: string;
   isComplete: boolean;
   missionType: number;
+  dayCount: number;
 };
 
 export type PerformsInfo = {

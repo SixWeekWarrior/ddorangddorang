@@ -110,6 +110,16 @@ const getUser = async () => {
   }
 };
 
+// 전체 User 정보 조회 API
+const getUserExceptMe = async () => {
+  try {
+    const res = await client.get('users/user-info-list');
+    return res.data.data;
+  } catch (e) {
+    throw new Error('ERROR IN GET_USER_EXCEPT_ME');
+  }
+};
+
 // 개발자 의견보내기 API
 const postOpinion = async (data: OpinionInfo) => {
   try {
@@ -158,6 +168,7 @@ const user = {
   putMoreInfo,
   putTodayInfo,
   getUser,
+  getUserExceptMe,
   getManitoHint,
   getUserState,
   getHomeInfo,

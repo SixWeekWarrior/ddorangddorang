@@ -8,6 +8,7 @@ const KEY = 'USER';
 export const TmpUserInfoState = atom<UserInfo>({
   key: `${KEY}/tmpinfo`,
   default: {
+    userId: 0,
     name: '',
     generation: 0,
     isMajor: true,
@@ -32,6 +33,7 @@ export const TmpUserInfoState = atom<UserInfo>({
 export const UserInfoState = atom<UserInfo>({
   key: `${KEY}/info`,
   default: {
+    userId: 0,
     name: '',
     generation: 0,
     isMajor: true,

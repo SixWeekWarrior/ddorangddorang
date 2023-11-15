@@ -12,6 +12,7 @@ import {useEffect, useState} from 'react';
 import {MissionInfo, PerformsInfo} from '../../../types/mission';
 import {missionApi, roomApi} from '../../../apis';
 import {RoomEndInfo} from '../../../types/room';
+import {ManitiInfo} from '../../../types/user';
 
 type InfoBoxProps = {
   navigation: any;
@@ -27,10 +28,11 @@ const campusDict: {[key: number]: string} = {
 };
 
 const InfoBox = ({navigation, destination}: InfoBoxProps): JSX.Element => {
-  const [userInfo, setUserInfo] = useRecoilState(user.UserInfoState);
+  const [userInfo] = useRecoilState(user.UserInfoState);
   const [missionList, setMissionList] = useState<MissionInfo[]>([]);
   const [performsInfo, setPerformsInfo] = useState<PerformsInfo>();
   const [endInfo, setEndInfo] = useState<RoomEndInfo>();
+  const [manitiInfo, setManitiInfo] = useState<ManitiInfo>();
 
   const getMissionInfo = () => {
     try {
@@ -53,9 +55,20 @@ const InfoBox = ({navigation, destination}: InfoBoxProps): JSX.Element => {
     }
   };
 
+  const getManitiInfo = () => {
+    try {
+      missionApi.getManiti().then(data => {
+        setManitiInfo(data);
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     getMissionInfo();
     getEndInfo();
+    getManitiInfo();
   }, []);
 
   const handlePress = () => {
@@ -136,7 +149,11 @@ const InfoBox = ({navigation, destination}: InfoBoxProps): JSX.Element => {
               <Text style={style.bigFont}>{performsInfo?.dayCount}일차 </Text>
               <Text style={style.regFont}>
                 내 마니띠{' '}
-                <Text style={style.pointFont}>이효식 | 전공 | 7반</Text>
+                <Text style={style.pointFont}>
+                  {manitiInfo?.name} | {manitiInfo?.generation}기 |{' '}
+                  {manitiInfo?.isMajor ? '전공' : '비전공'} |{' '}
+                  {manitiInfo?.classes}반
+                </Text>
               </Text>
               <Text style={style.regFont}>
                 지금까지{' '}

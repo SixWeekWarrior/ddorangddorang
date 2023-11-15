@@ -221,8 +221,7 @@ const styles = StyleSheet.create({
   thirdView: {
     flexDirection: 'row',
     flex: 0.5,
-    paddingLeft: 30,
-    paddingRight: 30,
+    paddingHorizontal: 30,
     alignItems: 'flex-start',
   },
 });

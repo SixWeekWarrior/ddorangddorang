@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "799249786769",
+    "project_id": "ddorangddorang-9fdac",
+    "storage_bucket": "ddorangddorang-9fdac.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:799249786769:android:c979dbc0a87eaf704c5c30",
+        "android_client_info": {
+          "package_name": "com.ssafy.ddorangddorang"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyByLbsSkdr-kuoCq2WSaGCzjJVSeWsWF94"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

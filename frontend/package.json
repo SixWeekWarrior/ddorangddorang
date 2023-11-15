@@ -23,6 +23,7 @@
     "axios": "^1.5.1",
     "classnames": "^2.3.2",
     "dotenv": "^16.3.1",
+    "event-source-polyfill": "^1.0.31",
     "expo-constants": "^14.4.2",
     "expo-font": "^11.6.0",
     "is-arrayish": "^0.3.2",

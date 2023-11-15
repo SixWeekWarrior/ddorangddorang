@@ -3,8 +3,13 @@ import GlobalStyles from '../../../styles/GlobalStyles';
 import MenuTop from '../../molecules/menuTop';
 import InfoBox from '../../organisms/infoBox';
 import MissionList from '../../molecules/missionList';
+// import {useIsFocused} from '@react-navigation/native';
+// import {useEffect} from 'react';
 
 export const Misson = ({navigation}: {navigation: any}): JSX.Element => {
+  // const isFocused = useIsFocused();
+  // useEffect(() => {}, [isFocused]);
+
   return (
     <ScrollView style={styles.container}>
       <MenuTop
@@ -30,11 +35,12 @@ const styles = StyleSheet.create({
     backgroundColor: GlobalStyles.white_2.color,
   },
   topContainer: {
-    flex: 0.5,
-    marginVertical: 20,
+    flex: 1,
+    marginTop: 24,
   },
   midContainer: {
-    flex: 1,
+    flex: 1.5,
+    marginVertical: 24,
   },
   bottomContainer: {
     flex: 1,

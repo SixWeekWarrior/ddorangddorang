@@ -54,18 +54,18 @@ const styles = StyleSheet.create({
   },
   topContainer: {
     flex: 0.5,
-    marginVertical: 20,
+    marginVertical: 24,
   },
   midContainer: {
     flex: 0.5,
   },
   bottomContainer: {
     flex: 0.7,
-    marginVertical: 20,
+    marginVertical: 24,
   },
   emptyContainer: {
     flex: 0.2,
-    marginBottom: 20,
+    marginBottom: 24,
   },
 });
 

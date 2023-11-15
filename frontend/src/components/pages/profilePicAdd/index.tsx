@@ -29,11 +29,13 @@ export const ProfilePicAdd = ({navigation}: {navigation: any}): JSX.Element => {
     <View style={styles.container}>
       <BorderedBox
         menu={'사진 등록'}
-        text={`그룹에서 나를 알아볼 수 있도록\nSSAFY 학생증 사진을 업로드해주세요.`}
+        text={
+          '그룹에서 나를 알아볼 수 있도록\nSSAFY 학생증 사진을 업로드해주세요.'
+        }
         onInputChange={() => console.log('onInputChange 실행')}
         onImageSelect={handleImageSelect}
       />
-      <BtnBig text="다음" onPress={handleSubmit} />
+      <BtnBig text="다음" onPress={handleSubmit} disabled={!selectedImageUri} />
     </View>
   );
 };

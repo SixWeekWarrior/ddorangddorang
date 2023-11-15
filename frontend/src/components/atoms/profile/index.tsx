@@ -1,7 +1,18 @@
-import {View, StyleSheet, Image, Text, TouchableOpacity} from 'react-native';
+import {
+  View,
+  StyleSheet,
+  Image,
+  Text,
+  TouchableOpacity,
+  Pressable,
+} from 'react-native';
 import {UserProfile} from '../../../types/user';
-import GlobalStyles, {height} from '../../../styles/GlobalStyles';
+import GlobalStyles, {height, width} from '../../../styles/GlobalStyles';
 import {useEffect, useState} from 'react';
+import Modal from 'react-native-modal';
+import BtnSm from '../btnSm';
+import closeImg from '../../../assets/closeImg.png';
+import {guessApi} from '../../../apis';
 
 type ProfileProps = {
   selectedList: number[];
@@ -10,7 +21,7 @@ type ProfileProps = {
   toggle?: boolean;
 };
 
-type Profile = ProfileProps & UserProfile;
+type Profile = ProfileProps & UserProfile & any;
 
 export const Profile = ({
   userId,
@@ -23,10 +34,15 @@ export const Profile = ({
   setSelectedList,
   isAllChecked,
   toggle,
-}: Profile) => {
+  navigation,
+}: Profile): JSX.Element => {
   const [isSelected, setIsSelected] = useState<boolean>(
     selectedList.includes(userId),
   );
+  const [isModalVisible, setModalVisible] = useState(false);
+  const toggleModal = () => {
+    setModalVisible(!isModalVisible);
+  };
 
   const handleProfilePress = () => {
     if (toggle) {
@@ -37,16 +53,8 @@ export const Profile = ({
   };
 
   const toggleProfile = () => {
-    setIsSelected(!isSelected);
-    setSelectedList(prevSelectedList => {
-      if (isSelected) {
-        // 이미 선택된 경우, 선택 해제
-        return prevSelectedList.filter((data: number) => data !== userId);
-      } else {
-        // 선택되지 않은 경우, 다른 선택 해제 후 현재 선택
-        return [userId];
-      }
-    });
+    setSelectedList([userId]);
+    toggleModal();
   };
 
   const defaultProfileToggle = () => {
@@ -64,6 +72,20 @@ export const Profile = ({
     setIsSelected(isAllChecked);
   }, [isAllChecked]);
 
+  const changeManito = () => {
+    try {
+      const manitoId = selectedList[0];
+      guessApi.postGuess(manitoId).then(data =>
+        navigation.navigate('MatchStatus', {
+          showNotice: true,
+          manitoName: data.name,
+        }),
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <View style={styles.profileContainer}>
       <TouchableOpacity onPress={handleProfilePress}>
@@ -76,6 +98,47 @@ export const Profile = ({
       <Text style={styles.profiledetail}>
         {isMajor ? '전공' : '비전공'} | {classes}반
       </Text>
+      <Modal
+        isVisible={isModalVisible}
+        onBackdropPress={() => setModalVisible(false)}>
+        <View style={{flex: 1, justifyContent: 'center'}}>
+          <View style={styles.modalContainer}>
+            <Pressable style={styles.close} onPress={toggleModal}>
+              <Image source={closeImg} style={styles.closeImg} />
+            </Pressable>
+            {true ? (
+              <View style={styles.noticeContainer}>
+                <View style={styles.row}>
+                  <Text style={styles.noticeText}>예상 마니또를 </Text>
+                  <Text style={styles.nameText}>{name}</Text>
+                  <Text style={styles.noticeText}>님으로</Text>
+                </View>
+                <Text style={{...styles.noticeText, alignSelf: 'center'}}>
+                  설정하시겠어요?
+                </Text>
+                <View style={styles.btnContainer}>
+                  <BtnSm text="네!" onPress={changeManito} />
+                  <BtnSm text="아니요!" onPress={toggleModal} isDark={true} />
+                </View>
+              </View>
+            ) : (
+              <View style={{...styles.noticeContainer}}>
+                <Text
+                  // eslint-disable-next-line react-native/no-inline-styles
+                  style={{
+                    ...styles.noticeText,
+                    alignSelf: 'center',
+                    textAlign: 'center',
+                  }}>
+                  {
+                    '미션 변경 기회를 모두 사용하셨습니다.\n이번 미션은 꼭 수행해주세요!'
+                  }
+                </Text>
+              </View>
+            )}
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 };
@@ -86,7 +149,28 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginHorizontal: 7,
   },
-
+  modalContainer: {
+    backgroundColor: GlobalStyles.white_2.color,
+    borderRadius: 30,
+    width: '90%',
+    height: 230,
+    alignSelf: 'center',
+    verticalAlign: 'middle',
+  },
+  row: {
+    flexDirection: 'row',
+    alignSelf: 'center',
+  },
+  noticeContainer: {
+    height: '100%',
+    justifyContent: 'center',
+  },
+  btnContainer: {
+    marginTop: 20,
+    flexDirection: 'row',
+    columnGap: width * 10,
+    alignSelf: 'center',
+  },
   profilepic: {
     width: 60,
     height: 60,
@@ -110,6 +194,26 @@ const styles = StyleSheet.create({
   selectedProfile: {
     borderColor: GlobalStyles.orange.color,
     borderWidth: 3,
+  },
+  close: {
+    right: height * 20,
+    position: 'absolute',
+  },
+  closeImg: {
+    width: 15,
+    objectFit: 'scale-down',
+  },
+  noticeText: {
+    fontFamily: GlobalStyles.content.fontFamily,
+    fontSize: height * 15,
+    color: GlobalStyles.black.color,
+    lineHeight: height * 25,
+  },
+  nameText: {
+    fontFamily: GlobalStyles.section_title.fontFamily,
+    fontSize: height * 18,
+    color: GlobalStyles.green.color,
+    lineHeight: height * 25,
   },
 });
 

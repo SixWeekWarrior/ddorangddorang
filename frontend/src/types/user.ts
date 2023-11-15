@@ -1,4 +1,5 @@
 export type UserInfo = {
+  userId: number;
   name: string;
   generation: number;
   isMajor: boolean;
@@ -58,4 +59,11 @@ export type HomeInfo = {
 
 export type OpinionInfo = {
   content: string;
+};
+
+export type ManitiInfo = {
+  classes: number;
+  isMajor: boolean;
+  name: string;
+  generation: number;
 };

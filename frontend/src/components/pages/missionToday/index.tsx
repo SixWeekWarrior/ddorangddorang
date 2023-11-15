@@ -20,6 +20,7 @@ const MissionToday = ({navigation}: {navigation: any}): JSX.Element => {
     content: '',
     isComplete: false,
     missionType: 0,
+    dayCount: 0,
   });
   const [isModalVisible, setModalVisible] = useState(false);
   const isFocused = useIsFocused();
@@ -116,14 +117,16 @@ const MissionToday = ({navigation}: {navigation: any}): JSX.Element => {
                     alignSelf: 'center',
                     textAlign: 'center',
                   }}>
-                  {'미션을 변경하시겠어요?\n미션 변경 기회는 최대 2회입니다.'}
+                  {
+                    '미션을 변경하시겠어요?\n미션 변경 기회는\n마니또 기간 중 최대 2회입니다.'
+                  }
                 </Text>
                 <View style={style.btnContainer}>
                   <BtnSm text="미션변경" onPress={changeMission} />
                 </View>
               </View>
             ) : (
-              <View style={style.noticeContainer}>
+              <View style={{...style.noticeContainer}}>
                 <Text
                   // eslint-disable-next-line react-native/no-inline-styles
                   style={{
@@ -132,7 +135,7 @@ const MissionToday = ({navigation}: {navigation: any}): JSX.Element => {
                     textAlign: 'center',
                   }}>
                   {
-                    '미션 변경 기회를 모두 사용하셨습니다.\n\n이번 미션은 꼭 수행해주세요!'
+                    '미션 변경 기회를 모두 사용하셨습니다.\n이번 미션은 꼭 수행해주세요!'
                   }
                 </Text>
               </View>
@@ -157,7 +160,7 @@ const style = StyleSheet.create({
     backgroundColor: GlobalStyles.white_2.color,
     borderRadius: 30,
     width: '90%',
-    height: 200,
+    height: 230,
     alignSelf: 'center',
     verticalAlign: 'middle',
   },
@@ -166,7 +169,7 @@ const style = StyleSheet.create({
     justifyContent: 'center',
   },
   btnContainer: {
-    marginTop: 15,
+    marginTop: 20,
   },
   pinkEyeImg: {
     top: height * -90,
@@ -247,6 +250,7 @@ const style = StyleSheet.create({
     fontFamily: GlobalStyles.content.fontFamily,
     fontSize: height * 15,
     color: GlobalStyles.black.color,
+    lineHeight: height * 25,
   },
 });
 

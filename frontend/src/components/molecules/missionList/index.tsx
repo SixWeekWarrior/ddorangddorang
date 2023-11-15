@@ -1,40 +1,35 @@
 import {useEffect, useState} from 'react';
 import {FlatList, StyleSheet, View} from 'react-native';
-import GlobalStyles from '../../../styles/GlobalStyles';
+import GlobalStyles, {height} from '../../../styles/GlobalStyles';
 import MissionTab from '../../atoms/missionTab';
 import {missionApi} from '../../../apis';
-import {MissionInfo, PerformsInfo} from '../../../types/mission';
+import {MissionInfo} from '../../../types/mission';
+import {useIsFocused} from '@react-navigation/native';
 
 const MissionList = () => {
   const [missionList, setMissionList] = useState<MissionInfo[]>([]);
-  const [performsInfo, setPerformsInfo] = useState<PerformsInfo>({
-    missionPerformsInfoRes: [],
-    dayCount: 0,
-    missionCompleteCount: 0,
-  });
+  const isFocused = useIsFocused();
 
   const getMissionInfo = () => {
     try {
       missionApi.getMission().then(data => {
-        setPerformsInfo(data.data);
         setMissionList(data.data.missionPerformsInfoRes);
       });
     } catch (error) {
       console.log(error);
     }
   };
-
   useEffect(() => {
     getMissionInfo();
-  }, []);
+  }, [isFocused]);
 
   return (
     <View style={styles.listContainer}>
       <FlatList
         data={missionList}
-        renderItem={({item, index}) => (
+        renderItem={({item}) => (
           <MissionTab
-            day={performsInfo.dayCount + '일차'}
+            day={item.dayCount + '일차'}
             content={item.title}
             done={item.isComplete}
           />
@@ -48,11 +43,8 @@ const MissionList = () => {
 
 const styles = StyleSheet.create({
   listContainer: {
-    flex: 0.8,
-    marginBottom: 20,
-  },
-  profileContainer: {
-    flexDirection: 'row',
+    flex: 1,
+    paddingHorizontal: height * 24,
   },
   text: {
     color: GlobalStyles.black.color,

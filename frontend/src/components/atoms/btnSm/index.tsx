@@ -5,11 +5,17 @@ import GlobalStyles from '../../../styles/GlobalStyles';
 type BtnSmProps = {
   onPress: any;
   text: string;
+  isDark?: boolean;
 };
 
-export const BtnSm = ({onPress, text}: BtnSmProps) => {
+export const BtnSm = ({onPress, text, isDark}: BtnSmProps) => {
   return (
-    <Pressable onPress={onPress} style={styles.btnContainer}>
+    <Pressable
+      onPress={onPress}
+      style={[
+        styles.btnContainer,
+        isDark && {backgroundColor: GlobalStyles.grey_3.color}, // 수정된 부분
+      ]}>
       <Text style={styles.btn}>{text}</Text>
     </Pressable>
   );
