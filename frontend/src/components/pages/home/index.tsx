@@ -206,7 +206,7 @@ export const Home = ({navigation}: {navigation: any}): JSX.Element => {
           <Pressable
             style={style.bottomBottom}
             onPress={() => {
-              homeInfo.dday !== null && homeInfo.dday <= 3
+              homeInfo.dday !== null && homeInfo.dday >= 3
                 ? navigation.navigate('MatchStatus')
                 : toggleModal();
             }}>

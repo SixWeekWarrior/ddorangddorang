@@ -1,9 +1,8 @@
-import {StyleSheet, View, Image, Text, Pressable} from 'react-native';
+import {StyleSheet, View, Image, Text} from 'react-native';
 import MenuTop from '../../molecules/menuTop';
 import pinkEyeImg from '../../../assets/pinkEyeImg.png';
 import yellowEyeImg from '../../../assets/yellowEyeImg.png';
 import GlobalStyles, {height} from '../../../styles/GlobalStyles';
-// import InputTextwithBtn from '../../molecules/inputTextwithBtn';
 import BtnBig from '../../atoms/btnBig';
 import BottomSheet, {BottomSheetBackdrop} from '@gorhom/bottom-sheet';
 import {useRef, useMemo, useState, useCallback, useEffect} from 'react';
@@ -139,13 +138,13 @@ const style = StyleSheet.create({
     rowGap: -20,
   },
   pinkEyeImg: {
-    top: -100,
+    top: height * -90,
     left: '62%',
     width: 90,
     objectFit: 'scale-down',
   },
   yellowEyeImg: {
-    top: -410,
+    top: height * -390,
     left: '7%',
     width: 70,
     objectFit: 'scale-down',
@@ -158,29 +157,29 @@ const style = StyleSheet.create({
   innerContainer: {
     backgroundColor: 'rgba(255, 255, 255, 0.8)',
     width: '80%',
-    height: 250,
+    height: height * 250,
+    top: height * -280,
     alignSelf: 'center',
-    top: -280,
+    paddingTop: height * 20,
     paddingLeft: 24,
     borderRadius: 25,
+    marginTop: height * 45,
   },
   titleText: {
     fontFamily: GlobalStyles.home_title.fontFamily,
     fontSize: GlobalStyles.home_title.fontSize,
     color: GlobalStyles.grey_3.color,
-    marginTop: 24,
   },
   missionText: {
     fontFamily: GlobalStyles.home_title.fontFamily,
-    fontSize: 20,
+    fontSize: height * 18,
     color: GlobalStyles.black.color,
-    marginTop: -20,
+    marginTop: -15,
   },
   contentText: {
     fontFamily: GlobalStyles.content.fontFamily,
-    fontSize: 16,
+    fontSize: height * 13,
     color: GlobalStyles.black.color,
-    marginTop: 10,
   },
   noticeText: {
     fontFamily: GlobalStyles.section_title.fontFamily,

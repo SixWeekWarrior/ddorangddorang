@@ -1,61 +1,50 @@
-import {View, StyleSheet, Text, FlatList, Pressable} from 'react-native';
+import {View, StyleSheet, Text} from 'react-native';
 import MenuTop from '../../molecules/menuTop';
 import GlobalStyles from '../../../styles/GlobalStyles';
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import BtnBig from '../../atoms/btnBig';
+import {UserProfile} from '../../../types/user';
+import {Profile} from '../../atoms/profile';
+import {roomApi} from '../../../apis';
 
-const MatchGuess = ({
-  navigation,
-  route,
-}: {
-  navigation: any;
-  route: any;
-}): JSX.Element => {
-  const {showNotice} = route.params ? route.params : {showNotice: false};
+const MatchGuess = ({navigation}: {navigation: any}): JSX.Element => {
+  const [isAllChecked, setisAllChecked] = useState<boolean>(false);
+  const [selectedList, setSelectedList] = useState<number[]>([]);
+  const [guessList, setGuessList] = useState<UserProfile[]>([]);
 
-  const [data, setData] = useState(
-    new Array(50).fill(null).map((_, index) => ({
-      id: index.toString(),
-      name: '홍재연',
-      detail: '전공 / 7반',
-      selected: false,
-    })),
-  );
-  const [selectedProfile, setSelectedProfile] = useState<string | null>(null);
-
-  const toggleSelect = (id: string) => {
-    const newData = data.map(item => {
-      if (item.id === id) {
-        item.selected = !item.selected;
-        setSelectedProfile(item.selected ? id : null);
-      } else {
-        item.selected = false;
+  useEffect(() => {
+    const getAllMembers = () => {
+      try {
+        // roomApi.getRoomWaiting().then(data => {
+        //   setGuessList(data.data);
+        // });
+      } catch (error) {
+        console.log(error);
       }
-      return item;
-    });
-    setData(newData);
-  };
+    };
+    getAllMembers();
+  }, []);
+
+  useEffect(() => {
+    console.log('지목된 사람 id', selectedList);
+  }, [selectedList]);
 
   const handleSubmit = () => {
-    navigation.navigate('MatchStatus', {showNotice: true});
+    try {
+      const data = selectedList.map((item: number) => ({userId: item}));
+      roomApi
+        .postRoomResponse(data)
+        .then(() => navigation.navigate('MatchStatus', {showNotice: true}));
+    } catch (error) {
+      console.log(error);
+    }
   };
-
-  const renderItem = ({item}: any) => (
-    <View style={styles.profileContainer}>
-      <Pressable
-        style={[styles.profilepic, item.selected && styles.selectedProfile]}
-        onPress={() => toggleSelect(item.id)}
-      />
-      <Text style={styles.profilename}>{item.name}</Text>
-      <Text style={styles.profiledetail}>{item.detail}</Text>
-    </View>
-  );
 
   return (
     <View style={styles.container}>
       <MenuTop
         menu="마니또 추측"
-        text={`최근 들어 나를 도와주는\n친구가 보이나요?`}
+        text={'최근 들어 나를 도와주는\n친구가 보이나요?'}
       />
       <View style={styles.innerContainer}>
         <Text style={styles.title}>내 마니또를 추측해주세요.</Text>
@@ -64,19 +53,27 @@ const MatchGuess = ({
         </Text>
       </View>
       <View style={styles.listContainer}>
-        <FlatList
-          data={data}
-          renderItem={renderItem}
-          keyExtractor={item => item.id}
-          numColumns={4}
-          style={{flexGrow: 0}}
-        />
+        {guessList.map((item: UserProfile) => (
+          <Profile
+            key={item.userId}
+            name={item.name}
+            generation={item.generation}
+            userId={item.userId}
+            classes={item.classes}
+            isMajor={item.isMajor}
+            isAllChecked={isAllChecked}
+            profileImage={item.profileImage}
+            selectedList={selectedList}
+            setSelectedList={setSelectedList}
+            toggle={true}
+          />
+        ))}
       </View>
       <View style={styles.btnContainer}>
         <BtnBig
           onPress={handleSubmit}
           text="선택완료"
-          disabled={!selectedProfile}
+          disabled={!selectedList}
         />
       </View>
     </View>

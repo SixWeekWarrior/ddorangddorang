@@ -337,7 +337,7 @@ const style = StyleSheet.create({
     fontSize: height * 16,
     letterSpacing: -1,
     marginLeft: 15,
-    marginTop: 5,
+    paddingTop: height * 3,
   },
   midFont: {
     color: GlobalStyles.grey_2.color,

@@ -33,7 +33,7 @@ const putRoom = async (data: RoomInfo) => {
 const getRoomInfo = async () => {
   try {
     const res = await client.get('/rooms');
-    return res.data;
+    return res.data.data;
   } catch (e) {
     throw new Error('getRoomInfo');
   }
