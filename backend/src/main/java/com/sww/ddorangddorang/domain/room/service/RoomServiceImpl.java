@@ -242,117 +242,157 @@ public class RoomServiceImpl implements RoomService {
         log.info("RoomServiceImpl_startGame start");
         List<Participant> participantList = participantRepository.findAllByRoomAndDeletedAtIsNull(
             room);
-
-        Map<Integer, Participant> indexToParticipant = new HashMap<>();
-        Map<Participant, Integer> participantToIndex = new HashMap<>();
-        Integer count = 0;
-        Integer size = participantList.size() + 1;
-
-        log.info("size: {}", size); // 사이즈 자체는 정상임
-
         List<Participant> maleList = new ArrayList<>();
         List<Participant> femaleList = new ArrayList<>();
-        List<Participant>[] wishManitoList = new List[size];
-        Integer[] matchedManito = new Integer[size];
-        Boolean[] searched = new Boolean[size];
 
-        for (int i = 0; i < participantList.size(); ++i) {
-            Participant participant = participantList.get(i);
-
-            indexToParticipant.put(i + 1, participant);
-            participantToIndex.put(participant, i + 1);
-
-            //우선 이성끼리 매칭
-            if (participant.getUser().getGender()) {
+        for (Participant participant : participantList) {
+            if (participant.getUser().getGender().equals(true)) {
                 maleList.add(participant);
             } else {
                 femaleList.add(participant);
             }
         }
 
-        for (int i = 1; i < size; ++i) {
-            Participant participant = indexToParticipant.get(i);
+        Collections.shuffle(maleList);
+        Collections.shuffle(femaleList);
 
-            //추후 차단 로직 구현 시 여기서 차단한 사용자는 간선에서 뺴기
-            if (participant.getUser().getGender()) {
-                wishManitoList[i] = List.copyOf(femaleList);
+        Integer totalCount = participantList.size();
+        Integer maleListCount = 0;
+        Integer femaleListCount = 0;
+        Integer maleListSize = maleList.size();
+        Integer femaleListSize = femaleList.size();
+        participantList.clear();
+        for (int i = 0; i < totalCount; ++i) {
+            if (maleListCount.equals(maleListSize)) {
+                participantList.add(femaleList.get(femaleListCount++));
+            } else if (femaleListCount.equals(femaleListSize)) {
+                participantList.add(maleList.get(maleListCount++));
+            } else if ((i & 1) == 0) {
+                participantList.add(femaleList.get(femaleListCount++));
             } else {
-                wishManitoList[i] = List.copyOf(maleList);
-            }
-
-            List<Participant> tmp = new ArrayList<>(wishManitoList[i]);
-            Collections.shuffle(tmp);
-            wishManitoList[i] = tmp;
-        }
-
-        Arrays.fill(matchedManito, 0);
-        for (int i = 1; i < size; ++i) {
-            Arrays.fill(searched, false);
-            matchManito(i, searched, matchedManito, wishManitoList[i], participantToIndex);
-        }
-
-        Boolean[] manitoMatched = new Boolean[size];
-        Boolean[] manitiMatched = new Boolean[size];
-        Arrays.fill(manitoMatched, false);
-        Arrays.fill(manitiMatched, false);
-
-        for (int i = 1; i < size; ++i) {
-            if (matchedManito[i] > 0) {
-                manitoMatched[matchedManito[i]] = true;
-                manitiMatched[i] = true;
+                participantList.add(maleList.get(maleListCount++));
             }
         }
 
-        List<Participant> unmatchedManitoList = new ArrayList<>();
-        List<Participant> unmatchedManitiList = new ArrayList<>();
-        log.info("initial match");
-        //마니또가 매칭이 되지 않은 회원끼리는 성별과 관계 없이 매칭
-        for (int i = 1; i < size; ++i) {
-            if (!manitoMatched[i]) {
-                unmatchedManitoList.add(indexToParticipant.get(i));
-            }
-            if (!manitiMatched[matchedManito[i]]) {
-                unmatchedManitiList.add(indexToParticipant.get(matchedManito[i]));
-            }
+        for (int i = 1; i < totalCount; ++i) {
+            Participant maniti = participantList.get(i);
+            Participant manito = participantList.get(i - 1);
+            maniti.matchManito(manito);
+            manito.matchManito(maniti);
         }
+        participantList.get(0).matchManito(participantList.get(totalCount - 1));
+        participantList.get(totalCount - 1).matchManiti(participantList.get(0));
 
-        for (int i = 1; i < size; ++i) {
-            if (!manitoMatched[i]) {
-                Participant me = indexToParticipant.get(i);
-                wishManitoList[i] = new ArrayList<>();
-
-                //추후 차단한 사용자는 배제하는 로직 추가
-                //Set을 활용하면 좋을 것 같음
-                for (Participant participant : unmatchedManitiList) {
-                    if (participant != null && !me.equals(participant)) {
-                        wishManitoList[i].add(participant);
-                    }
-                }
-
-                Collections.shuffle(wishManitoList[i]);
-            }
-        }
-
-        for (int i = 1; i < size; ++i) {
-            if (!manitoMatched[i]) {
-                Arrays.fill(searched, false);
-                matchManito(i, searched, matchedManito, wishManitoList[i], participantToIndex);
-            }
-        }
-
-        for (int i = 1; i < size; ++i) {
-            if (matchedManito[i] > 0) {
-                manitoMatched[matchedManito[i]] = true;
-                manitiMatched[i] = true;
-                ++count;
-                Participant manito = indexToParticipant.get(matchedManito[i]);
-                Participant maniti = indexToParticipant.get(i);
-
-                manito.matchManiti(maniti);
-                maniti.matchManito(manito);
-            }
-        }
-
+//        Map<Integer, Participant> indexToParticipant = new HashMap<>();
+//        Map<Participant, Integer> participantToIndex = new HashMap<>();
+//        Integer count = 0;
+//        Integer size = participantList.size() + 1;
+//
+//        log.info("size: {}", size); // 사이즈 자체는 정상임
+//
+//        List<Participant> maleList = new ArrayList<>();
+//        List<Participant> femaleList = new ArrayList<>();
+//        List<Participant>[] wishManitoList = new List[size];
+//        Integer[] matchedManito = new Integer[size];
+//        Boolean[] searched = new Boolean[size];
+//
+//        for (int i = 0; i < participantList.size(); ++i) {
+//            Participant participant = participantList.get(i);
+//
+//            indexToParticipant.put(i + 1, participant);
+//            participantToIndex.put(participant, i + 1);
+//
+//            //우선 이성끼리 매칭
+//            if (participant.getUser().getGender()) {
+//                maleList.add(participant);
+//            } else {
+//                femaleList.add(participant);
+//            }
+//        }
+//
+//        for (int i = 1; i < size; ++i) {
+//            Participant participant = indexToParticipant.get(i);
+//
+//            //추후 차단 로직 구현 시 여기서 차단한 사용자는 간선에서 뺴기
+//            if (participant.getUser().getGender()) {
+//                wishManitoList[i] = List.copyOf(femaleList);
+//            } else {
+//                wishManitoList[i] = List.copyOf(maleList);
+//            }
+//
+//            List<Participant> tmp = new ArrayList<>(wishManitoList[i]);
+//            Collections.shuffle(tmp);
+//            wishManitoList[i] = tmp;
+//        }
+//
+//        Arrays.fill(matchedManito, 0);
+//        for (int i = 1; i < size; ++i) {
+//            Arrays.fill(searched, false);
+//            matchManito(i, searched, matchedManito, wishManitoList[i], participantToIndex);
+//        }
+//
+//        Boolean[] manitoMatched = new Boolean[size];
+//        Boolean[] manitiMatched = new Boolean[size];
+//        Arrays.fill(manitoMatched, false);
+//        Arrays.fill(manitiMatched, false);
+//
+//        for (int i = 1; i < size; ++i) {
+//            if (matchedManito[i] > 0) {
+//                manitoMatched[matchedManito[i]] = true;
+//                manitiMatched[i] = true;
+//            }
+//        }
+//
+//        List<Participant> unmatchedManitoList = new ArrayList<>();
+//        List<Participant> unmatchedManitiList = new ArrayList<>();
+//        log.info("initial match");
+//        //마니또가 매칭이 되지 않은 회원끼리는 성별과 관계 없이 매칭
+//        for (int i = 1; i < size; ++i) {
+//            if (!manitoMatched[i]) {
+//                unmatchedManitoList.add(indexToParticipant.get(i));
+//            }
+//            if (!manitiMatched[matchedManito[i]]) {
+//                unmatchedManitiList.add(indexToParticipant.get(matchedManito[i]));
+//            }
+//        }
+//
+//        for (int i = 1; i < size; ++i) {
+//            if (!manitoMatched[i]) {
+//                Participant me = indexToParticipant.get(i);
+//                wishManitoList[i] = new ArrayList<>();
+//
+//                //추후 차단한 사용자는 배제하는 로직 추가
+//                //Set을 활용하면 좋을 것 같음
+//                for (Participant participant : unmatchedManitiList) {
+//                    if (participant != null && !me.equals(participant)) {
+//                        wishManitoList[i].add(participant);
+//                    }
+//                }
+//
+//                Collections.shuffle(wishManitoList[i]);
+//            }
+//        }
+//
+//        for (int i = 1; i < size; ++i) {
+//            if (!manitoMatched[i]) {
+//                Arrays.fill(searched, false);
+//                matchManito(i, searched, matchedManito, wishManitoList[i], participantToIndex);
+//            }
+//        }
+//
+//        for (int i = 1; i < size; ++i) {
+//            if (matchedManito[i] > 0) {
+//                manitoMatched[matchedManito[i]] = true;
+//                manitiMatched[i] = true;
+//                ++count;
+//                Participant manito = indexToParticipant.get(matchedManito[i]);
+//                Participant maniti = indexToParticipant.get(i);
+//
+//                manito.matchManiti(maniti);
+//                maniti.matchManito(manito);
+//            }
+//        }
+//
         List<Prefix> prefixList = prefixRepository.findAll();
         List<Suffix> suffixList = suffixRepository.findAll();
         Integer prefixListSize = prefixList.isEmpty() ? 0 : prefixList.size();
@@ -360,70 +400,64 @@ public class RoomServiceImpl implements RoomService {
         Boolean[][] nicknameUsage = new Boolean[prefixListSize][suffixListSize];
 
         for (Participant participant : participantList) {
-            if (participant.getManito() != null) {
-                Integer prefixSelected = -1;
-                Integer suffixSelected = -1;
+            Integer prefixSelected = -1;
+            Integer suffixSelected = -1;
 
-                do {
-                    Integer randomNumber = (int) (Math.random() * prefixListSize * suffixListSize);
-                    prefixSelected = randomNumber / suffixListSize;
-                    suffixSelected = randomNumber % suffixListSize;
-                } while (nicknameUsage[prefixSelected][suffixSelected] != null);
+            do {
+                Integer randomNumber = (int) (Math.random() * prefixListSize * suffixListSize);
+                prefixSelected = randomNumber / suffixListSize;
+                suffixSelected = randomNumber % suffixListSize;
+            } while (nicknameUsage[prefixSelected][suffixSelected] != null);
 
-                nicknameUsage[prefixSelected][suffixSelected] = true;
-                participant.allocateNickname(
-                    prefixList.get(prefixSelected).getAdjective() + " " + suffixList.get(
-                        suffixSelected).getAnimal());
-//                해당 사용자들은 게임을 시작한 상태로 변경
-                participant.getUser().updateStatus(4L);
-                log.info(
-                    participant.getManito().getUser().getName() + " -> " + participant.getUser()
-                        .getName());
-            } else {
-//                이 사용자들은 매칭이 되지 않은 관계로 강퇴
-                participant.deleteParticipant();
-            }
+            nicknameUsage[prefixSelected][suffixSelected] = true;
+            participant.allocateNickname(
+                prefixList.get(prefixSelected).getAdjective() + " " + suffixList.get(
+                    suffixSelected).getAnimal());
+//            해당 사용자들은 게임을 시작한 상태로 변경
+            participant.getUser().updateStatus(4L);
+            log.info(
+                participant.getManito().getUser().getName() + " -> " + participant.getUser()
+                    .getName());
         }
 
-        room.updateHeadCount(count);
         room.startGame();
         // TODO: 게임 시작 되는지 다시 점검할 필요성
         missionPerformService.startGameAndAssignMission(room);
         redisUtil.putAccessCode(room.getAccessCode());
-        log.info("RoomServiceImpl_startGame end: " + count + " participants started a game");
+        log.info("RoomServiceImpl_startGame end");
     }
 
-    private Boolean matchManito(Integer current, Boolean[] searched, Integer[] matchedManito,
-        List<Participant> wishManitoList, Map<Participant, Integer> participantToIndex) {
-        for (Participant participant : wishManitoList) {
-            Integer next = participantToIndex.getOrDefault(participant, -1);
-
-            log.info("next: {}", next);
-
-            if (next.equals(-1)) {
-                return false;
-            }
-
-            if (!searched[next]) {
-                searched[next] = true;
-
-                log.info("matchedManito[next]: {}", matchedManito[next]); // null뜸 왜?
-
-                // TODO: 여기 에러 터짐
-                if (matchedManito[next].equals(0)) {
-                    matchedManito[next] = current;
-                    return true;
-                } else if (
-                    matchManito(next, searched, matchedManito, wishManitoList, participantToIndex)
-                        && !matchedManito[current].equals(next)) {
-                    matchedManito[next] = current;
-                    return true;
-                }
-            }
-        }
-
-        return false;
-    }
+//    private Boolean matchManito(Integer current, Boolean[] searched, Integer[] matchedManito,
+//        List<Participant> wishManitoList, Map<Participant, Integer> participantToIndex) {
+//        for (Participant participant : wishManitoList) {
+//            Integer next = participantToIndex.getOrDefault(participant, -1);
+//
+//            log.info("next: {}", next);
+//
+//            if (next.equals(-1)) {
+//                return false;
+//            }
+//
+//            if (!searched[next]) {
+//                searched[next] = true;
+//
+//                log.info("matchedManito[next]: {}", matchedManito[next]); // null뜸 왜?
+//
+//                // TODO: 여기 에러 터짐
+//                if (matchedManito[next].equals(0)) {
+//                    matchedManito[next] = current;
+//                    return true;
+//                } else if (
+//                    matchManito(next, searched, matchedManito, wishManitoList, participantToIndex)
+//                        && !matchedManito[current].equals(next)) {
+//                    matchedManito[next] = current;
+//                    return true;
+//                }
+//            }
+//        }
+//
+//        return false;
+//    }
 
     public List<ShowUsersRes> showUsers(Long userId) {
         log.info("RoomServiceImpl_showUsers start");
