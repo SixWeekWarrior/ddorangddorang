@@ -1,4 +1,4 @@
-import {View, StyleSheet, Text, Pressable} from 'react-native';
+import {View, StyleSheet, Text, Pressable, Alert} from 'react-native';
 import MenuTop from '../../molecules/menuTop';
 import GlobalStyles, {height} from '../../../styles/GlobalStyles';
 import BtnBig from '../../atoms/btnBig';
@@ -6,6 +6,8 @@ import {useEffect, useState} from 'react';
 import {roomApi} from '../../../apis';
 import {UserProfile} from '../../../types/user';
 import {Profile} from '../../atoms/profile';
+import {tokenUtil} from '../../../utils';
+import {NativeEventSource, EventSourcePolyfill} from 'event-source-polyfill';
 
 export const WaitList = ({
   navigation,
@@ -18,12 +20,57 @@ export const WaitList = ({
   const [isAllChecked, setisAllChecked] = useState<boolean>(false);
   const [selectedList, setSelectedList] = useState<number[]>([]);
   const [waitingList, setWaitingList] = useState<UserProfile[]>([]);
+  const EventSource = EventSourcePolyfill || NativeEventSource;
+  const API_URL = 'https://k9a210.p.ssafy.io/api/v1';
 
+  // sse 적용 코드
+  const connectSSE = async () => {
+    let eventSource;
+    try {
+      console.log('SSE - 시작');
+      const token = await tokenUtil.getAccessToken();
+      eventSource = new EventSource(API_URL + '/rooms/notification/subscribe', {
+        headers: {
+          'Content-Type': 'text/event-stream',
+          'Cache-Control': 'no-cache',
+          Connection: 'keep-alive',
+          'X-Accel-Buffering': 'no',
+          Authorization: 'Bearer ' + token,
+        },
+        heartbeatTimeout: 120000,
+        withCredentials: true,
+      });
+      eventSource.onopen = () => {
+        console.log('SSE-연결 성공');
+      };
+      eventSource.onmessage = async event => {
+        const res = await event.data;
+        const waittingUser = JSON.parse(res);
+        console.log('SSE - 응답', waittingUser);
+        // setWaitingList(prevList => [...prevList, userData]);
+      };
+      eventSource.onerror = (error: any) => {
+        console.log('SSE- Error', error);
+      };
+    } catch (error) {
+      console.error('SSE - 에러', error);
+    }
+  };
+
+  // const disconnectSSE = () => {
+  //   if (es) {
+  //     console.log('버튼 클릭 - SSE 종료');
+  //     es.close();
+  //   }
+  // };
+
+  // sse 적용 전 코드
   useEffect(() => {
     const getRoomWaiting = () => {
       try {
         roomApi.getRoomWaiting().then(data => {
           setWaitingList(data.data);
+          connectSSE();
         });
       } catch (error) {
         console.log(error);
@@ -36,26 +83,26 @@ export const WaitList = ({
     console.log('승인에 선택된 사람 id', selectedList);
   }, [selectedList]);
 
-  const postRoomResponse = () => {
+  const postRoomResponse = async () => {
     try {
       const data = selectedList.map((item: number) => ({userId: item}));
-      roomApi
-        .postRoomResponse(data)
-        .then(() => navigation.navigate('BeforeStart'));
+      await roomApi.postRoomResponse(data);
     } catch (error) {
       console.log(error);
     }
   };
 
-  const onApprove = () => {
+  const onApprove = async () => {
     if (selectedList.length > maxMember - memberCount) {
-      alert(
+      Alert.alert(
         `최대 선택할 수 있는 인원 ${
           maxMember - memberCount
         }명을 초과하였습니다.`,
       );
     } else {
-      postRoomResponse();
+      await postRoomResponse();
+      // disconnectSSE();
+      navigation.navigate('BeforeStart');
     }
   };
 

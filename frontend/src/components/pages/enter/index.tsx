@@ -191,14 +191,15 @@ const styles = StyleSheet.create({
   },
   myInfo: {
     fontFamily: GlobalStyles.section_title.fontFamily,
-    // marginLeft: height * 246,
+    marginLeft: height * 8,
     marginTop: height * 20,
     fontSize: height * 12,
     color: GlobalStyles.green.color,
   },
   logout: {
     fontFamily: GlobalStyles.section_title.fontFamily,
-    // marginLeft: height * 260,
+    // marginLeft: height * 260
+    marginLeft: height * -12,
     marginTop: height * 20,
     fontSize: height * 12,
     color: GlobalStyles.grey_3.color,

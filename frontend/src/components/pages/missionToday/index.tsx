@@ -1,10 +1,11 @@
-import {StyleSheet, View, Text} from 'react-native';
+import {StyleSheet, View, Text, Image} from 'react-native';
 import MenuTop from '../../molecules/menuTop';
 import GlobalStyles, {height} from '../../../styles/GlobalStyles';
 import BtnBig from '../../atoms/btnBig';
 import {useEffect, useState} from 'react';
 import {missionApi} from '../../../apis';
 import {MissionInfo} from '../../../types/mission';
+import yellowEyeImg from '../../../assets/yellowEyeImg.png';
 
 const MissionToday = ({navigation}: {navigation: any}): JSX.Element => {
   const [todayMission, setTodayMission] = useState<MissionInfo>({
@@ -103,13 +104,15 @@ const style = StyleSheet.create({
     borderRadius: 10,
     marginLeft: 10,
     alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: height * 5,
   },
 
   miniText: {
-    fontFamily: GlobalStyles.home_title.fontFamily,
+    fontFamily: GlobalStyles.bold.fontFamily,
     color: GlobalStyles.white_1.color,
-    fontSize: 12,
-    lineHeight: 30,
+    fontSize: height * 10,
+    lineHeight: height * 24,
   },
 
   titleText: {

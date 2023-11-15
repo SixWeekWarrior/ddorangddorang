@@ -8,7 +8,7 @@ import {
   ImageLibraryOptions,
   Asset,
 } from 'react-native-image-picker';
-import GlobalStyles from '../../../styles/GlobalStyles';
+import GlobalStyles, {height} from '../../../styles/GlobalStyles';
 import userImg from '../../../assets/userImg.png';
 
 type ImagePickerProps = {
@@ -82,6 +82,9 @@ const ImagePicker = ({onImageSelect}: ImagePickerProps) => {
     <View style={styles.innerContainer}>
       <Image source={img} style={styles.img} />
       <View style={styles.buttonContainer}>
+        <Pressable style={styles.btnSecond} onPress={showPhoto}>
+          <Text style={styles.btnTextSecond}>갤러리 열기</Text>
+        </Pressable>
         <Pressable
           style={{
             ...styles.btn,
@@ -89,9 +92,6 @@ const ImagePicker = ({onImageSelect}: ImagePickerProps) => {
           }}
           onPress={showCamera}>
           <Text style={styles.btnText}>사진 찍기</Text>
-        </Pressable>
-        <Pressable style={styles.btn} onPress={showPhoto}>
-          <Text style={styles.btnText}>갤러리 열기</Text>
         </Pressable>
       </View>
     </View>
@@ -107,31 +107,48 @@ const styles = StyleSheet.create({
   buttonContainer: {
     flexDirection: 'row',
     justifyContent: 'space-evenly',
-    width: '90%',
+    width: '80%',
   },
   img: {
-    width: 200,
-    height: 200,
+    width: 120,
+    height: 120,
     borderRadius: 100,
+    marginTop: height * 25,
   },
+
   btn: {
-    backgroundColor: GlobalStyles.pink.color,
     width: '35%',
-    height: 50,
+    height: height * 40,
     justifyContent: 'center',
     textAlign: 'middle',
-    borderRadius: 30,
-    shadowColor: GlobalStyles.black.color,
-    shadowOffset: {width: 0, height: 3},
-    shadowOpacity: 0.4,
-    shadowRadius: 6,
-    elevation: 5,
+    borderRadius: 24,
   },
+
+  btnSecond: {
+    borderWidth: 1,
+    borderColor: GlobalStyles.blue.color,
+    color: GlobalStyles.blue.color,
+    width: '35%',
+    height: height * 40,
+    justifyContent: 'center',
+    textAlign: 'middle',
+    borderRadius: 24,
+  },
+
   btnText: {
     color: GlobalStyles.white_1.color,
-    fontFamily: GlobalStyles.section_title.fontFamily,
-    fontSize: GlobalStyles.btn.fontSize,
+    fontFamily: GlobalStyles.bold.fontFamily,
+    fontSize: height * 12,
     alignSelf: 'center',
+    lineHeight: height * 36,
+  },
+
+  btnTextSecond: {
+    color: GlobalStyles.blue.color,
+    fontFamily: GlobalStyles.bold.fontFamily,
+    fontSize: height * 12,
+    alignSelf: 'center',
+    lineHeight: height * 36,
   },
 });
 export default ImagePicker;
