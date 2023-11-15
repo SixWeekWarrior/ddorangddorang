@@ -290,6 +290,7 @@ public class MissionPerformServiceImpl implements MissionPerformService {
 
         return GetManitiInfoRes.builder()
             .name(manitiUser.getName())
+            .generation(manitiUser.getGeneration())
             .isMajor(manitiUser.getIsMajor())
             .classes(manitiUser.getClasses())
             .build();
