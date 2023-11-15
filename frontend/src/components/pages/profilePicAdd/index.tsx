@@ -35,7 +35,7 @@ export const ProfilePicAdd = ({navigation}: {navigation: any}): JSX.Element => {
         onInputChange={() => console.log('onInputChange 실행')}
         onImageSelect={handleImageSelect}
       />
-      <BtnBig text="다음" onPress={handleSubmit} />
+      <BtnBig text="다음" onPress={handleSubmit} disabled={!selectedImageUri} />
     </View>
   );
 };

@@ -32,13 +32,13 @@ const MatchGuess = ({navigation}: {navigation: any}): JSX.Element => {
 
   const handleSubmit = () => {
     try {
-      const manitoId = selectedList[0];
-      guessApi.postGuess(manitoId).then(data =>
-        navigation.navigate('MatchStatus', {
-          showNotice: true,
-          manitoName: data.name,
-        }),
-      );
+      // const manitoId = selectedList[0];
+      // guessApi.postGuess(manitoId).then(data =>
+      //   navigation.navigate('MatchStatus', {
+      //     showNotice: true,
+      //     manitoName: data.name,
+      //   }),
+      // );
     } catch (error) {
       console.log(error);
     }
