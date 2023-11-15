@@ -8,8 +8,6 @@ import user from '../../../modules/user';
 export const ProfilePicAdd = ({navigation}: {navigation: any}): JSX.Element => {
   const setTmpUserInfo = useSetRecoilState(user.TmpUserInfoState);
   const [selectedImageUri, setSelectedImageUri] = useState<string | null>(null);
-  const seed = Math.floor(Math.random() * 1000) + 1;
-  const imageUrl = `https://picsum.photos/${seed}/picsum/200/300`;
   const handleImageSelect = (imageUri: string) => {
     setSelectedImageUri(imageUri);
   };
@@ -22,7 +20,7 @@ export const ProfilePicAdd = ({navigation}: {navigation: any}): JSX.Element => {
     }
     setTmpUserInfo(prevUserInfo => ({
       ...prevUserInfo,
-      profile: selectedImageUri || imageUrl,
+      profile: selectedImageUri || '',
     }));
     navigation.navigate('BasicInfo');
   };
