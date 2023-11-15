@@ -1,7 +1,7 @@
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Home from '../../pages/home';
 import MyPage from '../../pages/myPage';
-import {Image, View, StyleSheet} from 'react-native';
+import {Image, View, StyleSheet, Text} from 'react-native';
 import myPageIcon from '../../../assets/icons/default/mypage.png';
 import myPageSelectedIcon from '../../../assets/icons/selected/mypage.png';
 import chatIcon from '../../../assets/icons/default/chat.png';
@@ -11,7 +11,7 @@ import homeSelectedIcon from '../../../assets/icons/selected/home.png';
 import misssonIcon from '../../../assets/icons/default/mission.png';
 import missonSelectedIcon from '../../../assets/icons/selected/mission.png';
 import Misson from '../../pages/mission';
-import GlobalStyles from '../../../styles/GlobalStyles';
+import GlobalStyles, {height} from '../../../styles/GlobalStyles';
 import BeforeLaunch from '../../pages/beforelaunch';
 
 const Tab = createBottomTabNavigator();
@@ -23,6 +23,17 @@ export const NavBar = ({navigation}: {navigation: any}): JSX.Element => {
         <Tab.Screen
           options={{
             headerShown: false,
+            tabBarLabel: ({focused}) => (
+              <Text
+                style={{
+                  fontFamily: GlobalStyles.nomal.fontFamily,
+                  fontSize: height * 10,
+                  marginTop: height * -3,
+                  color: focused ? '#31B57B' : '#A8A8A8',
+                }}>
+                홈
+              </Text>
+            ),
             tabBarIcon: ({focused}) => (
               <Image
                 source={focused ? homeSelectedIcon : homeIcon}
@@ -36,6 +47,17 @@ export const NavBar = ({navigation}: {navigation: any}): JSX.Element => {
         <Tab.Screen
           options={{
             headerShown: false,
+            tabBarLabel: ({focused}) => (
+              <Text
+                style={{
+                  fontFamily: GlobalStyles.nomal.fontFamily,
+                  fontSize: height * 10,
+                  marginTop: height * -3,
+                  color: focused ? '#31B57B' : '#A8A8A8',
+                }}>
+                채팅
+              </Text>
+            ),
             tabBarIcon: ({focused}) => (
               <Image
                 source={focused ? chatSelectedIcon : chatIcon}
@@ -49,6 +71,17 @@ export const NavBar = ({navigation}: {navigation: any}): JSX.Element => {
         <Tab.Screen
           options={{
             headerShown: false,
+            tabBarLabel: ({focused}) => (
+              <Text
+                style={{
+                  fontFamily: GlobalStyles.nomal.fontFamily,
+                  fontSize: height * 10,
+                  marginTop: height * -3,
+                  color: focused ? '#31B57B' : '#A8A8A8',
+                }}>
+                미션
+              </Text>
+            ),
             tabBarIcon: ({focused}) => (
               <Image
                 source={focused ? missonSelectedIcon : misssonIcon}
@@ -62,6 +95,17 @@ export const NavBar = ({navigation}: {navigation: any}): JSX.Element => {
         <Tab.Screen
           options={{
             headerShown: false,
+            tabBarLabel: ({focused}) => (
+              <Text
+                style={{
+                  fontFamily: GlobalStyles.nomal.fontFamily,
+                  fontSize: height * 10,
+                  marginTop: height * -3,
+                  color: focused ? '#31B57B' : '#A8A8A8',
+                }}>
+                정보
+              </Text>
+            ),
             tabBarIcon: ({focused}) => (
               <Image
                 source={focused ? myPageSelectedIcon : myPageIcon}

@@ -50,7 +50,7 @@ export const Onboarding = ({navigation}: {navigation: any}) => {
     try {
       const data = await userApi.getUser();
       if (data !== null) {
-        console.log('getUserInfo:', data);
+        console.log('사용자 정보:', data);
         setUserInfo(data);
         await getState();
       }
@@ -62,7 +62,6 @@ export const Onboarding = ({navigation}: {navigation: any}) => {
   const getState = async () => {
     try {
       const data = await userApi.getUserState();
-      console.log('getUserStateRes:', data);
       setUserState(data);
     } catch (error) {
       console.error('getUserState 에러:', error);
@@ -81,6 +80,7 @@ export const Onboarding = ({navigation}: {navigation: any}) => {
           navigation.navigate('BeforeStart');
           break;
         case 3:
+        case 5:
           console.log('case3 - 수락됨 && 시작을 대기 중인 참가자');
           navigation.navigate('EnterWait');
           break;
@@ -88,11 +88,11 @@ export const Onboarding = ({navigation}: {navigation: any}) => {
           console.log('case4 - 게임 진행 중');
           navigation.navigate('NavBar');
           break;
-        case 5:
-          // TODO 자신이 뺴고 게임이 시작된 상황임을 알리는 API 및 VIEW로 변경 되어야함
-          console.log('case 5- 수락 요청을 보내고 수락 되길 바라는 참가자');
-          navigation.navigate('Enter');
-          break;
+        // case 5:
+        //   // TODO 자신이 뺴고 게임이 시작된 상황임을 알리는 API 및 VIEW로 변경 되어야함
+        //   console.log('case 5- 수락 요청을 보내고 수락 되길 바라는 참가자');
+        //   navigation.navigate('Enter');
+        //   break;
         default:
           console.log('에러 상황 : userState - null');
       }
@@ -112,6 +112,7 @@ export const Onboarding = ({navigation}: {navigation: any}) => {
       await GoogleSignin.hasPlayServices();
       const loginInfo = await GoogleSignin.signIn();
       if (loginInfo.idToken) {
+        console.log(loginInfo.idToken);
         userApi
           .postLogin(loginInfo.idToken)
           .then(data => {

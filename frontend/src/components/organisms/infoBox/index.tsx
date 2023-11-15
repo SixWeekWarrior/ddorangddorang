@@ -46,7 +46,6 @@ const InfoBox = ({navigation, destination}: InfoBoxProps): JSX.Element => {
   const getEndInfo = () => {
     try {
       roomApi.getRoomEnd().then(data => {
-        console.log('여기?', data.data);
         setEndInfo(data.data);
       });
     } catch (error) {
@@ -65,13 +64,13 @@ const InfoBox = ({navigation, destination}: InfoBoxProps): JSX.Element => {
         navigation.navigate('MissionToday');
         break;
       case 'InfoToday':
-        navigation.navigate('ReviseInfo', {destination: 'InfoToday'});
+        navigation.navigate('ReviseToday');
         break;
       case 'InfoSsafy':
-        navigation.navigate('ReviseInfo', {destination: 'InfoSsafy'});
+        navigation.navigate('ReviseSsafy');
         break;
       case 'InfoEtc':
-        navigation.navigate('ReviseInfo', {destination: 'InfoEtc'});
+        navigation.navigate('ReviseEtc');
         break;
       case 'SendOpinion':
         navigation.navigate('SendOpinion', {destination: 'SendOpinion'});
@@ -134,9 +133,17 @@ const InfoBox = ({navigation, destination}: InfoBoxProps): JSX.Element => {
               </Text>
             </View>
             <View style={style.middle}>
-              <Text style={style.bigFont}>{performsInfo?.dayCount}일차</Text>
+              <Text style={style.bigFont}>{performsInfo?.dayCount}일차 </Text>
               <Text style={style.regFont}>
-                지금까지 {performsInfo?.missionCompleteCount}개 수행 😀
+                내 마니띠{' '}
+                <Text style={style.pointFont}>이효식 | 전공 | 7반</Text>
+              </Text>
+              <Text style={style.regFont}>
+                지금까지{' '}
+                <Text style={style.pointFont}>
+                  {performsInfo?.missionCompleteCount}
+                </Text>
+                개 미션 수행 😀
               </Text>
             </View>
           </View>
@@ -176,21 +183,21 @@ const InfoBox = ({navigation, destination}: InfoBoxProps): JSX.Element => {
       case 'InfoEtc':
         return (
           <View style={style.flexColumn}>
-            <InfoAtom title="MBTI" content={userInfo.mbti} isWhite={true} />
+            <InfoAtom title="MBTI" content={userInfo.mbti} isWhite={false} />
             <InfoAtom
               title="요즘 고민"
               content={userInfo.worry}
-              isWhite={true}
+              isWhite={false}
             />
             <InfoAtom
               title="좋아하는 것"
               content={userInfo.likes}
-              isWhite={true}
+              isWhite={false}
             />
             <InfoAtom
               title="싫어하는 것"
               content={userInfo.hate}
-              isWhite={true}
+              isWhite={false}
             />
           </View>
         );
@@ -206,9 +213,9 @@ const InfoBox = ({navigation, destination}: InfoBoxProps): JSX.Element => {
       case 'InfoToday':
         return GlobalStyles.white_2.color;
       case 'InfoSsafy':
-        return GlobalStyles.pink.color;
-      case 'InfoEtc':
         return GlobalStyles.green.color;
+      case 'InfoEtc':
+        return GlobalStyles.white_2.color;
       case 'SendOpinion':
         return GlobalStyles.blue.color;
       case 'Logout':
@@ -229,7 +236,7 @@ const InfoBox = ({navigation, destination}: InfoBoxProps): JSX.Element => {
       case 'InfoSsafy':
         return 0;
       case 'InfoEtc':
-        return 0;
+        return 0.5;
       case 'SendOpinion':
         return 0;
       case 'Logout':
@@ -246,9 +253,9 @@ const InfoBox = ({navigation, destination}: InfoBoxProps): JSX.Element => {
       case 'InfoToday':
         return GlobalStyles.green.color;
       case 'InfoSsafy':
-        return GlobalStyles.yellow.color;
-      case 'InfoEtc':
         return GlobalStyles.white_2.color;
+      case 'InfoEtc':
+        return GlobalStyles.green.color;
       default:
         return GlobalStyles.white_2.color;
     }
@@ -266,11 +273,11 @@ const InfoBox = ({navigation, destination}: InfoBoxProps): JSX.Element => {
         );
       case 'InfoSsafy':
         return (
-          <Image source={yellowArrowRightImg} style={style.coloredArrowImg} />
+          <Image source={whiteArrowRightImg} style={style.coloredArrowImg} />
         );
       case 'InfoEtc':
         return (
-          <Image source={whiteArrowRightImg} style={style.coloredArrowImg} />
+          <Image source={greenArrowRightImg} style={style.coloredArrowImg} />
         );
       case 'SendOpinion':
         return (
@@ -392,13 +399,14 @@ const style = StyleSheet.create({
     borderRadius: 10,
     marginLeft: 10,
     alignItems: 'center',
-    marginTop: 5,
+    justifyContent: 'center',
+    marginTop: height * 5,
   },
   miniText: {
-    fontFamily: GlobalStyles.home_title.fontFamily,
+    fontFamily: GlobalStyles.bold.fontFamily,
     color: GlobalStyles.white_1.color,
-    fontSize: 12,
-    lineHeight: 30,
+    fontSize: height * 10,
+    lineHeight: height * 24,
   },
   coloredFont: {
     fontFamily: GlobalStyles.section_title.fontFamily,
@@ -410,11 +418,17 @@ const style = StyleSheet.create({
     fontFamily: GlobalStyles.home_title.fontFamily,
     fontSize: height * 20,
     color: GlobalStyles.white_2.color,
-    marginTop: -height * 30,
+    marginTop: -height * 55,
   },
   regFont: {
     fontSize: height * 14,
     color: GlobalStyles.white_2.color,
+  },
+
+  pointFont: {
+    fontSize: height * 14,
+    color: GlobalStyles.yellow.color,
+    fontFamily: GlobalStyles.nomal.fontFamily,
   },
   smFont: {
     fontSize: height * 12,

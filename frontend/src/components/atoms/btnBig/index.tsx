@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
     backgroundColor: GlobalStyles.green.color,
     borderRadius: 20,
     position: 'absolute',
-    bottom: '10%',
+    bottom: '5%',
   },
   btn: {
     fontFamily: GlobalStyles.btn.fontFamily,

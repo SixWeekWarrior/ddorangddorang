@@ -28,7 +28,7 @@ export const ProfilePicAdd = ({navigation}: {navigation: any}): JSX.Element => {
   return (
     <View style={styles.container}>
       <BorderedBox
-        menu={'프로필 사진등록'}
+        menu={'사진 등록'}
         text={`그룹에서 나를 알아볼 수 있도록\nSSAFY 학생증 사진을 업로드해주세요.`}
         onInputChange={() => console.log('onInputChange 실행')}
         onImageSelect={handleImageSelect}

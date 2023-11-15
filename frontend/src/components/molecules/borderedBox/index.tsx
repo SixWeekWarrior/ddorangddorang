@@ -120,7 +120,7 @@ export const BorderedBox = ({
             </Text>
           </View>
         );
-      case '프로필 사진등록': {
+      case '사진 등록': {
         return onImageSelect ? (
           <ImagePicker onImageSelect={onImageSelect} />
         ) : (

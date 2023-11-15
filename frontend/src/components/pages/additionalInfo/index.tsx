@@ -1,4 +1,4 @@
-import {StyleSheet, View} from 'react-native';
+import {ScrollView, StyleSheet, View} from 'react-native';
 import BorderedBox from '../../molecules/borderedBox';
 import BtnBig from '../../atoms/btnBig';
 import {userApi} from '../../../apis';

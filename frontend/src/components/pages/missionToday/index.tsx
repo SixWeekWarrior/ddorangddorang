@@ -217,13 +217,15 @@ const style = StyleSheet.create({
     borderRadius: 10,
     marginLeft: 10,
     alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: height * 5,
   },
 
   miniText: {
-    fontFamily: GlobalStyles.home_title.fontFamily,
+    fontFamily: GlobalStyles.bold.fontFamily,
     color: GlobalStyles.white_1.color,
-    fontSize: 12,
-    lineHeight: 30,
+    fontSize: height * 10,
+    lineHeight: height * 24,
   },
 
   titleText: {

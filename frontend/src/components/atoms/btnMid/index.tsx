@@ -31,10 +31,11 @@ const styles = StyleSheet.create({
   },
   btnText: {
     fontFamily: GlobalStyles.btn.fontFamily,
-    fontSize: 14,
+    fontSize: height * 13,
     color: GlobalStyles.white_2.color,
     textAlign: 'left',
     verticalAlign: 'middle',
+    lineHeight: height * 36,
   },
   arrow: {
     width: 15,
