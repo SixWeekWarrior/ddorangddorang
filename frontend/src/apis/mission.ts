@@ -32,10 +32,21 @@ const postMissionComplete = async (data: number) => {
   }
 };
 
+// maniti 조회 API
+const getManiti = async () => {
+  try {
+    const res = await client.get('/missions/maniti');
+    return res.data.data;
+  } catch (e) {
+    throw new Error('ERROR IN GET_MANITI');
+  }
+};
+
 const mission = {
   getMission,
   putMissionChange,
   postMissionComplete,
+  getManiti,
 };
 
 export default mission;

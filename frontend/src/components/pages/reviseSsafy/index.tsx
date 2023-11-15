@@ -46,7 +46,7 @@ export const ReviseSsafy = ({navigation}: {navigation: any}) => {
     <View style={styles.container}>
       <MenuTop
         menu="기본 정보 수정"
-        text={`SSAFY 교육생으로서 \n나의 정보를 입력해주세요.`}
+        text={'SSAFY 교육생으로서 \n나의 정보를 입력해주세요.'}
       />
       <View style={styles.innerContainer}>
         <View style={[styles.flexColumn, {height: '50%', rowGap: 15}]}>
@@ -80,14 +80,13 @@ const styles = StyleSheet.create({
     flex: 1,
     marginLeft: 24,
     marginRight: 24,
-    marginTop: 20,
+    marginVertical: 24,
     borderStyle: 'solid',
     borderRadius: 20,
     borderColor: GlobalStyles.grey_3.color,
   },
   btnContainer: {
     flex: 1,
-    bottom: '25%',
   },
   flexColumn: {
     flex: 1,

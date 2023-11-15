@@ -30,11 +30,12 @@ const styles = StyleSheet.create({
     backgroundColor: GlobalStyles.white_2.color,
   },
   topContainer: {
-    flex: 0.5,
-    marginVertical: 20,
+    flex: 1,
+    marginTop: 24,
   },
   midContainer: {
     flex: 1,
+    marginVertical: 24,
   },
   bottomContainer: {
     flex: 1,

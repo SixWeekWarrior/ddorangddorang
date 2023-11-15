@@ -8,6 +8,8 @@ import user from '../../../modules/user';
 export const ProfilePicAdd = ({navigation}: {navigation: any}): JSX.Element => {
   const setTmpUserInfo = useSetRecoilState(user.TmpUserInfoState);
   const [selectedImageUri, setSelectedImageUri] = useState<string | null>(null);
+  const seed = Math.floor(Math.random() * 1000) + 1;
+  const imageUrl = `https://picsum.photos/${seed}/picsum/200/300`;
   const handleImageSelect = (imageUri: string) => {
     setSelectedImageUri(imageUri);
   };
@@ -20,7 +22,7 @@ export const ProfilePicAdd = ({navigation}: {navigation: any}): JSX.Element => {
     }
     setTmpUserInfo(prevUserInfo => ({
       ...prevUserInfo,
-      profile: selectedImageUri || '',
+      profile: selectedImageUri || imageUrl,
     }));
     navigation.navigate('BasicInfo');
   };
@@ -29,7 +31,9 @@ export const ProfilePicAdd = ({navigation}: {navigation: any}): JSX.Element => {
     <View style={styles.container}>
       <BorderedBox
         menu={'사진 등록'}
-        text={`그룹에서 나를 알아볼 수 있도록\nSSAFY 학생증 사진을 업로드해주세요.`}
+        text={
+          '그룹에서 나를 알아볼 수 있도록\nSSAFY 학생증 사진을 업로드해주세요.'
+        }
         onInputChange={() => console.log('onInputChange 실행')}
         onImageSelect={handleImageSelect}
       />

@@ -5,7 +5,7 @@ import {useEffect, useState} from 'react';
 import BtnBig from '../../atoms/btnBig';
 import {UserProfile} from '../../../types/user';
 import {Profile} from '../../atoms/profile';
-import {roomApi} from '../../../apis';
+import {userApi} from '../../../apis';
 
 const MatchGuess = ({navigation}: {navigation: any}): JSX.Element => {
   const [isAllChecked, setisAllChecked] = useState<boolean>(false);
@@ -15,9 +15,10 @@ const MatchGuess = ({navigation}: {navigation: any}): JSX.Element => {
   useEffect(() => {
     const getAllMembers = () => {
       try {
-        // roomApi.getRoomWaiting().then(data => {
-        //   setGuessList(data.data);
-        // });
+        userApi.getUserExceptMe().then(data => {
+          console.log('여기:', data);
+          setGuessList(data);
+        });
       } catch (error) {
         console.log(error);
       }
@@ -31,10 +32,13 @@ const MatchGuess = ({navigation}: {navigation: any}): JSX.Element => {
 
   const handleSubmit = () => {
     try {
-      const data = selectedList.map((item: number) => ({userId: item}));
-      roomApi
-        .postRoomResponse(data)
-        .then(() => navigation.navigate('MatchStatus', {showNotice: true}));
+      const manitoId = selectedList[0];
+      guessApi.postGuess(manitoId).then(data =>
+        navigation.navigate('MatchStatus', {
+          showNotice: true,
+          manitoName: data.name,
+        }),
+      );
     } catch (error) {
       console.log(error);
     }
