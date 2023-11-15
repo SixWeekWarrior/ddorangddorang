@@ -12,6 +12,7 @@ import lombok.ToString;
 @ToString
 public class UsersGetRes {
 
+    private Long id;
     private String name;
     private String email;
     private Integer generation;
@@ -31,11 +32,12 @@ public class UsersGetRes {
     private String color;
 
     @Builder
-    public UsersGetRes(String name, String email, Integer generation, Boolean isMajor,
+    public UsersGetRes(Long id, String name, String email, Integer generation, Boolean isMajor,
         Boolean gender,
         Integer campus, Integer classes, Integer floor, String profileImage, String likes,
         String hate,
         String mbti, String worry, Long roomId, Long status, String mood, String color) {
+        this.id = id;
         this.name = name;
         this.email = email;
         this.generation = generation;
@@ -57,6 +59,7 @@ public class UsersGetRes {
 
     public static UsersGetRes userToDto(User user, HintDto hintDto) {
         return UsersGetRes.builder()
+            .id(user.getId())
             .name(user.getName())
             .email(user.getEmail())
             .generation(user.getGeneration())
