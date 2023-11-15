@@ -28,7 +28,7 @@ const campusDict: {[key: number]: string} = {
 };
 
 const InfoBox = ({navigation, destination}: InfoBoxProps): JSX.Element => {
-  const [userInfo, setUserInfo] = useRecoilState(user.UserInfoState);
+  const [userInfo] = useRecoilState(user.UserInfoState);
   const [missionList, setMissionList] = useState<MissionInfo[]>([]);
   const [performsInfo, setPerformsInfo] = useState<PerformsInfo>();
   const [endInfo, setEndInfo] = useState<RoomEndInfo>();

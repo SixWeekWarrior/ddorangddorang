@@ -20,6 +20,7 @@ const MissionToday = ({navigation}: {navigation: any}): JSX.Element => {
     content: '',
     isComplete: false,
     missionType: 0,
+    dayCount: 0,
   });
   const [isModalVisible, setModalVisible] = useState(false);
   const isFocused = useIsFocused();

@@ -1,4 +1,5 @@
 export type UserInfo = {
+  userId: number;
   name: string;
   generation: number;
   isMajor: boolean;

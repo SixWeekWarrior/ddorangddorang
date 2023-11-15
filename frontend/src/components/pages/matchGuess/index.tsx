@@ -2,15 +2,14 @@ import {View, StyleSheet, Text} from 'react-native';
 import MenuTop from '../../molecules/menuTop';
 import GlobalStyles from '../../../styles/GlobalStyles';
 import {useEffect, useState} from 'react';
-import BtnBig from '../../atoms/btnBig';
-import {UserProfile} from '../../../types/user';
+import {UserInfo} from '../../../types/user';
 import {Profile} from '../../atoms/profile';
 import {userApi} from '../../../apis';
 
 const MatchGuess = ({navigation}: {navigation: any}): JSX.Element => {
   const [isAllChecked, setisAllChecked] = useState<boolean>(false);
   const [selectedList, setSelectedList] = useState<number[]>([]);
-  const [guessList, setGuessList] = useState<UserProfile[]>([]);
+  const [guessList, setGuessList] = useState<UserInfo[]>([]);
 
   useEffect(() => {
     const getAllMembers = () => {
@@ -57,7 +56,7 @@ const MatchGuess = ({navigation}: {navigation: any}): JSX.Element => {
         </Text>
       </View>
       <View style={styles.listContainer}>
-        {guessList.map((item: UserProfile) => (
+        {guessList.map((item: UserInfo) => (
           <Profile
             key={item.userId}
             name={item.name}
@@ -72,13 +71,6 @@ const MatchGuess = ({navigation}: {navigation: any}): JSX.Element => {
             toggle={true}
           />
         ))}
-      </View>
-      <View style={styles.btnContainer}>
-        <BtnBig
-          onPress={handleSubmit}
-          text="선택완료"
-          disabled={!selectedList}
-        />
       </View>
     </View>
   );
@@ -104,8 +96,10 @@ const styles = StyleSheet.create({
     marginTop: -5,
   },
   listContainer: {
+    flexDirection: 'row',
     flex: 3,
-    alignSelf: 'center',
+    paddingHorizontal: 30,
+    alignItems: 'flex-start',
   },
   btnContainer: {
     flex: 0.7,
