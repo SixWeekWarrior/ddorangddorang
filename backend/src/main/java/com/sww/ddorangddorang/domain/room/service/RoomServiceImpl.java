@@ -278,7 +278,7 @@ public class RoomServiceImpl implements RoomService {
             Participant maniti = participantList.get(i);
             Participant manito = participantList.get(i - 1);
             maniti.matchManito(manito);
-            manito.matchManito(maniti);
+            manito.matchManiti(maniti);
         }
         participantList.get(0).matchManito(participantList.get(totalCount - 1));
         participantList.get(totalCount - 1).matchManiti(participantList.get(0));
