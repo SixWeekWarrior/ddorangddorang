@@ -1,6 +1,5 @@
 package com.sww.ddorangddorang.domain.user.repository;
 
-import com.sww.ddorangddorang.domain.mastercode.entity.MasterCode;
 import com.sww.ddorangddorang.domain.user.entity.Hint;
 import com.sww.ddorangddorang.domain.user.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;

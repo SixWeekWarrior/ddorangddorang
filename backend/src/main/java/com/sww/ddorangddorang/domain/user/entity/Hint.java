@@ -1,7 +1,5 @@
 package com.sww.ddorangddorang.domain.user.entity;
 
-import com.sww.ddorangddorang.domain.mastercode.entity.MasterCode;
-import com.sww.ddorangddorang.domain.user.dto.UsersTodayinfoPostReq;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
