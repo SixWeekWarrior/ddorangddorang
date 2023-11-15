@@ -26,7 +26,7 @@ export const MyPage = ({navigation}: {navigation: any}): JSX.Element => {
     <ScrollView style={styles.container}>
       <MenuTop
         menu="마이페이지"
-        text={`오늘의 정보를 설정하고 \n추가정보를 입력해보세요!`}
+        text={'오늘의 정보를 설정하고 \n추가정보를 입력해보세요!'}
       />
       <View style={styles.topContainer}>
         <InfoBox navigation={navigation} destination="InfoToday" />

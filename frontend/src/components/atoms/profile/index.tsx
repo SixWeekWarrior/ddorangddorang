@@ -7,6 +7,7 @@ type ProfileProps = {
   selectedList: number[];
   setSelectedList: (value: number[]) => void;
   isAllChecked: boolean;
+  toggle?: boolean;
 };
 
 type Profile = ProfileProps & UserProfile;
@@ -21,38 +22,51 @@ export const Profile = ({
   selectedList,
   setSelectedList,
   isAllChecked,
+  toggle,
 }: Profile) => {
-  const [isSelected, setIsSelected] = useState<boolean>(false);
+  const [isSelected, setIsSelected] = useState<boolean>(
+    selectedList.includes(userId),
+  );
+
+  const handleProfilePress = () => {
+    if (toggle) {
+      toggleProfile();
+    } else {
+      defaultProfileToggle();
+    }
+  };
+
+  const toggleProfile = () => {
+    setIsSelected(!isSelected);
+    setSelectedList(prevSelectedList => {
+      if (isSelected) {
+        // 이미 선택된 경우, 선택 해제
+        return prevSelectedList.filter((data: number) => data !== userId);
+      } else {
+        // 선택되지 않은 경우, 다른 선택 해제 후 현재 선택
+        return [userId];
+      }
+    });
+  };
+
+  const defaultProfileToggle = () => {
+    if (isSelected) {
+      // 이미 선택된 경우, 선택 해제
+      setSelectedList(selectedList.filter((data: number) => data !== userId));
+    } else {
+      // 선택되지 않은 경우, 다른 선택 해제 후 현재 선택
+      setSelectedList([userId, ...selectedList]);
+    }
+    setIsSelected(!isSelected);
+  };
 
   useEffect(() => {
-    if (isAllChecked) {
-      !selectedList.includes(userId) &&
-        setSelectedList([userId, ...selectedList]);
-    } else {
-      const newSelectedList = selectedList.filter((data: number) => {
-        return data !== userId;
-      });
-      setSelectedList(newSelectedList);
-    }
     setIsSelected(isAllChecked);
   }, [isAllChecked]);
 
   return (
     <View style={styles.profileContainer}>
-      <TouchableOpacity
-        onPress={() => {
-          if (isSelected) {
-            // 삭제
-            const newSelectedList = selectedList.filter((data: number) => {
-              return data !== userId;
-            });
-            setSelectedList(newSelectedList);
-          } else {
-            // 추가
-            setSelectedList([userId, ...selectedList]);
-          }
-          setIsSelected(prev => !prev);
-        }}>
+      <TouchableOpacity onPress={handleProfilePress}>
         <Image
           source={{uri: profileImage}}
           style={[styles.profilepic, isSelected && styles.selectedProfile]}

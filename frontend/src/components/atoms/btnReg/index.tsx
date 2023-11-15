@@ -29,7 +29,7 @@ export const BtnReg = ({onPress, text, color, disabled}: BtnMidProps) => {
 };
 const styles = StyleSheet.create({
   btnContainer: {
-    width: width * 160,
+    width: width * 150,
     height: height * 48,
     backgroundColor: GlobalStyles.black.color,
     borderRadius: 30,

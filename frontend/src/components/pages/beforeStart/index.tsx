@@ -1,4 +1,4 @@
-import {View, StyleSheet, Text, ScrollView} from 'react-native';
+import {View, StyleSheet, Text, ScrollView, Pressable} from 'react-native';
 import GlobalStyles, {height} from '../../../styles/GlobalStyles';
 import MenuTop from '../../molecules/menuTop';
 import GroupSummary from '../../atoms/groupSummary';
@@ -7,6 +7,9 @@ import CodeForm from '../../atoms/codeForm';
 import BottomSheet, {BottomSheetBackdrop} from '@gorhom/bottom-sheet';
 import {useCallback, useRef, useMemo, useState, useEffect} from 'react';
 import {roomApi} from '../../../apis';
+import {useIsFocused} from '@react-navigation/native';
+import token from '../../../utils/token';
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
 
 export const BeforeStart = ({navigation}: {navigation: any}) => {
   type RoomInfo = {
@@ -26,6 +29,7 @@ export const BeforeStart = ({navigation}: {navigation: any}) => {
     roomKey: 0,
     memberCount: 0,
   });
+  const isFocused = useIsFocused();
 
   const startGame = () => {
     try {
@@ -51,18 +55,17 @@ export const BeforeStart = ({navigation}: {navigation: any}) => {
       .getRoomInfo()
       .then(data => {
         setRoomInfo({
-          ...roomInfo,
-          duration: data.data.duration,
-          minMember: data.data.minMember,
-          maxMember: data.data.maxMember,
-          roomKey: data.data.roomKey,
-          memberCount: data.data.memberCount,
+          duration: data.duration,
+          minMember: data.minMember,
+          maxMember: data.maxMember,
+          roomKey: data.roomKey,
+          memberCount: data.memberCount,
         });
       })
       .catch(error => {
         console.log('error', error);
       });
-  }, []);
+  }, [isFocused]);
 
   useEffect(() => {
     setIsBtnActive(
@@ -104,9 +107,19 @@ export const BeforeStart = ({navigation}: {navigation: any}) => {
           onPress={() => startGame()}
           text="시작"
           color={GlobalStyles.green.color}
-          disabled={isbtnActive}
+          disabled={!isbtnActive}
         />
       </View>
+      <Pressable
+        style={styles.endContainer}
+        onPress={async () => {
+          await token.removeToken();
+          await GoogleSignin.revokeAccess();
+          await GoogleSignin.signOut();
+          navigation.navigate('Onboarding', {destination: 'Onboarding'});
+        }}>
+        <Text style={styles.logoutText}>로그아웃</Text>
+      </Pressable>
       <BottomSheet
         ref={bottomSheetRef}
         snapPoints={snapPoints}
@@ -155,7 +168,8 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     alignSelf: 'center',
-    marginBottom: height * 40,
+    marginBottom: height * 10,
+    width: '83%',
     justifyContent: 'space-between',
   },
   noticeContainer: {
@@ -169,6 +183,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'flex-end',
   },
+  endContainer: {
+    alignSelf: 'flex-end',
+    right: 40,
+  },
   name: {
     fontFamily: GlobalStyles.section_title.fontFamily,
     fontSize: 25,
@@ -180,6 +198,11 @@ const styles = StyleSheet.create({
     fontFamily: GlobalStyles.section_title.fontFamily,
     fontSize: GlobalStyles.section_title.fontSize,
     color: GlobalStyles.black.color,
+  },
+  logoutText: {
+    fontFamily: GlobalStyles.section_title.fontFamily,
+    fontSize: GlobalStyles.btn.fontSize,
+    color: GlobalStyles.blue.color,
   },
   textBig: {
     fontFamily: GlobalStyles.section_title.fontFamily,

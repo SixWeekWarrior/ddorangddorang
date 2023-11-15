@@ -149,6 +149,7 @@ export const WaitList = ({
             profileImage={item.profileImage}
             selectedList={selectedList}
             setSelectedList={setSelectedList}
+            toggle={false}
           />
         ))}
       </View>
@@ -218,6 +219,7 @@ const styles = StyleSheet.create({
   },
 
   thirdView: {
+    flexDirection: 'row',
     flex: 0.5,
     paddingLeft: 30,
     paddingRight: 30,
@@ -226,3 +228,7 @@ const styles = StyleSheet.create({
 });
 
 export default WaitList;
+
+function alert(arg0: string) {
+  throw new Error('Function not implemented.');
+}
