@@ -9,6 +9,7 @@ import com.sww.ddorangddorang.domain.user.dto.UsersSsafyinfoPutReq;
 import com.sww.ddorangddorang.domain.user.dto.UsersTodayinfoPostReq;
 import com.sww.ddorangddorang.domain.user.dto.UsersTokenInfo;
 import com.sww.ddorangddorang.domain.user.entity.User;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -27,6 +28,8 @@ public interface UserService {
     void saveRefreshToken(UsersTokenInfo build);
 
     UsersGetRes getUserInfo(Long id);
+
+    List<UsersGetRes> getUserInfoList(Long userId);
 
     HintDto getHints(Long id);
 

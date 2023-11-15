@@ -12,5 +12,4 @@ public interface MissionPerformRepository extends JpaRepository<MissionPerform, 
     @EntityGraph(attributePaths = {"mission"})
     List<MissionPerform> findAllByPlayerAndDeletedAtIsNull(Participant player);
 
-    List<MissionPerform> findAllByPlayerAndDiscardFalse(Participant player);
 }

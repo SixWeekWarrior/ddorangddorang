@@ -17,9 +17,8 @@ import com.sww.ddorangddorang.domain.user.entity.User;
 import com.sww.ddorangddorang.domain.user.exception.UserNotFoundException;
 import com.sww.ddorangddorang.domain.user.service.UserService;
 import com.sww.ddorangddorang.global.common.CommonResponse;
-import com.sww.ddorangddorang.global.common.FileDto;
-import com.sww.ddorangddorang.global.util.S3UploaderUtil;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
@@ -75,12 +74,13 @@ public class UserApi {
         );
     }
 
-    @PostMapping(value = "/signup", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
+    @PostMapping(value = "/signup", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE,
+        MediaType.APPLICATION_JSON_VALUE})
     public CommonResponse<UsersSignupPostRes> signUp(
         @RequestHeader("Authorization") String authorizationHeader,
         @RequestPart("profile") MultipartFile profile,
         @RequestPart("signupInfo") UsersSignupPostReq usersSignupPostReq
-        ) throws Exception {
+    ) throws Exception {
         log.info("UserApi_signup starts");
 
         log.info("UserApi_signup, header: {}", authorizationHeader.substring(7));
@@ -123,6 +123,12 @@ public class UserApi {
     public CommonResponse<UsersGetRes> getUserInfo(
         @AuthenticationPrincipal AuthenticatedUser authenticatedUser) {
         return CommonResponse.success(userService.getUserInfo(authenticatedUser.getId()));
+    }
+
+    @GetMapping("/user-info-list")
+    public CommonResponse<List<UsersGetRes>> getUserInfoList(
+        @AuthenticationPrincipal AuthenticatedUser authenticatedUser) {
+        return CommonResponse.success(userService.getUserInfoList(authenticatedUser.getId()));
     }
 
 //    @GetMapping("/jwt-test")
@@ -198,9 +204,11 @@ public class UserApi {
     }
 
     @GetMapping("/home")
-    public CommonResponse<UsersHomeInfoGetRes> getHomeInfo(@AuthenticationPrincipal AuthenticatedUser authenticatedUser) {
+    public CommonResponse<UsersHomeInfoGetRes> getHomeInfo(
+        @AuthenticationPrincipal AuthenticatedUser authenticatedUser) {
         log.info("RoomApi_getHomeInfo start");
-        UsersHomeInfoGetRes usersHomeInfoGetRes = userService.getHomeInfo(authenticatedUser.getId());
+        UsersHomeInfoGetRes usersHomeInfoGetRes = userService.getHomeInfo(
+            authenticatedUser.getId());
         log.info("RoomApi_getHomeInfo end");
         return CommonResponse.success(usersHomeInfoGetRes);
     }
