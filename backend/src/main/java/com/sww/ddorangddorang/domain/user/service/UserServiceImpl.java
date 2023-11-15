@@ -125,6 +125,20 @@ public class UserServiceImpl implements UserService {
     }
 
     @Transactional
+    public List<UsersGetRes> getUserInfoList(Long userId) {
+        User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
+        List<User> userList = userRepository.findAllByRoom(user.getRoom());
+        List<UsersGetRes> usersGetResList = new ArrayList<>();
+
+        for (User u : userList) {
+            if (u.getId() == userId) continue;
+            usersGetResList.add(UsersGetRes.userToDto(u, getUserHint(u)));
+        }
+
+        return usersGetResList;
+    }
+
+    @Transactional
     @Override
     public HintDto getHints(Long id) {
         User user = userRepository.findById(id).orElseThrow(UserNotFoundException::new);
@@ -237,7 +251,7 @@ public class UserServiceImpl implements UserService {
         dayCount =
             ChronoUnit.DAYS.between(room.getStartedAt().toLocalDate(), today.toLocalDate()) + 1;
 
-        List<MissionPerform> missionPerformList = missionPerformRepository.findAllByPlayerAndDiscardFalse(
+        List<MissionPerform> missionPerformList = missionPerformRepository.findAllByPlayerAndDeletedAtIsNull(
             participant.get());
 
         if (!missionPerformList.isEmpty()) {
