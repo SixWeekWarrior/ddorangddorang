@@ -57,8 +57,7 @@ public class GuessServiceImpl implements GuessService {
             throw new RoomNotFoundException();
         }
 
-        if(room.getStartedAt().plusDays(room.getDuration()-3L).toLocalDate().isBefore(
-            LocalDateTime.now().plusHours(UTC_TO_KST).toLocalDate())) {
+        if(!room.isGuessable()) {
             throw new NotGuessableException();
         }
 
@@ -103,8 +102,7 @@ public class GuessServiceImpl implements GuessService {
             throw new RoomNotFoundException();
         }
 
-        if(room.getStartedAt().plusDays(room.getDuration()-3L).toLocalDate().isBefore(
-            LocalDateTime.now().plusHours(UTC_TO_KST).toLocalDate())) {
+        if(!room.isGuessable()) {
             throw new NotGuessableException();
         }
 
@@ -168,8 +166,7 @@ public class GuessServiceImpl implements GuessService {
             throw new RoomNotFoundException();
         }
 
-        if(room.getStartedAt().plusDays(room.getDuration()-3L).toLocalDate().isBefore(
-            LocalDateTime.now().plusHours(UTC_TO_KST).toLocalDate())) {
+        if(!room.isGuessable() && !room.isShowable()) {
             throw new NotGuessableException();
         }
 
