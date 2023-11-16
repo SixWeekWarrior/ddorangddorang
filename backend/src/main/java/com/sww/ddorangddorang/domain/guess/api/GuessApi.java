@@ -1,6 +1,7 @@
 package com.sww.ddorangddorang.domain.guess.api;
 
 import com.sww.ddorangddorang.auth.dto.AuthenticatedUser;
+import com.sww.ddorangddorang.domain.guess.dto.GuessManitoReq;
 import com.sww.ddorangddorang.domain.guess.dto.GuessStatus;
 import com.sww.ddorangddorang.domain.guess.dto.Profile;
 import com.sww.ddorangddorang.domain.guess.service.GuessService;
@@ -11,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -25,9 +27,10 @@ public class GuessApi {
 
     @PostMapping
     public CommonResponse<Profile> guessManito(
-        @AuthenticationPrincipal AuthenticatedUser authenticatedUser, Long manitoId) {
+        @AuthenticationPrincipal AuthenticatedUser authenticatedUser, @RequestBody GuessManitoReq guessManitoReq) {
         log.info("GuessApi_guessManito start");
-        Profile profile = guessService.guessManito(authenticatedUser.getId(), manitoId);
+        Profile profile = guessService.guessManito(authenticatedUser.getId(),
+            guessManitoReq.getManitoId());
         log.info("GuessApi_guessManito end");
         return CommonResponse.success(profile);
     }
