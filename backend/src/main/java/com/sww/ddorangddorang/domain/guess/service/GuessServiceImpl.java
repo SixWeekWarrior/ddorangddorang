@@ -33,6 +33,7 @@ public class GuessServiceImpl implements GuessService {
     private final ParticipantRepository participantRepository;
     private static final Long UTC_TO_KST = 9L;
 
+    @Transactional
     public Participant getParticipantInfo(Long userId) {
         User user = userRepository.getReferenceById(userId);
         return participantRepository.findByUserAndGameCount(user, user.getGameCount())

@@ -30,10 +30,13 @@ public class Chat {
 
     LocalDateTime deletedAt;    // TIMESTAMP "삭제 시간"
 
+    LocalDateTime createdAt;    // TIMESTAMP "생성 시간"
+
     @Builder
     public Chat(Participant manito, Participant maniti) {
         this.manito = manito;
         this.maniti = maniti;
+        this.createdAt = LocalDateTime.now().plusHours(9L);
     }
 
     public void deleteChat() {
