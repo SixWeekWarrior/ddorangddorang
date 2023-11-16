@@ -20,4 +20,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     List<User> findAllByRoomAndStatus(Room room, Long status);
 
+    Optional<User> findByRoomAndStatus(Room room, Long status);
+
 }

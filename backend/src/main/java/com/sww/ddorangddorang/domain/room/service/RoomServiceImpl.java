@@ -97,11 +97,11 @@ public class RoomServiceImpl implements RoomService {
         // TODO: 이거 없으면  room_id null들어가서 에러터짐 일단 수정하고 컨펌받기
         user.updateRoom(room);
 
-        Participant participant = Participant.builder()
-            .user(user)
-            .build();
-
-        participantRepository.save(participant);
+//        Participant participant = Participant.builder()
+//            .user(user)
+//            .build();
+//
+//        participantRepository.save(participant);
 
         log.info("RoomServiceImpl_createRoom end: " + room.getAccessCode());
         return room.getAccessCode();
@@ -218,19 +218,25 @@ public class RoomServiceImpl implements RoomService {
         log.info("id: {}", userId);
         User user = findUserById(userId);
 
-        if (!user.getStatus().equals(3L) && !user.getStatus().equals(5L)) {
-            log.info("RoomServiceImpl_withdrawalRoom end");
-            throw new OnlyUserAllowedException();
+        switch (user.getStatus().intValue()) {
+            case 3:
+                user.getRoom().removeMember();
+            case 5:
+                user.withdrawRoom();
+                break;
+            default:
+                log.info("RoomServiceImpl_withdrawalRoom end");
+                throw new OnlyUserAllowedException();
         }
 
-        if (user.getStatus().equals(3L)) {
-            Participant participant = participantRepository.findByUserAndGameCount(user,
-                user.getGameCount()).orElseThrow(ParticipantNotFoundException::new);
-            participant.deleteParticipant();
-        } else {
-            user.updateRoom(null);
-            user.updateStatus(1L);
-        }
+//        if (user.getStatus().equals(3L)) {
+//            Participant participant = participantRepository.findByUserAndGameCount(user,
+//                user.getGameCount()).orElseThrow(ParticipantNotFoundException::new);
+//            participant.deleteParticipant();
+//        } else {
+//            user.updateRoom(null);
+//            user.updateStatus(1L);
+//        }
 
         log.info("RoomServiceImpl_withdrawalRoom end");
     }
@@ -240,38 +246,45 @@ public class RoomServiceImpl implements RoomService {
     @Transactional
     public void startGame(Room room) {
         log.info("RoomServiceImpl_startGame start");
-        List<Participant> participantList = participantRepository.findAllByRoomAndDeletedAtIsNull(
-            room);
-        List<Participant> maleList = new ArrayList<>();
-        List<Participant> femaleList = new ArrayList<>();
+        List<Participant> participantList = new ArrayList<>();
+        List<User> maleList = new ArrayList<>();
+        List<User> femaleList = new ArrayList<>();
+        List<User> userList = userRepository.findAllByRoomAndStatus(room, 3L);
+        userList.add(
+            userRepository.findByRoomAndStatus(room, 2L).orElseThrow(UserNotFoundException::new));
 
-        for (Participant participant : participantList) {
-            if (participant.getUser().getGender().equals(true)) {
-                maleList.add(participant);
+        for (User user : userList) {
+            if (user.getGender().equals(true)) {
+                maleList.add(user);
             } else {
-                femaleList.add(participant);
+                femaleList.add(user);
             }
         }
 
         Collections.shuffle(maleList);
         Collections.shuffle(femaleList);
 
-        Integer totalCount = participantList.size();
+        Integer totalCount = userList.size();
         Integer maleListCount = 0;
         Integer femaleListCount = 0;
         Integer maleListSize = maleList.size();
         Integer femaleListSize = femaleList.size();
-        participantList.clear();
         for (int i = 0; i < totalCount; ++i) {
+            User user = null;
+
             if (maleListCount.equals(maleListSize)) {
-                participantList.add(femaleList.get(femaleListCount++));
+                user = femaleList.get(femaleListCount++);
             } else if (femaleListCount.equals(femaleListSize)) {
-                participantList.add(maleList.get(maleListCount++));
+                user = maleList.get(maleListCount++);
             } else if ((i & 1) == 0) {
-                participantList.add(femaleList.get(femaleListCount++));
+                user = femaleList.get(femaleListCount++);
             } else {
-                participantList.add(maleList.get(maleListCount++));
+                user = maleList.get(maleListCount++);
             }
+
+            Participant participant = Participant.builder().user(user).build();
+            participantRepository.save(participant);
+            participantList.add(participant);
         }
 
         for (int i = 1; i < totalCount; ++i) {
@@ -547,10 +560,10 @@ public class RoomServiceImpl implements RoomService {
             requestUser.updateStatus(3L);
             room.joinMember();
 
-            Participant participant = Participant.builder()
-                .user(requestUser)
-                .build();
-            participantRepository.save(participant);
+//            Participant participant = Participant.builder()
+//                .user(requestUser)
+//                .build();
+//            participantRepository.save(participant);
         }
 
         log.info("RoomServiceImpl_responseToJoinRoom end");

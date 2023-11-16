@@ -15,12 +15,12 @@ public class NoteCreateReq {
     @NotBlank
     private String content;
 
-    private Long missionPerformId;
+//    private Long missionPerformId;
 
-    public NoteCreateReq(String title, String content, Long missionPerformId) {
+    public NoteCreateReq(String title, String content) {
         this.title = title;
         this.content = content;
-        this.missionPerformId = missionPerformId;
+//        this.missionPerformId = missionPerformId;
     }
 
 }

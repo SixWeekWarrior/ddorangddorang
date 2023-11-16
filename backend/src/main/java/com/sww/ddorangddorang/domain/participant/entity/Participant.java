@@ -81,7 +81,7 @@ public class Participant {
     @Builder
     public Participant(User user) {
         this.user = user;
-        this.gameCount = user.getGameCount();
+        this.gameCount = user.participateNewGame();
         this.room = user.getRoom();
     }
 
@@ -108,6 +108,7 @@ public class Participant {
     }
 
     public void guessManito(User guessUser) {
+        this.guess = guessUser;
         this.isCorrect = this.manito.getUser().equals(guessUser);
     }
 }

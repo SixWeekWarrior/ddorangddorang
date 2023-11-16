@@ -14,7 +14,9 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -62,7 +64,7 @@ public class Room {
     @NotNull
     private Integer maxMember = Integer.MAX_VALUE;  //INT
 
-//    @CreationTimestamp
+    //    @CreationTimestamp
     private LocalDateTime createdAt = LocalDateTime.now().plusHours(9L);    //DATETIME
 
     //    @Column(name = "started_at")
@@ -107,9 +109,25 @@ public class Room {
         this.duration = roomInfoReq.getDuration();
     }
 
+    //getEndDate()의 날짜 00:00:00 000부터 게임은 종료됨
+    public LocalDate getEndDate() {
+        return this.startedAt.minusNanos(1L).plusDays(this.duration + 1).toLocalDate();
+    }
+
     public Boolean isEnded() {
-//        if(this.startedAt.toLocalDate().equals())
-        return LocalDateTime.now().plusHours(9L).isAfter(this.startedAt.plusDays(this.duration));
+        return !LocalDateTime.now().plusHours(9L).toLocalDate().isBefore(getEndDate());
+    }
+
+    //Guess API 호출 가능시점
+    public Boolean isGuessable() {
+        return LocalDateTime.now().plusHours(9L)
+            .isAfter(LocalDateTime.of(getEndDate(), LocalTime.MIDNIGHT).minusDays(3L))
+            && !isEnded();
+    }
+
+    //결과 화면을 볼 수 있는 시기
+    public Boolean isShowable() {
+        return LocalDateTime.now().plusHours(9L).toLocalDate().equals(getEndDate());
     }
 
     @Builder
