@@ -6,6 +6,7 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
@@ -23,20 +24,32 @@ public class Chat {
     private Long id;                    // BIGINT
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private Participant manito;                // BIGINT "manito_id"
+    @JoinColumn(name = "manito_id")
+    private Participant manito;                // BIGINT "manito"
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private Participant maniti;                // BIGINT "maniti_id"
+    @JoinColumn(name = "maniti_id")
+    private Participant maniti;                // BIGINT "maniti"
 
-    LocalDateTime deletedAt;    // TIMESTAMP "삭제 시간"
+    private Boolean isSentByManito;
 
-    LocalDateTime createdAt;    // TIMESTAMP "생성 시간"
+    private String content;
+
+    private LocalDateTime createdAt = LocalDateTime.now().plusHours(9L);    // TIMESTAMP "생성 시각"
+
+    private LocalDateTime deletedAt;    // TIMESTAMP "삭제 시긱"
 
     @Builder
-    public Chat(Participant manito, Participant maniti) {
-        this.manito = manito;
-        this.maniti = maniti;
-        this.createdAt = LocalDateTime.now().plusHours(9L);
+    public Chat(Participant participant, Boolean isSentByManito, String content) {
+        if(isSentByManito) {
+            this.manito = participant;
+            this.maniti = participant.getManiti();
+        } else {
+            this.manito = participant.getManito();
+            this.maniti = participant;
+        }
+        this.isSentByManito = isSentByManito;
+        this.content = content;
     }
 
     public void deleteChat() {
