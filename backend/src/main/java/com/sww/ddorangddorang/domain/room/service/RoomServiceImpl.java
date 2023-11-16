@@ -436,10 +436,10 @@ public class RoomServiceImpl implements RoomService {
         room.startGame();
         // TODO: 게임 시작 되는지 다시 점검할 필요성
         participantRepository.saveAll(participantList);
-        try {
-            Thread.sleep(100);
-        } catch (InterruptedException e) {
-        }
+//        try {
+//            Thread.sleep(100);
+//        } catch (InterruptedException e) {
+//        }
         missionPerformService.startGameAndAssignMission(room);
         redisUtil.putAccessCode(room.getAccessCode());
         log.info("RoomServiceImpl_startGame end");
