@@ -31,7 +31,7 @@ public class User {
     private String name;                // VARCHAR(255) "유저 이름"
     private String email;               // VARCHAR(255) "유저 이메일"
     private String providerType;        // VARCHAR(255) "소셜 로그인 타입 -GOOGLE, KAKAO" - for OAuth2
-//    private String providerId;          // VARCHAR(255) "소셜 로그인 식별자 값"            - for OAuth2
+    //    private String providerId;          // VARCHAR(255) "소셜 로그인 식별자 값"            - for OAuth2
     private String password;            // VARCHAR(255)                                 - for security
     private String role;                // VARCHAR(255)                                 - for security
     private String refreshToken;        // VARCHAR(255) "리프레시 토큰"                   - for jwt
@@ -119,16 +119,23 @@ public class User {
         this.status = status;
     }
 
-    public void updateProfileImage(String profileImage) { this.profileImage = profileImage; }
+    public void updateProfileImage(String profileImage) {
+        this.profileImage = profileImage;
+    }
+
     public void withdrawRoom() {
         this.room = null;
         this.status = 1L;
-        ++this.gameCount;
+//        ++this.gameCount;
     }
 
     public void addProviderInfo(String email, String providerType) {
         this.email = email;
         this.providerType = providerType;
+    }
+
+    public Integer participateNewGame() {
+        return ++this.gameCount;
     }
 
 //    public void updateColorAndMood(String color, String mood) {
