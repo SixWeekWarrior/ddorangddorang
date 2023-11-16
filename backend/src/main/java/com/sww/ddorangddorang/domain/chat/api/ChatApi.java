@@ -3,8 +3,10 @@ package com.sww.ddorangddorang.domain.chat.api;
 import com.sww.ddorangddorang.auth.dto.AuthenticatedUser;
 import com.sww.ddorangddorang.domain.chat.dto.ChatMessagePostReq;
 import com.sww.ddorangddorang.domain.chat.dto.ChatMessageRes;
+import com.sww.ddorangddorang.domain.chat.dto.ChatRes;
 import com.sww.ddorangddorang.domain.chat.dto.ChatroomRes;
 import com.sww.ddorangddorang.domain.chat.dto.GetChatRes;
+import com.sww.ddorangddorang.domain.chat.dto.SendChatPostReq;
 import com.sww.ddorangddorang.domain.chat.service.ChatService;
 import com.sww.ddorangddorang.global.common.CommonResponse;
 import java.util.List;
@@ -25,13 +27,42 @@ import org.springframework.web.bind.annotation.RestController;
 public class ChatApi {
 
     private final ChatService chatService;
+    private final String SUCCESS = "SUCCESS";
 
     @GetMapping
-    public CommonResponse<List<GetChatRes>> getChat(@AuthenticationPrincipal AuthenticatedUser authenticatedUser) {
+    public CommonResponse<List<GetChatRes>> getChat(
+        @AuthenticationPrincipal AuthenticatedUser authenticatedUser) {
         log.info("ChapApi_getChat start");
         List<GetChatRes> getChatResList = chatService.getChat(authenticatedUser.getId());
         log.info("ChapApi_getChat end");
         return CommonResponse.success(getChatResList);
+    }
+
+    @GetMapping("/manito")
+    public CommonResponse<List<ChatRes>> chatListWithManito(
+        @AuthenticationPrincipal AuthenticatedUser authenticatedUser) {
+        log.info("ChatApi_chatListWithManito start");
+        List<ChatRes> chatResList = chatService.getAllChatList(authenticatedUser.getId(), false);
+        log.info("ChatApi_chatListWithManito end");
+        return CommonResponse.success(chatResList);
+    }
+
+    @GetMapping("/maniti")
+    public CommonResponse<List<ChatRes>> chatListWithManiti(
+        @AuthenticationPrincipal AuthenticatedUser authenticatedUser) {
+        log.info("ChatApi_chatListWithManiti start");
+        List<ChatRes> chatResList = chatService.getAllChatList(authenticatedUser.getId(), true);
+        log.info("ChatApi_chatListWithManiti end");
+        return CommonResponse.success(chatResList);
+    }
+
+    @PostMapping
+    public CommonResponse<String> sendChat(@AuthenticationPrincipal AuthenticatedUser authenticatedUser, @RequestBody
+        SendChatPostReq sendChatPostReq) {
+        log.info("ChatApi_sendChat start");
+        chatService.sendChat(authenticatedUser.getId(), sendChatPostReq);
+        log.info("ChatApi_sendChat end");
+        return CommonResponse.success(SUCCESS);
     }
 //    @GetMapping
 //    public CommonResponse<ChatroomRes> getChatroom(
