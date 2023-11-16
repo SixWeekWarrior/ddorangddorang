@@ -13,6 +13,7 @@ import {MissionInfo, PerformsInfo} from '../../../types/mission';
 import {missionApi, roomApi} from '../../../apis';
 import {RoomEndInfo} from '../../../types/room';
 import {ManitiInfo} from '../../../types/user';
+import {useIsFocused} from '@react-navigation/native';
 
 type InfoBoxProps = {
   navigation: any;
@@ -33,6 +34,7 @@ const InfoBox = ({navigation, destination}: InfoBoxProps): JSX.Element => {
   const [performsInfo, setPerformsInfo] = useState<PerformsInfo>();
   const [endInfo, setEndInfo] = useState<RoomEndInfo>();
   const [manitiInfo, setManitiInfo] = useState<ManitiInfo>();
+  const isFocused = useIsFocused();
 
   const getMissionInfo = () => {
     try {
@@ -69,7 +71,7 @@ const InfoBox = ({navigation, destination}: InfoBoxProps): JSX.Element => {
     getMissionInfo();
     getEndInfo();
     getManitiInfo();
-  }, []);
+  }, [isFocused]);
 
   const handlePress = () => {
     switch (destination) {

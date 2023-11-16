@@ -3,13 +3,8 @@ import GlobalStyles from '../../../styles/GlobalStyles';
 import MenuTop from '../../molecules/menuTop';
 import InfoBox from '../../organisms/infoBox';
 import MissionList from '../../molecules/missionList';
-// import {useIsFocused} from '@react-navigation/native';
-// import {useEffect} from 'react';
 
 export const Misson = ({navigation}: {navigation: any}): JSX.Element => {
-  // const isFocused = useIsFocused();
-  // useEffect(() => {}, [isFocused]);
-
   return (
     <ScrollView style={styles.container}>
       <MenuTop

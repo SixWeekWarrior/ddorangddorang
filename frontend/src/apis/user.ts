@@ -8,8 +8,11 @@ import {
   UserSsafyInfo,
 } from '../types/user';
 import {tokenUtil} from '../utils';
+
 const client = apiInstance();
 const serverUrl = 'https://k9a210.p.ssafy.io/api/v1';
+const firebaseUrl =
+  'https://fcm.googleapis.com/v1/projects/ddorangddorang-9fdac/messages:send';
 
 // 로그인 요청 API
 const postLogin = async (idToken: string) => {
