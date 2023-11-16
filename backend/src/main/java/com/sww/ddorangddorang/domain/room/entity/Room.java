@@ -108,6 +108,7 @@ public class Room {
     }
 
     public Boolean isEnded() {
+//        if(this.startedAt.toLocalDate().equals())
         return LocalDateTime.now().plusHours(9L).isAfter(this.startedAt.plusDays(this.duration));
     }
 

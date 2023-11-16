@@ -31,7 +31,7 @@ public class User {
     private String name;                // VARCHAR(255) "유저 이름"
     private String email;               // VARCHAR(255) "유저 이메일"
     private String providerType;        // VARCHAR(255) "소셜 로그인 타입 -GOOGLE, KAKAO" - for OAuth2
-    private String providerId;          // VARCHAR(255) "소셜 로그인 식별자 값"            - for OAuth2
+//    private String providerId;          // VARCHAR(255) "소셜 로그인 식별자 값"            - for OAuth2
     private String password;            // VARCHAR(255)                                 - for security
     private String role;                // VARCHAR(255)                                 - for security
     private String refreshToken;        // VARCHAR(255) "리프레시 토큰"                   - for jwt
@@ -48,14 +48,14 @@ public class User {
     private String mbti;                // VARCHAR(255)
     private String worry;               // TEXT
     private Integer reportCount;        // INT
-    @JoinColumn(name = "participate")
+    @JoinColumn
     @ManyToOne(fetch = FetchType.LAZY)
     private Room room;           // BIGINT - FK(ROOM)
     private Long status = 1L;                // BIGINT - FK(MASTER_CODE)
     private LocalDateTime deletedAt;    // TIMESTAMP
     private Integer gameCount = 0;
-    private String mood;
-    private String color;
+//    private String mood;
+//    private String color;
 
     @Builder(builderMethodName = "signup", builderClassName = "Signup")
     public User(String name, String providerType, String role, Integer generation, Boolean isMajor,
@@ -80,7 +80,7 @@ public class User {
     public User(String email, String providerType, String providerId) {
         this.email = email;
         this.providerType = providerType;
-        this.providerId = providerId;
+//        this.providerId = providerId;
         this.role = "ROLE_GUEST";
     }
 
@@ -131,8 +131,8 @@ public class User {
         this.providerType = providerType;
     }
 
-    public void updateColorAndMood(String color, String mood) {
-        this.color = color;
-        this.mood = mood;
-    }
+//    public void updateColorAndMood(String color, String mood) {
+//        this.color = color;
+//        this.mood = mood;
+//    }
 }
