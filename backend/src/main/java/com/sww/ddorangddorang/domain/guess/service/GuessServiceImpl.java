@@ -86,6 +86,7 @@ public class GuessServiceImpl implements GuessService {
             .build();
     }
 
+    @Transactional
     public GuessStatus getMyGuessStatus(Long userId) {
         User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
         Profile myProfile;
@@ -150,6 +151,7 @@ public class GuessServiceImpl implements GuessService {
             .build();
     }
 
+    @Transactional
     public List<GuessStatus> getAllGuessStatus(Long userId) {
         User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
 
@@ -157,13 +159,8 @@ public class GuessServiceImpl implements GuessService {
             throw new UserNotParticipateGameException();
         }
 
-        Optional<Participant> optionalParticipant = participantRepository.findByUserAndGameCount(user,
-            user.getGameCount());
-
-        if (!optionalParticipant.isPresent()) {
-            throw new RoomNotFoundException();
-        }
-        Participant participant = optionalParticipant.get();
+        Participant participant = participantRepository.findByUserAndGameCount(user,
+            user.getGameCount()).orElseThrow(RoomNotFoundException::new);
 
         Room room = participant.getRoom();
 
