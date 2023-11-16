@@ -142,7 +142,7 @@ public class MissionPerformServiceImpl implements MissionPerformService {
 
         List<MissionPerform> missionPerforms = participant.getMissionPerforms();
 
-        int missionCount = missionPerforms.size();
+        int missionCount = missionPerforms == null ? 0 : missionPerforms.size();
 
         if (missionCount > 0) {
             MissionPerform lastMissionPerfrom = missionPerforms.get(missionCount - 1);
