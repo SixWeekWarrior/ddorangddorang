@@ -106,36 +106,20 @@ export const Profile = ({
             <Pressable style={styles.close} onPress={toggleModal}>
               <Image source={closeImg} style={styles.closeImg} />
             </Pressable>
-            {true ? (
-              <View style={styles.noticeContainer}>
-                <View style={styles.row}>
-                  <Text style={styles.noticeText}>예상 마니또를 </Text>
-                  <Text style={styles.nameText}>{name}</Text>
-                  <Text style={styles.noticeText}>님으로</Text>
-                </View>
-                <Text style={{...styles.noticeText, alignSelf: 'center'}}>
-                  설정하시겠어요?
-                </Text>
-                <View style={styles.btnContainer}>
-                  <BtnSm text="네!" onPress={changeManito} />
-                  <BtnSm text="아니요!" onPress={toggleModal} isDark={true} />
-                </View>
+            <View style={styles.noticeContainer}>
+              <View style={styles.row}>
+                <Text style={styles.noticeText}>예상 마니또를 </Text>
+                <Text style={styles.nameText}>{name}</Text>
+                <Text style={styles.noticeText}>님으로</Text>
               </View>
-            ) : (
-              <View style={{...styles.noticeContainer}}>
-                <Text
-                  // eslint-disable-next-line react-native/no-inline-styles
-                  style={{
-                    ...styles.noticeText,
-                    alignSelf: 'center',
-                    textAlign: 'center',
-                  }}>
-                  {
-                    '미션 변경 기회를 모두 사용하셨습니다.\n이번 미션은 꼭 수행해주세요!'
-                  }
-                </Text>
+              <Text style={{...styles.noticeText, alignSelf: 'center'}}>
+                설정하시겠어요?
+              </Text>
+              <View style={styles.btnContainer}>
+                <BtnSm text="네!" onPress={changeManito} />
+                <BtnSm text="아니요!" onPress={toggleModal} isDark={true} />
               </View>
-            )}
+            </View>
           </View>
         </View>
       </Modal>

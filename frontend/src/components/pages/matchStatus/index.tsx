@@ -7,10 +7,8 @@ import {
 } from 'react-native';
 import MenuTop from '../../molecules/menuTop';
 import GlobalStyles from '../../../styles/GlobalStyles';
-import greenArrowRightImg from '../../../assets/greenArrowRightImg.png';
 import BottomSheet, {BottomSheetBackdrop} from '@gorhom/bottom-sheet';
 import {useCallback, useRef, useMemo, useEffect, useState} from 'react';
-import userImg from '../../../assets/userImg.png';
 import {useIsFocused} from '@react-navigation/native';
 import {guessApi} from '../../../apis';
 import {GuessInfo} from '../../../types/user';
@@ -19,11 +17,8 @@ import GuessRow from '../../atoms/guessRow';
 const MatchStatus = ({navigation, route}: any): JSX.Element => {
   const showNotice = route.params ? route.params.showNotice : false;
   const manitoName = route.params ? route.params.manitoName : '';
-  const profilePic = route.params ? route.params.profilePic : userImg;
-  const handleGuess = () => {
-    navigation.navigate('MatchGuess', {showNotice});
-  };
-  const isFocused = useIsFocused();
+  const profileImage = route.params ? route.params.profileImage : '';
+
   const bottomSheetRef = useRef<BottomSheet>(null);
   const snapPoints = useMemo(() => ['35%', '35%', '35%'], []);
   const renderBackdrop = useCallback(
@@ -36,13 +31,14 @@ const MatchStatus = ({navigation, route}: any): JSX.Element => {
     ),
     [],
   );
-  const [guessAllList, setGuessAllList] = useState<GuessInfo[]>([]);
+  const isFocused = useIsFocused();
+  const [guessList, setGuessList] = useState<GuessInfo[]>([]);
 
   const getGuessInfo = () => {
     try {
       guessApi.getGuessAll().then(data => {
         const guessData = data.data;
-        setGuessAllList(guessData);
+        setGuessList(guessData);
       });
     } catch (error) {
       console.log(error);
@@ -55,7 +51,7 @@ const MatchStatus = ({navigation, route}: any): JSX.Element => {
 
   const noticeBottom = () => (
     <View style={styles.contentContainer}>
-      <Image source={profilePic} style={styles.profilePic} />
+      <Image source={{uri: profileImage}} style={styles.profilePic} />
       <View style={styles.textRows}>
         <View style={styles.textContainer}>
           <Text style={styles.name}>{manitoName}</Text>
@@ -75,26 +71,17 @@ const MatchStatus = ({navigation, route}: any): JSX.Element => {
         text={'매일 아침 9시 갱신됩니다.\n내 마니또가 나를 맞췄나요?'}
       />
       <View style={styles.innerContainer}>
-        <View style={styles.titleContainer}>
-          <Text style={styles.title}>본인 / 친구</Text>
-          <Text style={styles.title}>예상 마니또</Text>
-          <Text style={styles.title}>실제 마니또</Text>
-        </View>
-        <View style={styles.highlightRow}>
-          <GuessRow />
-        </View>
-        <TouchableWithoutFeedback onPress={handleGuess}>
-          <View style={styles.noticeRow}>
-            <Text style={styles.notice}>내 마니또 예측하기</Text>
-            <Image source={greenArrowRightImg} style={styles.arrow} />
-          </View>
-        </TouchableWithoutFeedback>
-        {/* {row()}
-        {row()}
-        {row()}
-        {row()}
-        {row()}
-        {row()} */}
+        {guessList.map((item: GuessInfo, index: number) => (
+          <GuessRow
+            me={item.me}
+            guessUser={item.guessUser}
+            manito={item.manito}
+            isFirst={index === 0}
+            key={index}
+            showNotice={showNotice}
+            navigation={navigation}
+          />
+        ))}
       </View>
       {showNotice ? (
         <BottomSheet
@@ -116,44 +103,6 @@ const styles = StyleSheet.create({
   },
   innerContainer: {
     padding: 24,
-  },
-  titleContainer: {
-    flexDirection: 'row',
-    paddingHorizontal: '4%',
-    justifyContent: 'space-between',
-  },
-  title: {
-    fontFamily: GlobalStyles.home_title.fontFamily,
-    fontSize: GlobalStyles.content.fontSize,
-    color: GlobalStyles.black.color,
-  },
-  noticeRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-    paddingHorizontal: 10,
-    marginVertical: -15,
-  },
-  highlightRow: {
-    borderColor: GlobalStyles.green.color,
-    borderWidth: 0.5,
-    borderRadius: 20,
-  },
-  profilePic: {
-    width: 60,
-    height: 60,
-    borderRadius: 100,
-    backgroundColor: GlobalStyles.grey_4.color,
-  },
-  arrow: {
-    width: 8,
-    resizeMode: 'contain',
-    marginLeft: 5,
-  },
-  notice: {
-    fontFamily: GlobalStyles.section_title.fontFamily,
-    fontSize: GlobalStyles.content.fontSize,
-    color: GlobalStyles.green.color,
   },
   contentContainer: {
     flex: 1,

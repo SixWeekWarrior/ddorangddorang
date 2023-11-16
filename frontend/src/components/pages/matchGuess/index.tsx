@@ -15,7 +15,6 @@ const MatchGuess = ({navigation}: {navigation: any}): JSX.Element => {
     const getAllMembers = () => {
       try {
         userApi.getUserExceptMe().then(data => {
-          console.log('여기:', data);
           setGuessList(data);
         });
       } catch (error) {

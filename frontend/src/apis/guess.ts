@@ -16,8 +16,8 @@ const getGuess = async () => {
 // guess 변경 API
 const postGuess = async (manitoId: number) => {
   try {
-    const res = await client.post('/guess', manitoId);
-    return res.data;
+    const res = await client.post('/guess', {manitoId: manitoId});
+    return res.data.data;
   } catch (e) {
     console.log(e);
     throw new Error('ERROR IN POST_GUESS');
