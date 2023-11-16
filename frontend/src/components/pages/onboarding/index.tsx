@@ -1,5 +1,12 @@
 import {useEffect, useState} from 'react';
-import {View, Image, StyleSheet, TouchableOpacity, Text} from 'react-native';
+import {
+  View,
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+  Text,
+  Alert,
+} from 'react-native';
 import GlobalStyles, {height} from '../../../styles/GlobalStyles';
 import blockImg from '../../../assets/blockImg.png';
 import logoImg from '../../../assets/logoImg.png';
@@ -17,10 +24,34 @@ import {tokenUtil} from '../../../utils';
 import {useSetRecoilState} from 'recoil';
 import {userAtom} from '../../../modules';
 import {NotificationInfo} from '../../../types/notification';
+import {BackHandler} from 'react-native';
 
 export const Onboarding = ({navigation}: {navigation: any}) => {
   const setUserInfo = useSetRecoilState(userAtom.UserInfoState);
   const [userState, setUserState] = useState<number | null>(-1);
+
+  const backPressed = () => {
+    Alert.alert('', '앱을 종료하시겠습니까?', [
+      {
+        text: '취소',
+        onPress: () => null,
+        style: 'cancel',
+      },
+      {text: '확인', onPress: () => BackHandler.exitApp()},
+    ]);
+    return true;
+  };
+
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      backPressed,
+    );
+
+    return () => {
+      backHandler.remove();
+    };
+  }, []);
 
   useEffect(() => {
     // Google Sign-In 초기화

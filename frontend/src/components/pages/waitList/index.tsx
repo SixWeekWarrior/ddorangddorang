@@ -70,7 +70,7 @@ export const WaitList = ({
       try {
         roomApi.getRoomWaiting().then(data => {
           setWaitingList(data.data);
-          connectSSE();
+          // connectSSE();
         });
       } catch (error) {
         console.log(error);
