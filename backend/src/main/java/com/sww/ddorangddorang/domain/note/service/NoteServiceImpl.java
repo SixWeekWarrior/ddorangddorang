@@ -76,15 +76,15 @@ public class NoteServiceImpl implements NoteService {
             .orElseThrow(ParticipantNotFoundException::new);
         Participant receiver = sender.getManiti();
 
-        Optional<MissionPerform> missionPerform = missionPerformRepository.findById(
-            noteCreateReq.getMissionPerformId());
-
-        MissionPerform openMissionPerform = missionPerform.orElse(null);
+//        Optional<MissionPerform> missionPerform = missionPerformRepository.findById(
+//            noteCreateReq.getMissionPerformId());
+//
+//        MissionPerform openMissionPerform = missionPerform.orElse(null);
 
         Note note = Note.builder()
             .title(noteCreateReq.getTitle())
             .content(noteCreateReq.getContent())
-            .missionPerform(openMissionPerform)
+//            .missionPerform(openMissionPerform)
             .sender(sender)
             .receiver(receiver)
             .build();

@@ -17,8 +17,10 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.DynamicInsert;
 
 @Getter
+@DynamicInsert
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class Note {
@@ -57,11 +59,11 @@ public class Note {
     private LocalDateTime deletedAt;
 
     @Builder
-    public Note(Room room, Participant sender, Participant receiver, MissionPerform missionPerform, String title, String content, String url) {
+    public Note(Room room, Participant sender, Participant receiver, String title, String content, String url) {
         this.room = room;
         this.sender = sender;
         this.receiver = receiver;
-        this.missionPerform = missionPerform;
+//        this.missionPerform = missionPerform;
         this.title = title;
         this.content = content;
         this.url = url;
