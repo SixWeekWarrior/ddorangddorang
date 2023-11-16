@@ -13,6 +13,7 @@ import missonSelectedIcon from '../../../assets/icons/selected/mission.png';
 import Misson from '../../pages/mission';
 import GlobalStyles, {height} from '../../../styles/GlobalStyles';
 import BeforeLaunch from '../../pages/beforelaunch';
+import Chatting from '../../pages/chatting';
 
 const Tab = createBottomTabNavigator();
 
@@ -66,7 +67,7 @@ export const NavBar = ({navigation}: {navigation: any}): JSX.Element => {
             ),
           }}
           name="채팅"
-          component={BeforeLaunch}
+          component={Chatting}
         />
         <Tab.Screen
           options={{
