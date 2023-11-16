@@ -24,11 +24,10 @@ type ProfileProps = {
 type Profile = ProfileProps & UserProfile & any;
 
 export const Profile = ({
-  userId,
   name,
+  userId,
   classes,
   profileImage,
-  generation,
   isMajor,
   selectedList,
   setSelectedList,
@@ -78,6 +77,7 @@ export const Profile = ({
       guessApi.postGuess(manitoId).then(data =>
         navigation.navigate('MatchStatus', {
           showNotice: true,
+          profileImage: data.profileImage,
           manitoName: data.name,
         }),
       );

@@ -1,5 +1,5 @@
 export type UserInfo = {
-  userId: number;
+  id: number;
   name: string;
   generation: number;
   isMajor: boolean;
@@ -37,7 +37,6 @@ export type UserProfile = {
   name: string;
   profileImage: string;
   isMajor: boolean;
-  generation: number;
   classes: number;
 };
 
@@ -66,4 +65,10 @@ export type ManitiInfo = {
   isMajor: boolean;
   name: string;
   generation: number;
+};
+
+export type GuessInfo = {
+  me: UserProfile;
+  guessUser: UserProfile;
+  manito: UserProfile;
 };

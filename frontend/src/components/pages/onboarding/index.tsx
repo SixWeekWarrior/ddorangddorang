@@ -7,7 +7,6 @@ import TitleAtom from '../../atoms/titleAtom';
 import googleLoginImg from '../../../assets/googleLoginImg.png';
 import {useMemo, useRef, useCallback} from 'react';
 import BottomSheet, {BottomSheetBackdrop} from '@gorhom/bottom-sheet';
-
 import {
   GoogleSignin,
   statusCodes,
@@ -17,6 +16,7 @@ import {userApi} from '../../../apis';
 import {tokenUtil} from '../../../utils';
 import {useSetRecoilState} from 'recoil';
 import {userAtom} from '../../../modules';
+import {NotificationInfo} from '../../../types/notification';
 
 export const Onboarding = ({navigation}: {navigation: any}) => {
   const setUserInfo = useSetRecoilState(userAtom.UserInfoState);
@@ -102,6 +102,20 @@ export const Onboarding = ({navigation}: {navigation: any}) => {
   const successLogin = async () => {
     try {
       await getUserInfo();
+      const notificationData: NotificationInfo = {
+        message: {
+          topic: 'news',
+          notification: {
+            title: 'Breaking News',
+            body: 'New news story available.',
+          },
+          data: {
+            story_id: 'story_12345',
+          },
+        },
+      };
+
+      await userApi.postNotification(notificationData);
     } catch (error) {
       console.log(error);
     }

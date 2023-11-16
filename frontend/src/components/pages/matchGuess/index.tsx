@@ -25,23 +25,9 @@ const MatchGuess = ({navigation}: {navigation: any}): JSX.Element => {
     getAllMembers();
   }, []);
 
-  useEffect(() => {
-    console.log('지목된 사람 id', selectedList);
-  }, [selectedList]);
-
-  const handleSubmit = () => {
-    try {
-      // const manitoId = selectedList[0];
-      // guessApi.postGuess(manitoId).then(data =>
-      //   navigation.navigate('MatchStatus', {
-      //     showNotice: true,
-      //     manitoName: data.name,
-      //   }),
-      // );
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  // useEffect(() => {
+  //   console.log('지목된 사람 id', selectedList);
+  // }, [selectedList]);
 
   return (
     <View style={styles.container}>
@@ -58,10 +44,10 @@ const MatchGuess = ({navigation}: {navigation: any}): JSX.Element => {
       <View style={styles.listContainer}>
         {guessList.map((item: UserInfo) => (
           <Profile
-            key={item.userId}
+            key={item.id}
             name={item.name}
             generation={item.generation}
-            userId={item.userId}
+            userId={item.id}
             classes={item.classes}
             isMajor={item.isMajor}
             isAllChecked={isAllChecked}
@@ -69,6 +55,7 @@ const MatchGuess = ({navigation}: {navigation: any}): JSX.Element => {
             selectedList={selectedList}
             setSelectedList={setSelectedList}
             toggle={true}
+            navigation={navigation}
           />
         ))}
       </View>
