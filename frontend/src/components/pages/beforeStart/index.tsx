@@ -199,10 +199,21 @@ const styles = StyleSheet.create({
     fontSize: GlobalStyles.section_title.fontSize,
     color: GlobalStyles.black.color,
   },
+
+  logoutInfoText: {
+    fontFamily: GlobalStyles.nomal.fontFamily,
+    fontSize: height * 12,
+    color: GlobalStyles.grey_3.color,
+    marginTop: height * 15,
+    marginBottom: height * 30,
+  },
+
   logoutText: {
-    fontFamily: GlobalStyles.section_title.fontFamily,
-    fontSize: GlobalStyles.btn.fontSize,
-    color: GlobalStyles.blue.color,
+    fontFamily: GlobalStyles.nomal.fontFamily,
+    fontSize: height * 12,
+    color: GlobalStyles.grey_3.color,
+    marginTop: height * 15,
+    marginBottom: height * 30,
   },
   textBig: {
     fontFamily: GlobalStyles.section_title.fontFamily,
