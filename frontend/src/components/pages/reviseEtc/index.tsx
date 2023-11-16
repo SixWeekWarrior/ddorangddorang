@@ -46,7 +46,7 @@ export const ReviseEtc = ({navigation}: {navigation: any}) => {
     <View style={styles.container}>
       <MenuTop menu="추가 정보 수정" text={`추가 정보를 수정해봐요.`} />
       <View style={styles.innerContainer}>
-        <View style={[styles.flexColumn, {height: '50%', rowGap: 15}]}>
+        <View style={[styles.flexColumn, {rowGap: 15}]}>
           <InfoTextInput
             title="mbti"
             placeholder={defaultMbti}
@@ -98,7 +98,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignSelf: 'center',
     flexDirection: 'column',
-    flexWrap: 'wrap',
   },
 });
 

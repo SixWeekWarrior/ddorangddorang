@@ -21,6 +21,7 @@ import MatchStatus from '../matchStatus';
 import MatchGuess from '../matchGuess';
 import MyPage from '../myPage';
 import {ProfilePicAdd} from '../profilePicAdd';
+import ChattingDeatil from '../chattingDetail';
 
 const StackNavigation = () => {
   const Stack = createStackNavigator();
@@ -130,6 +131,11 @@ const StackNavigation = () => {
         <Stack.Screen
           name="MatchGuess"
           component={MatchGuess}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="ChattingDeatil"
+          component={ChattingDeatil}
           options={{headerShown: false}}
         />
       </Stack.Navigator>
