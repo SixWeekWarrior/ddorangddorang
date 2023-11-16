@@ -178,7 +178,7 @@ public class GuessServiceImpl implements GuessService {
 
         playerList.add(participant);
         for (Participant player : participantList) {
-            if (player.equals(player) || player.getDeletedAt() != null) {
+            if (player.equals(participant) || player.getDeletedAt() != null) {
                 continue;
             }
 
@@ -186,7 +186,7 @@ public class GuessServiceImpl implements GuessService {
         }
 
         Boolean ended = room.isEnded();
-        List<GuessStatus> guessStatusList = new ArrayList<>();
+        List<GuessStatus> guessStatusList = new LinkedList<>();
         for(Participant player: playerList) {
             User me = player.getUser();
             Profile myProfile = Profile.builder()
