@@ -39,6 +39,7 @@ import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
@@ -435,6 +436,10 @@ public class RoomServiceImpl implements RoomService {
         room.startGame();
         // TODO: 게임 시작 되는지 다시 점검할 필요성
         participantRepository.saveAll(participantList);
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+        }
         missionPerformService.startGameAndAssignMission(room);
         redisUtil.putAccessCode(room.getAccessCode());
         log.info("RoomServiceImpl_startGame end");
@@ -651,5 +656,21 @@ public class RoomServiceImpl implements RoomService {
         return EndDayInfoRes.builder()
             .startDate(room.getStartedAt())
             .endDate(room.getStartedAt().plusDays(room.getDuration())).build();
+    }
+
+    @Transactional
+    @Scheduled(cron = "0 0 15 * * *")
+    public void endGame() {
+        List<Room> roomList = roomRepository.findAllByStartedAtIsNotNullAndDeletedAtIsNull();
+
+        for(Room room : roomList) {
+            if(room.isShowable()) {
+                List<User> userList = userRepository.findAllByRoomAndStatus(room, 4L);
+                for(User user : userList) {
+                    user.updateStatus(1L);
+                    user.updateRoom(null);
+                }
+            }
+        }
     }
 }
