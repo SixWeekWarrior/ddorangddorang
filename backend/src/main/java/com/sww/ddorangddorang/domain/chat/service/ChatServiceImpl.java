@@ -3,6 +3,7 @@ package com.sww.ddorangddorang.domain.chat.service;
 import com.sww.ddorangddorang.domain.chat.dto.ChatMessagePostReq;
 import com.sww.ddorangddorang.domain.chat.dto.ChatMessageRes;
 import com.sww.ddorangddorang.domain.chat.dto.ChatroomRes;
+import com.sww.ddorangddorang.domain.chat.dto.GetChatRes;
 import com.sww.ddorangddorang.domain.chat.entity.Chat;
 import com.sww.ddorangddorang.domain.chat.entity.ChatMessage;
 import com.sww.ddorangddorang.domain.chat.repository.ChatMessageRepository;
@@ -13,6 +14,7 @@ import com.sww.ddorangddorang.domain.user.entity.User;
 import com.sww.ddorangddorang.domain.user.exception.UserNotFoundException;
 import com.sww.ddorangddorang.domain.user.repository.UserRepository;
 import jakarta.transaction.Transactional;
+import java.util.LinkedList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,6 +30,12 @@ public class ChatServiceImpl implements ChatService {
     private final ChatMessageRepository chatMessageRepository;
     private final UserRepository userRepository;
     private final ParticipantRepository participantRepository;
+
+    public List<GetChatRes> getChat(Long userId) {
+        List<GetChatRes> getChatResList=new LinkedList<>();
+
+        return null;
+    }
 
     public ChatroomRes getChatroom(Long userId) {
         Participant participant = getParticipant(userId);

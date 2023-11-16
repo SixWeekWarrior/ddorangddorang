@@ -3,6 +3,7 @@ package com.sww.ddorangddorang.domain.chat.service;
 import com.sww.ddorangddorang.domain.chat.dto.ChatMessagePostReq;
 import com.sww.ddorangddorang.domain.chat.dto.ChatMessageRes;
 import com.sww.ddorangddorang.domain.chat.dto.ChatroomRes;
+import com.sww.ddorangddorang.domain.chat.dto.GetChatRes;
 import java.util.List;
 
 public interface ChatService {
@@ -12,5 +13,7 @@ public interface ChatService {
     List<ChatMessageRes> getChatMessageList(Long chatRoomId, Long userId);
 
     void postChatMessage(ChatMessagePostReq chatMessagePostReq, Long userId);
+
+    List<GetChatRes> getChat(Long userId);
 
 }
