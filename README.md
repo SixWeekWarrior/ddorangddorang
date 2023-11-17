@@ -52,8 +52,8 @@
 
 <table>
     <tr>
-        <td height="140px" align="center"> <a href="https://github.com/hy06ixk">
-            <img src="https://avatars.githubusercontent.com/hy06ixk" width="140px" /> <br><br> 👑 이효식 <br>(Back-End) </a> <br></td>
+        <td height="140px" align="center"> <a href="https://github.com/hy06ix">
+            <img src="https://avatars.githubusercontent.com/hy06ix" width="140px" /> <br><br> 👑 이효식 <br>(Back-End) </a> <br></td>
         <td height="140px" align="center"> <a href="https://github.com/138901146">
             <img src="https://avatars.githubusercontent.com/138901146" width="140px" /> <br><br> 🙂 박우현 <br>(Back-End) </a> <br></td>
         <td height="140px" align="center"> <a href="https://github.com/greenTea31">
