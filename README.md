@@ -1,26 +1,22 @@
-<p align="center">
-  <br>
-
-<div 
-![image](/img/screen_one.png)
-![image](/img/screen_two.png)
-![image](/img/screen_three.png)
-  <br>
-</p>
+<div align="center">
+<img src="img/Thumbnail.png" width="">
 
 ## 🤍 목차 🤍
 
-1. [**서비스 소개**](#1)
-2. [**프로젝트 일정**](#2)
-3. [**팀원 소개**](#3)
-4. [**기술 스택**](#4)
-5. [**시스템 구성도**](#5)
-6. [**주요 기능**](#6)
-
-<div id="1"></div>
-<br/>
+[**서비스 소개**](#1)
+[**프로젝트 일정**](#2)
+[**팀원 소개**](#3)
+[**기술 스택**](#4)
+[**시스템 구성도**](#5)
+[**주요 기능**](#6)
 
 ## ❤️ 서비스 소개 ❤️
+
+<div display="flex">
+<img src="img/screen_one.png" width="200">
+<img src="img/screen_two.png" width="200">
+<img src="img/screen_three.png" width="200">
+</div>
 
 ### 또랑또랑 🤩
 
@@ -31,12 +27,20 @@
 <div id="2"></div>
 <br/>
 
+### 🎉 구글 플레이 스토어 배포 🎉
+
+2022년 11월 14일 배포 완료!
+[🍀 보러가기 🍀](https://play.google.com/store/apps/details?id=com.ssafy.ddorangddorang)
+
+<div id="1"></div>
+<br/>
+
 ## 🧡 프로젝트 기간 🧡
 
 ### 23.10.10 ~ 23.11.17
 
-- 기획 및 디자인 : 23.10.10 ~ 23.10.19
-- 프로젝트 개발 : 23.10.20 ~ 23.11.17
+기획 및 디자인 : 23.10.10 ~ 23.10.19
+프로젝트 개발 : 23.10.20 ~ 23.11.17
 
 <br/>
 
@@ -80,6 +84,7 @@
 | <img src="img/java.png" width="110"> | <img src="img/springboot.png" width="110"> | <img src="img/springsecurity.png" width="110"> | <img src="img/springdatajpa.png" width="110"> | <img src="img/awsrds.png" width="110"> | <img src="img/awss3.png" width="110"> | <img src="img/redis.png" width="110"> | <img src="img/nginx.png" width="110"> | <img src="img/docker.png" width="110"> | <img src="img/jenkins.png" width="110"> |
 
 <br />
+<br />
 
 <div id="5"></div>
 
@@ -88,6 +93,8 @@
 - ### 시스템 아키텍처
 
     <img src="img/architecture.png">
+
+<br />
 
 - ### ERD
     <img src="img/erd.png">
@@ -100,20 +107,31 @@
 
 ### 게임 생성 및 참여
 
-- 인원, 기간을 설정하여 게임 시작
-- 대기 목록을 통한 참가자 승인
-- 초대 코드를 통한 게임 참여
+인원, 기간을 설정하여 게임 시작
+
+대기 목록을 통한 참가자 승인
+
+초대 코드를 통한 게임 참여
+<br/>
 
 ### 마니또 및 마니또와의 채팅 기능
 
-- 실시간 채팅 기능
+실시간 채팅 기능
+
+<br/>
 
 ### 마니띠 도와주기 미션 수행
 
-- 매일 아침 9시 새로운 미션 할당
-- 2번의 랜덤 변경 기회
+매일 아침 9시 새로운 미션 할당
+
+2번의 랜덤 변경 기회
+
+<br/>
 
 ### 마니또 추측 및 결과 확인
 
-- 게임 종료 3일 전부터 나의 마니또 추측
-- 참가자의 모든 결과 확인
+게임 종료 3일 전부터 나의 마니또 추측
+
+참가자의 모든 결과 확인
+
+</div>
