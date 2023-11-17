@@ -3,12 +3,14 @@
 
 ## 🤍 목차 🤍
 
+<div>
 [**서비스 소개**](#1)
 [**프로젝트 일정**](#2)
 [**팀원 소개**](#3)
 [**기술 스택**](#4)
 [**시스템 구성도**](#5)
 [**주요 기능**](#6)
+</div>
 
 ## ❤️ 서비스 소개 ❤️
 
@@ -55,7 +57,7 @@
         <td height="140px" align="center"> <a href="https://github.com/138901146">
             <img src="https://avatars.githubusercontent.com/138901146" width="140px" /> <br><br> 🙂 박우현 <br>(Back-End) </a> <br></td>
         <td height="140px" align="center"> <a href="https://github.com/greenTea31">
-            <img src="https://avatars.githubusercontent.com/greenTea31" width="140px" /> <br> 😆 백승일 <br>(Back-End / CI / CD) </a> <br></td>
+            <img src="https://avatars.githubusercontent.com/greenTea31" width="140px" /> <br><br> 😆 백승일 <br>(Back-End / CI / CD) </a> <br></td>
         <td height="140px" align="center"> <a href="https://github.com/ryunayeon">
             <img src="https://avatars.githubusercontent.com/ryunayeon" width="140px" /> <br><br> 😁 류나연 <br>(PM) </a> <br></td>
         <td height="140px" align="center"> <a href="https://github.com/yeonjulee812">
