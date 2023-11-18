@@ -70,7 +70,7 @@ public class MissionPerformServiceImpl implements MissionPerformService {
         List<Long> missionIdList = fetchMissionIds();
         List<MissionPerform> missionPerformList = new ArrayList<>();
 
-        if (participantList.isEmpty()) {
+        if (participantList == null || participantList.isEmpty()) {
             throw new ParticipantNotFoundException();
         }
 
@@ -90,7 +90,7 @@ public class MissionPerformServiceImpl implements MissionPerformService {
         List<Participant> participantList = participantRepository.findAllByRoomAndDeletedAtIsNull(
             room);
 
-        if (!participantList.isEmpty()) {
+        if (participantList != null && !participantList.isEmpty()) {
             startGameAndAssignMission(participantList);
         }
     }
@@ -160,7 +160,7 @@ public class MissionPerformServiceImpl implements MissionPerformService {
         // 참가자가 수행한 미션들의 id를 Set로 저장함.
         Set<Long> performedMissions;
 
-        if(!missionPerforms.isEmpty()) {
+        if(missionPerforms != null) {
             performedMissions = missionPerforms.stream().map(MissionPerform::getMission)
                 .map(Mission::getId).collect(Collectors.toSet());
         } else {

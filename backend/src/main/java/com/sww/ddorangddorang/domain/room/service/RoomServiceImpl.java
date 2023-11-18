@@ -404,8 +404,8 @@ public class RoomServiceImpl implements RoomService {
 //
         List<Prefix> prefixList = prefixRepository.findAll();
         List<Suffix> suffixList = suffixRepository.findAll();
-        Integer prefixListSize = prefixList.isEmpty() ? 0 : prefixList.size();
-        Integer suffixListSize = suffixList.isEmpty() ? 0 : suffixList.size();
+        Integer prefixListSize = (prefixList == null || prefixList.isEmpty()) ? 0 : prefixList.size();
+        Integer suffixListSize = (suffixList == null || suffixList.isEmpty()) ? 0 : suffixList.size();
         Boolean[][] nicknameUsage = new Boolean[prefixListSize][suffixListSize];
 
         for (Participant participant : participantList) {
