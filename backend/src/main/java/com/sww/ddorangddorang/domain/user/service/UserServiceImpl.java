@@ -41,13 +41,12 @@ import org.springframework.web.multipart.MultipartFile;
 @Service
 public class UserServiceImpl implements UserService {
 
+    private static final Long UTC_TO_KST = 9L;
     private final UserRepository userRepository;
     private final HintRepository hintRepository;
     private final FileUploader fileUploader;
     private final ParticipantRepository participantRepository;
     private final MissionPerformRepository missionPerformRepository;
-
-    private static final Long UTC_TO_KST = 9L;
 
     public void signUp(User user) throws Exception {
         if (userRepository.findByEmailAndProviderType(user.getEmail(), user.getProviderType())
@@ -89,7 +88,7 @@ public class UserServiceImpl implements UserService {
         for (Hint hint : hintList) {
             Optional<Hint> optionalHint = hintRepository.findByUserAndMasterCode(user,
                 hint.getMasterCode());
-            if (optionalHint.isEmpty()) {
+            if (optionalHint == null || optionalHint.isEmpty()) {
                 log.info("UserService_save new hint: {}", hint);
                 hintRepository.save(hint);
             } else {
@@ -131,7 +130,9 @@ public class UserServiceImpl implements UserService {
         List<UsersGetRes> usersGetResList = new ArrayList<>();
 
         for (User u : userList) {
-            if (u.getId() == userId) continue;
+            if (u.getId() == userId) {
+                continue;
+            }
             usersGetResList.add(UsersGetRes.userToDto(u, getUserHint(u)));
         }
 
@@ -254,7 +255,7 @@ public class UserServiceImpl implements UserService {
         List<MissionPerform> missionPerformList = missionPerformRepository.findAllByPlayerAndDeletedAtIsNull(
             participant.get());
 
-        if (!missionPerformList.isEmpty()) {
+        if (missionPerformList != null && !missionPerformList.isEmpty()) {
             missionPerformList.sort(Comparator.comparing(MissionPerform::getReceivedAt).reversed());
             MissionPerform missionPerform = missionPerformList.get(0);
             isMissionDone = missionPerform.isCompleted();
