@@ -5,6 +5,7 @@ import com.sww.ddorangddorang.domain.room.dto.JoinRoomReq;
 import com.sww.ddorangddorang.domain.room.dto.RoomGetRes;
 import com.sww.ddorangddorang.domain.room.dto.RoomInfoReq;
 import com.sww.ddorangddorang.domain.room.dto.ShowUsersRes;
+import com.sww.ddorangddorang.domain.room.dto.StartGameRes;
 import com.sww.ddorangddorang.domain.room.dto.WaitingListRes;
 import java.util.List;
 
@@ -24,9 +25,9 @@ public interface RoomService {
 
     Boolean responseJoinRoom(List<JoinRoomReq> joinRoomReqList, Long userId);
 
-    Boolean checkAndRunIfRoomShouldStart(Long userId);
+    StartGameRes checkAndRunIfRoomShouldStart(Long userId);
 
-    Boolean checkAndStartGame(Long userId);
+    StartGameRes checkAndStartGame(Long userId);
 
     RoomGetRes getRoom(Long id);
 
