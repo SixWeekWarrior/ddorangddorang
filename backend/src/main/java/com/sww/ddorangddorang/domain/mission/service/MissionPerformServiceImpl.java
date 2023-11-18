@@ -23,6 +23,7 @@ import jakarta.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -157,8 +158,14 @@ public class MissionPerformServiceImpl implements MissionPerformService {
         }
 
         // 참가자가 수행한 미션들의 id를 Set로 저장함.
-        Set<Long> performedMissions = missionPerforms.stream().map(MissionPerform::getMission)
-            .map(Mission::getId).collect(Collectors.toSet());
+        Set<Long> performedMissions;
+
+        if(!missionPerforms.isEmpty()) {
+            performedMissions = missionPerforms.stream().map(MissionPerform::getMission)
+                .map(Mission::getId).collect(Collectors.toSet());
+        } else {
+            performedMissions = new HashSet<>();
+        }
 
         // 모든 미션 id와 수행한 미션의 id의 차집합을 계산하고, 랜덤으로 하나의 미션 id를 받아옴.
         Long newMissionId = randomNumber(missionIdList, performedMissions);
