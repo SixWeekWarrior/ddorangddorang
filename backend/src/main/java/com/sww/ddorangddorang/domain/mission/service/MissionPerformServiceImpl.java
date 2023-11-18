@@ -20,10 +20,10 @@ import com.sww.ddorangddorang.domain.user.entity.User;
 import com.sww.ddorangddorang.domain.user.exception.UserNotFoundException;
 import com.sww.ddorangddorang.domain.user.repository.UserRepository;
 import jakarta.transaction.Transactional;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -66,12 +66,15 @@ public class MissionPerformServiceImpl implements MissionPerformService {
         missionPerformRepository.saveAll(missionPerformList);
     }
 
-    public void startGameAndAssignMission(Room room) {
+    public void startGameAndAssignMission(List<Participant> participantList) {
         List<Long> missionIdList = fetchMissionIds();
-        List<Participant> participants = room.getParticipants();
         List<MissionPerform> missionPerformList = new ArrayList<>();
 
-        for (Participant participant : participants) {
+        if (participantList == null || participantList.isEmpty()) {
+            throw new ParticipantNotFoundException();
+        }
+
+        for (Participant participant : participantList) {
             if (participant.getDeletedAt() != null) {
                 continue;
             }
@@ -84,7 +87,12 @@ public class MissionPerformServiceImpl implements MissionPerformService {
 
     public void testAssignMission(Long roomId) {
         Room room = roomRepository.findById(roomId).orElseThrow();
-        startGameAndAssignMission(room);
+        List<Participant> participantList = participantRepository.findAllByRoomAndDeletedAtIsNull(
+            room);
+
+        if (participantList != null && !participantList.isEmpty()) {
+            startGameAndAssignMission(participantList);
+        }
     }
 
     // 원하지 않는 미션을 변경하는 메서드
@@ -150,8 +158,14 @@ public class MissionPerformServiceImpl implements MissionPerformService {
         }
 
         // 참가자가 수행한 미션들의 id를 Set로 저장함.
-        Set<Long> performedMissions = missionPerforms.stream().map(MissionPerform::getMission)
-            .map(Mission::getId).collect(Collectors.toSet());
+        Set<Long> performedMissions;
+
+        if(missionPerforms != null) {
+            performedMissions = missionPerforms.stream().map(MissionPerform::getMission)
+                .map(Mission::getId).collect(Collectors.toSet());
+        } else {
+            performedMissions = new HashSet<>();
+        }
 
         // 모든 미션 id와 수행한 미션의 id의 차집합을 계산하고, 랜덤으로 하나의 미션 id를 받아옴.
         Long newMissionId = randomNumber(missionIdList, performedMissions);

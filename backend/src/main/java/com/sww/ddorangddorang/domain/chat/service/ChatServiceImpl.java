@@ -46,19 +46,19 @@ public class ChatServiceImpl implements ChatService {
         List<Chat> asManiti = chatRepository.findAllByManitiAndDeletedAtIsNotNull(participant);
 
         GetChatRes manitoChat = GetChatRes.builder().isFromManito(true)
-            .lastContent(asManito.isEmpty() ? null : asManito.get(asManito.size() - 1).getContent())
+            .lastContent((asManito == null || asManito.isEmpty()) ? null : asManito.get(asManito.size() - 1).getContent())
             .build();
         GetChatRes manitiChat = GetChatRes.builder().isFromManito(false)
-            .lastContent(asManiti.isEmpty() ? null : asManiti.get(asManiti.size() - 1).getContent())
+            .lastContent((asManiti == null || asManiti.isEmpty()) ? null : asManiti.get(asManiti.size() - 1).getContent())
             .build();
 
-        if (asManito.isEmpty() && asManiti.isEmpty()) {
+        if ((asManito == null || asManito.isEmpty()) && (asManiti == null || asManiti.isEmpty())) {
             getChatResList.add(manitoChat);
             getChatResList.add(manitiChat);
-        } else if (asManito.isEmpty()) {
+        } else if (asManito == null || asManito.isEmpty()) {
             getChatResList.add(manitiChat);
             getChatResList.add(manitoChat);
-        } else if (asManiti.isEmpty()) {
+        } else if (asManiti == null || asManiti.isEmpty()) {
             getChatResList.add(manitoChat);
             getChatResList.add(manitiChat);
         } else {

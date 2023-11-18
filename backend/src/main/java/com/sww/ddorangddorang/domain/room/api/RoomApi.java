@@ -1,6 +1,7 @@
 package com.sww.ddorangddorang.domain.room.api;
 
 import com.sww.ddorangddorang.auth.dto.AuthenticatedUser;
+import com.sww.ddorangddorang.domain.mission.service.MissionPerformService;
 import com.sww.ddorangddorang.domain.room.dto.AccessCodeReq;
 import com.sww.ddorangddorang.domain.room.dto.EndDayInfoRes;
 import com.sww.ddorangddorang.domain.room.dto.JoinRoomReq;
@@ -12,7 +13,6 @@ import com.sww.ddorangddorang.domain.room.service.RoomNotificationService;
 import com.sww.ddorangddorang.domain.room.service.RoomService;
 import com.sww.ddorangddorang.global.common.CommonResponse;
 import java.util.List;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -31,9 +31,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/rooms")
 public class RoomApi {
 
+    private final static String SUCCESS = "SUCCESS";
     private final RoomService roomService;
     private final RoomNotificationService roomNotificationService;
-    private final static String SUCCESS = "SUCCESS";
+    private final MissionPerformService missionPerformService;
 
     @GetMapping
     public CommonResponse<RoomGetRes> getRoom(
@@ -59,7 +60,8 @@ public class RoomApi {
         @AuthenticationPrincipal AuthenticatedUser authenticatedUser) {
         log.info("RoomApi_joinRoom start");
         roomService.joinRoom(accessCodeReq.getAccessCode(), authenticatedUser.getId());
-        roomNotificationService.notifyJoin(accessCodeReq.getAccessCode(), authenticatedUser.getId());
+        roomNotificationService.notifyJoin(accessCodeReq.getAccessCode(),
+            authenticatedUser.getId());
         log.info("RoomApi_joinRoom end");
         return CommonResponse.success(SUCCESS);
     }

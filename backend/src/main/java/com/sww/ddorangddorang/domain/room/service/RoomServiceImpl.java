@@ -4,7 +4,6 @@ import com.sww.ddorangddorang.domain.mission.service.MissionPerformService;
 import com.sww.ddorangddorang.domain.participant.entity.Participant;
 import com.sww.ddorangddorang.domain.participant.entity.Prefix;
 import com.sww.ddorangddorang.domain.participant.entity.Suffix;
-import com.sww.ddorangddorang.domain.participant.exception.ParticipantNotFoundException;
 import com.sww.ddorangddorang.domain.participant.repository.ParticipantRepository;
 import com.sww.ddorangddorang.domain.participant.repository.PrefixRepository;
 import com.sww.ddorangddorang.domain.participant.repository.SuffixRepository;
@@ -32,11 +31,8 @@ import com.sww.ddorangddorang.domain.user.repository.UserRepository;
 import com.sww.ddorangddorang.global.util.RedisUtil;
 import jakarta.transaction.Transactional;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -408,8 +404,8 @@ public class RoomServiceImpl implements RoomService {
 //
         List<Prefix> prefixList = prefixRepository.findAll();
         List<Suffix> suffixList = suffixRepository.findAll();
-        Integer prefixListSize = prefixList.isEmpty() ? 0 : prefixList.size();
-        Integer suffixListSize = suffixList.isEmpty() ? 0 : suffixList.size();
+        Integer prefixListSize = (prefixList == null || prefixList.isEmpty()) ? 0 : prefixList.size();
+        Integer suffixListSize = (suffixList == null || suffixList.isEmpty()) ? 0 : suffixList.size();
         Boolean[][] nicknameUsage = new Boolean[prefixListSize][suffixListSize];
 
         for (Participant participant : participantList) {
@@ -440,7 +436,7 @@ public class RoomServiceImpl implements RoomService {
 //            Thread.sleep(100);
 //        } catch (InterruptedException e) {
 //        }
-        missionPerformService.startGameAndAssignMission(room);
+        missionPerformService.startGameAndAssignMission(participantList);
         redisUtil.putAccessCode(room.getAccessCode());
         log.info("RoomServiceImpl_startGame end");
     }

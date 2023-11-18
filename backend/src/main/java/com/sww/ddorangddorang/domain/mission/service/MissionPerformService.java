@@ -4,7 +4,9 @@ import com.sww.ddorangddorang.domain.mission.dto.GetManitiInfoRes;
 import com.sww.ddorangddorang.domain.mission.dto.MissionChangeReq;
 import com.sww.ddorangddorang.domain.mission.dto.MissionCompleteReq;
 import com.sww.ddorangddorang.domain.mission.dto.MissionPerformAndDayCountRes;
+import com.sww.ddorangddorang.domain.participant.entity.Participant;
 import com.sww.ddorangddorang.domain.room.entity.Room;
+import java.util.List;
 
 public interface MissionPerformService {
 
@@ -17,7 +19,7 @@ public interface MissionPerformService {
 
     void changeMission(MissionChangeReq missionChangeReq, Long userId);
 
-    void startGameAndAssignMission(Room room);
+    void startGameAndAssignMission(List<Participant> participantList);
 
     void testAssignMission(Long roomId);
 
