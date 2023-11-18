@@ -20,7 +20,6 @@ import com.sww.ddorangddorang.domain.user.entity.User;
 import com.sww.ddorangddorang.domain.user.exception.UserNotFoundException;
 import com.sww.ddorangddorang.domain.user.repository.UserRepository;
 import jakarta.transaction.Transactional;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -66,12 +65,15 @@ public class MissionPerformServiceImpl implements MissionPerformService {
         missionPerformRepository.saveAll(missionPerformList);
     }
 
-    public void startGameAndAssignMission(Room room) {
+    public void startGameAndAssignMission(List<Participant> participantList) {
         List<Long> missionIdList = fetchMissionIds();
-        List<Participant> participants = room.getParticipants();
         List<MissionPerform> missionPerformList = new ArrayList<>();
 
-        for (Participant participant : participants) {
+        if (participantList.isEmpty()) {
+            throw new ParticipantNotFoundException();
+        }
+
+        for (Participant participant : participantList) {
             if (participant.getDeletedAt() != null) {
                 continue;
             }
@@ -84,7 +86,12 @@ public class MissionPerformServiceImpl implements MissionPerformService {
 
     public void testAssignMission(Long roomId) {
         Room room = roomRepository.findById(roomId).orElseThrow();
-        startGameAndAssignMission(room);
+        List<Participant> participantList = participantRepository.findAllByRoomAndDeletedAtIsNull(
+            room);
+
+        if (!participantList.isEmpty()) {
+            startGameAndAssignMission(participantList);
+        }
     }
 
     // 원하지 않는 미션을 변경하는 메서드
