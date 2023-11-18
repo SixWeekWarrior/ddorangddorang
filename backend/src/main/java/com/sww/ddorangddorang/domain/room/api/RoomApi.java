@@ -108,7 +108,7 @@ public class RoomApi {
         log.info("RoomApi_startGame start");
         StartGameRes startGameRes = roomService.checkAndStartGame(authenticatedUser.getId());
 
-        if (startGameRes.getResult()) {
+        if (startGameRes != null && startGameRes.getResult()) {
             missionPerformService.startGameAndAssignMission(startGameRes.getRoom());
         }
 
@@ -137,7 +137,7 @@ public class RoomApi {
             StartGameRes startGameRes = roomService.checkAndRunIfRoomShouldStart(
                 authenticatedUser.getId());
 
-            if (startGameRes.getResult()) {
+            if (startGameRes != null && startGameRes.getResult()) {
                 missionPerformService.startGameAndAssignMission(startGameRes.getRoom());
             }
         }
