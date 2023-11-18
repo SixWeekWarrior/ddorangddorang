@@ -13,6 +13,7 @@ import com.sww.ddorangddorang.domain.room.dto.JoinRoomReq;
 import com.sww.ddorangddorang.domain.room.dto.RoomGetRes;
 import com.sww.ddorangddorang.domain.room.dto.RoomInfoReq;
 import com.sww.ddorangddorang.domain.room.dto.ShowUsersRes;
+import com.sww.ddorangddorang.domain.room.dto.StartGameRes;
 import com.sww.ddorangddorang.domain.room.dto.WaitingListRes;
 import com.sww.ddorangddorang.domain.room.entity.Room;
 import com.sww.ddorangddorang.domain.room.exception.AlreadyParticipatingRoomException;
@@ -440,7 +441,6 @@ public class RoomServiceImpl implements RoomService {
 //            Thread.sleep(100);
 //        } catch (InterruptedException e) {
 //        }
-        missionPerformService.startGameAndAssignMission(room);
         redisUtil.putAccessCode(room.getAccessCode());
         log.info("RoomServiceImpl_startGame end");
     }
@@ -576,7 +576,7 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Transactional
-    public Boolean checkAndRunIfRoomShouldStart(Long userId) {
+    public StartGameRes checkAndRunIfRoomShouldStart(Long userId) {
         log.info("RoomServiceImpl_checkAndRunIfRoomShouldStart start");
         log.info("id: {}", userId);
         User user = findUserById(userId);
@@ -586,15 +586,15 @@ public class RoomServiceImpl implements RoomService {
         if (room.getHeadCount().equals(room.getMaxMember())) {
             startGame(room);
             log.info("RoomServiceImpl_checkAndRunIfRoomShouldStart end");
-            return true;
+            return StartGameRes.builder().room(room).result(true).build();
         }
 
         log.info("RoomServiceImpl_checkAndRunIfRoomShouldStart end");
-        return false;
+        return StartGameRes.builder().result(false).room(null).build();
     }
 
     @Transactional
-    public Boolean checkAndStartGame(Long userId) {
+    public StartGameRes checkAndStartGame(Long userId) {
         log.info("RoomServiceImpl_checkAndStartGame start");
         log.info("id: {}", userId);
 
@@ -610,7 +610,7 @@ public class RoomServiceImpl implements RoomService {
             && room.getHeadCount() <= room.getMaxMember()) {
             startGame(room);
             log.info("RoomServiceImpl_checkAndStartGame end");
-            return true;
+            return StartGameRes.builder().room(room).result(true).build();
         }
 
         log.info("RoomServiceImpl_checkAndStartGame end: invalid play condition");

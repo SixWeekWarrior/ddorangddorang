@@ -1,18 +1,19 @@
 package com.sww.ddorangddorang.domain.room.api;
 
 import com.sww.ddorangddorang.auth.dto.AuthenticatedUser;
+import com.sww.ddorangddorang.domain.mission.service.MissionPerformService;
 import com.sww.ddorangddorang.domain.room.dto.AccessCodeReq;
 import com.sww.ddorangddorang.domain.room.dto.EndDayInfoRes;
 import com.sww.ddorangddorang.domain.room.dto.JoinRoomReq;
 import com.sww.ddorangddorang.domain.room.dto.RoomGetRes;
 import com.sww.ddorangddorang.domain.room.dto.RoomInfoReq;
 import com.sww.ddorangddorang.domain.room.dto.ShowUsersRes;
+import com.sww.ddorangddorang.domain.room.dto.StartGameRes;
 import com.sww.ddorangddorang.domain.room.dto.WaitingListRes;
 import com.sww.ddorangddorang.domain.room.service.RoomNotificationService;
 import com.sww.ddorangddorang.domain.room.service.RoomService;
 import com.sww.ddorangddorang.global.common.CommonResponse;
 import java.util.List;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -31,9 +32,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/rooms")
 public class RoomApi {
 
+    private final static String SUCCESS = "SUCCESS";
     private final RoomService roomService;
     private final RoomNotificationService roomNotificationService;
-    private final static String SUCCESS = "SUCCESS";
+    private final MissionPerformService missionPerformService;
 
     @GetMapping
     public CommonResponse<RoomGetRes> getRoom(
@@ -59,7 +61,8 @@ public class RoomApi {
         @AuthenticationPrincipal AuthenticatedUser authenticatedUser) {
         log.info("RoomApi_joinRoom start");
         roomService.joinRoom(accessCodeReq.getAccessCode(), authenticatedUser.getId());
-        roomNotificationService.notifyJoin(accessCodeReq.getAccessCode(), authenticatedUser.getId());
+        roomNotificationService.notifyJoin(accessCodeReq.getAccessCode(),
+            authenticatedUser.getId());
         log.info("RoomApi_joinRoom end");
         return CommonResponse.success(SUCCESS);
     }
@@ -103,7 +106,12 @@ public class RoomApi {
     public CommonResponse<String> startGame(
         @AuthenticationPrincipal AuthenticatedUser authenticatedUser) {
         log.info("RoomApi_startGame start");
-        roomService.checkAndStartGame(authenticatedUser.getId());
+        StartGameRes startGameRes = roomService.checkAndStartGame(authenticatedUser.getId());
+
+        if (startGameRes != null && startGameRes.getResult()) {
+            missionPerformService.startGameAndAssignMission(startGameRes.getRoom());
+        }
+
         log.info("RoomApi_startGame end");
         return CommonResponse.success(SUCCESS);
     }
@@ -126,7 +134,12 @@ public class RoomApi {
         Boolean joined = roomService.responseJoinRoom(joinRoomReqList, authenticatedUser.getId());
 
         if (joined) {
-            roomService.checkAndRunIfRoomShouldStart(authenticatedUser.getId());
+            StartGameRes startGameRes = roomService.checkAndRunIfRoomShouldStart(
+                authenticatedUser.getId());
+
+            if (startGameRes != null && startGameRes.getResult()) {
+                missionPerformService.startGameAndAssignMission(startGameRes.getRoom());
+            }
         }
 
         log.info("RoomApi_responseJoinRoom end");
