@@ -8,7 +8,6 @@ import com.sww.ddorangddorang.domain.room.dto.JoinRoomReq;
 import com.sww.ddorangddorang.domain.room.dto.RoomGetRes;
 import com.sww.ddorangddorang.domain.room.dto.RoomInfoReq;
 import com.sww.ddorangddorang.domain.room.dto.ShowUsersRes;
-import com.sww.ddorangddorang.domain.room.dto.StartGameRes;
 import com.sww.ddorangddorang.domain.room.dto.WaitingListRes;
 import com.sww.ddorangddorang.domain.room.service.RoomNotificationService;
 import com.sww.ddorangddorang.domain.room.service.RoomService;
@@ -106,12 +105,7 @@ public class RoomApi {
     public CommonResponse<String> startGame(
         @AuthenticationPrincipal AuthenticatedUser authenticatedUser) {
         log.info("RoomApi_startGame start");
-        StartGameRes startGameRes = roomService.checkAndStartGame(authenticatedUser.getId());
-
-        if (startGameRes != null && startGameRes.getResult()) {
-            missionPerformService.startGameAndAssignMission(startGameRes.getRoom());
-        }
-
+        roomService.checkAndStartGame(authenticatedUser.getId());
         log.info("RoomApi_startGame end");
         return CommonResponse.success(SUCCESS);
     }
@@ -134,12 +128,7 @@ public class RoomApi {
         Boolean joined = roomService.responseJoinRoom(joinRoomReqList, authenticatedUser.getId());
 
         if (joined) {
-            StartGameRes startGameRes = roomService.checkAndRunIfRoomShouldStart(
-                authenticatedUser.getId());
-
-            if (startGameRes != null && startGameRes.getResult()) {
-                missionPerformService.startGameAndAssignMission(startGameRes.getRoom());
-            }
+            roomService.checkAndRunIfRoomShouldStart(authenticatedUser.getId());
         }
 
         log.info("RoomApi_responseJoinRoom end");
