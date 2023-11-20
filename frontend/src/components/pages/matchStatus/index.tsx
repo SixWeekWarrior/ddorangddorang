@@ -1,10 +1,4 @@
-import {
-  View,
-  StyleSheet,
-  Text,
-  Image,
-  TouchableWithoutFeedback,
-} from 'react-native';
+import {View, StyleSheet, Text, Image} from 'react-native';
 import MenuTop from '../../molecules/menuTop';
 import GlobalStyles from '../../../styles/GlobalStyles';
 import BottomSheet, {BottomSheetBackdrop} from '@gorhom/bottom-sheet';
@@ -71,7 +65,7 @@ const MatchStatus = ({navigation, route}: any): JSX.Element => {
         text={'매일 아침 9시 갱신됩니다.\n내 마니또가 나를 맞췄나요?'}
       />
       <View style={styles.innerContainer}>
-        {guessList.map((item: GuessInfo, index: number) => (
+        {guessList?.map((item: GuessInfo, index: number) => (
           <GuessRow
             me={item.me}
             guessUser={item.guessUser}
@@ -116,6 +110,13 @@ const styles = StyleSheet.create({
   },
   textRows: {
     rowGap: -20,
+  },
+  profilePic: {
+    width: 60,
+    height: 60,
+    borderRadius: 100,
+    borderWidth: 0.5,
+    borderColor: GlobalStyles.grey_4.color,
   },
   name: {
     fontFamily: GlobalStyles.section_title.fontFamily,
