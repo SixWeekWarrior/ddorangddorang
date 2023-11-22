@@ -2,14 +2,13 @@
 <img src="img/Thumbnail.png" width="">
 
 ## 🤍 목차 🤍
-
 <div>
-서비스 소개
-프로젝트 일
-팀원 소개
-기술 스택
-시스템 구성도
-주요 기능
+    <div>서비스 소개</div>
+    <div>프로젝트 일</div>
+    <div>팀원 소개</div>
+    <div>기술 스택</div>
+    <div>시스템 구성도</div>
+    <div>주요 기능</div>
 </div>
 
 ## ❤️ 서비스 소개 ❤️
